@@ -61,6 +61,9 @@
     <Filter Include="Source Files\Debug">
       <UniqueIdentifier>{06c6298b-457e-4b1d-ba0c-4f4e2f639d64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Manager\Camera">
+      <UniqueIdentifier>{8f60e1ae-d1db-48e1-919e-f078aa20c44f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -143,6 +146,12 @@
     </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Manager\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraManager.cpp">
+      <Filter>Source Files\Manager\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +244,12 @@
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Source Files\Manager\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraManager.h">
+      <Filter>Source Files\Manager\Camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
