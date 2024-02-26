@@ -48,3 +48,9 @@ bool Contains(T* _valueToFind, const vector<T*>& _vector)
 bool IsNearlyEqual(Vector2f _first, Vector2f _second);
 
 Vector2i GetDirectionByPositions(Vector2f _entityPos, Vector2f _destination);
+
+template <typename Type>
+static void SetOriginCentered(Type* _element)
+{
+	_element->setOrigin(_element->getGlobalBounds().getSize() / 2.0f);
+}
