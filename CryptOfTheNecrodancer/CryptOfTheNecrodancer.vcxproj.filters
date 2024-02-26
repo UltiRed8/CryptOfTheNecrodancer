@@ -67,6 +67,9 @@
     <Filter Include="Source Files\Component\Animation">
       <UniqueIdentifier>{f3eb255c-b345-4f4a-bceb-703fceddbdb9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Component\Rythm">
+      <UniqueIdentifier>{86b2fb8d-15f1-49de-b16c-221b7ae1a651}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -188,6 +191,15 @@
     </ClCompile>
     <ClCompile Include="AnimationComponent.cpp">
       <Filter>Source Files\Component\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="MusicData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MusicManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RythmComponent.cpp">
+      <Filter>Source Files\Component\Rythm</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -319,6 +331,15 @@
     </ClInclude>
     <ClInclude Include="AnimationComponent.h">
       <Filter>Source Files\Component\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="MusicData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MusicManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RythmComponent.h">
+      <Filter>Source Files\Component\Rythm</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
