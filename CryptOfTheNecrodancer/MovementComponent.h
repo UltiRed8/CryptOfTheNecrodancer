@@ -4,13 +4,14 @@
 #include"EntityManager.h"
 #include"Macro.h"
 #include"CollisionComponent.h"
+#include"Tile.h"
 using namespace sf;
 class MovementComponent:public Component
 {
 	int speed;
 	bool canMove;
-	Vector2f direction;
-	//Tile* destination;
+	Vector2i direction;
+	Vector2f* destination;
 	CollisionComponent* collision;
 	vector<CollisionReaction> reactions;
 
@@ -19,35 +20,47 @@ public:
 	{
 		return canMove;
 	}
-	Vector2f GetDirection()const
+	Vector2i GetDirection()const
 	{
 		return direction;
 	}
-	/*void SetDestination( Tile* _destination)
+	void SetDestination(Vector2f* _destination)
 	{
-		destination = _destination;
-	}*/
+		if (destination)
+		{
+			delete destination;
+		}
 
-	float GetSpeed() const
+		destination = _destination;
+		UpdateDirection();
+	}
+	
+
+	int GetSpeed() const
 	{
 		return speed;
 	}
-	/*Vector2f* GetDestination() const
+	Vector2f* GetDestination() const
 	{
 		return destination;
-	};*/
+	};
 	void SetCanMove(const bool _status)
 	{
 		canMove = _status;
 	}
-	void SetDirection(const Vector2f& _direction)
+	void SetDirection(const Vector2i& _direction)
 	{
 		direction = _direction;
 	}
-	/*bool IsAtLocation() const
+	void UpdateDirection()
+	{
+		Vector2i _newDirection = GetDirectionByPositions(owner->GetPosition(), *destination);
+		SetDirection(_newDirection - _newDirection);
+	}
+	bool IsAtLocation() const
 	{
 		return Distance(owner->GetPosition(), *destination) <= 10.0f;
-	}*/
+	}
 public:
 	MovementComponent(Entity* _owner, const int _speed = 1);
 
