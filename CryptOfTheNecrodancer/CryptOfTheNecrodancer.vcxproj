@@ -169,6 +169,7 @@
     <ClCompile Include="ProgressBar.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="RythmComponent.cpp" />
+    <ClCompile Include="Saveable.cpp" />
     <ClCompile Include="SoundData.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="TextureData.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="ProgressBar.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="RythmComponent.h" />
+    <ClInclude Include="Saveable.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SoundData.h" />
     <ClInclude Include="SoundManager.h" />

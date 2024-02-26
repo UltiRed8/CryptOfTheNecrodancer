@@ -1,9 +1,2 @@
-﻿  Game.cpp
-  Main.cpp
-  Map.cpp
-  MovementComponent.cpp
-  Player.cpp
-  Room.cpp
-  Tile.cpp
-  Génération de code en cours...
+﻿  Saveable.cpp
   CryptOfTheNecrodancer.vcxproj -> C:\Users\Gregory ZANATTA\OneDrive\Bureau\Cours P1\SFML\CryptOfTheNecrodancer\CryptOfTheNecrodancer\x64\Debug\CryptOfTheNecrodancer.exe
