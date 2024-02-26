@@ -2,7 +2,9 @@
 #include "Macro.h"
 #include "InputManager.h"
 
-Player::Player(const string _id, const Vector2f& _position, PlayerRessource _ressources) : Entity(_id, _position)
+#define PLAYER_PATH "Assets/Textures/Player.png"
+
+Player::Player(const string _id, const Vector2f& _position, PlayerRessource _ressources) : Entity(_id, PLAYER_PATH, _position)
 {
 	inventory = new Inventory();
 	ressources = _ressources;

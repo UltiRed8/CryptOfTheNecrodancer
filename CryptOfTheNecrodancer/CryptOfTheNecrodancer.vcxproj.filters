@@ -180,6 +180,12 @@
     <ClCompile Include="Wearable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Consommable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Usable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EntityManager.h">
@@ -304,6 +310,12 @@
     </ClInclude>
     <ClInclude Include="Wearable.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Consommable.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Usable.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

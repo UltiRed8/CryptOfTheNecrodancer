@@ -9,7 +9,6 @@ class Entity : public Object, public IManagable<string>
 	Shape* shape;
 	vector<Component*> components;
 
-
 public:
 	Shape* GetShape() const 
 	{ 
