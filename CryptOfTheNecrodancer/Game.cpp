@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "EntityManager.h"
 #include "TimerManager.h"
+#include "MusicManager.h"
 
 Game::Game()
 {
@@ -22,8 +23,9 @@ void Game::Start()
 {
 	Init();
 	map = new Map(1);
-
-	new Timer("Timer", [this]() { map->Update(); }, seconds(1.f), -1);
+	MusicManager::GetInstance().Play("Lobby.mp3");
+	//TheWighttoRemain.mp3
+	new Timer("Timer", [this]() { map->Update(); }, seconds(1.f/(130/60.f)), -1);
 }
 
 void Game::Update()
@@ -31,7 +33,7 @@ void Game::Update()
 	while (window->isOpen())
 	{
 		UpdateInputs();
-		TimerManager::GetInstance()->Update();
+		TimerManager::GetInstance().Update();
 
 		UpdateWindow();
 	}
@@ -41,7 +43,7 @@ void Game::Update()
 void Game::UpdateWindow()
 {
 	window->clear();
-	const vector<Entity*>& _entities = EntityManager::GetInstance()->GetAllValues();
+	const vector<Entity*>& _entities = EntityManager::GetInstance().GetAllValues();
 	for (Entity* _entity : _entities)
 	{
 		window->draw(*_entity->GetShape());

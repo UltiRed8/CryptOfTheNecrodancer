@@ -25,7 +25,7 @@ void Room::Init()
 			//_tile->GetShape()->setOutlineThickness(-5.0f);
 
 		
-			_row.push_back(new Tile("Assets/Textures/wall.png", _position));
+			_row.push_back(new Tile("wall.png", _position));
 		}
 		tiles.push_back(_row);
 	}
