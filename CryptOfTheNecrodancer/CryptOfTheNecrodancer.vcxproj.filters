@@ -64,6 +64,15 @@
     <Filter Include="Source Files\Manager\Camera">
       <UniqueIdentifier>{8f60e1ae-d1db-48e1-919e-f078aa20c44f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Component\Mouvement">
+      <UniqueIdentifier>{68b201d1-2df3-4410-9a7f-798d68b8e391}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component\Damage">
+      <UniqueIdentifier>{154f75d1-bdbf-44fe-9507-4d7b79d83727}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component\Life">
+      <UniqueIdentifier>{79ac82ac-871a-4d38-9b5d-5525693e11ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -161,6 +170,18 @@
     </ClCompile>
     <ClCompile Include="UIImage.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementComponent.cpp">
+      <Filter>Source Files\Component\Mouvement</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionComponent.cpp">
+      <Filter>Source Files\Component\Mouvement</Filter>
+    </ClCompile>
+    <ClCompile Include="DamageComponent.cpp">
+      <Filter>Source Files\Component\Damage</Filter>
+    </ClCompile>
+    <ClCompile Include="LifeComponent.cpp">
+      <Filter>Source Files\Component\Life</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -268,6 +289,18 @@
     </ClInclude>
     <ClInclude Include="UIImage.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionComponent.h">
+      <Filter>Source Files\Component\Mouvement</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementComponent.h">
+      <Filter>Source Files\Component\Mouvement</Filter>
+    </ClInclude>
+    <ClInclude Include="LifeComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DamageComponent.h">
+      <Filter>Source Files\Component\Damage</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

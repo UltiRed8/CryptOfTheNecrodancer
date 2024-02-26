@@ -139,6 +139,7 @@
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="CollisionComponent.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="DamageComponent.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="FontData.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputData.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="LifeComponent.cpp" />
     <ClCompile Include="Macro.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -175,6 +177,7 @@
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="DamageComponent.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
@@ -185,6 +188,7 @@
     <ClInclude Include="IManager.h" />
     <ClInclude Include="InputData.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="LifeComponent.h" />
     <ClInclude Include="Macro.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MenuManager.h" />

@@ -31,6 +31,8 @@ float Length(Vector2f& _vector);
 
 void Normalize(Vector2f& _vector);
 
+Vector2i NormalizeDistance(const Vector2f& _vector);
+
 float Distance(const Vector2f& _first, const Vector2f& _second);
 
 template <typename T>
@@ -43,3 +45,6 @@ bool Contains(T* _valueToFind, const vector<T*>& _vector)
 
 	return false;
 }
+bool IsNearlyEqual(Vector2f _first, Vector2f _second);
+
+Vector2i GetDirectionByPositions(Vector2f _entityPos, Vector2f _destination);
