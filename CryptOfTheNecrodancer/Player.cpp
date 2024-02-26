@@ -9,6 +9,8 @@ Player::Player(const string _id, const Vector2f& _position, PlayerRessource _res
 {
 	inventory = new Inventory();
 	ressources = _ressources;
+	components.push_back(new MovementComponent(this));
+	InitInput();
 }
 
 Player::~Player()
@@ -19,9 +21,14 @@ Player::~Player()
 void Player::InitInput()
 {
 	new ActionMap("Mouvements",
-		{ ActionData("Haut", [this]() { GetComponent<MovementComponent>()->SetDirection(Vector2i(0, -1)); }, {Event::KeyPressed, Keyboard::Up}),
-		  ActionData("Bas", [this]() { GetComponent<MovementComponent>()->SetDirection(Vector2i(0, 1)); }, {Event::KeyPressed, Keyboard::Down}),
-		  ActionData("Droite", [this]() { GetComponent<MovementComponent>()->SetDirection(Vector2i(1, 0)); }, {Event::KeyPressed, Keyboard::Right}),
-		  ActionData("Gauche", [this]() { GetComponent<MovementComponent>()->SetDirection(Vector2i(-1, 0)); }, {Event::KeyPressed, Keyboard::Left})
+		{ ActionData("Haut", [this]() { GetComponent<MovementComponent>()->SetDirection(new Vector2i(0.f,-1.f)); }, {Event::KeyPressed, Keyboard::Up}),
+		  ActionData("Bas", [this]() { GetComponent<MovementComponent>()->SetDirection(new Vector2i(0, 1)); }, {Event::KeyPressed, Keyboard::Down}),
+		  ActionData("Droite", [this]() { GetComponent<MovementComponent>()->SetDirection(new Vector2i(1, 0)); }, {Event::KeyPressed, Keyboard::Right}),
+		  ActionData("Gauche", [this]() { GetComponent<MovementComponent>()->SetDirection(new Vector2i(-1, 0)); }, {Event::KeyPressed, Keyboard::Left})
 		});
+}
+
+void Player::Update()
+{
+	Entity::Update();
 }

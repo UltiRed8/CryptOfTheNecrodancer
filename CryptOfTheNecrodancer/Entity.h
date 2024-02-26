@@ -6,6 +6,7 @@
 
 class Entity : public Object, public IManagable<string>
 {
+protected:
 	vector<Component*> components;
 protected:
 	Shape* shape;
@@ -38,5 +39,6 @@ public:
 
 	// Hérité via IManagable
 	void Register() override;
+	virtual void Update();
 };
 
