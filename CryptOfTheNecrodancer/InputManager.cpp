@@ -29,7 +29,7 @@ void InputManager::UpdateInputs(const Event& _event)
 
 void InputManager::ClickOnEntities()
 {
-	for (Entity* _entity : EntityManager::GetInstance()->GetAllValues())
+	for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
 	{
 	/*	if (Clickable* _clickable = dynamic_cast<Clickable*>(_entity))
 		{

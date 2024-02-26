@@ -165,6 +165,7 @@
     <ClCompile Include="TimerManager.cpp" />
     <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="UIElement.cpp" />
+    <ClCompile Include="UIImage.cpp" />
     <ClCompile Include="UIText.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -203,6 +204,7 @@
     <ClInclude Include="TimerManager.h" />
     <ClInclude Include="UIButton.h" />
     <ClInclude Include="UIElement.h" />
+    <ClInclude Include="UIImage.h" />
     <ClInclude Include="UIText.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

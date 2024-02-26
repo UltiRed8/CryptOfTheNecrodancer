@@ -1,9 +1,13 @@
 #include "MenuManager.h"
 
-void MenuManager::Open(const string& _id, RenderWindow* _window)
+vector<Drawable*> MenuManager::GetDrawables()
 {
-	if (Exist(_id))
+	vector<Drawable*> _drawables;
+	for (Menu* _menu : GetAllValues())
 	{
-		Get(_id)->Open(_window);
+		if (!_menu->IsOpened()) continue;
+		const vector<Drawable*>& _tempDrawables = _menu->GetDrawables();
+		_drawables.insert(_drawables.end(), _tempDrawables.begin(), _tempDrawables.end());
 	}
+	return _drawables;
 }

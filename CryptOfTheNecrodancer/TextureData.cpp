@@ -9,5 +9,5 @@ TextureData::TextureData(const string& _path) : IManagable(_path)
 
 void TextureData::Register()
 {
-	TextureManager::GetInstance()->Add(id, this);
+	TextureManager::GetInstance().Add(id, this);
 }

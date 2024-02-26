@@ -94,8 +94,8 @@ IntRect ProgressBar::MakeRect(const float _percent)
 
 void ProgressBar::InitTextures(const string& _full, const string& _empty)
 {
-    TextureManager::GetInstance()->Load(background, _empty);
-    TextureManager::GetInstance()->Load(foreground, _full);
+    TextureManager::GetInstance().Load(background, _empty);
+    TextureManager::GetInstance().Load(foreground, _full);
 }
 
 vector<Drawable*> ProgressBar::GetDrawables() const

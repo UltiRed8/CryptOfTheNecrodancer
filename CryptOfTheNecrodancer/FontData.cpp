@@ -8,5 +8,5 @@ FontData::FontData(const string& _path) : IManagable(_path)
 
 void FontData::Register()
 {
-	FontManager::GetInstance()->Add(id, this);
+	FontManager::GetInstance().Add(id, this);
 }

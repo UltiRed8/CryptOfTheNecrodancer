@@ -14,7 +14,7 @@ Timer::Timer(const string& _id, const function<void()>& _callback, const Time& _
 
 void Timer::Register()
 {
-	TimerManager::GetInstance()->Add(id, this);
+	TimerManager::GetInstance().Add(id, this);
 }
 
 void Timer::Update(const float _deltaTime)
