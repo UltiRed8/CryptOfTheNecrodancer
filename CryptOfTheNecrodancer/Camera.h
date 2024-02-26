@@ -21,6 +21,8 @@ class Camera : public IManagable<string>, public View
 public:
 	Camera(const string& _id, const CameraType& _type, const Vector2f& _from, const Vector2f& _to);
 
+public:
+	void Update();
 private:
 	virtual void Register() override;
 	void Init();

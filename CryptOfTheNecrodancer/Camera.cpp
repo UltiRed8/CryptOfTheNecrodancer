@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include "CameraManager.h"
+#include "EntityManager.h"
 
 Camera::Camera(const string& _id, const CameraType& _type, const Vector2f& _from, const Vector2f& _to) : IManagable(_id), View(_from, _to)
 {
@@ -26,4 +27,13 @@ void Camera::InitPosition()
 	const Vector2f& _cameraSize = Vector2f(1.0f, 1.0f);
 
 	setViewport(FloatRect(_cameraPosition, _cameraSize));
+}
+
+void Camera::Update()
+{
+	if (type == CAMERA_PLAYER)
+	{
+		setCenter(EntityManager::GetInstance().Get("Player")->GetPosition());
+		//cout << EntityManager::GetInstance().Get("Player")->GetPosition().x << " " << EntityManager::GetInstance().Get("Player")->GetPosition().y;
+	}
 }

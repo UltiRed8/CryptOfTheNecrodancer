@@ -3,6 +3,7 @@
 #include "InputManager.h"
 #include "MovementComponent.h"
 #include "AnimationComponent.h"
+
 #define PATH_PLAYER "PlayerSprite.png"
 
 Player::Player(const string _id, const Vector2f& _position, PlayerRessource _ressources) : Entity(_id, "", _position)

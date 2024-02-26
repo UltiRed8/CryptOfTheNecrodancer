@@ -6,5 +6,6 @@
 
 class CameraManager : public Singleton<CameraManager>, public IManager<string, Camera>
 {
-
+public:
+	void Update(RenderWindow* _window);
 };

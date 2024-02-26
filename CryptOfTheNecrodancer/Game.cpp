@@ -5,6 +5,8 @@
 #include "InputManager.h"
 #include "MenuManager.h"
 #include "UIImage.h"
+#include "CameraManager.h"
+
 
 Game::Game()
 {
@@ -45,6 +47,7 @@ void Game::Start()
 	});
 
 	_hud->Open();
+	Camera* _playerCamera = new Camera("PlayerCamera", CAMERA_PLAYER, Vector2f(0.f,0.f), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
 }
 
 void Game::Update()
@@ -54,7 +57,9 @@ void Game::Update()
 		TimerManager::GetInstance().Update();
 		InputManager::GetInstance().Update(window);
 		EntityManager::GetInstance().Update();
+		CameraManager::GetInstance().Update(window);
 		UpdateWindow();
+		window->setView(*CameraManager::GetInstance().Get("PlayerCamera"));
 	}
 	Stop();
 }
@@ -66,6 +71,7 @@ void Game::UpdateWindow()
 	{
 		window->draw(*_drawable);
 	}
+	window->setView(window->getDefaultView());
 	for (Drawable* _drawable : MenuManager::GetInstance().GetDrawables())
 	{
 		window->draw(*_drawable);
