@@ -24,6 +24,7 @@ Game::~Game()
 void Game::Init()
 {
 	window = new RenderWindow(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer");
+	InitInputPause();
 }
 
 void Game::Start()
@@ -82,6 +83,16 @@ void Game::UpdateWindow()
 void Game::Stop()
 {
 	cout << "Fin!" << endl;
+}
+
+void Game::InitInputPause()
+{
+	new Menu("GamePause", { new UIImage(Vector2f(0.f,0.f), Vector2f(window->getSize().x, window->getSize().y), "PauseMenu.png")}, 1);
+	new ActionMap("GamePaused",
+		{ ActionData("Echap", [this]() { 
+			Menu* _menu = MenuManager::GetInstance().Get("GamePause");
+			_menu->Toggle();
+			}, {Event::KeyPressed, Keyboard::Escape}) });
 }
 
 void Game::Launch()
