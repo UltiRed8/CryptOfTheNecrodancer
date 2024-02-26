@@ -35,6 +35,13 @@ public:
 			return (_owner->*_callback)(_args...);
 		};
 	}
+	ActionData(const string& _name, const function<void()>& _callback, const InputTypeData& _primaryKey, const InputTypeData& _secondaryKey = InputTypeData())
+	{
+		name = _name;
+		keys.push_back(_primaryKey);
+		keys.push_back(_secondaryKey);
+		callback = _callback;
+	}
 
 	bool operator!() const
 	{
