@@ -141,6 +141,9 @@
     <ClCompile Include="Macro.cpp">
       <Filter>Source Files\Macro</Filter>
     </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EntityManager.h">
@@ -229,6 +232,9 @@
     </ClInclude>
     <ClInclude Include="Debug.h">
       <Filter>Source Files\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
