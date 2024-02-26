@@ -13,6 +13,7 @@ Player::Player(const string _id, const Vector2f& _position, PlayerRessource _res
 	AnimationData _animation = AnimationData("Idle", Vector2f(0, 0),TILE_SIZE, READ_RIGHT,ANIM_DIR_NONE,true,4,0.1f);
 	components.push_back(new AnimationComponent(this, PATH_PLAYER, { _animation }, ANIM_DIR_NONE));
 	InitInput();
+	zIndex = 1;
 }
 
 Player::~Player()

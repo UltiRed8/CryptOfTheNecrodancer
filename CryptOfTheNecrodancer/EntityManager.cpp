@@ -24,17 +24,26 @@ bool EntityManager::IsAvailable(const Vector2f& _position, const Vector2f& _size
 vector<Drawable*> EntityManager::GetDrawables() const
 {
 	vector<Drawable*> _drawables;
-	for (auto _pair : allValues)
+	int _currentZIndex = 0;
+	bool _shouldContinue;
+	do
 	{
-		/*vector<Drawable*> _drawablesTemp = _pair.second->GetDrawables();
-		_drawables.insert(_drawables.end(), _drawablesTemp.begin(), _drawablesTemp.end());
-		if (Human* _human = dynamic_cast<Human*>(_pair.second))
+		_shouldContinue = false;
+		for (Entity* _entity : GetAllValues())
 		{
-			if (_human->GetJob() && !_human->IsInfected())
+			int _zIndex = _entity->GetZIndex();
+			if (_zIndex == _currentZIndex)
 			{
-				_drawables.push_back(_human->GetJob()->GetShape());
+				vector<Drawable*> _tempDrawables = _entity->GetDrawables();
+				_drawables.insert(_drawables.end(), _tempDrawables.begin(), _tempDrawables.end());
 			}
-		}*/
-	}
+			else if (_zIndex == _currentZIndex + 1)
+			{
+				_shouldContinue = true;
+			}
+		}
+		_currentZIndex++;
+	} while (_shouldContinue);
+	
 	return _drawables;
 }

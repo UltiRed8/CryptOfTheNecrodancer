@@ -3,11 +3,14 @@
 #include "TimerManager.h"
 #include "MusicManager.h"
 #include "InputManager.h"
+#include "MenuManager.h"
+#include "UIImage.h"
 
 Game::Game()
 {
 	window = nullptr;
 	map = nullptr;
+	player = nullptr;
 }
 
 Game::~Game()
@@ -24,11 +27,24 @@ void Game::Init()
 void Game::Start()
 {
 	Init();
+
+	// TODO temporaire
+
 	map = new Map(1);
+
 	MusicManager::GetInstance().Play("Lobby.mp3");
+
 	//TheWighttoRemain.mp3
+
 	new Timer("Timer", [this]() { map->Update(); }, seconds(1.f/(130/60.f)), -1);
-	player = new Player("ZPlayer",{0.f,0.f},{});
+
+	player = new Player("Player",{0.f,0.f},{});
+
+	Menu* _hud = new Menu("HUD", {
+		new UIImage(Vector2f(SCREEN_WIDTH/2 - 40*2, SCREEN_HEIGHT - 55*2), Vector2f(80.0f, 50.0f) * 2.0f, "RythmHearts.png"),
+	});
+
+	_hud->Open();
 }
 
 void Game::Update()
@@ -46,10 +62,13 @@ void Game::Update()
 void Game::UpdateWindow()
 {
 	window->clear();
-	const vector<Entity*>& _entities = EntityManager::GetInstance().GetAllValues();
-	for (Entity* _entity : _entities)
+	for (Drawable* _drawable : EntityManager::GetInstance().GetDrawables())
 	{
-		window->draw(*_entity->GetShape());
+		window->draw(*_drawable);
+	}
+	for (Drawable* _drawable : MenuManager::GetInstance().GetDrawables())
+	{
+		window->draw(*_drawable);
 	}
 	window->display();
 }
