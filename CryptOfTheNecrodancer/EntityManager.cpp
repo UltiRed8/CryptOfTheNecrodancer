@@ -1,4 +1,5 @@
 #include "EntityManager.h"
+#include "AnimationComponent.h"
 
 void EntityManager::Update()
 {
