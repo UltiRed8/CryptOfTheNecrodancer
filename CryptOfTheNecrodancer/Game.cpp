@@ -31,7 +31,7 @@ void Game::Update()
 	while (window->isOpen())
 	{
 		UpdateInputs();
-		TimerManager::GetInstance()->Update();
+		TimerManager::GetInstance().Update();
 
 		UpdateWindow();
 	}
@@ -41,7 +41,7 @@ void Game::Update()
 void Game::UpdateWindow()
 {
 	window->clear();
-	const vector<Entity*>& _entities = EntityManager::GetInstance()->GetAllValues();
+	const vector<Entity*>& _entities = EntityManager::GetInstance().GetAllValues();
 	for (Entity* _entity : _entities)
 	{
 		window->draw(*_entity->GetShape());
