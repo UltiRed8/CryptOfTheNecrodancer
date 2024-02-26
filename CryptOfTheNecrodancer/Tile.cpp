@@ -11,10 +11,12 @@ void Tile::InvertColors()
 	if (firstColor == _currentColor)
 	{
 		shape->setFillColor(secondColor);
+		lastColor = secondColor;
 	}
 	else
 	{
 		shape->setFillColor(firstColor);
+		lastColor = firstColor;
 	}
 }
 
@@ -24,6 +26,6 @@ void Tile::Update()
 
 void Tile::ResetColor()
 {
-	shape->setFillColor(firstColor);
+	shape->setFillColor(lastColor);
 	shape->setOutlineThickness(0.f);
 }

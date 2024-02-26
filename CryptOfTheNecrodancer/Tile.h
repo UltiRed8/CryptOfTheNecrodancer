@@ -7,6 +7,7 @@ class Tile : public Entity
 	vector<Entity*> entities;
 	Color firstColor;
 	Color secondColor;
+	Color lastColor;
 
 public:
 	void SetColors(const Color& _firstColor, const Color& _secondColor)

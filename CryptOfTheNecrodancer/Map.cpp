@@ -7,7 +7,7 @@ void Map::UpdateTilesColor()
 {
 	bool _hasChain = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetChainMultiplier() > 1.0f;
 
-	/*ResetAllTilesColor();
+	ResetAllTilesColor();
 
 
 	if (!_hasChain)
@@ -32,28 +32,28 @@ void Map::UpdateTilesColor()
 				_shape->setFillColor(_color);
 			}
 		}
-	}*/
-
-	if (chainToggle && _hasChain)
-	{
-		// activer les couleurs
-		for (int _index = 0; _index < tiles.size(); _index++)
-		{
-
-		}
-		chainToggle = false;
-	}
-	else if (!chainToggle && !_hasChain)
-	{
-		// reset
-		chainToggle = true;
 	}
 
+	//if (chainToggle && _hasChain)
+	//{
+	//	// activer les couleurs
+	//	for (int _index = 0; _index < tiles.size(); _index++)
+	//	{
 
-	for (Tile* _tile : tiles)
-	{
-		_tile->InvertColors();
-	}
+	//	}
+	//	chainToggle = false;
+	//}
+	//else if (!chainToggle && !_hasChain)
+	//{
+	//	// reset
+	//	chainToggle = true;
+	//}
+
+
+	//for (Tile* _tile : tiles)
+	//{
+	//	_tile->InvertColors();
+	//}
 
 }
 
