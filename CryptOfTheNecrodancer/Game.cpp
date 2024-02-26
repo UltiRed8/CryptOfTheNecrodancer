@@ -1,8 +1,11 @@
 #include "Game.h"
+#include "EntityManager.h"
+#include "TimerManager.h"
 
 Game::Game()
 {
 	window = nullptr;
+	map = nullptr;
 }
 
 Game::~Game()
@@ -18,6 +21,9 @@ void Game::Init()
 void Game::Start()
 {
 	Init();
+	map = new Map(1);
+
+	new Timer("Timer", [this]() { map->Update(); }, seconds(1.f), -1);
 }
 
 void Game::Update()
@@ -25,6 +31,8 @@ void Game::Update()
 	while (window->isOpen())
 	{
 		UpdateInputs();
+		TimerManager::GetInstance()->Update();
+
 		UpdateWindow();
 	}
 	Stop();
@@ -33,7 +41,11 @@ void Game::Update()
 void Game::UpdateWindow()
 {
 	window->clear();
-	//window->draw();
+	const vector<Entity*>& _entities = EntityManager::GetInstance()->GetAllValues();
+	for (Entity* _entity : _entities)
+	{
+		window->draw(*_entity->GetShape());
+	}
 	window->display();
 }
 
