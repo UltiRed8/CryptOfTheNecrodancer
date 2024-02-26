@@ -64,7 +64,7 @@ void ParticleSystem::Update(const float _deltaTime)
 
 void ParticleSystem::Register()
 {
-	ParticleManager::GetInstance()->Add(id, this);
+	ParticleManager::GetInstance().Add(id, this);
 }
 
 void ParticleSystem::ComputeDestroy()

@@ -13,7 +13,7 @@ ActionMap::ActionMap(const string& _name, const vector<ActionData>& _actions) : 
 
 void ActionMap::Register()
 {
-	InputManager::GetInstance()->Add(id, this);
+	InputManager::GetInstance().Add(id, this);
 }
 
 void ActionMap::Update(const Event& _event)

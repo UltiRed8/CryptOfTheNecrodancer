@@ -10,5 +10,5 @@ class MenuManager : public Singleton<MenuManager>, public IManager<string, Menu>
 {
 
 public:
-	void Open(const string& _id, RenderWindow* _window);
+	vector<Drawable*> GetDrawables();
 };

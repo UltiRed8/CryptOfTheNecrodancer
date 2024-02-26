@@ -4,7 +4,7 @@ UIText::UIText(const Vector2f& _position, const Color& _color, const string& _te
 {
 	value = _additionalValue;
 	text = new Text();
-	FontManager::GetInstance()->Load(text, _fontPath, true);
+	FontManager::GetInstance().Load(text, _fontPath, true);
 	text->setFillColor(_color);
 	text->setString(_textValue + (_additionalValue != nullptr ? to_string(*value) : ""));
 	text->setCharacterSize(_textSize);

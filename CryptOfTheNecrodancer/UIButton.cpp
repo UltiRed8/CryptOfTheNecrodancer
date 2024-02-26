@@ -47,7 +47,7 @@ vector<Drawable*> UIButton::GetDrawables()
 
 void UIButton::ExecuteCallback()
 {
-	SoundManager::GetInstance()->Play(PATH_SOUND_CLICK);
+	SoundManager::GetInstance().Play(PATH_SOUND_CLICK);
 	if (callback)
 	{
 		callback();
