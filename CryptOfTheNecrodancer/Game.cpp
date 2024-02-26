@@ -2,6 +2,7 @@
 #include "EntityManager.h"
 #include "TimerManager.h"
 #include "MusicManager.h"
+#include "InputManager.h"
 
 Game::Game()
 {
@@ -12,6 +13,7 @@ Game::Game()
 Game::~Game()
 {
 	delete window;
+	delete map;
 }
 
 void Game::Init()
@@ -26,15 +28,16 @@ void Game::Start()
 	MusicManager::GetInstance().Play("Lobby.mp3");
 	//TheWighttoRemain.mp3
 	new Timer("Timer", [this]() { map->Update(); }, seconds(1.f/(130/60.f)), -1);
+	player = new Player("ZPlayer",{0.f,0.f},{});
 }
 
 void Game::Update()
 {
 	while (window->isOpen())
 	{
-		UpdateInputs();
 		TimerManager::GetInstance().Update();
-
+		InputManager::GetInstance().Update(window);
+		EntityManager::GetInstance().Update();
 		UpdateWindow();
 	}
 	Stop();
@@ -49,18 +52,6 @@ void Game::UpdateWindow()
 		window->draw(*_entity->GetShape());
 	}
 	window->display();
-}
-
-void Game::UpdateInputs()
-{
-	Event _event;
-	while (window->pollEvent(_event))
-	{
-		if (_event.type == Event::Closed)
-		{
-			window->close();
-		}
-	}
 }
 
 void Game::Stop()

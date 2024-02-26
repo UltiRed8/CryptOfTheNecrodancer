@@ -4,6 +4,7 @@
 #include "Map.h"
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "Player.h"
 
 using namespace std;
 using namespace sf;
@@ -11,6 +12,7 @@ using namespace sf;
 class Game
 {
 	RenderWindow* window;
+	Player* player;
 	Map* map;
 
 public:
@@ -21,8 +23,7 @@ private:
 	void Init();
 	void Start();
 	void Update();
-	void UpdateWindow();
-	void UpdateInputs();
+	void UpdateWindow();;
 	void Stop();
 
 public:

@@ -21,3 +21,11 @@ void Entity::Register()
 {
 	EntityManager::GetInstance().Add(id, this);
 }
+
+void Entity::Update()
+{
+	for (Component* _component : components)
+	{
+		_component->Update();
+	}
+}
