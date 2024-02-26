@@ -1,8 +1,10 @@
 #include "Game.h"
+#include "EntityManager.h"
 
 Game::Game()
 {
 	window = nullptr;
+	map = nullptr;
 }
 
 Game::~Game()
@@ -18,6 +20,7 @@ void Game::Init()
 void Game::Start()
 {
 	Init();
+	map = new Map(1);
 }
 
 void Game::Update()
@@ -33,7 +36,10 @@ void Game::Update()
 void Game::UpdateWindow()
 {
 	window->clear();
-	//window->draw();
+	for (Entity* _entity : EntityManager::GetInstance()->GetAllValues())
+	{
+		window->draw(*_entity->GetShape());
+	}
 	window->display();
 }
 

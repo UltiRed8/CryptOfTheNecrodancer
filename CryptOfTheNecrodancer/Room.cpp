@@ -4,6 +4,7 @@ Room::Room(const Vector2i& _size, const Vector2f& _startPosition)
 {
 	size = _size;
 	startPosition = _startPosition;
+	Init();
 }
 
 void Room::Init()
@@ -18,7 +19,7 @@ void Room::Init()
 
 			const Vector2f _position = Vector2f(x, y);
 
-			_row.push_back(new Tile(STRING_ID("Tile"),"",_position));
+			_row.push_back(new Tile("",_position));
 		}
 		tiles.push_back(_row);
 	}
