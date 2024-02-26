@@ -61,6 +61,21 @@
     <Filter Include="Source Files\Debug">
       <UniqueIdentifier>{06c6298b-457e-4b1d-ba0c-4f4e2f639d64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Object\Entity\Item">
+      <UniqueIdentifier>{70c5eed6-d57b-4ea0-b2c3-f5fe8cff4175}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Player">
+      <UniqueIdentifier>{90c78e6f-e2f7-4b97-bc08-265984e6f321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Item\Throwable">
+      <UniqueIdentifier>{38c5696b-5c22-416d-b330-d3165926d356}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Item\Consommable">
+      <UniqueIdentifier>{955c1f67-6a29-4eca-938b-e647c6872358}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Item\Wearable">
+      <UniqueIdentifier>{200da87e-bd86-4092-89ca-8a763044dc87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -140,6 +155,27 @@
     </ClCompile>
     <ClCompile Include="Macro.cpp">
       <Filter>Source Files\Macro</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Object\Entity\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Items.cpp">
+      <Filter>Source Files\Object\Entity\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerRessource.cpp">
+      <Filter>Source Files\Object\Entity\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>Source Files\Object\Entity\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Wearable.cpp">
+      <Filter>Source Files\Object\Entity\Item\Wearable</Filter>
+    </ClCompile>
+    <ClCompile Include="Throwable.cpp">
+      <Filter>Source Files\Object\Entity\Item\Throwable</Filter>
+    </ClCompile>
+    <ClCompile Include="Consommable.cpp">
+      <Filter>Source Files\Object\Entity\Item\Consommable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -229,6 +265,27 @@
     </ClInclude>
     <ClInclude Include="Debug.h">
       <Filter>Source Files\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Source Files\Object\Entity\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Items.h">
+      <Filter>Source Files\Object\Entity\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>Source Files\Object\Entity\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerRessource.h">
+      <Filter>Source Files\Object\Entity\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Wearable.h">
+      <Filter>Source Files\Object\Entity\Item\Wearable</Filter>
+    </ClInclude>
+    <ClInclude Include="Throwable.h">
+      <Filter>Source Files\Object\Entity\Item\Throwable</Filter>
+    </ClInclude>
+    <ClInclude Include="Consommable.h">
+      <Filter>Source Files\Object\Entity\Item\Consommable</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
