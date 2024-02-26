@@ -6,8 +6,9 @@
 
 class Entity : public Object, public IManagable<string>
 {
-	Shape* shape;
 	vector<Component*> components;
+protected:
+	Shape* shape;
 
 
 public:

@@ -5,12 +5,14 @@
 class Map
 {
 	vector<Room*> rooms;
+	vector<Tile*> tiles;
+	int tempoIndex;
 
 public:
 	Vector2i GetRandomRoomSize() const
 	{
-		const int _sizeX = Random(25, 5);
-		const int _sizeY = Random(25, 5);
+		const int _sizeX = Random(10, 5);
+		const int _sizeY = Random(10, 5);
 
 		return Vector2i(_sizeX, _sizeY);
 	}
@@ -20,5 +22,10 @@ public:
 
 public:
 	void InitMap(const int _roomCount);
+	void ResetAllTilesColor();
+	void InitTiles();
+	void Update();
+	void UpdateTilesColor();
+	void SetAllTilesOriginColor();
 };
 
