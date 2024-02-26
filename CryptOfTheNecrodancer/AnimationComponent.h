@@ -13,6 +13,15 @@ public:
 	{
 		direction = _direction;
 	}
+	vector<Drawable*> GetDrawables() const
+	{
+		vector<Drawable*> _drawables;
+		for (Animation* _anim : GetAllValues())
+		{
+			_drawables.push_back(_anim->GetSprite());
+		}
+		return _drawables;
+	}
 
 private:
 	int GetNextIndex(const AnimationDirection& _direction) const

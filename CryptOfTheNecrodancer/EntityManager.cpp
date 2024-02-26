@@ -34,7 +34,15 @@ vector<Drawable*> EntityManager::GetDrawables() const
 			int _zIndex = _entity->GetZIndex();
 			if (_zIndex == _currentZIndex)
 			{
-				vector<Drawable*> _tempDrawables = _entity->GetDrawables();
+				vector<Drawable*> _tempDrawables;
+				if (AnimationComponent* _anim = _entity->GetComponent<AnimationComponent>())
+				{
+					_tempDrawables = _anim->GetDrawables();
+				}
+				else
+				{
+					_tempDrawables = _entity->GetDrawables();
+				}
 				_drawables.insert(_drawables.end(), _tempDrawables.begin(), _tempDrawables.end());
 			}
 			else if (_zIndex == _currentZIndex + 1)
