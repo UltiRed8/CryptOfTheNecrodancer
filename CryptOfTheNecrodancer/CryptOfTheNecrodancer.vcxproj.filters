@@ -13,153 +13,222 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Manager">
+      <UniqueIdentifier>{ec2de7e8-9298-429a-bf14-017a56b76620}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Manager\Font">
+      <UniqueIdentifier>{9d3162a3-8667-4147-9867-d31349234779}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Manager\Texture">
+      <UniqueIdentifier>{e551c867-c73c-4ce5-9915-47580eda7542}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Manager\Music">
+      <UniqueIdentifier>{dcd05cb7-3edd-49d0-b881-c236a201b40b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Manager\Timer">
+      <UniqueIdentifier>{39c96c21-5fc8-40cf-ba5f-1103f27671a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Manager\Particule">
+      <UniqueIdentifier>{4b486ed7-6fd8-4e5a-b478-816e1819017d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Manager\Menu">
+      <UniqueIdentifier>{d53c7ae5-a89e-4b3e-ad7e-b95e1a46fb25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Manager\Sound">
+      <UniqueIdentifier>{897e386d-d983-41d0-bf3b-d72b8cf39f49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Manager\Entity">
+      <UniqueIdentifier>{896613ca-f948-4a2a-9622-5024e6d154cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Manager\Input">
+      <UniqueIdentifier>{5a83a3fd-3629-4729-b01d-b58438a12558}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object">
+      <UniqueIdentifier>{d39011a0-c318-4358-88d1-a06a6720ffe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity">
+      <UniqueIdentifier>{cc18360a-4b79-4a47-b520-75e4829c0ab1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component">
+      <UniqueIdentifier>{a6eab028-832f-4807-8482-dacce8b26275}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\UiElement">
+      <UniqueIdentifier>{9a86a053-e6ea-473f-a759-cd45d33ef8fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Macro">
+      <UniqueIdentifier>{68a71fe7-d916-4f58-af59-9fef0af9b051}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Debug">
+      <UniqueIdentifier>{06c6298b-457e-4b1d-ba0c-4f4e2f639d64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EntityManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Manager\Entity</Filter>
     </ClCompile>
     <ClCompile Include="FontData.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Manager\Font</Filter>
     </ClCompile>
     <ClCompile Include="FontManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IManagable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Menu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MenuManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ParticleManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ParticleSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ProgressBar.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Manager\Font</Filter>
     </ClCompile>
     <ClCompile Include="SoundData.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Manager\Sound</Filter>
     </ClCompile>
     <ClCompile Include="SoundManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Manager\Sound</Filter>
     </ClCompile>
-    <ClCompile Include="TextureData.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="MenuManager.cpp">
+      <Filter>Source Files\Manager\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="TextureManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source Files\Manager\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Source Files\Manager\Particule</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleManager.cpp">
+      <Filter>Source Files\Manager\Particule</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Manager\Timer</Filter>
     </ClCompile>
     <ClCompile Include="TimerManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Manager\Timer</Filter>
     </ClCompile>
-    <ClCompile Include="UIButton.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="TextureData.cpp">
+      <Filter>Source Files\Manager\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="UIElement.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Source Files\Manager\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="UIText.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Source Files\Manager\Input</Filter>
     </ClCompile>
-    <ClCompile Include="ActionMap.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="InputData.cpp">
+      <Filter>Source Files\Manager\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\Object\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Source Files\Object</Filter>
     </ClCompile>
     <ClCompile Include="Action.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Manager\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionMap.cpp">
+      <Filter>Source Files\Manager\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Source Files\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="UIButton.cpp">
+      <Filter>Source Files\Object\UiElement</Filter>
+    </ClCompile>
+    <ClCompile Include="UIElement.cpp">
+      <Filter>Source Files\Object\UiElement</Filter>
+    </ClCompile>
+    <ClCompile Include="UIText.cpp">
+      <Filter>Source Files\Object\UiElement</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressBar.cpp">
+      <Filter>Source Files\Object\UiElement</Filter>
+    </ClCompile>
+    <ClCompile Include="Macro.cpp">
+      <Filter>Source Files\Macro</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Debug.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EntityManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Manager\Entity</Filter>
     </ClInclude>
     <ClInclude Include="FontData.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Manager\Font</Filter>
     </ClInclude>
     <ClInclude Include="FontManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IManagable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InputData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Menu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MenuManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ParticleManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ParticleSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ProgressBar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Singleton.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Manager\Font</Filter>
     </ClInclude>
     <ClInclude Include="SoundData.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Manager\Sound</Filter>
     </ClInclude>
     <ClInclude Include="SoundManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Manager\Sound</Filter>
     </ClInclude>
-    <ClInclude Include="TextureData.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="MenuManager.h">
+      <Filter>Source Files\Manager\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="TextureManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Menu.h">
+      <Filter>Source Files\Manager\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Source Files\Manager\Particule</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleManager.h">
+      <Filter>Source Files\Manager\Particule</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Manager\Timer</Filter>
     </ClInclude>
     <ClInclude Include="TimerManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Manager\Timer</Filter>
     </ClInclude>
-    <ClInclude Include="UIButton.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="TextureData.h">
+      <Filter>Source Files\Manager\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="UIElement.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Source Files\Manager\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="UIText.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="InputManager.h">
+      <Filter>Source Files\Manager\Input</Filter>
     </ClInclude>
-    <ClInclude Include="ActionMap.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="InputData.h">
+      <Filter>Source Files\Manager\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="IManagable.h">
+      <Filter>Source Files\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="IManager.h">
+      <Filter>Source Files\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Source Files\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Source Files\Object\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Source Files\Object</Filter>
     </ClInclude>
     <ClInclude Include="Action.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Manager\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionMap.h">
+      <Filter>Source Files\Manager\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Source Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="UIButton.h">
+      <Filter>Source Files\Object\UiElement</Filter>
+    </ClInclude>
+    <ClInclude Include="UIElement.h">
+      <Filter>Source Files\Object\UiElement</Filter>
+    </ClInclude>
+    <ClInclude Include="UIText.h">
+      <Filter>Source Files\Object\UiElement</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressBar.h">
+      <Filter>Source Files\Object\UiElement</Filter>
+    </ClInclude>
+    <ClInclude Include="Macro.h">
+      <Filter>Source Files\Macro</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>Source Files\Debug</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

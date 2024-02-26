@@ -2,7 +2,6 @@
 #include "EntityManager.h"
 #include "InputData.h"
 #include "ActionMap.h"
-#include "Clickable.h"
 
 bool InputManager::Update(RenderWindow* _window)
 {
@@ -32,12 +31,12 @@ void InputManager::ClickOnEntities()
 {
 	for (Entity* _entity : EntityManager::GetInstance()->GetAllValues())
 	{
-		if (Clickable* _clickable = dynamic_cast<Clickable*>(_entity))
+	/*	if (Clickable* _clickable = dynamic_cast<Clickable*>(_entity))
 		{
 			if (_clickable->GetGlobalBounds().contains(mousePosition))
 			{
 				_clickable->ClickAction();
 			}
-		}
+		}*/
 	}
 }

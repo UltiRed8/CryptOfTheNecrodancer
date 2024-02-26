@@ -135,15 +135,18 @@
   <ItemGroup>
     <ClCompile Include="Action.cpp" />
     <ClCompile Include="ActionMap.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="FontData.cpp" />
     <ClCompile Include="FontManager.cpp" />
-    <ClCompile Include="IManagable.cpp" />
     <ClCompile Include="InputData.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Macro.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MenuManager.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="ProgressBar.cpp" />
@@ -160,7 +163,9 @@
   <ItemGroup>
     <ClInclude Include="Action.h" />
     <ClInclude Include="ActionMap.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="FontData.h" />
     <ClInclude Include="FontManager.h" />
@@ -168,8 +173,10 @@
     <ClInclude Include="IManager.h" />
     <ClInclude Include="InputData.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Macro.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MenuManager.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="ProgressBar.h" />

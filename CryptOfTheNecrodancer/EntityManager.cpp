@@ -1,5 +1,4 @@
 #include "EntityManager.h"
-#include "Human.h"
 
 void EntityManager::Update()
 {
@@ -26,7 +25,7 @@ vector<Drawable*> EntityManager::GetDrawables() const
 	vector<Drawable*> _drawables;
 	for (auto _pair : allValues)
 	{
-		vector<Drawable*> _drawablesTemp = _pair.second->GetDrawables();
+		/*vector<Drawable*> _drawablesTemp = _pair.second->GetDrawables();
 		_drawables.insert(_drawables.end(), _drawablesTemp.begin(), _drawablesTemp.end());
 		if (Human* _human = dynamic_cast<Human*>(_pair.second))
 		{
@@ -34,7 +33,7 @@ vector<Drawable*> EntityManager::GetDrawables() const
 			{
 				_drawables.push_back(_human->GetJob()->GetShape());
 			}
-		}
+		}*/
 	}
 	return _drawables;
 }
