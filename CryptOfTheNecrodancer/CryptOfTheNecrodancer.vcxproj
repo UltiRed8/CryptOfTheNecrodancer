@@ -149,6 +149,8 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MenuManager.cpp" />
+    <ClCompile Include="MusicData.cpp" />
+    <ClCompile Include="MusicManager.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
@@ -185,6 +187,8 @@
     <ClInclude Include="Macro.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MenuManager.h" />
+    <ClInclude Include="MusicData.h" />
+    <ClInclude Include="MusicManager.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="ParticleSystem.h" />

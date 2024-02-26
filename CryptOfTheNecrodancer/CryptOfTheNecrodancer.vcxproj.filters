@@ -162,6 +162,12 @@
     <ClCompile Include="UIImage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MusicManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MusicData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EntityManager.h">
@@ -267,6 +273,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UIImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MusicManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MusicData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
