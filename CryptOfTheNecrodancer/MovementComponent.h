@@ -4,13 +4,14 @@
 #include"EntityManager.h"
 #include"Macro.h"
 #include"CollisionComponent.h"
+#include"Tile.h"
 using namespace sf;
 class MovementComponent:public Component
 {
 	int speed;
 	bool canMove;
 	Vector2f direction;
-	//Tile* destination;
+	Tile* destination;
 	CollisionComponent* collision;
 	vector<CollisionReaction> reactions;
 
@@ -23,10 +24,10 @@ public:
 	{
 		return direction;
 	}
-	/*void SetDestination( Tile* _destination)
+	void SetDestination( Tile* _destination)
 	{
 		destination = _destination;
-	}*/
+	}
 
 	float GetSpeed() const
 	{

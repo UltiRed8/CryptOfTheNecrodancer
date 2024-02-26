@@ -137,6 +137,7 @@
     <ClCompile Include="ActionMap.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
+    <ClCompile Include="CollisionComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MenuManager.cpp" />
+    <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
@@ -170,6 +172,7 @@
     <ClInclude Include="ActionMap.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Entity.h" />
@@ -184,6 +187,7 @@
     <ClInclude Include="Macro.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MenuManager.h" />
+    <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="ParticleSystem.h" />

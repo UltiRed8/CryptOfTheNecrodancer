@@ -64,6 +64,9 @@
     <Filter Include="Source Files\Manager\Camera">
       <UniqueIdentifier>{8f60e1ae-d1db-48e1-919e-f078aa20c44f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Component\Mouvement">
+      <UniqueIdentifier>{07b1ff03-5af4-4713-b368-94a80d284c05}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -152,6 +155,18 @@
     </ClCompile>
     <ClCompile Include="CameraManager.cpp">
       <Filter>Source Files\Manager\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementComponent.cpp">
+      <Filter>Source Files\Component\Mouvement</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionComponent.cpp">
+      <Filter>Source Files\Component\Mouvement</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -250,6 +265,18 @@
     </ClInclude>
     <ClInclude Include="CameraManager.h">
       <Filter>Source Files\Manager\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementComponent.h">
+      <Filter>Source Files\Component\Mouvement</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionComponent.h">
+      <Filter>Source Files\Component\Mouvement</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
