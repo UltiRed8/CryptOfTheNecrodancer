@@ -19,6 +19,7 @@ public:
 private:
 	void Init();
 	void InitTexture();
+	virtual void Update(const Vector2i& _mousePosition) override;
 
 public:
 	virtual vector<Drawable*> GetDrawables() override;

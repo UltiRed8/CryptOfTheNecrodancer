@@ -11,6 +11,7 @@ Player::Player(const string _id, const Vector2f& _position, PlayerRessource _res
 	ressources = _ressources;
 	components.push_back(new MovementComponent(this));
 	InitInput();
+	zIndex = 1;
 }
 
 Player::~Player()
