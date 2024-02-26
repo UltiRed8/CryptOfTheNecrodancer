@@ -10,7 +10,7 @@ bool InputManager::Update(RenderWindow* _window)
 	{
 		if (_event.type == Event::Closed)
 		{
-			return false;
+			_window->close();
 		}
 		UpdateInputs(_event);
 	}
