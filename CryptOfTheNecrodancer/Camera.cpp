@@ -10,7 +10,7 @@ Camera::Camera(const string& _id, const CameraType& _type, const Vector2f& _from
 
 void Camera::Register()
 {
-	CameraManager::GetInstance()->Add(id, this);
+	CameraManager::GetInstance().Add(id, this);
 }
 
 void Camera::Init()

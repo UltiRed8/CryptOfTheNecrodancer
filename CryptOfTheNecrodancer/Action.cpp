@@ -25,7 +25,7 @@ Action::Action(const ActionData& _data, const string& _actionMap) : IManagable(_
 
 void Action::Register()
 {
-	if (ActionMap* _actionMap = InputManager::GetInstance()->Get(actionMap))
+	if (ActionMap* _actionMap = InputManager::GetInstance().Get(actionMap))
 	{
 		_actionMap->Add(id, this);
 		return;

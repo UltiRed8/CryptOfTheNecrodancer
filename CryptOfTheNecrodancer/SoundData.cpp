@@ -8,5 +8,5 @@ SoundData::SoundData(const string& _path) : IManagable(_path)
 
 void SoundData::Register()
 {
-	SoundManager::GetInstance()->Add(id, this);
+	SoundManager::GetInstance().Add(id, this);
 }

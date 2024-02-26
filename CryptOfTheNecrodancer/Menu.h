@@ -13,11 +13,8 @@ using namespace std;
 class Menu : public IManagable<string>
 {
 	vector<UIElement*> elements;
-	Texture* background;
-	RectangleShape* backgroundShape;
 	bool wantsToCloseMenu;
 	bool isOpened;
-	ActionMap* actions;
 
 public:
 	vector<UIElement*> GetElements() const
@@ -30,18 +27,16 @@ public:
 	}
 
 public:
-	Menu(const string& _id, const vector<UIElement*>& _elements, const string& _backgroundPath = "", const Color& _color = Color(255, 255, 255));
+	Menu(const string& _id, const vector<UIElement*>& _elements);
 	~Menu();
 
 private:
 	virtual void Register() override;
-	void EnableInputs();
-	void DisableInputs();
 	void ClickAction();
 
 public:
 	void Update(RenderWindow* _window);
-	void Open(RenderWindow* _window);
-	vector<Drawable*> GetDrawables();
+	void Open();
 	void Close();
+	vector<Drawable*> GetDrawables();
 };
