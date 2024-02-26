@@ -7,6 +7,7 @@ class Map
 	vector<Room*> rooms;
 	vector<Tile*> tiles;
 	int tempoIndex;
+	bool chainToggle;
 
 public:
 	Vector2i GetRandomRoomSize() const

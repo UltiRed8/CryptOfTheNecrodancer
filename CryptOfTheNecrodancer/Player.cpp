@@ -15,6 +15,7 @@ Player::Player(const string _id, const Vector2f& _position, PlayerRessource _res
 	//components.push_back(new AnimationComponent(this, PATH_PLAYER, { _animation }, ANIM_DIR_NONE));
 	InitInput();
 	zIndex = 1;
+	chainMultiplier = 1.0f;
 }
 
 Player::~Player()
@@ -29,6 +30,12 @@ void Player::InitInput()
 		  ActionData("Bas", [this]() { GetComponent<MovementComponent>()->SetDirection(new Vector2i(0, 1)); }, {Event::KeyPressed, Keyboard::Down}),
 		  ActionData("Droite", [this]() { GetComponent<MovementComponent>()->SetDirection(new Vector2i(1, 0)); }, {Event::KeyPressed, Keyboard::Right}),
 		  ActionData("Gauche", [this]() { GetComponent<MovementComponent>()->SetDirection(new Vector2i(-1, 0)); }, {Event::KeyPressed, Keyboard::Left})
+		});
+
+	// TODO remove
+	new ActionMap("TempDebug",
+		{ ActionData("Decrease", [this]() { chainMultiplier = 1.0f; cout << "Set chain multiplier to: 1.0f!" << endl; }, {Event::KeyPressed, Keyboard::Num1}),
+		  ActionData("Increase", [this]() { chainMultiplier = 2.0f; cout << "Set chain multiplier to: 2.0f!" << endl; }, {Event::KeyPressed, Keyboard::Num2}),
 		});
 }
 

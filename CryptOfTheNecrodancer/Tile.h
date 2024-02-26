@@ -5,16 +5,22 @@
 class Tile : public Entity
 {
 	vector<Entity*> entities;
-	Color originColor;
+	Color firstColor;
+	Color secondColor;
+
+public:
+	void SetColors(const Color& _firstColor, const Color& _secondColor)
+	{
+		firstColor = _firstColor;
+		secondColor = _secondColor;
+		shape->setFillColor(_firstColor);
+	}
 
 public:
 	Tile(const string& _tilePath,const Vector2f& _position);
 
-	void SetOriginColor(const Color& _color)
-	{
-		originColor = _color;
-		shape->setFillColor(originColor);
-	}
+public:
+	void InvertColors();
 
 	// Hérité via Entity
 	void Update() override;
