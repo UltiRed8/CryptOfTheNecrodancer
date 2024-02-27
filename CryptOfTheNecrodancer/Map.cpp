@@ -2,6 +2,8 @@
 #include "EntityManager.h"
 #include "Player.h"
 
+
+
 void Map::UpdateTilesColor()
 {
 	bool _hasChain = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetChainMultiplier() > 1.0f;
@@ -355,4 +357,22 @@ void Map::PlaceWallsAroundRoom(Room* _room,const WallType& _type)
 	tilesPosition.insert(tilesPosition.end(), _wallPosition.begin(), _wallPosition.end());
 	_wallPosition.clear();
 
+}
+
+void Map::SpawnEnnemy(const int _ennemyCount)
+{
+	vector<function<void()>> _enemyList =
+	{
+	[this]() { new Bat(GetRandomTilePosition()); },
+	[this]() { new GreenSlime(GetRandomTilePosition()); },
+	[this]() { new BlueSlime(GetRandomTilePosition()); },
+	[this]() { new OrangeSlime(GetRandomTilePosition()); },
+	};
+
+	int _randIndex;
+	for (int _index = 0; _index < _ennemyCount; _index++)
+	{
+		_randIndex = Random(static_cast<int>(_enemyList.size()), 0);
+		_enemyList[_randIndex]();
+	}
 }

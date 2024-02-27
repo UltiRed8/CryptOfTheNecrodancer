@@ -5,6 +5,9 @@
 #include "Path.h"
 #include "Macro.h"
 
+#include "Bat.h"
+#include "Slime.h"
+
 #include <iostream>
 #include <functional>
 #include <fstream>
@@ -44,6 +47,10 @@ public:
 		return tiles[0]->GetShape()->getPosition();
 	}
 
+	Vector2f GetRandomTilePosition() const
+	{
+		return tilesPosition[Random(static_cast<int>(tilesPosition.size()), 0)];
+	}
 
 
 	void SetTilesPosition() 
@@ -71,5 +78,6 @@ public:
 	void GenerateShopRoom();
 	void SetAllTilesOriginColor();
 	void PlaceWallsAroundRoom(Room* _room, const WallType& _type);
+	void SpawnEnnemy(const int _ennemyCount = 10);
 };
 

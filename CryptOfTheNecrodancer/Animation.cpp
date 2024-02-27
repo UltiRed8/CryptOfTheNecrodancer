@@ -4,7 +4,7 @@
 #include"EntityManager.h"
 #include"Macro.h"
 
-Animation::Animation(const string& _name, AnimationComponent* _owner, Sprite* _sprite, const AnimationData& _data) : IManagable(_name)
+Animation::Animation(const string& _name, AnimationComponent* _owner, Sprite* _sprite, const AnimationData& _data) : IManagable(STRING_ID(_name))
 {
 	owner = _owner;
 	sprite = _sprite;

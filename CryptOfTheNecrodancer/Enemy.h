@@ -3,6 +3,7 @@
 class Enemy:public Entity
 {
 protected:
+	int indexPatern;
 	vector<Vector2i>directionsPatern;
 
 public:
