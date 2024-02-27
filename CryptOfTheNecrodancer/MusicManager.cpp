@@ -90,6 +90,47 @@ void MusicManager::SetPlaySpeed(const float _newValue)
 	rythmLoop->SetDuration(seconds(1.f / ((currentBPM* playSpeed) / 60.f)));
 }
 
+void MusicManager::IncreaseVolume()
+{
+	if (volume >= 0.f && volume < 100.f)
+	{
+		GetCurrent()->setVolume(volume += 10.f);
+	}
+
+	else if (volume >= 100)
+	{
+		GetCurrent()->setVolume(100);
+	}
+}
+
+void MusicManager::DecreaseVolume()
+{
+	if (volume > 0.f && volume <= 100.f)
+	{
+		GetCurrent()->setVolume(volume -= 10.f);
+	}
+	
+	else if (volume <= 0)
+	{
+		GetCurrent()->setVolume(0);
+	}
+}
+
+void MusicManager::ToggleVolume()
+{
+	if (GetCurrent()->getVolume() > 0)
+	{
+		tempVolume = volume;
+		volume = 0;
+		GetCurrent()->setVolume(volume);
+	}
+	else
+	{
+		GetCurrent()->setVolume(tempVolume);
+		volume = tempVolume;
+	}
+}
+
 void MusicManager::UpdateLoop(const int _bpm)
 {
 	if (rythmLoop)

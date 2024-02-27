@@ -15,6 +15,7 @@ class MusicManager : public IManager<string, MusicData>, public Singleton<MusicM
 	int acceptDelay;
 	float playSpeed;
 	int currentBPM;
+	float tempVolume;
 
 public:
 	void SetVolume(float _volume)
@@ -37,6 +38,9 @@ public:
 	void SpeedUp();
 	void SpeedDown();
 	void SetPlaySpeed(const float _newValue);
+	void IncreaseVolume();
+	void DecreaseVolume();
+	void ToggleVolume();
 
 private:
 	void UpdateLoop(const int _bpm);
