@@ -26,16 +26,6 @@ private:
 	void UpdateWindow();;
 	void Stop();
 
-#pragma region Menu
-
-	void InitMenuPause();
-	void InitOption();
-	void InitClose();
-	void CloseMenu();
-	void OptionMenu();
-
-#pragma endregion
-
 public:
 	void Launch();
 };

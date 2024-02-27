@@ -8,10 +8,26 @@
 
 class MenuManager : public Singleton<MenuManager>, public IManager<string, Menu>
 {
+	RenderWindow* window;
+
 public:
 	vector<Drawable*> GetDrawables();
 	
 public :
 	void ClickAction();
-	void Update(RenderWindow* _window);
+	void Update();
+
+	#pragma region MenuPause
+
+	void InitMenu(RenderWindow* _window);
+
+	void InitMenuPause();
+
+	void InitMenuOptions();
+	void OptionsMenu();
+
+	void InitMenuClose();
+	void CloseMenu();
+
+	#pragma endregion
 };
