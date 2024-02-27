@@ -15,8 +15,9 @@ class MovementComponent:public Component
 	vector<CollisionReaction> reactions;
 
 public:
-	bool GetCanMove() const
+	bool GetCanMove() 
 	{
+		canMove = true;
 		return canMove;
 	}
 	
@@ -30,7 +31,7 @@ public:
 	{
 		canMove = _status;
 	}
-	void SetDirection(const Vector2i& _direction)
+	void SetDirection(const Vector2i& _direction, const bool _isPlayer = true)
 	{
 		if (!canMove) return;
 		if (direction)
@@ -38,8 +39,12 @@ public:
 			delete direction;
 		}
 		direction = new Vector2i(_direction);
-		canMove = false;
+		if (_isPlayer)
+		{
+			canMove = false;
+		}
 	}
+
 	
 public:
 	MovementComponent(Entity* _owner, const int _speed = 1);

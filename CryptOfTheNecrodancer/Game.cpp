@@ -26,6 +26,7 @@ Game::~Game()
 void Game::Init()
 {
 	window = new RenderWindow(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer");
+	bat = new Bat({ 0.f,0.f });
 	InitMenuPause();
 	InitOption();
 	InitClose();
@@ -52,7 +53,9 @@ void Game::Start()
 	_hud->Open();
 	Camera* _playerCamera = new Camera("PlayerCamera", CAMERA_PLAYER, Vector2f(0.f,0.f), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
 
-	player->GetShape()->setPosition(Map::GetInstance().GetFirstTilePosition());
+	Vector2f _playerPos = Map::GetInstance().GetFirstTilePosition();
+	player->GetShape()->setPosition(_playerPos);
+	bat->GetShape()->setPosition(Map::GetInstance().GetRandomTilePosition());
 }
 
 void Game::Update()

@@ -34,6 +34,10 @@ public:
 	{
 		return tiles[0]->GetShape()->getPosition();
 	}
+	Vector2f GetRandomTilePosition() const
+	{
+		return tilesPosition[Random(static_cast<int>(tilesPosition.size()),0)];
+	}
 
 public:
 	Map();
@@ -47,5 +51,6 @@ public:
 	void Update();
 	void UpdateTilesColor();
 	void SetAllTilesOriginColor();
+	void SpawnEnnemy(const int _ennemyCount = 10);
 };
 

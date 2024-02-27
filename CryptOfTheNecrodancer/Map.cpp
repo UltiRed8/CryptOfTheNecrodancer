@@ -1,7 +1,7 @@
 #include "Map.h"
 #include "EntityManager.h"
 #include "Player.h"
-
+#include "Enemy.h"
 
 void Map::UpdateTilesColor()
 {
@@ -122,5 +122,20 @@ void Map::SetAllTilesOriginColor()
 		{
 			_tile->SetColors(Color(135, 79, 2, 200), Color(135, 79, 2, 255));
 		}
+	}
+}
+
+void Map::SpawnEnnemy(const int _ennemyCount)
+{
+	vector<Enemy*> _ennemyList =
+	{
+
+
+	};
+	int _randIndex;
+	for (int _index = 0; _index < _ennemyCount; _index++)
+	{
+		_randIndex = Random(static_cast<int>(_ennemyList.size()) - 1, 0);
+		_ennemyList[_randIndex];
 	}
 }

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Player.h"
+#include "Bat.h"
 
 using namespace std;
 using namespace sf;
@@ -14,7 +15,7 @@ class Game
 	RenderWindow* window;
 	Player* player;
 	Map* map;
-
+	Bat* bat;
 public:
 	Game();
 	~Game();

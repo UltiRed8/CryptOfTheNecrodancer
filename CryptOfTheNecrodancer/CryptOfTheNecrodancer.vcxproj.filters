@@ -82,6 +82,9 @@
     <Filter Include="Source Files\Object\Entity\Player">
       <UniqueIdentifier>{88536bd7-de51-4ea6-b5a9-b5ed68a87419}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Monster">
+      <UniqueIdentifier>{ec682cc1-dc7e-4f4a-8ba0-a1643a885ba0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -240,11 +243,14 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Source Files\Object\Entity\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Bat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Object\Entity\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Path.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>Source Files\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -413,11 +419,14 @@
     <ClInclude Include="Enemy.h">
       <Filter>Source Files\Object\Entity\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Bat.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Source Files\Object\Entity\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Path.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>Source Files\Monster</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
