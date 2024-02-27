@@ -10,12 +10,17 @@
 
 MusicManager::MusicManager()
 {
-	volume = 10.f;
+	volume = new float(10.f);
 	rythmLoop = nullptr;
 	isRunning = false;
 	acceptDelay = 300;
 	playSpeed = 1.0f;
 	currentBPM = 0;
+}
+
+MusicManager::~MusicManager()
+{
+	delete volume;
 }
 
 void MusicManager::Play(const string& _path, const int _bpm)
@@ -34,7 +39,7 @@ void MusicManager::Play(const string& _path, const int _bpm)
 	}
 	
 	new Timer("StartMusicDelay", [&]() { GetCurrent()->play(); }, milliseconds(acceptDelay/2), 1, true);
-	_music->setVolume(volume);
+	_music->setVolume(*volume);
 	UpdateLoop(_bpm);
 	isRunning = true;
 }
@@ -92,12 +97,12 @@ void MusicManager::SetPlaySpeed(const float _newValue)
 
 void MusicManager::IncreaseVolume()
 {
-	if (volume >= 0.f && volume < 100.f)
+	if (*volume >= 0.f && *volume < 100.f)
 	{
-		GetCurrent()->setVolume(volume += 10.f);
+		GetCurrent()->setVolume(*volume += 10.f);
 	}
 
-	else if (volume >= 100)
+	else if (*volume >= 100)
 	{
 		GetCurrent()->setVolume(100);
 	}
@@ -105,12 +110,12 @@ void MusicManager::IncreaseVolume()
 
 void MusicManager::DecreaseVolume()
 {
-	if (volume > 0.f && volume <= 100.f)
+	if (*volume > 0.f && *volume <= 100.f)
 	{
-		GetCurrent()->setVolume(volume -= 10.f);
+		GetCurrent()->setVolume(*volume -= 10.f);
 	}
 	
-	else if (volume <= 0)
+	else if (*volume <= 0)
 	{
 		GetCurrent()->setVolume(0);
 	}
@@ -120,14 +125,15 @@ void MusicManager::ToggleVolume()
 {
 	if (GetCurrent()->getVolume() > 0)
 	{
-		tempVolume = volume;
-		volume = 0;
-		GetCurrent()->setVolume(volume);
+		GetCurrent()->setVolume(0);
+		tempVolume = *volume;
+		*volume = 0;
 	}
 	else
 	{
-		GetCurrent()->setVolume(tempVolume);
-		volume = tempVolume;
+
+		*volume = tempVolume;
+		GetCurrent()->setVolume(*volume);
 	}
 }
 
