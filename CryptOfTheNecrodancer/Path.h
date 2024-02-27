@@ -11,6 +11,11 @@ class Path
 	int chanceToPlaceWall;
 	int chanceToBeCleanPath;
 
+private:
+	void FixX();
+	void FixY();
+	void PlaceTile(const Vector2f& _position);
+
 public:
 	Path(const Vector2i& _start, const Vector2i& _end);
 

@@ -49,7 +49,7 @@ void Game::Start()
 	_hud->Open();
 	Camera* _playerCamera = new Camera("PlayerCamera", CAMERA_PLAYER, Vector2f(0.f,0.f), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
 
-	player->GetShape()->setPosition(map->GetFirstTilePosition());
+	player->GetShape()->setPosition(Map::GetInstance().GetFirstTilePosition());
 }
 
 void Game::Update()
