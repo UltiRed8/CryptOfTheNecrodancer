@@ -21,7 +21,7 @@ public:
 	
 	Tile* GetRandomTile() const
 	{
-		const int _value = Random(floor.size() - 1, 0);
+		const int _value = Random((int)floor.size() - 1, 0);
 
 		return floor[_value];
 	}

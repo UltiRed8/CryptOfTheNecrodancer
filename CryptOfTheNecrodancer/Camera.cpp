@@ -40,11 +40,11 @@ void Camera::Update()
 
 		Vector2f _offset = Vector2f(0.0f, 0.0f);
 
-		if (abs(_currentPosition.x - _playerPosition.x) > 5)
+		if (abs(_currentPosition.x - _playerPosition.x) > 10)
 		{
 			_offset.x = _currentPosition.x > _playerPosition.x ? -0.3f : 0.3f;
 		}
-		if (abs(_currentPosition.y - _playerPosition.y) > 5)
+		if (abs(_currentPosition.y - _playerPosition.y) > 10)
 		{
 			_offset.y = _currentPosition.y > _playerPosition.y ? -0.3f : 0.3f;
 		}
