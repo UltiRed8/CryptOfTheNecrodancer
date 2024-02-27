@@ -9,9 +9,9 @@ enum WallType
 class Wall:public Entity
 {
 	WallType type;
-	bool isInvulnerable;
+
 public:
-	Wall(const Vector2f& _position,bool _isInvulnerable,const WallType& _type);
+	Wall(const Vector2f& _position,const WallType& _type);
 
 	string GetPathWithType(const WallType& _type) const
 	{

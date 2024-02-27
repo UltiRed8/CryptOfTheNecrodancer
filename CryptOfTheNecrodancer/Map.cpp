@@ -112,7 +112,14 @@ void Map::GenerateWalls()
 				_newTilePos += _tileOffset;
 				if (!Contains<Vector2f>(_newTilePos, tilesPosition))
 				{
-					new Wall(_newTilePos,_index == 3,WT_GRASS);
+					if (_index == 3)
+					{
+						new Wall(_newTilePos, WT_INVULNERABLE);
+					}
+					else
+					{
+						new Wall(_newTilePos,WT_GRASS);
+					}
 					_wallPosition.push_back(_newTilePos);
 				}
 			}
@@ -273,7 +280,7 @@ void Map::PlaceWallsAroundRoom(Room* _room,const WallType& _type)
 			_newTilePos += _tileOffset;
 			if (!Contains<Vector2f>(_newTilePos, _tilesPosition))
 			{
-				new Wall(_newTilePos, 0,_type);
+				new Wall(_newTilePos,_type);
 				_wallPosition.push_back(_newTilePos);
 			}
 		}
