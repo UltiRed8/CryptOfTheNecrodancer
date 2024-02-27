@@ -73,6 +73,15 @@
     <Filter Include="Source Files\Map">
       <UniqueIdentifier>{a64053eb-d87f-4ef0-9af8-3be1234a0eeb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Object\Entity\Enemy">
+      <UniqueIdentifier>{d3f52850-86a0-42f7-8060-090f9f927dea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Enemy\Bat">
+      <UniqueIdentifier>{8f24dab0-f035-4845-b8dc-2aa1a7138268}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Player">
+      <UniqueIdentifier>{88536bd7-de51-4ea6-b5a9-b5ed68a87419}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -171,9 +180,6 @@
     <ClCompile Include="Items.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerRessource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -227,6 +233,18 @@
     </ClCompile>
     <ClCompile Include="Saveable.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files\Object\Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Object\Entity\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -335,9 +353,6 @@
     <ClInclude Include="Items.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerRessource.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -391,6 +406,18 @@
     </ClInclude>
     <ClInclude Include="Saveable.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Source Files\Object\Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Source Files\Object\Entity\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
