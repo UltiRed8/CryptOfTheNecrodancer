@@ -2,7 +2,6 @@
 #include "EntityManager.h"
 #include "Player.h"
 
-
 void Map::UpdateTilesColor()
 {
 	bool _hasChain = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetChainMultiplier() > 1.0f;
@@ -34,8 +33,34 @@ void Map::UpdateTilesColor()
 	}
 }
 
-void Map::CreateAllPaths()
+void Map::EraseOverlappingTiles()
 {
+	vector<Tile*> _overlappingTiles;
+	//SetTilesPosition();
+	for (Tile* _tile : tiles)
+	{
+		if (Contains<Vector2f>(_tile->GetShape()->getPosition(), tilesPosition))
+		{
+			/*tilesPosition.erase(_tile->GetShape()->getPosition())*/
+			EraseElement(tilesPosition, _tile->GetShape()->getPosition());
+		}
+
+		else
+		{
+			_overlappingTiles.push_back(_tile);
+		}
+	}
+
+	for (Tile* _tile : _overlappingTiles)
+	{
+		_tile->Destroy();
+		EraseElement(tiles, _tile);
+	}
+}
+
+void Map::GeneratePaths()
+{
+	cout << "Generating paths..." << endl;
 	const int _roomCount = (int)rooms.size();
 	for (int _index = 0; _index < _roomCount - 1; _index++)
 	{
@@ -54,45 +79,105 @@ void Map::CreateAllPaths()
 		Vector2i _startPosition = Vector2i((int)_startPositionX,(int)_startPositionY);
 		Vector2i _endPosition = Vector2i((int)_endPositionX, (int)_endPositionY);
 
-		paths.push_back(new Path(_startPosition, _endPosition,tilesPosition));
-		UpdateTiles(paths[_index]);
+		Path* _path = new Path(_startPosition, _endPosition);
+		vector<Tile*> _pathTiles = _path->GetTiles();
+		paths.push_back(_path);
+		tiles.insert(tiles.end(), _pathTiles.begin(), _pathTiles.end());
 	}
+}
+
+void Map::GenerateWalls()
+{
+	cout << "Generating walls..." << endl;
+	vector<Vector2i> _posToCheck = {
+		Vector2i(-1, -1),
+		Vector2i(0, -1),
+		Vector2i(1, -1),
+		Vector2i(-1, 0),
+		Vector2i(1,0),
+		Vector2i(-1,1),
+		Vector2i(0,1),
+		Vector2i(1,1)
+	};
+
+	for (int _index = 0; _index < 4; _index++)
+	{
+		vector<Vector2f> _wallPosition;
+		for (const Vector2f& _tilesPos : tilesPosition)
+		{
+			for (const Vector2i& _offset : _posToCheck)
+			{
+				Vector2f _newTilePos = _tilesPos;
+				const Vector2f& _tileOffset = Vector2f(_offset.x * TILE_SIZE.x, _offset.y * TILE_SIZE.x);
+				_newTilePos += _tileOffset;
+				if (!Contains<Vector2f>(_newTilePos, tilesPosition))
+				{
+					new Wall(_newTilePos,_index == 3);
+					_wallPosition.push_back(_newTilePos);
+				}
+			}
+		}
+		tilesPosition.insert(tilesPosition.end(), _wallPosition.begin(), _wallPosition.end());
+		_wallPosition.clear();
+	}
+
+	/*const Vector2f& _startPosition = Vector2f(0.0f, 0.0f);	
+	for (int _columnIndex = 0; _columnIndex < 50; _columnIndex++)
+	{
+		for (int _rowIndex = 0; _rowIndex < 50; _rowIndex++)
+		{
+			const float x = _startPosition.x + _columnIndex * TILE_SIZE.x;
+			const float y = _startPosition.y + _rowIndex * TILE_SIZE.y;
+			const Vector2f _position = Vector2f(x, y);
+			if (Contains<Vector2f>(_position, tilesPosition))
+			{
+				continue;
+			}
+			new Wall(_position);
+		}
+	}*/
+}
+
+void Map::GenerateShopRoom()
+{
+	cout << "Generating shop room..." << endl;
+
+	const Vector2f& _startPosition = Vector2f(0.0f, 0.0f);
+
+
 }
 
 void Map::Generate(const int _roomCount)
 {
-	InitMap(_roomCount);
-	CreateAllPaths();
-	tempoIndex = 1;
+	GenerateRooms(_roomCount);
+	GeneratePaths();
+	GenerateShopRoom();
+	SetTilesPosition();
+	GenerateWalls();
+	EraseOverlappingTiles();
 	SetAllTilesOriginColor();
+	tempoIndex = 1;
 	chainToggle = true;
 }
 
-void Map::InitMap(const int _roomCount)
+void Map::GenerateRooms(const int _roomCount)
 {
+	cout << "Placing rooms..." << endl;
 	for (int _index = 0; _index < _roomCount; _index++)
 	{
-		rooms.push_back(new Room(GetRandomRoomSize(), Vector2f(GetRandomRoomPosition()),tilesPosition));
-		UpdateTiles(rooms[_index]);
+		Room* _room = new Room(GetRandomRoomSize(), Vector2f(GetRandomRoomPosition()));
+		rooms.push_back(_room);
 	}
-}
 
-void Map::UpdateTiles(const Room* _room)
-{
-	for (Tile* _tile : _room->GetAllTiles())
-	{
-		tiles.push_back(_tile);
-		tilesPosition.push_back(_tile->GetShape()->getPosition());
-	}
-}
+	cout << "Generating rooms" << endl;
 
-void Map::UpdateTiles(const Path* _path)
-{
-	for (Tile* _tile : _path->GetTiles())
+	for (Room* _room : rooms)
 	{
-		tiles.push_back(_tile);
-		tilesPosition.push_back(_tile->GetShape()->getPosition());
+		vector<Tile*> _floor = _room->Generate();
+		tiles.insert(tiles.end(), _floor.begin(), _floor.end());
 	}
+
+
 }
 
 void Map::Update()

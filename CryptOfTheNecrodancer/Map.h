@@ -1,9 +1,10 @@
 #pragma once
 #include "Room.h"
-#include "Macro.h"
 #include "Map.h"
 #include "Singleton.h"
 #include "Path.h"
+#include "Macro.h"
+
 
 class Map : public Singleton<Map>
 {
@@ -17,16 +18,16 @@ class Map : public Singleton<Map>
 public:
 	Vector2i GetRandomRoomSize() const
 	{
-		const int _sizeX = Random(10, 5);
-		const int _sizeY = Random(10, 5);
+		const int _sizeX = Random(6, 4);
+		const int _sizeY = Random(6, 4);
 
 		return Vector2i(_sizeX, _sizeY);
 	}
 
 	Vector2i GetRandomRoomPosition() const
 	{
-		const int _x = Random(20, 0) * int(TILE_SIZE.x);
-		const int  _y = Random(20, 0) * int(TILE_SIZE.y);
+		const int _x = Random(20, 5) * int(TILE_SIZE.x);
+		const int  _y = Random(20, 5) * int(TILE_SIZE.y);
 
 		return Vector2i(_x, _y);
 	}
@@ -36,15 +37,29 @@ public:
 		return tiles[0]->GetShape()->getPosition();
 	}
 
+
+
+	void SetTilesPosition() 
+	{
+		tilesPosition.clear();
+		cout << tiles.size() << endl;
+		for (Tile* _tile : tiles)
+		{
+			tilesPosition.push_back(_tile->GetShape()->getPosition());
+		}
+	}
+
 public:
 	void Generate(const int _roomCount);
-	void InitMap(const int _roomCount);
+	void GenerateRooms(const int _roomCount);
+
 	void ResetAllTilesColor();
-	void UpdateTiles(const Room* _room);
-	void UpdateTiles(const Path* _path);
 	void Update();
 	void UpdateTilesColor();
-	void CreateAllPaths();
+	void EraseOverlappingTiles();
+	void GeneratePaths();
+	void GenerateWalls();
+	void GenerateShopRoom();
 	void SetAllTilesOriginColor();
 };
 

@@ -35,7 +35,7 @@ void Game::Start()
 
 	// TODO temporaire
 
-	Map::GetInstance().Generate(3);
+	Map::GetInstance().Generate(6);
 
 	//TheWighttoRemain.mp3
 
