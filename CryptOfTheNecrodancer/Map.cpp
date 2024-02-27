@@ -52,19 +52,37 @@ void Map::UpdateTilesColor()
 	//}
 }
 
-
-
-Map::Map()
+void Map::CreateAllPaths()
 {
-	
+	const int _roomCount = (int)rooms.size();
+	for (int _index = 0; _index < _roomCount - 1; _index++)
+	{
+		Tile* _startTile = rooms[_index]->GetRandomTile();
+		Tile* _endTile = rooms[_index + 1]->GetRandomTile();
+
+		Shape* _startShape = _startTile->GetShape();
+		Shape* _endShape = _endTile->GetShape();
+
+		const float _startPositionX = _startShape->getPosition().x / TILE_SIZE.x;
+		const float _startPositionY = _startShape->getPosition().y / TILE_SIZE.y;
+
+		const float _endPositionX = _endShape->getPosition().x / TILE_SIZE.x;
+		const float _endPositionY = _endShape->getPosition().y / TILE_SIZE.y;
+
+		Vector2i _startPosition = Vector2i((int)_startPositionX,(int)_startPositionY);
+		Vector2i _endPosition = Vector2i((int)_endPositionX, (int)_endPositionY);
+
+		paths.push_back(new Path(_startPosition, _endPosition,tilesPosition));
+		UpdateTiles(paths[_index]);
+	}
 }
 
 void Map::Generate(const int _roomCount)
 {
 	InitMap(_roomCount);
+	CreateAllPaths();
 	tempoIndex = 1;
 	SetAllTilesOriginColor();
-	new Path({ 0,0 }, { 10,10 });
 	chainToggle = true;
 }
 
@@ -80,6 +98,15 @@ void Map::InitMap(const int _roomCount)
 void Map::UpdateTiles(const Room* _room)
 {
 	for (Tile* _tile : _room->GetAllTiles())
+	{
+		tiles.push_back(_tile);
+		tilesPosition.push_back(_tile->GetShape()->getPosition());
+	}
+}
+
+void Map::UpdateTiles(const Path* _path)
+{
+	for (Tile* _tile : _path->GetTiles())
 	{
 		tiles.push_back(_tile);
 		tilesPosition.push_back(_tile->GetShape()->getPosition());
