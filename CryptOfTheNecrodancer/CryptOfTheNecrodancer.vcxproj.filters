@@ -73,6 +73,9 @@
     <Filter Include="Source Files\Map">
       <UniqueIdentifier>{a64053eb-d87f-4ef0-9af8-3be1234a0eeb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{5818b82f-8612-47e7-9d0f-7f7dc75ce9de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -153,9 +156,6 @@
     <ClCompile Include="Macro.cpp">
       <Filter>Source Files\Macro</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Manager\Camera</Filter>
     </ClCompile>
@@ -212,6 +212,12 @@
     </ClCompile>
     <ClCompile Include="Tile.cpp">
       <Filter>Source Files\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -302,9 +308,6 @@
     <ClInclude Include="Debug.h">
       <Filter>Source Files\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Source Files\Manager\Camera</Filter>
     </ClInclude>
@@ -361,6 +364,12 @@
     </ClInclude>
     <ClInclude Include="Tile.h">
       <Filter>Source Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
