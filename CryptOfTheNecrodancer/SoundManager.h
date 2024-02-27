@@ -7,6 +7,8 @@
 class SoundManager : public Singleton<SoundManager>, public IManager<string, SoundData>
 {
 	Sound sound;
+	float volume;
+	float tempVolume;
 
 public:
 	SoundManager();
@@ -16,4 +18,7 @@ private:
 
 public:
 	void Play(const string& _path);
+	void IncreaseVolume();
+	void DecreaseVolume();
+	void ToggleVolume();
 };

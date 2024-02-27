@@ -13,6 +13,12 @@ class UIImage : public UIElement
 	string texturePath;
 
 public:
+	RectangleShape* GetShape() const
+	{
+		return shape;
+	}
+
+public:
 	UIImage(const Vector2f& _position, const Vector2f& _size, const string& _path);
 	~UIImage();
 

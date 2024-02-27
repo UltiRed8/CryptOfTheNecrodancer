@@ -13,11 +13,11 @@ class MovementComponent:public Component
 	Vector2i* direction;
 	CollisionComponent* collision;
 	vector<CollisionReaction> reactions;
+	Vector2f oldPosition;
 
 public:
-	bool GetCanMove() 
+	bool GetCanMove() const
 	{
-		canMove = true;
 		return canMove;
 	}
 	
@@ -31,7 +31,7 @@ public:
 	{
 		canMove = _status;
 	}
-	void SetDirection(const Vector2i& _direction, const bool _isPlayer = true)
+	void SetDirection(const Vector2i& _direction)
 	{
 		if (!canMove) return;
 		if (direction)
@@ -39,18 +39,15 @@ public:
 			delete direction;
 		}
 		direction = new Vector2i(_direction);
-		if (_isPlayer)
-		{
-			canMove = false;
-		}
+		canMove = false;
 	}
-
 	
 public:
 	MovementComponent(Entity* _owner, const int _speed = 1);
 
 
 public:
+	void UndoMove();
 	void InitCollisions(CollisionComponent* _collision, const vector<CollisionReaction>& _reactions);
 	void Move();
 	void TryToMove();

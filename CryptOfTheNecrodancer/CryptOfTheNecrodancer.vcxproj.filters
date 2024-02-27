@@ -82,9 +82,6 @@
     <Filter Include="Source Files\Object\Entity\Player">
       <UniqueIdentifier>{88536bd7-de51-4ea6-b5a9-b5ed68a87419}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Monster">
-      <UniqueIdentifier>{ec682cc1-dc7e-4f4a-8ba0-a1643a885ba0}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -222,6 +219,18 @@
     <ClCompile Include="Tile.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DamageComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LifeComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Saveable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -231,29 +240,11 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Source Files\Object\Entity\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files\Object\Entity\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Path.cpp">
+    <ClCompile Include="Bat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bat.cpp">
-      <Filter>Source Files\Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="Slime.cpp">
-      <Filter>Source Files\Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="CollisionComponent.cpp">
-      <Filter>Source Files\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="DamageComponent.cpp">
-      <Filter>Source Files\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="LifeComponent.cpp">
-      <Filter>Source Files\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="MovementComponent.cpp">
-      <Filter>Source Files\Component</Filter>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Object\Entity\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -401,6 +392,18 @@
     <ClInclude Include="Tile.h">
       <Filter>Source Files\Map</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DamageComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LifeComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Saveable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -410,32 +413,11 @@
     <ClInclude Include="Enemy.h">
       <Filter>Source Files\Object\Entity\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Source Files\Object\Entity\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Path.h">
+    <ClInclude Include="Bat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Bat.h">
-      <Filter>Source Files\Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="Slime.h">
-      <Filter>Source Files\Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="MovementComponent.h">
-      <Filter>Source Files\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionComponent.h">
-      <Filter>Source Files\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="DamageComponent.h">
-      <Filter>Source Files\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="LifeComponent.h">
-      <Filter>Source Files\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="SlimeType.h">
-      <Filter>Source Files\Monster</Filter>
+    <ClInclude Include="Player.h">
+      <Filter>Source Files\Object\Entity\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
