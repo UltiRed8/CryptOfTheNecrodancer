@@ -31,6 +31,13 @@ public:
 		return tiles;
 	}
 
+	Tile* GetRandomTile() const
+	{
+		const int _randX = rand() % (tiles.size() - 1);
+		const int _randY = rand() % (tiles[_randX].size() - 1);
+		return tiles[_randX][_randY];
+	}
+
 public:
 	void Init(const vector<Vector2f>& _allTilesPosition);
 };

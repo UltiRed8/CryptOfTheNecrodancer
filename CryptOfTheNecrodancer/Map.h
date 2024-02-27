@@ -10,6 +10,7 @@ class Map : public Singleton<Map>
 	vector<Room*> rooms;
 	vector<Tile*> tiles;
 	vector<Vector2f> tilesPosition;
+	vector<Path*> paths;
 	int tempoIndex;
 	bool chainToggle;
 
@@ -36,16 +37,14 @@ public:
 	}
 
 public:
-	Map();
-	Map(const int _roomCount);
-
-public:
 	void Generate(const int _roomCount);
 	void InitMap(const int _roomCount);
 	void ResetAllTilesColor();
 	void UpdateTiles(const Room* _room);
+	void UpdateTiles(const Path* _path);
 	void Update();
 	void UpdateTilesColor();
+	void CreateAllPaths();
 	void SetAllTilesOriginColor();
 };
 

@@ -1,10 +1,12 @@
 #include "Path.h"
 
-Path::Path(const Vector2i& _start, const Vector2i& _end)
+Path::Path(const Vector2i& _start, const Vector2i& _end, const vector<Vector2f>& _allTilesPos)
 {
+	tiles = vector<Tile*>();
 	start = _start;
 	end = _end;
 	width = Random(3, 1);
+	allTilesPos = _allTilesPos;
 	chanceToPlaceWall = 8;
 	chanceToBeCleanPath = 3;
 	Generate();
@@ -56,6 +58,18 @@ void Path::PlaceTile(const Vector2f& _position)
 	}
 	else
 	{
-		new Tile("wall.png", _position);
+		bool _isValid = true;
+		for (const Vector2f& _tilePos : allTilesPos)
+		{
+			if (_position == _tilePos)
+			{
+				_isValid = false;
+			}
+		}
+		if (!_isValid)
+		{
+			return;
+		}
+		tiles.push_back(new Tile("wall.png", _position));
 	}
 }
