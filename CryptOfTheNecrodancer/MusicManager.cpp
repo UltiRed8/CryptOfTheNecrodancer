@@ -11,7 +11,7 @@ MusicManager::MusicManager()
 	volume = 10.f;
 	rythmLoop = nullptr;
 	isRunning = false;
-	acceptDelay = 200;
+	acceptDelay = 300;
 }
 
 void MusicManager::Play(const string& _path, const int _bpm)
@@ -68,7 +68,14 @@ void MusicManager::UpdateLoop(const int _bpm)
 
 	rythmLoop = new Timer("Timer", [this]() {
 
-		EntityManager::GetInstance().Get("Player")->GetComponent<MovementComponent>()->SetCanMove(true);
+		for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
+		{
+			if (RythmComponent* _component = _entity->GetComponent<RythmComponent>())
+			{
+				_component->BeforeUpdate();
+			}
+		};
+
 		new Timer("InputsTooSoon", [this]() {
 			Map::GetInstance().Update();
 			
@@ -76,17 +83,23 @@ void MusicManager::UpdateLoop(const int _bpm)
 			{
 				if (RythmComponent* _component = _entity->GetComponent<RythmComponent>())
 				{
-					_component->RythmUpdate();
+					_component->TimedUpdate();
 				}
 			};
 		}, milliseconds(acceptDelay / 2), 1, true);
+
+
+
+
 		new Timer("InputsTooLate", [this]() {
-			EntityManager::GetInstance().Get("Player")->GetComponent<MovementComponent>()->SetCanMove(false);
+			for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
+			{
+				if (RythmComponent* _component = _entity->GetComponent<RythmComponent>())
+				{
+					_component->AfterUpdate();
+				}
+			};
 		}, milliseconds(acceptDelay), 1, true);
 
 	}, seconds(1.f / (_bpm / 60.f)), -1);
 }
-
-// un nombre entre 1 et 3 (nombre de points de chemins entre chaque salle)
-// créer un object path (position start, end, int width, int chanceToPlaceWall, int chanceToBeCleanPath)
-// dans path method "CreatePath" qui part du start, calculer direction avec macro
