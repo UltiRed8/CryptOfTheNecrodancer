@@ -17,6 +17,7 @@ class UIButton : public UIElement
 	function<void()> callback;
 	vector<UIElement*> elements;
 	bool isHover;
+	string soundPath;
 
 public:
 	bool IsHover() const
@@ -26,11 +27,11 @@ public:
 
 public:
 	// Text
-	UIButton(const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const string& _textValue, const int _textSize, const string& _fontPath, const function<void()>& _callback, int* _additionalValue = nullptr);
+	UIButton(const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const string& _textValue, const int _textSize, const string& _fontPath, const string& _soundPath, const function<void()>& _callback, int* _additionalValue = nullptr);
 	// Image
-	UIButton(const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const string& _path, const Vector2f& _imageSize, const function<void()>& _callback);
+	UIButton(const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const string& _path, const Vector2f& _imageSize, const string& _soundPath, const function<void()>& _callback);
 	// Custom
-	UIButton(const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const vector<UIElement*>& _elements, const function<void()>& _callback, const FloatRect& _box);
+	UIButton(const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const vector<UIElement*>& _elements, const string& _soundPath, const function<void()>& _callback, const FloatRect& _box);
 	~UIButton();
 
 public:
