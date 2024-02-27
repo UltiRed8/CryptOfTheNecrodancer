@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include "CameraManager.h"
 #include "EntityManager.h"
+#include "TimerManager.h"
 #include "Macro.h"
 
 Camera::Camera(const string& _id, const CameraType& _type, const Vector2f& _from, const Vector2f& _to) : IManagable(_id), View(_from, _to)
@@ -38,8 +39,18 @@ void Camera::Update()
 		const Vector2f& _playerPosition = EntityManager::GetInstance().Get("Player")->GetPosition();
 
 		Vector2f _offset = Vector2f(0.0f, 0.0f);
-		_offset.x = _currentPosition.x > _playerPosition.x ? -0.1f : 0.1f;
-		_offset.y = _currentPosition.y > _playerPosition.y ? -0.1f : 0.1f;
+
+		if (abs(_currentPosition.x - _playerPosition.x) > 1)
+		{
+			_offset.x = _currentPosition.x > _playerPosition.x ? -0.3f : 0.3f;
+		}
+		if (abs(_currentPosition.y - _playerPosition.y) > 1)
+		{
+			_offset.y = _currentPosition.y > _playerPosition.y ? -0.3f : 0.3f;
+		}
+
+		float _deltaTime = TimerManager::GetInstance().GetDeltaTime();
+		_offset *= _deltaTime;
 
 		move(_offset);
 		//setCenter(_playerPosition);

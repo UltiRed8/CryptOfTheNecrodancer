@@ -27,6 +27,11 @@ void Game::Init()
 {
 	window = new RenderWindow(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer");
 	MenuManager::GetInstance().InitMenu(window);
+	TimerManager::GetInstance().SetMaxFrameRate(60);
+	TimerManager::GetInstance().SetRenderCallback([this]() {
+		EntityManager::GetInstance().Update();
+		UpdateWindow();
+	});
 }
 
 void Game::Start()
@@ -59,18 +64,15 @@ void Game::Update()
 	{
 		TimerManager::GetInstance().Update();
 		InputManager::GetInstance().Update(window);
-		CameraManager::GetInstance().Update(window);
-		EntityManager::GetInstance().Update();
 		MenuManager::GetInstance().Update();
-
-		UpdateWindow();
-		window->setView(*CameraManager::GetInstance().Get("PlayerCamera"));
+		CameraManager::GetInstance().Update(window);
 	}
 	Stop();
 }
 
 void Game::UpdateWindow()
 {
+	window->setView(*CameraManager::GetInstance().Get("PlayerCamera"));
 	window->clear();
 	for (Drawable* _drawable : EntityManager::GetInstance().GetDrawables())
 	{
