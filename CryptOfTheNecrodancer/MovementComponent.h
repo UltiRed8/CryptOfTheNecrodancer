@@ -30,10 +30,15 @@ public:
 	{
 		canMove = _status;
 	}
-	void SetDirection(Vector2i* _direction,bool _canMove = true)
+	void SetDirection(const Vector2i& _direction)
 	{
-		direction = _direction;
-		canMove = _canMove;
+		if (!canMove) return;
+		if (direction)
+		{
+			delete direction;
+		}
+		direction = new Vector2i(_direction);
+		canMove = false;
 	}
 	
 public:
