@@ -1,5 +1,18 @@
-﻿  Map.cpp
-C:\Users\Gregory ZANATTA\OneDrive\Bureau\Cours P1\SFML\CryptOfTheNecrodancer\CryptOfTheNecrodancer\Room.h(19,42): warning C4267: 'argument' : conversion de 'size_t' en 'const int', perte possible de données
+﻿  Game.cpp
+C:\Users\Gregory ZANATTA\OneDrive\Bureau\Cours P1\SFML\CryptOfTheNecrodancer\CryptOfTheNecrodancer\Room.h(24,42): warning C4267: 'argument' : conversion de 'size_t' en 'const int', perte possible de données
+  (compiler le fichier source 'Game.cpp')
+  
+  Main.cpp
+C:\Users\Gregory ZANATTA\OneDrive\Bureau\Cours P1\SFML\CryptOfTheNecrodancer\CryptOfTheNecrodancer\Room.h(24,42): warning C4267: 'argument' : conversion de 'size_t' en 'const int', perte possible de données
+  (compiler le fichier source 'Main.cpp')
+  
+  Map.cpp
+C:\Users\Gregory ZANATTA\OneDrive\Bureau\Cours P1\SFML\CryptOfTheNecrodancer\CryptOfTheNecrodancer\Room.h(24,42): warning C4267: 'argument' : conversion de 'size_t' en 'const int', perte possible de données
   (compiler le fichier source 'Map.cpp')
   
+  MusicManager.cpp
+C:\Users\Gregory ZANATTA\OneDrive\Bureau\Cours P1\SFML\CryptOfTheNecrodancer\CryptOfTheNecrodancer\Room.h(24,42): warning C4267: 'argument' : conversion de 'size_t' en 'const int', perte possible de données
+  (compiler le fichier source 'MusicManager.cpp')
+  
+  Génération de code en cours...
   CryptOfTheNecrodancer.vcxproj -> C:\Users\Gregory ZANATTA\OneDrive\Bureau\Cours P1\SFML\CryptOfTheNecrodancer\CryptOfTheNecrodancer\x64\Debug\CryptOfTheNecrodancer.exe

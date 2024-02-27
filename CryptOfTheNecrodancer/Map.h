@@ -26,8 +26,8 @@ public:
 
 	Vector2i GetRandomRoomPosition() const
 	{
-		const int _x = Random(20, 5) * int(TILE_SIZE.x);
-		const int  _y = Random(20, 5) * int(TILE_SIZE.y);
+		const int _x = Random(40, 0) * int(TILE_SIZE.x);
+		const int  _y = Random(40, 0) * int(TILE_SIZE.y);
 
 		return Vector2i(_x, _y);
 	}
@@ -61,5 +61,6 @@ public:
 	void GenerateWalls();
 	void GenerateShopRoom();
 	void SetAllTilesOriginColor();
+	void PlaceWallsAroundRoom(Room* _room);
 };
 

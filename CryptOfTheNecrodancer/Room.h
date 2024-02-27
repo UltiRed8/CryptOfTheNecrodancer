@@ -13,6 +13,11 @@ public:
 	Room(const Vector2i& _size,const Vector2f& _startPosition);
 
 public:
+
+	vector<Tile*> GetFloor() const
+	{
+		return floor;
+	}
 	
 	Tile* GetRandomTile() const
 	{
