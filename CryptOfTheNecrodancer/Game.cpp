@@ -25,6 +25,7 @@ Game::~Game()
 void Game::Init()
 {
 	window = new RenderWindow(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer");
+	InitInputPause();
 }
 
 void Game::Start()
@@ -33,7 +34,7 @@ void Game::Start()
 
 	// TODO temporaire
 
-	Map::GetInstance().Generate(1);
+	Map::GetInstance().Generate(3);
 
 	//TheWighttoRemain.mp3
 
@@ -47,6 +48,8 @@ void Game::Start()
 
 	_hud->Open();
 	Camera* _playerCamera = new Camera("PlayerCamera", CAMERA_PLAYER, Vector2f(0.f,0.f), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
+
+	player->GetShape()->setPosition(map->GetFirstTilePosition());
 }
 
 void Game::Update()
@@ -81,6 +84,16 @@ void Game::UpdateWindow()
 void Game::Stop()
 {
 	cout << "Fin!" << endl;
+}
+
+void Game::InitInputPause()
+{
+	new Menu("GamePause", { new UIImage(Vector2f(0.f,0.f), Vector2f(float(window->getSize().x), float(window->getSize().y)), "PauseMenu.png")}, 1);
+	new ActionMap("GamePaused",
+		{ ActionData("Echap", [this]() { 
+			Menu* _menu = MenuManager::GetInstance().Get("GamePause");
+			_menu->Toggle();
+			}, {Event::KeyPressed, Keyboard::Escape}) });
 }
 
 void Game::Launch()

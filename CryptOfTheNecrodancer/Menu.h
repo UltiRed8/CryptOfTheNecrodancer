@@ -14,9 +14,14 @@ class Menu : public IManagable<string>
 {
 	vector<UIElement*> elements;
 	bool wantsToCloseMenu;
-	bool isOpened;
+	bool isOpened;	
+	int zIndex;
 
 public:
+	int GetZIndex() const
+	{
+		return zIndex;
+	}
 	vector<UIElement*> GetElements() const
 	{
 		return elements;
@@ -27,7 +32,7 @@ public:
 	}
 
 public:
-	Menu(const string& _id, const vector<UIElement*>& _elements);
+	Menu(const string& _id, const vector<UIElement*>& _elements, const int& _zIndex = 0);
 	~Menu();
 
 private:
@@ -38,5 +43,6 @@ public:
 	void Update(RenderWindow* _window);
 	void Open();
 	void Close();
+	void Toggle();
 	vector<Drawable*> GetDrawables();
 };
