@@ -23,6 +23,12 @@ public :
 
 	void InitMenuPause();
 
+	void InitDeleteSaveDataMenu();
+	void DeleteSaveDataMenu();
+	void Delete();
+
+	void GoToLobby();
+
 	void InitMenuOptions();
 	void OptionsMenu();
 

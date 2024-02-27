@@ -9,7 +9,7 @@
 
 class MusicManager : public IManager<string, MusicData>, public Singleton<MusicManager>
 {
-	float volume;
+	float* volume;
 	Timer* rythmLoop;
 	bool isRunning;
 	int acceptDelay;
@@ -18,17 +18,23 @@ class MusicManager : public IManager<string, MusicData>, public Singleton<MusicM
 	float tempVolume;
 
 public:
+	float* GetVolume() const
+	{
+		return volume;
+	}
+
 	void SetVolume(float _volume)
 	{
-		volume = _volume;
+		*volume = _volume;
 		for (MusicData* _music : GetAllValues())
 		{
-			_music->setVolume(volume);
+			_music->setVolume(*volume);
 		}
 	}
 
 public:
 	MusicManager();
+	~MusicManager();
 
 public:
 	void Play(const string& _path, const int _bpm);

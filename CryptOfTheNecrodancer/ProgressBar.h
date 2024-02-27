@@ -23,18 +23,18 @@ class ProgressBar : public UIElement
 	Shape* foreground;
 	Shape* background;
 	float maxValue;
-	float currentValue;
+	float* currentValue;
 
 public:
 	void SetValue(const float _newValue)
 	{
-		currentValue = _newValue > maxValue ? maxValue : _newValue < 0 ? 0 : _newValue;
+		*currentValue = _newValue > maxValue ? maxValue : _newValue < 0 ? 0 : _newValue;
 		Update(Vector2i(0,0));
 	}
 	void ChangeValue(const float _byAmount)
 	{
-		const float _newValue = currentValue + _byAmount;
-		currentValue = _newValue > maxValue ? maxValue : _newValue < 0 ? 0 : _newValue;
+		const float _newValue = *currentValue + _byAmount;
+		*currentValue = _newValue > maxValue ? maxValue : _newValue < 0 ? 0 : _newValue;
 		Update(Vector2i(0, 0));
 	}
 	void SetProgressType(const ProgressType& _type)
@@ -44,7 +44,8 @@ public:
 	}
 
 public:
-	ProgressBar(const ProgressType& _type, const Vector2f& _position, const Vector2f& _size, const string& _emptyPath, const string& _fullPath, const float _maxValue = 100.0f);
+	ProgressBar(const ProgressType& _type, const Vector2f& _position, const Vector2f& _size, 
+		const string& _emptyPath, const string& _fullPath, float* _currentValue, const float _maxValue = 100.0f);
 	~ProgressBar();
 
 private:
