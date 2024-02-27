@@ -112,7 +112,14 @@ void Map::GenerateWalls()
 				_newTilePos += _tileOffset;
 				if (!Contains<Vector2f>(_newTilePos, tilesPosition))
 				{
-					new Wall(_newTilePos,_index == 3);
+					if (_index == 3)
+					{
+						new Wall(_newTilePos, WT_INVULNERABLE);
+					}
+					else
+					{
+						new Wall(_newTilePos,WT_GRASS);
+					}
 					_wallPosition.push_back(_newTilePos);
 				}
 			}
@@ -120,39 +127,59 @@ void Map::GenerateWalls()
 		tilesPosition.insert(tilesPosition.end(), _wallPosition.begin(), _wallPosition.end());
 		_wallPosition.clear();
 	}
-
-	/*const Vector2f& _startPosition = Vector2f(0.0f, 0.0f);	
-	for (int _columnIndex = 0; _columnIndex < 50; _columnIndex++)
-	{
-		for (int _rowIndex = 0; _rowIndex < 50; _rowIndex++)
-		{
-			const float x = _startPosition.x + _columnIndex * TILE_SIZE.x;
-			const float y = _startPosition.y + _rowIndex * TILE_SIZE.y;
-			const Vector2f _position = Vector2f(x, y);
-			if (Contains<Vector2f>(_position, tilesPosition))
-			{
-				continue;
-			}
-			new Wall(_position);
-		}
-	}*/
 }
 
 void Map::GenerateShopRoom()
 {
-	cout << "Generating shop room..." << endl;
+	vector<Vector2i> _posToCheck = {
+		Vector2i(-1, -1),
+		Vector2i(0, -1),
+		Vector2i(1, -1),
+		Vector2i(-1, 0),
+		Vector2i(1,0),
+		Vector2i(-1,1),
+		Vector2i(0,1),
+		Vector2i(1,1)
+	};
 
-	const Vector2f& _startPosition = Vector2f(0.0f, 0.0f);
+	vector<Vector2f> _availablePosition;
+	for (const Vector2f& _tilesPos : tilesPosition)
+	{
+		for (const Vector2i& _offset : _posToCheck)
+		{
+			Vector2f _newTilePos = _tilesPos;
+			const Vector2f& _tileOffset = Vector2f(_offset.x * TILE_SIZE.x, _offset.y * TILE_SIZE.x);
+			_newTilePos += _tileOffset;
+			if (!Contains<Vector2f>(_newTilePos, tilesPosition))
+			{
+				_availablePosition.push_back(_newTilePos);
+			}
+		}
+	}
+
+	const Vector2f& _position = _availablePosition[rand() % _availablePosition.size() - 1];
+
+	tilesPosition.push_back(_position);
+	Room* _room = new Room(Vector2i(5,7), _position);
+	vector<Tile*> _tiles = _room->Generate();
+	tiles.insert(tiles.end(), _tiles.begin(), _tiles.end());
+
+	for (Tile* _tile : _tiles)
+	{
+		tilesPosition.push_back(_tile->GetPosition());
+	}
 
 
+	rooms.push_back(_room);
+	PlaceWallsAroundRoom(_room,WT_SHOP);
 }
 
 void Map::Generate(const int _roomCount)
 {
 	GenerateRooms(_roomCount);
 	GeneratePaths();
-	GenerateShopRoom();
 	SetTilesPosition();
+	GenerateShopRoom();
 	GenerateWalls();
 	EraseOverlappingTiles();
 	SetAllTilesOriginColor();
@@ -235,4 +262,48 @@ void Map::SetAllTilesOriginColor()
 			_tile->SetColors(Color(135, 79, 2, 200), Color(135, 79, 2, 255));
 		}
 	}
+}
+
+void Map::PlaceWallsAroundRoom(Room* _room,const WallType& _type)
+{
+	cout << "Generating walls..." << endl;
+
+
+	vector<Vector2f> _tilesPosition;
+
+	for (const Tile* _tile : _room->GetFloor())
+	{
+		_tilesPosition.push_back(_tile->GetPosition());
+	}
+	
+
+	vector<Vector2i> _posToCheck = {
+		Vector2i(-1, -1),
+		Vector2i(0, -1),
+		Vector2i(1, -1),
+		Vector2i(-1, 0),
+		Vector2i(1,0),
+		Vector2i(-1,1),
+		Vector2i(0,1),
+		Vector2i(1,1)
+	};
+
+	vector<Vector2f> _wallPosition;
+	for (const Vector2f& _tilesPos : _tilesPosition)
+	{
+		for (const Vector2i& _offset : _posToCheck)
+		{
+			Vector2f _newTilePos = _tilesPos;
+			const Vector2f& _tileOffset = Vector2f(_offset.x * TILE_SIZE.x, _offset.y * TILE_SIZE.x);
+			_newTilePos += _tileOffset;
+			if (!Contains<Vector2f>(_newTilePos, _tilesPosition))
+			{
+				new Wall(_newTilePos,_type);
+				_wallPosition.push_back(_newTilePos);
+			}
+		}
+	}
+	tilesPosition.insert(tilesPosition.end(), _wallPosition.begin(), _wallPosition.end());
+	_wallPosition.clear();
+
 }
