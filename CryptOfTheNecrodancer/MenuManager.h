@@ -29,5 +29,8 @@ public :
 	void InitMenuClose();
 	void CloseMenu();
 
+	void InitGraphicMenu();
+	void GraphicMenu();
+
 	#pragma endregion
 };
