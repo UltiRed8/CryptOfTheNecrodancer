@@ -3,12 +3,12 @@
 
 enum WallType
 {
-	WT_GRASS,WT_INVULNERABLE,WT_SHOP
+	WT_DIRT, WT_INVULNERABLE, WT_SHOP, WT_STONE
 };
 
 class Wall:public Entity
 {
-	WallType type;
+	WallType wallType;
 
 public:
 	Wall(const Vector2f& _position,const WallType& _type);
@@ -18,14 +18,15 @@ public:
 		string _path[] = {
 			"Walls.png",
 			"Bedrock.png",
-			"ShopWall.png"
+			"ShopWall.png",
+			"StoneWall.png",
 		};
 
 		return _path[_type];
 	}
 
 public:
-
+	void Destroy(const bool _usingBomb = false);
 	void Update() override;
 };
 

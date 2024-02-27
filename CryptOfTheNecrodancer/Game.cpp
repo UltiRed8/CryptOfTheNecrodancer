@@ -40,10 +40,12 @@ void Game::Start()
 	// TODO temporaire
 
 	Map::GetInstance().Generate(6);
+	//Map::GetInstance().Load("Assets/Saved/Lobby.txt");
 
-	//TheWighttoRemain.mp3
+	//TheWighttoRemain.mp3 160
+	//Lobby.mp3 130
 
-	MusicManager::GetInstance().Play("Lobby.mp3", 130);
+	MusicManager::GetInstance().Play("TheWighttoRemain.mp3", 160);
 
 	player = new Player("Player",{0.f,0.f},{});
 

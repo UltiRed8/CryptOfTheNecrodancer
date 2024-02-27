@@ -1,7 +1,6 @@
 #include "CollisionComponent.h"
 #include"EntityManager.h"
-#include"Entity.h"
-CollisionComponent::CollisionComponent(Entity* _owner):Component(_owner)
+CollisionComponent::CollisionComponent(Entity* _owner) : Component(_owner)
 {
 }
 
@@ -21,13 +20,14 @@ void CollisionComponent::CheckCollision(const vector<CollisionReaction>& _reacti
 
 		if (_rect.intersects(_shape->getGlobalBounds()))
 		{
-			
+			const EntityType& _entityType = _entity->GetType();
 
-			for ( CollisionReaction _reaction : _reactions)
+			for (const CollisionReaction& _reaction : _reactions)
 			{
-				
+				if (_entityType == _reaction.type)
+				{
 					_reaction.callback(_entity);
-				
+				}
 			}
 		}
 	}

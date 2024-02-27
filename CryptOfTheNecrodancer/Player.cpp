@@ -5,6 +5,7 @@
 #include "MusicManager.h"
 #include "AnimationComponent.h"
 #include "RythmComponent.h"
+#include "Wall.h"
 
 #define PATH_PLAYER "PlayerSprite.png"
 
@@ -12,13 +13,26 @@ Player::Player(const string _id, const Vector2f& _position, PlayerRessource _res
 {
 	inventory = new Inventory();
 	ressources = _ressources;
-	components.push_back(new MovementComponent(this));
+	MovementComponent* _movement = new MovementComponent(this);
+	components.push_back(_movement);
 	AnimationData _animation = AnimationData("Idle", Vector2f(0, 0),Vector2f(26,26), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f);
 	components.push_back(new RythmComponent(this, [this]() { GetComponent<MovementComponent>()->SetCanMove(true); }, nullptr, [&]() { GetComponent<MovementComponent>()->SetCanMove(false); }));
 	components.push_back(new AnimationComponent(this, PATH_PLAYER, { _animation }, ANIM_DIR_NONE));
+
+	CollisionComponent* _collisions = new CollisionComponent(this);
+	components.push_back(_collisions);
+
+	_movement->InitCollisions(_collisions, {
+		CollisionReaction(ET_WALL, [this](Entity* _entity) {
+			GetComponent<MovementComponent>()->UndoMove();
+			Wall* _wall = dynamic_cast<Wall*>(_entity);
+			_wall->Destroy();
+		}),
+	});
 	InitInput();
 	zIndex = 1;
 	chainMultiplier = 1.0f;
+	type = ET_PLAYER;
 }
 
 Player::~Player()
