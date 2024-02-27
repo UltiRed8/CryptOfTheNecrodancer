@@ -11,8 +11,8 @@ Player::Player(const string _id, const Vector2f& _position, PlayerRessource _res
 	inventory = new Inventory();
 	ressources = _ressources;
 	components.push_back(new MovementComponent(this));
-	AnimationData _animation = AnimationData("Idle", Vector2f(0, 0),TILE_SIZE, READ_RIGHT,ANIM_DIR_NONE,true,4,0.1f);
-	//components.push_back(new AnimationComponent(this, PATH_PLAYER, { _animation }, ANIM_DIR_NONE));
+	AnimationData _animation = AnimationData("Idle", Vector2f(0, 0),Vector2f(26,26), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f);
+	components.push_back(new AnimationComponent(this, PATH_PLAYER, { _animation }, ANIM_DIR_NONE));
 	InitInput();
 	zIndex = 1;
 	chainMultiplier = 1.0f;
@@ -42,4 +42,5 @@ void Player::InitInput()
 void Player::Update()
 {
 	Entity::Update();
+	GetComponent<AnimationComponent>()->Update();
 }

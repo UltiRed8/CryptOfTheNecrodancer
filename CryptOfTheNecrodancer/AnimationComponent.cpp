@@ -7,7 +7,7 @@ AnimationComponent::AnimationComponent(Entity* _owner, const string& _path, cons
 	const AnimationDirection& _direction) : Component(_owner)
 {
 	InitAnimations(_path, _animationsData);
-	currentIndex = 0;
+	currentIndex = -1;
 	direction = _direction;
 }
 

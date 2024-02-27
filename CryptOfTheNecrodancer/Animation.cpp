@@ -14,6 +14,7 @@ Animation::Animation(const string& _name, AnimationComponent* _owner, Sprite* _s
 	const Vector2i& _size = Vector2i(static_cast<const int>(data.size.x), static_cast<const int>(data.size.y));
 	const IntRect& _rect = IntRect(_position, _size);
 	sprite->setTextureRect(_rect);
+
 }
 
 
@@ -93,11 +94,9 @@ void Animation::Stop()
 
 void Animation::Update()
 {
-	SetOriginCentered(sprite);
-	sprite->setPosition(owner->GetOwner()->GetPosition());
 	Vector2f _spriteSize = sprite->getLocalBounds().getSize();
 	Vector2f _shapeSize = owner->GetOwner()->GetShape()->getLocalBounds().getSize();
 	Vector2f _scale = Vector2f(_shapeSize.x / _spriteSize.x, _shapeSize.y / _spriteSize.y);
 	sprite->setScale(_scale);
-	SetOriginCentered(sprite);
+	sprite->setPosition(owner->GetOwner() ->GetPosition() + Vector2f(_shapeSize.x* _scale.x, _shapeSize.y/_scale.y));
 }
