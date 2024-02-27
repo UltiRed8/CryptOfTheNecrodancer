@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Entity.h"
+#include "UIElement.h"
 
 using namespace sf;
 using namespace std;
@@ -16,7 +17,7 @@ enum ProgressType
 	PT_BOTTOM
 };
 
-class ProgressBar
+class ProgressBar : public UIElement
 {
 	ProgressType type;
 	Shape* foreground;
@@ -28,13 +29,13 @@ public:
 	void SetValue(const float _newValue)
 	{
 		currentValue = _newValue > maxValue ? maxValue : _newValue < 0 ? 0 : _newValue;
-		Update();
+		Update(Vector2i(0,0));
 	}
 	void ChangeValue(const float _byAmount)
 	{
 		const float _newValue = currentValue + _byAmount;
 		currentValue = _newValue > maxValue ? maxValue : _newValue < 0 ? 0 : _newValue;
-		Update();
+		Update(Vector2i(0, 0));
 	}
 	void SetProgressType(const ProgressType& _type)
 	{
@@ -47,11 +48,11 @@ public:
 	~ProgressBar();
 
 private:
-	void Update();
 	void UpdateOriginAndPosition();
+	virtual void Update(const Vector2i& _mousePosition) override;
 	IntRect MakeRect(const float _percent);
 
 public:
-	vector<Drawable*> GetDrawables() const;
+	virtual vector<Drawable*> GetDrawables() override;
 	void InitTextures(const string& _full, const string& _empty);
 };

@@ -1,7 +1,8 @@
 #include "ProgressBar.h"
 #include "TextureManager.h"
 
-ProgressBar::ProgressBar(const ProgressType& _type, const Vector2f& _position, const Vector2f& _size, const string& _emptyPath, const string& _fullPath, const float _maxValue)
+ProgressBar::ProgressBar(const ProgressType& _type, const Vector2f& _position, const Vector2f& _size,
+	const string& _emptyPath, const string& _fullPath, const float _maxValue) : UIElement(_position)
 {
     type = _type;
 
@@ -98,7 +99,7 @@ void ProgressBar::InitTextures(const string& _full, const string& _empty)
     TextureManager::GetInstance().Load(foreground, _full);
 }
 
-vector<Drawable*> ProgressBar::GetDrawables() const
+vector<Drawable*> ProgressBar::GetDrawables()
 {
     vector<Drawable*> _drawables;
     _drawables.push_back(background);
@@ -106,7 +107,7 @@ vector<Drawable*> ProgressBar::GetDrawables() const
     return _drawables;
 }
 
-void ProgressBar::Update()
+void ProgressBar::Update(const Vector2i& _mousePosition)
 {
     const float _fillPercent = currentValue / maxValue;
     const IntRect& _rect = MakeRect(_fillPercent);

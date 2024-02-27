@@ -37,9 +37,9 @@ public:
 
 private:
 	virtual void Register() override;
-	void ClickAction();
 
 public:
+	bool ClickAction();
 	void Update(RenderWindow* _window);
 	void Open();
 	void Close();

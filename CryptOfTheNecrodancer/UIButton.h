@@ -13,18 +13,16 @@ class UIButton : public UIText
 {
 	Color unhoverColor;
 	Color hoverColor;
-	RectangleShape* shape;
 	function<void()> callback;
 
 public:
 	bool IsHover() const
 	{
-		return shape->getFillColor() == hoverColor;
+		return text->getFillColor() == hoverColor;
 	}
 
 public:
-	UIButton(const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const Color& _textColor, const string& _textValue, const int _textSize, const string& _fontPath, const function<void()>& _callback, int* _additionalValue = nullptr);
-	~UIButton();
+	UIButton(const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const string& _textValue, const int _textSize, const string& _fontPath, const function<void()>& _callback, int* _additionalValue = nullptr);
 
 public:
 	virtual void Update(const Vector2i& _mousePosition) override;

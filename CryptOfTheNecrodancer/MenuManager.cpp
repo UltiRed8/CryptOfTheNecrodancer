@@ -34,3 +34,28 @@ vector<Drawable*> MenuManager::GetDrawables()
 	
 	return _drawables;
 }
+
+void MenuManager::ClickAction()
+{
+	for (Menu* _menu : GetAllValues())
+	{
+		if (_menu->IsOpened())
+		{
+			if (_menu->ClickAction())
+			{
+				return;
+			}
+		}
+	}
+}
+
+void MenuManager::Update(RenderWindow* _window)
+{
+	for (Menu* _menu : GetAllValues())
+	{
+		if (_menu->IsOpened())
+		{
+			_menu->Update(_window);
+		}
+	}
+}

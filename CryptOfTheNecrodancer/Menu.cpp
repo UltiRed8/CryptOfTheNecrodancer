@@ -39,7 +39,7 @@ void Menu::Register()
 	MenuManager::GetInstance().Add(id, this);
 }
 
-void Menu::ClickAction()
+bool Menu::ClickAction()
 {
 	for (UIElement* _element : elements)
 	{
@@ -49,9 +49,12 @@ void Menu::ClickAction()
 			if (_button->IsHover())
 			{
 				_button->ExecuteCallback();
+				return true;
 			}
 		}
 	}
+
+	return false;
 }
 
 void Menu::Update(RenderWindow* _window)
