@@ -3,8 +3,10 @@
 #include "TimerManager.h"
 #include "Map.h"
 #include "Player.h"
+#include "UIImage.h"
 #include "MovementComponent.h"
 #include "RythmComponent.h"
+#include "MenuManager.h"
 
 MusicManager::MusicManager()
 {
@@ -86,6 +88,14 @@ void MusicManager::UpdateLoop(const int _bpm)
 					_component->TimedUpdate();
 				}
 			};
+
+			Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->GetElements()[0])->GetShape();
+			TextureManager::GetInstance().Load(_shape, "RythmHearts1.png");
+			new Timer("HeartIndicatorReset", [this]() {
+				Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->GetElements()[0])->GetShape();
+				TextureManager::GetInstance().Load(_shape, "RythmHearts0.png");
+			}, seconds(0.1f), 1, true);
+			
 		}, milliseconds(acceptDelay / 2), 1, true);
 
 

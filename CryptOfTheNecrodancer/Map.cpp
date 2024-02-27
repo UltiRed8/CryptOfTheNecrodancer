@@ -32,24 +32,6 @@ void Map::UpdateTilesColor()
 			}
 		}
 	}
-
-	//if (chainToggle && _hasChain)
-	//{
-	//	// activer les couleurs
-	//	for (int _index = 0; _index < tiles.size(); _index++)
-	//	{
-	//	}
-	//	chainToggle = false;
-	//}
-	//else if (!chainToggle && !_hasChain)
-	//{
-	//	// reset
-	//	chainToggle = true;
-	//}
-	//for (Tile* _tile : tiles)
-	//{
-	//	_tile->InvertColors();
-	//}
 }
 
 void Map::CreateAllPaths()

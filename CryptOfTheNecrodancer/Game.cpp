@@ -44,7 +44,7 @@ void Game::Start()
 	player = new Player("Player",{0.f,0.f},{});
 
 	Menu* _hud = new Menu("HUD", {
-		new UIImage(Vector2f(SCREEN_WIDTH/2 - 40*2, SCREEN_HEIGHT - 55*2), Vector2f(80.0f, 50.0f) * 2.0f, "RythmHearts.png"),
+		new UIImage(Vector2f(SCREEN_WIDTH/2 - 40*2, SCREEN_HEIGHT - 55*2), Vector2f(40.0f, 50.0f) * 2.0f, "RythmHearts0.png"),
 	});
 
 	_hud->Open();
