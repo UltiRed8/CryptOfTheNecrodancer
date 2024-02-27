@@ -5,6 +5,11 @@
 #include "Path.h"
 #include "Macro.h"
 
+#include <iostream>
+#include <functional>
+#include <fstream>
+
+using namespace std;
 
 class Map : public Singleton<Map>
 {
@@ -27,7 +32,7 @@ public:
 	Vector2i GetRandomRoomPosition() const
 	{
 		const int _x = Random(20, 5) * int(TILE_SIZE.x);
-		const int  _y = Random(20, 5) * int(TILE_SIZE.y);
+		const int _y = Random(20, 5) * int(TILE_SIZE.y);
 
 		return Vector2i(_x, _y);
 	}
@@ -52,6 +57,7 @@ public:
 public:
 	void Generate(const int _roomCount);
 	void GenerateRooms(const int _roomCount);
+	void Load(const string _path);
 
 	void ResetAllTilesColor();
 	void Update();

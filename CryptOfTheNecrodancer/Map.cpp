@@ -176,8 +176,26 @@ void Map::GenerateRooms(const int _roomCount)
 		vector<Tile*> _floor = _room->Generate();
 		tiles.insert(tiles.end(), _floor.begin(), _floor.end());
 	}
+}
 
+void Map::Load(const string _path)
+{
+	ifstream _in = ifstream(_path);
 
+	if (!_in)
+	{
+		cerr << "Erreur de chargement de " << _path << " !" << endl;
+		return;
+	}
+
+	map<char, function<void(const Vector2f& _position)>> _elements = {
+		{ '#', [this](const Vector2f& _position) { new Wall(_position, WT_SHOP); }},
+		{ ' ', [this](const Vector2f& _position) { new Tile("wall.png", _position); }},
+		{ '.', nullptr },
+	};
+
+	SetTilesPosition();
+	SetAllTilesOriginColor();
 }
 
 void Map::Update()
