@@ -10,10 +10,12 @@
 
 MusicManager::MusicManager()
 {
-	volume = 1.f;
+	volume = 10.f;
 	rythmLoop = nullptr;
 	isRunning = false;
 	acceptDelay = 300;
+	playSpeed = 1.0f;
+	currentBPM = 0;
 }
 
 void MusicManager::Play(const string& _path, const int _bpm)
@@ -61,12 +63,41 @@ void MusicManager::Unpause()
 	}
 }
 
+void MusicManager::SpeedUp()
+{
+	if (playSpeed != 1.0f) return;
+	cout << "SpeedUp!" << endl;
+	SetPlaySpeed(1.5f);
+	new Timer("ResetPlaySpeed", [this]() {
+		SetPlaySpeed(1.0f);
+	}, seconds(5.0f), 1, true);
+}
+
+void MusicManager::SpeedDown()
+{
+	if (playSpeed != 1.0f) return;
+	cout << "SpeedDown!" << endl;
+	SetPlaySpeed(0.5f);
+	new Timer("ResetPlaySpeed", [this]() {
+		SetPlaySpeed(1.0f);
+	}, seconds(5.0f), 1, true);
+}
+
+void MusicManager::SetPlaySpeed(const float _newValue)
+{
+	playSpeed = _newValue;
+	GetCurrent()->setPitch(playSpeed);
+	rythmLoop->SetDuration(seconds(1.f / ((currentBPM* playSpeed) / 60.f)));
+}
+
 void MusicManager::UpdateLoop(const int _bpm)
 {
 	if (rythmLoop)
 	{
 		rythmLoop->Destroy();
 	}
+
+	currentBPM = _bpm;
 
 	rythmLoop = new Timer("Timer", [this]() {
 

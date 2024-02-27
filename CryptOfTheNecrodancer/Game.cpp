@@ -9,7 +9,6 @@
 #include "CameraManager.h"
 #include "MovementComponent.h"
 
-
 Game::Game()
 {
 	window = nullptr;
@@ -27,6 +26,11 @@ void Game::Init()
 {
 	window = new RenderWindow(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer");
 	MenuManager::GetInstance().InitMenu(window);
+	TimerManager::GetInstance().SetMaxFrameRate(60);
+	TimerManager::GetInstance().SetRenderCallback([this]() {
+		EntityManager::GetInstance().Update();
+		UpdateWindow();
+	});
 }
 
 void Game::Start()
@@ -44,7 +48,7 @@ void Game::Start()
 	player = new Player("Player",{0.f,0.f},{});
 
 	Menu* _hud = new Menu("HUD", {
-		new UIImage(Vector2f(SCREEN_WIDTH/2 - 40*2, SCREEN_HEIGHT - 55*2), Vector2f(40.0f, 50.0f) * 2.0f, "RythmHearts0.png"),
+		new UIImage(Vector2f(SCREEN_WIDTH/2 - 20*2, SCREEN_HEIGHT - 55*2), Vector2f(40.0f, 50.0f) * 2.0f, "RythmHearts0.png"),
 	});
 
 	_hud->Open();
@@ -59,18 +63,15 @@ void Game::Update()
 	{
 		TimerManager::GetInstance().Update();
 		InputManager::GetInstance().Update(window);
-		CameraManager::GetInstance().Update(window);
-		EntityManager::GetInstance().Update();
 		MenuManager::GetInstance().Update();
-
-		UpdateWindow();
-		window->setView(*CameraManager::GetInstance().Get("PlayerCamera"));
+		CameraManager::GetInstance().Update(window);
 	}
 	Stop();
 }
 
 void Game::UpdateWindow()
 {
+	window->setView(*CameraManager::GetInstance().Get("PlayerCamera"));
 	window->clear();
 	for (Drawable* _drawable : EntityManager::GetInstance().GetDrawables())
 	{
