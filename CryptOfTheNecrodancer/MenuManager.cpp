@@ -1,5 +1,6 @@
 #include "MenuManager.h"
 #include "UIImage.h"
+#include "UIText.h"
 #include "ProgressBar.h"
 #include "MusicManager.h"
 

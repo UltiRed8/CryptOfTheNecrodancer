@@ -2,6 +2,7 @@
 #include "Macro.h"
 #include "InputManager.h"
 #include "MovementComponent.h"
+#include "MusicManager.h"
 #include "AnimationComponent.h"
 #include "RythmComponent.h"
 
@@ -38,6 +39,8 @@ void Player::InitInput()
 	new ActionMap("TempDebug",
 		{ ActionData("Decrease", [this]() { chainMultiplier = 1.0f; cout << "Set chain multiplier to: 1.0f!" << endl; }, {Event::KeyPressed, Keyboard::Num1}),
 		  ActionData("Increase", [this]() { chainMultiplier = 2.0f; cout << "Set chain multiplier to: 2.0f!" << endl; }, {Event::KeyPressed, Keyboard::Num2}),
+		  ActionData("SpeedIncrease", [this]() { MusicManager::GetInstance().SpeedUp(); }, {Event::KeyPressed, Keyboard::Num3}),
+		  ActionData("SpeedDecrease", [this]() { MusicManager::GetInstance().SpeedDown(); }, {Event::KeyPressed, Keyboard::Num4}),
 		});
 }
 

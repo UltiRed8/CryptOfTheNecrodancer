@@ -40,11 +40,11 @@ void Camera::Update()
 
 		Vector2f _offset = Vector2f(0.0f, 0.0f);
 
-		if (abs(_currentPosition.x - _playerPosition.x) > 1)
+		if (abs(_currentPosition.x - _playerPosition.x) > 5)
 		{
 			_offset.x = _currentPosition.x > _playerPosition.x ? -0.3f : 0.3f;
 		}
-		if (abs(_currentPosition.y - _playerPosition.y) > 1)
+		if (abs(_currentPosition.y - _playerPosition.y) > 5)
 		{
 			_offset.y = _currentPosition.y > _playerPosition.y ? -0.3f : 0.3f;
 		}
@@ -52,7 +52,7 @@ void Camera::Update()
 		float _deltaTime = TimerManager::GetInstance().GetDeltaTime();
 		_offset *= _deltaTime;
 
-		//move(_offset);
-		setCenter(_playerPosition);
+		move(_offset);
+		//setCenter(_playerPosition);
 	}
 }
