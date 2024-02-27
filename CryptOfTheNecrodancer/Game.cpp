@@ -33,7 +33,7 @@ void Game::Start()
 
 	// TODO temporaire
 
-	map = new Map(1);
+	map = new Map(3);
 
 	MusicManager::GetInstance().Play("Lobby.mp3");
 
@@ -49,6 +49,8 @@ void Game::Start()
 
 	_hud->Open();
 	Camera* _playerCamera = new Camera("PlayerCamera", CAMERA_PLAYER, Vector2f(0.f,0.f), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
+
+	player->GetShape()->setPosition(map->GetFirstTilePosition());
 }
 
 void Game::Update()
@@ -87,7 +89,7 @@ void Game::Stop()
 
 void Game::InitInputPause()
 {
-	new Menu("GamePause", { new UIImage(Vector2f(0.f,0.f), Vector2f(window->getSize().x, window->getSize().y), "PauseMenu.png")}, 1);
+	new Menu("GamePause", { new UIImage(Vector2f(0.f,0.f), Vector2f(float(window->getSize().x), float(window->getSize().y)), "PauseMenu.png")}, 1);
 	new ActionMap("GamePaused",
 		{ ActionData("Echap", [this]() { 
 			Menu* _menu = MenuManager::GetInstance().Get("GamePause");

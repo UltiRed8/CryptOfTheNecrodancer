@@ -9,7 +9,6 @@ void Map::UpdateTilesColor()
 
 	ResetAllTilesColor();
 
-
 	if (!_hasChain)
 	{
 		for (Tile* _tile : tiles)
@@ -39,7 +38,6 @@ void Map::UpdateTilesColor()
 	//	// activer les couleurs
 	//	for (int _index = 0; _index < tiles.size(); _index++)
 	//	{
-
 	//	}
 	//	chainToggle = false;
 	//}
@@ -48,13 +46,10 @@ void Map::UpdateTilesColor()
 	//	// reset
 	//	chainToggle = true;
 	//}
-
-
 	//for (Tile* _tile : tiles)
 	//{
 	//	_tile->InvertColors();
 	//}
-
 }
 
 
@@ -62,9 +57,9 @@ void Map::UpdateTilesColor()
 Map::Map(const int _roomCount)
 {
 	InitMap(_roomCount);
-	InitTiles();
 	tempoIndex = 1;
 	SetAllTilesOriginColor();
+	new Path({ 0,0 }, { 10,10 });
 	chainToggle = true;
 }
 
@@ -73,18 +68,17 @@ void Map::InitMap(const int _roomCount)
 {
 	for (int _index = 0; _index < _roomCount; _index++)
 	{
-		rooms.push_back(new Room(GetRandomRoomSize(), { 0.f,0.f }));
+		rooms.push_back(new Room(GetRandomRoomSize(), Vector2f(GetRandomRoomPosition()),tilesPosition));
+		UpdateTiles(rooms[_index]);
 	}
 }
 
-void Map::InitTiles()
+void Map::UpdateTiles(const Room* _room)
 {
-	for (Room* _room : rooms)
+	for (Tile* _tile : _room->GetAllTiles())
 	{
-		for (Tile* _tile : _room->GetAllTiles())
-		{
-			tiles.push_back(_tile);
-		}
+		tiles.push_back(_tile);
+		tilesPosition.push_back(_tile->GetShape()->getPosition());
 	}
 }
 
