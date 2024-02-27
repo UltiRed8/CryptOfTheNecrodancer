@@ -8,7 +8,10 @@
 
 class MenuManager : public Singleton<MenuManager>, public IManager<string, Menu>
 {
-
 public:
 	vector<Drawable*> GetDrawables();
+	
+public :
+	void ClickAction();
+	void Update(RenderWindow* _window);
 };
