@@ -2,5 +2,5 @@
 
 enum SlimeType
 {
-	S_BLUE, S_Green, S_ORANGE
+	S_BLUE, S_GREEN, S_ORANGE
 };

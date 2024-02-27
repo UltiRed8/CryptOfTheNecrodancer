@@ -1,6 +1,8 @@
 #pragma once
 #include "Enemy.h"
 #include "SlimeType.h"
+#include"MovementComponent.h"
+
 
 #define PATH_GREEN_SLIME "GreenSlimeSprite.png"
 #define PATH_BLUE_SLIME "BlueSlimeSprite.png"
@@ -17,15 +19,19 @@ public:
 public:
 	void DieEvent() override;
 	void SelectDirection();
-	void UpdateRythm();
+	void SelectDirection(const int _direction);
+	void SetNextDirection();
+	virtual void UpdateRythm();
 };
 
 
 struct GreenSlime : public Slime
 {
+
 	GreenSlime(const Vector2f& _position) : Slime(_position, PATH_GREEN_SLIME)
 	{
 	}
+
 };
 
 struct BlueSlime : public Slime

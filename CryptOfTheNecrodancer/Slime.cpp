@@ -1,7 +1,6 @@
 #include "Slime.h"
 #include "Macro.h"
 
-#include"MovementComponent.h"
 #include"DamageComponent.h"
 #include"LifeComponent.h"
 #include "RythmComponent.h"
@@ -13,23 +12,18 @@ Slime::Slime(const Vector2f& _position, const string _path) : Enemy(STRING_ID("S
 	// Random Slime Type
 	slimeType = static_cast<SlimeType>(Random(2, 0));
 
+	vector<Vector2i> _greenDirectionsPatern = {
+		Vector2i(0,0),
+	};
 	vector<Vector2i> _blueDirectionsPatern = {
+		Vector2i(-1,0),
+		Vector2i(1,0),
+	};
+	vector<Vector2i> _orangeDirectionsPatern = {
 		Vector2i(1,0),
 		Vector2i(-1,0),
 		Vector2i(0,1),
 		Vector2i(0,-1),
-	};
-	vector<Vector2i> _greenDirectionsPatern = {
-	Vector2i(1,0),
-	Vector2i(-1,0),
-	Vector2i(0,1),
-	Vector2i(0,-1),
-	};
-	vector<Vector2i> _orangeDirectionsPatern = {
-	Vector2i(1,0),
-	Vector2i(-1,0),
-	Vector2i(0,1),
-	Vector2i(0,-1),
 	};
 	
 	vector< vector<Vector2i> > _directionsPatern = {
@@ -59,10 +53,25 @@ void Slime::SelectDirection()
 	GetComponent< MovementComponent>()->SetDirection(directionsPatern[_direction], false);
 }
 
+void Slime::SelectDirection(const int _direction)
+{
+	GetComponent< MovementComponent>()->SetDirection(directionsPatern[_direction], false);
+}
+
+void Slime::SetNextDirection()
+{
+	GetComponent< MovementComponent>()->SetDirection(directionsPatern[indexPattern], false);
+	indexPattern++;
+	if (indexPattern >= directionsPatern.size())
+	{
+		indexPattern = 0;
+	}
+}
+
 void Slime::UpdateRythm()
 {
 	if (GetComponent< MovementComponent>()->GetCanMove())
 	{
-		SelectDirection();
+		SetNextDirection();
 	}
 }
