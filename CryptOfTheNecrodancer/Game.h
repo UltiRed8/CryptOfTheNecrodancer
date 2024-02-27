@@ -15,7 +15,7 @@ class Game
 	RenderWindow* window;
 	Player* player;
 	Map* map;
-	Bat* bat;
+	// Bat* bat;
 public:
 	Game();
 	~Game();

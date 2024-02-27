@@ -17,7 +17,7 @@ Bat::Bat(const Vector2f& _position) :Enemy(STRING_ID("Bat"), PATH_BAT, _position
 		Vector2i(0,1),
 		Vector2i(0,-1),
 	};
-	AnimationData _animation = AnimationData("Idle", Vector2f(0, 0), Vector2f(24, 24), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f);
+	AnimationData _animation = AnimationData(STRING_ID("Bat"), Vector2f(0, 0), Vector2f(24, 24), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f);
 	components.push_back(new MovementComponent(this));
 		components.push_back(new DamageComponent(this, 0.5));
 		components.push_back(new LifeComponent(this, [this]() {DieEvent(); }, false, 1));

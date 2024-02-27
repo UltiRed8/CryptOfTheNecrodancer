@@ -2,6 +2,11 @@
 #include "EntityManager.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Bat.h"
+#include "Slime.h"
+#include <functional>
+
+using namespace std;
 
 void Map::UpdateTilesColor()
 {
@@ -52,8 +57,6 @@ void Map::UpdateTilesColor()
 	//}
 }
 
-
-
 Map::Map()
 {
 	
@@ -75,6 +78,7 @@ void Map::InitMap(const int _roomCount)
 		rooms.push_back(new Room(GetRandomRoomSize(), Vector2f(GetRandomRoomPosition()),tilesPosition));
 		UpdateTiles(rooms[_index]);
 	}
+	SpawnEnnemy();
 }
 
 void Map::UpdateTiles(const Room* _room)
@@ -127,15 +131,26 @@ void Map::SetAllTilesOriginColor()
 
 void Map::SpawnEnnemy(const int _ennemyCount)
 {
-	vector<Enemy*> _ennemyList =
+	/*vector<Enemy*> _enemyList =
 	{
+		new Bat(GetRandomTilePosition()),
+		new GreenSlime(GetRandomTilePosition()),
+		new BlueSlime(GetRandomTilePosition()),
+		new OrangeSlime(GetRandomTilePosition()),
+	};*/
 
-
+	vector<function<void()>> _enemyList =
+	{
+	[this]() { new Bat(GetRandomTilePosition()); },
+	[this]() { new GreenSlime(GetRandomTilePosition()); },
+	[this]() { new BlueSlime(GetRandomTilePosition()); },
+	[this]() { new OrangeSlime(GetRandomTilePosition()); },
 	};
+
 	int _randIndex;
 	for (int _index = 0; _index < _ennemyCount; _index++)
 	{
-		_randIndex = Random(static_cast<int>(_ennemyList.size()) - 1, 0);
-		_ennemyList[_randIndex];
+		_randIndex = Random(static_cast<int>(_enemyList.size()), 0);
+		_enemyList[_randIndex]();
 	}
 }
