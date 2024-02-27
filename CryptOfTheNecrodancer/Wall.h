@@ -3,10 +3,11 @@
 class Wall:public Entity
 {
 public:
-	Wall(const string& _wallPath, const Vector2f& _position);
+	Wall(const Vector2f& _position);
 
 public:
 
 	void Update() override;
+	Vector2f UpdatePosition(const Vector2f& _position);
 };
 

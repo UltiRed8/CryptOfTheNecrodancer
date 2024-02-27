@@ -48,7 +48,7 @@ void TextureManager::LoadFromTextureSheet(Shape* _shape, const string& _path, in
 		_textureData->setSmooth(true);
 	}
 
-	const int _amountOfTexturesPerLines = _texturePartSize.x / _textureData->getSize().x;
+	const int _amountOfTexturesPerLines = _textureData->getSize().x / _texturePartSize.x;
 
 	int _posX = 0;
 	int _posY = 0;
@@ -69,6 +69,7 @@ void TextureManager::LoadFromTextureSheet(Shape* _shape, const string& _path, in
 	_shape->setTexture(_textureData);
 	_shape->setTextureRect(_textureRect);
 }
+
 void TextureManager::LoadSprite(Sprite* _sprite, const string& _path, const bool _isRepeated, const bool _smooth)
 {
 	if (_path == "") return;

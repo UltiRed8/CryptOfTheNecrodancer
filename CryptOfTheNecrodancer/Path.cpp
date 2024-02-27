@@ -52,24 +52,20 @@ void Path::FixY()
 
 void Path::PlaceTile(const Vector2f& _position)
 {
+	for (const Vector2f& _tilePos : allTilesPos)
+	{
+		if (_position == _tilePos)
+		{
+			return;
+		}
+	}
 	if (!Random(chanceToPlaceWall, 0))
 	{
+		new Wall(_position);
 		// wall
 	}
 	else
 	{
-		bool _isValid = true;
-		for (const Vector2f& _tilePos : allTilesPos)
-		{
-			if (_position == _tilePos)
-			{
-				_isValid = false;
-			}
-		}
-		if (!_isValid)
-		{
-			return;
-		}
 		tiles.push_back(new Tile("wall.png", _position));
 	}
 }

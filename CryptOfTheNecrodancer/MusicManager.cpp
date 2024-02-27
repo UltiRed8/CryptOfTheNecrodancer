@@ -8,7 +8,7 @@
 
 MusicManager::MusicManager()
 {
-	volume = 10.f;
+	volume = 1.f;
 	rythmLoop = nullptr;
 	isRunning = false;
 	acceptDelay = 300;

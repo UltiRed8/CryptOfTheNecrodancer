@@ -1,6 +1,7 @@
 #pragma once
 #include "Tile.h"
 #include "Macro.h"
+#include "Wall.h"
 
 class Path
 {
