@@ -93,8 +93,6 @@ void Game::Stop()
 
 void Game::InitMenuPause()
 {
-	new Menu("GamePause", { new UIImage(Vector2f(0.f,0.f), Vector2f(float(window->getSize().x), float(window->getSize().y)), "PauseMenu.png")}, 1);
-
 	new ActionMap("GamePaused",
 		{ ActionData("Escape", [this]()
 			{ Menu* _menu = MenuManager::GetInstance().Get("GamePause");
