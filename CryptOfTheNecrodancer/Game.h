@@ -26,6 +26,8 @@ private:
 	void UpdateWindow();;
 	void Stop();
 
+	void InitInputPause();
+
 public:
 	void Launch();
 };

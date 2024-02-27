@@ -183,6 +183,7 @@
     <ClCompile Include="UIImage.cpp" />
     <ClCompile Include="UIText.cpp" />
     <ClCompile Include="Usable.cpp" />
+    <ClCompile Include="Wall.cpp" />
     <ClCompile Include="Wearable.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -239,6 +240,7 @@
     <ClInclude Include="UIImage.h" />
     <ClInclude Include="UIText.h" />
     <ClInclude Include="Usable.h" />
+    <ClInclude Include="Wall.h" />
     <ClInclude Include="Wearable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

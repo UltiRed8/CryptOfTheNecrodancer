@@ -3,10 +3,11 @@
 #include "MenuManager.h"
 #include "Action.h"
 
-Menu::Menu(const string& _id, const vector<UIElement*>& _elements) : IManagable(_id)
+Menu::Menu(const string& _id, const vector<UIElement*>& _elements, const int& _zIndex) : IManagable(_id)
 {
 	wantsToCloseMenu = false;
 	elements = _elements;
+	zIndex = _zIndex;
 	Register();
 }
 
@@ -25,7 +26,12 @@ void Menu::Open()
 
 void Menu::Close()
 {
-	wantsToCloseMenu = true;
+	isOpened = false;
+}
+
+void Menu::Toggle()
+{
+	isOpened = !isOpened;
 }
 
 void Menu::Register()
