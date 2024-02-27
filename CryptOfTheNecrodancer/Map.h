@@ -14,11 +14,12 @@ using namespace std;
 class Map : public Singleton<Map>
 {
 	vector<Room*> rooms;
-	vector<Tile*> tiles;
+	vector<Entity*> tiles;
 	vector<Vector2f> tilesPosition;
 	vector<Path*> paths;
 	int tempoIndex;
 	bool chainToggle;
+	bool isPurple;
 
 public:
 	Vector2i GetRandomRoomSize() const
@@ -49,9 +50,9 @@ public:
 	{
 		tilesPosition.clear();
 		cout << tiles.size() << endl;
-		for (Tile* _tile : tiles)
+		for (Entity* _tile : tiles)
 		{
-			tilesPosition.push_back(_tile->GetShape()->getPosition());
+			tilesPosition.push_back(_tile->GetPosition());
 		}
 	}
 
@@ -59,6 +60,7 @@ public:
 	void Generate(const int _roomCount);
 	void GenerateRooms(const int _roomCount);
 	void Load(const string _path);
+	void AddTileAt(const Vector2f& _position);
 
 	void ResetAllTilesColor();
 	void Update();

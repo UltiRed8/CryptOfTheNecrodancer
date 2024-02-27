@@ -10,16 +10,22 @@ void Map::UpdateTilesColor()
 
 	if (!_hasChain)
 	{
-		for (Tile* _tile : tiles)
+		for (Entity* _tile : tiles)
 		{
-			_tile->InvertColors();
+			if (_tile->GetType() == ET_FLOOR)
+			{
+				Tile* _floor = dynamic_cast<Tile*>(_tile);
+				_floor->InvertColors();
+			}
 		}
 	}
 	else
 	{
 		for (int _index = 0; _index < tiles.size(); _index++)
 		{
-			Shape* _shape = tiles[_index]->GetShape();
+			Entity* _entity = tiles[_index];
+			if (_entity->GetType() != ET_FLOOR) continue;
+			Shape* _shape = _entity->GetShape();
 			const int _a = tempoIndex == 1 ? 255 : 200;
 			if (_shape->getFillColor().a == _a)
 			{
@@ -35,9 +41,9 @@ void Map::UpdateTilesColor()
 
 void Map::EraseOverlappingTiles()
 {
-	vector<Tile*> _overlappingTiles;
+	vector<Entity*> _overlappingTiles;
 	//SetTilesPosition();
-	for (Tile* _tile : tiles)
+	for (Entity* _tile : tiles)
 	{
 		if (Contains<Vector2f>(_tile->GetShape()->getPosition(), tilesPosition))
 		{
@@ -51,7 +57,7 @@ void Map::EraseOverlappingTiles()
 		}
 	}
 
-	for (Tile* _tile : _overlappingTiles)
+	for (Entity* _tile : _overlappingTiles)
 	{
 		_tile->Destroy();
 		EraseElement(tiles, _tile);
@@ -114,11 +120,11 @@ void Map::GenerateWalls()
 				{
 					if (_index == 3)
 					{
-						new Wall(_newTilePos, WT_INVULNERABLE);
+						tiles.push_back(new Wall(_newTilePos, WT_INVULNERABLE));
 					}
 					else
 					{
-						new Wall(_newTilePos,WT_GRASS);
+						tiles.push_back(new Wall(_newTilePos,WT_DIRT));
 					}
 					_wallPosition.push_back(_newTilePos);
 				}
@@ -217,16 +223,53 @@ void Map::Load(const string _path)
 
 	map<char, function<void(const Vector2f& _position)>> _elements = {
 		{ '#', [this](const Vector2f& _position) { new Wall(_position, WT_SHOP); }},
-		{ ' ', [this](const Vector2f& _position) { new Tile("wall.png", _position); }},
+		{ ' ', [this](const Vector2f& _position) { tiles.push_back(new Tile("wall.png", _position)); }},
 		{ '.', nullptr },
 	};
+
+	string _line;
+	Vector2i _tilePosition = Vector2i(0, 0);
+	while (getline(_in, _line))
+	{
+		for (const char _char : _line)
+		{
+			function<void(const Vector2f& _position)> _callback = _elements[_char];
+			if (_callback)
+			{
+				float _positionX = (float)_tilePosition.x * TILE_SIZE.x;
+				float _positionY = (float)_tilePosition.y * TILE_SIZE.y;
+				_callback(Vector2f(_positionX, _positionY));
+			}
+			_tilePosition.x += 1;
+		}
+		_tilePosition.x = 0;
+		_tilePosition.y += 1;
+	}
 
 	SetTilesPosition();
 	SetAllTilesOriginColor();
 }
 
+void Map::AddTileAt(const Vector2f& _position)
+{
+	Tile* _tile = new Tile("wall.png", _position);
+	tiles.push_back(_tile);
+	const Vector2i _tilePosition = Vector2i(_position.x / int(TILE_SIZE.x), _position.y / int(TILE_SIZE.y));
+	if ((_tilePosition.x + _tilePosition.y) % 2 == 0)
+	{
+		if (!isPurple) _tile->SetColors(Color(135, 79, 2, 255), Color(135, 79, 2, 200));
+		else _tile->SetColors(Color(135, 79, 2, 200), Color(135, 79, 2, 255));
+	}
+	else
+	{
+		if (!isPurple) _tile->SetColors(Color(135, 79, 2, 200), Color(135, 79, 2, 255));
+		else _tile->SetColors(Color(135, 79, 2, 255), Color(135, 79, 2, 200));
+	}
+}
+
 void Map::Update()
 {
+	isPurple = !isPurple;
 	if (tempoIndex == 3)
 	{
 		tempoIndex = 1;
@@ -237,9 +280,13 @@ void Map::Update()
 
 void Map::ResetAllTilesColor()
 {
-	for (Tile* _tile : tiles)
+	for (Entity* _tile : tiles)
 	{
-		_tile->ResetColor();
+		if (_tile->GetType() == ET_FLOOR)
+		{
+			Tile* _floor = dynamic_cast<Tile*>(_tile);
+			_floor->ResetColor();
+		}
 	}
 }
 
@@ -248,8 +295,10 @@ void Map::SetAllTilesOriginColor()
 	const int _size = static_cast<const int>(tiles.size());
 	for (int _index = 0; _index < _size; _index++)
 	{
-		Tile* _tile = tiles[_index];
-		Shape* _shape = tiles[_index]->GetShape();
+		Entity* _entity = tiles[_index];
+		if (_entity->GetType() != ET_FLOOR) continue;
+		Tile* _tile = dynamic_cast<Tile*>(_entity);
+		Shape* _shape = _entity->GetShape();
 		const Vector2i& _position = Vector2i(_shape->getPosition());
 		const Vector2i _tilePosition = Vector2i(_position.x / int(TILE_SIZE.x), _position.y / int(TILE_SIZE.y));
 		if ((_tilePosition.x + _tilePosition.y) % 2 == 0)

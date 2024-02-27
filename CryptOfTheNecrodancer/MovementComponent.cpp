@@ -7,6 +7,7 @@ MovementComponent::MovementComponent(Entity* _owner, const int _speed ):Componen
 	collision = nullptr;
 	reactions = vector<CollisionReaction>();
 	speed = _speed;
+	oldPosition = Vector2f();
 }
 
 
@@ -24,11 +25,16 @@ void MovementComponent::Move()
 	const float _directionX = (direction->x * speed * _tileSize.x ) ;
 	const float _directionY = (direction->y * speed * _tileSize.y) ;
 	const Vector2f& _position = owner->GetPosition() + Vector2f(_directionX, _directionY);
+	oldPosition = _shape->getPosition();
 	_shape->setPosition(_position);
 	direction = new Vector2i(0, 0);
 }
 
-
+void MovementComponent::UndoMove()
+{
+	Shape* _shape = owner->GetShape();
+	_shape->setPosition(oldPosition);
+}
 
 void MovementComponent::TryToMove()
 {

@@ -13,6 +13,7 @@ class MovementComponent:public Component
 	Vector2i* direction;
 	CollisionComponent* collision;
 	vector<CollisionReaction> reactions;
+	Vector2f oldPosition;
 
 public:
 	bool GetCanMove() const
@@ -46,6 +47,7 @@ public:
 
 
 public:
+	void UndoMove();
 	void InitCollisions(CollisionComponent* _collision, const vector<CollisionReaction>& _reactions);
 	void Move();
 	void TryToMove();
