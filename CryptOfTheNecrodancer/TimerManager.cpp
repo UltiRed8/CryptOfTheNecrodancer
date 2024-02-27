@@ -36,4 +36,11 @@ void TimerManager::Update()
 	framesCount++;
 
 	UpdateTimers();
+	if (Render())
+	{
+		if (renderCallback)
+		{
+			renderCallback();
+		}
+	}
 }
