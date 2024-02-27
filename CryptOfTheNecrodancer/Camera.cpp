@@ -41,7 +41,7 @@ void Camera::Update()
 		_offset.x = _currentPosition.x > _playerPosition.x ? -0.1f : 0.1f;
 		_offset.y = _currentPosition.y > _playerPosition.y ? -0.1f : 0.1f;
 
-		move(_offset);
-		//setCenter(_playerPosition);
+		//move(_offset);
+		setCenter(_playerPosition);
 	}
 }
