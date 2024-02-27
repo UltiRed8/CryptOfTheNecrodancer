@@ -4,6 +4,7 @@ Room::Room(const Vector2i& _size, const Vector2f& _startPosition, const vector<V
 {
 	size = _size;
 	startPosition = _startPosition;
+	haveCreatedWalls = false;
 	Init(_allTilesPosition);
 }
  
@@ -14,6 +15,7 @@ void Room::Init(const vector<Vector2f>& _allTilesPosition)
 		vector<Tile*> _row;
 		for (int _columnIndex = 0; _columnIndex < size.x; _columnIndex++)
 		{
+			haveCreatedWalls = false;
 			const float x = startPosition.x + _columnIndex * TILE_SIZE.x;
 			const float y = startPosition.y + _rowIndex * TILE_SIZE.y;
 
@@ -39,16 +41,26 @@ void Room::Init(const vector<Vector2f>& _allTilesPosition)
 			//Color(53,233,136,255) vert 
 			//_tile->GetShape()->setOutlineColor(Color(0, 0, 0, 100));
 			//_tile->GetShape()->setOutlineThickness(-5.0f);
-			int _value = rand() % 100;
 
-			if (_value > 80)
+			RandomCreateWalls(_position);
+
+			if (haveCreatedWalls)
 			{
 				continue;
 			}
-
-		
 			_row.push_back(new Tile("wall.png", _position));
 		}
 		tiles.push_back(_row);
+	}
+}
+
+void Room::RandomCreateWalls(const Vector2f& _position)
+{
+	int _value = rand() % 100;
+
+	if (_value > 80)
+	{
+		new Wall(_position);
+		haveCreatedWalls = true;
 	}
 }
