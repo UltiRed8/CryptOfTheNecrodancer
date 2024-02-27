@@ -59,7 +59,12 @@ void Map::UpdateTilesColor()
 
 
 
-Map::Map(const int _roomCount)
+Map::Map()
+{
+	
+}
+
+void Map::Generate(const int _roomCount)
 {
 	InitMap(_roomCount);
 	InitTiles();
@@ -67,7 +72,6 @@ Map::Map(const int _roomCount)
 	SetAllTilesOriginColor();
 	chainToggle = true;
 }
-
 
 void Map::InitMap(const int _roomCount)
 {

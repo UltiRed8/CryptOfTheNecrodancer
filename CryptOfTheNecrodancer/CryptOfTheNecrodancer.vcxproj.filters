@@ -189,12 +189,6 @@
     <ClCompile Include="AnimationComponent.cpp">
       <Filter>Source Files\Component\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="MusicData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MusicManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RythmComponent.cpp">
       <Filter>Source Files\Component\Rythm</Filter>
     </ClCompile>
@@ -212,6 +206,24 @@
     </ClCompile>
     <ClCompile Include="Tile.cpp">
       <Filter>Source Files\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DamageComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LifeComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MusicData.cpp">
+      <Filter>Source Files\Manager\Music</Filter>
+    </ClCompile>
+    <ClCompile Include="MusicManager.cpp">
+      <Filter>Source Files\Manager\Music</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -338,12 +350,6 @@
     <ClInclude Include="AnimationComponent.h">
       <Filter>Source Files\Component\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="MusicData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MusicManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RythmComponent.h">
       <Filter>Source Files\Component\Rythm</Filter>
     </ClInclude>
@@ -361,6 +367,24 @@
     </ClInclude>
     <ClInclude Include="Tile.h">
       <Filter>Source Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DamageComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LifeComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MusicData.h">
+      <Filter>Source Files\Manager\Music</Filter>
+    </ClInclude>
+    <ClInclude Include="MusicManager.h">
+      <Filter>Source Files\Manager\Music</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

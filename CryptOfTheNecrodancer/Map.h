@@ -1,8 +1,10 @@
 #pragma once
 #include "Room.h"
 #include "Macro.h"
+#include "Map.h"
+#include "Singleton.h"
 
-class Map
+class Map : public Singleton<Map>
 {
 	vector<Room*> rooms;
 	vector<Tile*> tiles;
@@ -19,9 +21,11 @@ public:
 	}
 
 public:
+	Map();
 	Map(const int _roomCount);
 
 public:
+	void Generate(const int _roomCount);
 	void InitMap(const int _roomCount);
 	void ResetAllTilesColor();
 	void InitTiles();

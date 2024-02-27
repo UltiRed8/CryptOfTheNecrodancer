@@ -18,6 +18,7 @@ void MovementComponent::InitCollisions(CollisionComponent* _collision, const vec
 
 void MovementComponent::Move()
 {
+	if (!canMove) return;
 	Shape* _shape = owner->GetShape();
 	const Vector2f& _tileSize = TILE_SIZE;
 	const float _directionX = (direction->x * speed * _tileSize.x ) ;
@@ -31,6 +32,7 @@ void MovementComponent::Move()
 
 void MovementComponent::TryToMove()
 {
+	if (!canMove) return;
 	Move();
 	if (!collision)return;
 	collision->CheckCollision(reactions);

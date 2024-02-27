@@ -1,5 +1,6 @@
 #include "RythmComponent.h"
 #include"Entity.h"
+#include"TimerManager.h"
 RythmComponent::RythmComponent(Entity* _owner,const vector<function<void()>>& _callbacks):Component(_owner)
 {
 	callbacks = _callbacks;
@@ -7,7 +8,12 @@ RythmComponent::RythmComponent(Entity* _owner,const vector<function<void()>>& _c
 
 void RythmComponent::Update()
 {
-	for (function<void()> _callback:callbacks)
+
+}
+
+void RythmComponent::RythmUpdate()
+{
+	for (function<void()> _callback : callbacks)
 	{
 		_callback();
 	}
