@@ -18,6 +18,7 @@ class Map : public Singleton<Map>
 {
 	vector<Room*> rooms;
 	vector<Entity*> tiles;
+	vector<Tile*> shopTiles;
 	vector<Vector2f> tilesPosition;
 	vector<Path*> paths;
 	int tempoIndex;
@@ -47,9 +48,19 @@ public:
 		return tiles[0]->GetShape()->getPosition();
 	}
 
-	Vector2f GetRandomTilePosition() const
+	Vector2f GetPositionOfRandomTileOfType(const EntityType& _type)
 	{
-		return tilesPosition[Random(static_cast<int>(tilesPosition.size()), 0)];
+		SetTilesPosition();
+		vector<Vector2f> _position;
+		for (Entity* _entity : tiles)
+		{
+			if (_entity->GetType() == _type)
+			{
+				_position.push_back(_entity->GetPosition());
+			}
+		}
+
+		return _position[Random((int)_position.size() - 1)];
 	}
 
 

@@ -50,7 +50,7 @@ void Map::EraseOverlappingTiles()
 		if (Contains<Vector2f>(_tile->GetShape()->getPosition(), tilesPosition))
 		{
 			/*tilesPosition.erase(_tile->GetShape()->getPosition())*/
-			EraseElement(tilesPosition, _tile->GetShape()->getPosition());
+			EraseElements<Vector2f,Vector2f>(tilesPosition, { _tile->GetShape()->getPosition() });
 		}
 
 		else
@@ -62,8 +62,9 @@ void Map::EraseOverlappingTiles()
 	for (Entity* _tile : _overlappingTiles)
 	{
 		_tile->Destroy();
-		EraseElement(tiles, _tile);
 	}
+
+	EraseElements(tiles, _overlappingTiles);
 }
 
 void Map::GeneratePaths()
@@ -169,10 +170,11 @@ void Map::GenerateShopRoom()
 
 	tilesPosition.push_back(_position);
 	Room* _room = new Room(Vector2i(5,7), _position);
-	vector<Tile*> _tiles = _room->Generate();
-	tiles.insert(tiles.end(), _tiles.begin(), _tiles.end());
 
-	for (Tile* _tile : _tiles)
+	shopTiles = _room->Generate();
+	tiles.insert(tiles.end(), shopTiles.begin(), shopTiles.end());
+
+	for (Entity* _tile : shopTiles)
 	{
 		tilesPosition.push_back(_tile->GetPosition());
 	}
@@ -191,6 +193,7 @@ void Map::Generate(const int _roomCount)
 	GenerateWalls();
 	EraseOverlappingTiles();
 	SetAllTilesOriginColor();
+	//EraseElements(tiles, shopTiles); TODO Fix this
 	tempoIndex = 1;
 	chainToggle = true;
 }
@@ -363,16 +366,16 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 {
 	vector<function<void()>> _enemyList =
 	{
-	[this]() { new Bat(GetRandomTilePosition()); },
-	[this]() { new GreenSlime(GetRandomTilePosition()); },
-	[this]() { new BlueSlime(GetRandomTilePosition()); },
-	[this]() { new OrangeSlime(GetRandomTilePosition()); },
+	[this]() { new Bat(GetPositionOfRandomTileOfType(ET_FLOOR)); },
+	[this]() { new GreenSlime(GetPositionOfRandomTileOfType(ET_FLOOR)); },
+	[this]() { new BlueSlime(GetPositionOfRandomTileOfType(ET_FLOOR)); },
+	[this]() { new OrangeSlime(GetPositionOfRandomTileOfType(ET_FLOOR)); },
 	};
 
 	int _randIndex;
 	for (int _index = 0; _index < _ennemyCount; _index++)
 	{
-		_randIndex = Random(static_cast<int>(_enemyList.size()), 0);
+		_randIndex = Random(static_cast<int>(_enemyList.size() - 1), 0);
 		_enemyList[_randIndex]();
 	}
 }
