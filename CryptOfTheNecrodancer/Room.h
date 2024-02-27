@@ -8,7 +8,7 @@ class Room
 	Vector2f startPosition;
 
 public:
-	Room(const Vector2i& _size,const Vector2f& _startPosition);
+	Room(const Vector2i& _size,const Vector2f& _startPosition,const vector<Vector2f>& _allTilesPosition);
 
 public:
 	vector<Tile*> GetAllTiles() const
@@ -32,6 +32,6 @@ public:
 	}
 
 public:
-	void Init();
+	void Init(const vector<Vector2f>& _allTilesPosition);
 };
 
