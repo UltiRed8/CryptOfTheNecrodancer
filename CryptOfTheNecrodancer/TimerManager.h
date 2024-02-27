@@ -22,7 +22,6 @@ class TimerManager : public Singleton<TimerManager>, public IManager<string, Tim
 	unsigned int framesCount;
 	unsigned int maxFrameRate;
 	float fps;
-	function<void()> renderCallback;
 
 public:
 	void SetTimeScale(const float _timeScale)
@@ -55,10 +54,6 @@ public:
 	float GetDeltaTime() const
 	{
 		return deltaTime;
-	}
-	void SetRenderCallback(const function<void()>& _callback)
-	{
-		renderCallback = _callback;
 	}
 
 public:

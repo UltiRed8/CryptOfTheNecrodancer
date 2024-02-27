@@ -19,10 +19,6 @@ class Timer : public IManagable<string>
 	bool autoDestroy;
 
 public:
-	void SetDuration(const Time& _duration)
-	{
-		duration = static_cast<float>(_duration.asMilliseconds());
-	}
 	bool IsRunning() const
 	{
 		return isRunning;

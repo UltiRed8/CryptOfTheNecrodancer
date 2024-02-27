@@ -4,23 +4,14 @@
 #include "Component.h"
 
 
-enum EntityType
-{
-	ET_NONE, ET_FLOOR, ET_WALL, ET_ENEMY, ET_PLAYER, ET_ITEM
-};
-
 class Entity : public Object, public IManagable<string>
 {
 protected:
 	vector<Component*> components;
+protected:
 	Shape* shape;
-	EntityType type;
 
 public:
-	EntityType GetType() const
-	{
-		return type;
-	}
 	Shape* GetShape() const 
 	{ 
 		return shape;

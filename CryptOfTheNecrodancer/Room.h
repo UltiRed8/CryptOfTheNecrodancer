@@ -1,32 +1,37 @@
 #pragma once
 #include "Tile.h"
-#include "Wall.h"
-#include "Macro.h"
 
 class Room
 {
 	Vector2i size;
+	vector<vector<Tile*>> tiles;
 	Vector2f startPosition;
-	vector<Tile*> floor;
 
 public:
-	Room(const Vector2i& _size,const Vector2f& _startPosition);
+	Room(const Vector2i& _size,const Vector2f& _startPosition,const vector<Vector2f>& _allTilesPosition);
 
 public:
-
-	vector<Tile*> GetFloor() const
+	vector<Tile*> GetAllTiles() const
 	{
-		return floor;
-	}
-	
-	Tile* GetRandomTile() const
-	{
-		const int _value = Random((int)floor.size() - 1, 0);
+		vector<Tile*> _tiles;
 
-		return floor[_value];
+		for (vector<Tile*> _row : tiles)
+		{
+			for (Tile* _tile : _row)
+			{
+				_tiles.push_back(_tile);
+			}
+		}
+
+		return _tiles;
+	}
+
+	vector<vector<Tile*>> GetRoom() const
+	{
+		return tiles;
 	}
 
 public:
-	vector<Tile*> Generate();
+	void Init(const vector<Vector2f>& _allTilesPosition);
 };
 

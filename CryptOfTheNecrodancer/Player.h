@@ -22,6 +22,8 @@ public :
 public :
 	void InitInput();
 
+	void Move();
+
 	// Hérité via Entity
 	void Update() override;
 };

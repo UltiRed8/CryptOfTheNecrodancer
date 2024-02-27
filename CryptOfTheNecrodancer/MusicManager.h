@@ -13,9 +13,6 @@ class MusicManager : public IManager<string, MusicData>, public Singleton<MusicM
 	Timer* rythmLoop;
 	bool isRunning;
 	int acceptDelay;
-	float playSpeed;
-	int currentBPM;
-	float tempVolume;
 
 public:
 	void SetVolume(float _volume)
@@ -35,12 +32,7 @@ public:
 	void Toggle();
 	void Pause();
 	void Unpause();
-	void SpeedUp();
-	void SpeedDown();
-	void SetPlaySpeed(const float _newValue);
-	void IncreaseVolume();
-	void DecreaseVolume();
-	void ToggleVolume();
+	void Temp();
 
 private:
 	void UpdateLoop(const int _bpm);

@@ -1,6 +1,12 @@
 #include "Map.h"
 #include "EntityManager.h"
 #include "Player.h"
+#include "Enemy.h"
+#include "Bat.h"
+#include "Slime.h"
+#include <functional>
+
+using namespace std;
 
 void Map::UpdateTilesColor()
 {
@@ -10,22 +16,16 @@ void Map::UpdateTilesColor()
 
 	if (!_hasChain)
 	{
-		for (Entity* _tile : tiles)
+		for (Tile* _tile : tiles)
 		{
-			if (_tile->GetType() == ET_FLOOR)
-			{
-				Tile* _floor = dynamic_cast<Tile*>(_tile);
-				_floor->InvertColors();
-			}
+			_tile->InvertColors();
 		}
 	}
 	else
 	{
 		for (int _index = 0; _index < tiles.size(); _index++)
 		{
-			Entity* _entity = tiles[_index];
-			if (_entity->GetType() != ET_FLOOR) continue;
-			Shape* _shape = _entity->GetShape();
+			Shape* _shape = tiles[_index]->GetShape();
 			const int _a = tempoIndex == 1 ? 255 : 200;
 			if (_shape->getFillColor().a == _a)
 			{
@@ -37,239 +37,61 @@ void Map::UpdateTilesColor()
 			}
 		}
 	}
+
+	//if (chainToggle && _hasChain)
+	//{
+	//	// activer les couleurs
+	//	for (int _index = 0; _index < tiles.size(); _index++)
+	//	{
+	//	}
+	//	chainToggle = false;
+	//}
+	//else if (!chainToggle && !_hasChain)
+	//{
+	//	// reset
+	//	chainToggle = true;
+	//}
+	//for (Tile* _tile : tiles)
+	//{
+	//	_tile->InvertColors();
+	//}
 }
 
-void Map::EraseOverlappingTiles()
+Map::Map()
 {
-	vector<Entity*> _overlappingTiles;
-	//SetTilesPosition();
-	for (Entity* _tile : tiles)
-	{
-		if (Contains<Vector2f>(_tile->GetShape()->getPosition(), tilesPosition))
-		{
-			/*tilesPosition.erase(_tile->GetShape()->getPosition())*/
-			EraseElement(tilesPosition, _tile->GetShape()->getPosition());
-		}
-
-		else
-		{
-			_overlappingTiles.push_back(_tile);
-		}
-	}
-
-	for (Entity* _tile : _overlappingTiles)
-	{
-		_tile->Destroy();
-		EraseElement(tiles, _tile);
-	}
-}
-
-void Map::GeneratePaths()
-{
-	cout << "Generating paths..." << endl;
-	const int _roomCount = (int)rooms.size();
-	for (int _index = 0; _index < _roomCount - 1; _index++)
-	{
-		Tile* _startTile = rooms[_index]->GetRandomTile();
-		Tile* _endTile = rooms[_index + 1]->GetRandomTile();
-
-		Shape* _startShape = _startTile->GetShape();
-		Shape* _endShape = _endTile->GetShape();
-
-		const float _startPositionX = _startShape->getPosition().x / TILE_SIZE.x;
-		const float _startPositionY = _startShape->getPosition().y / TILE_SIZE.y;
-
-		const float _endPositionX = _endShape->getPosition().x / TILE_SIZE.x;
-		const float _endPositionY = _endShape->getPosition().y / TILE_SIZE.y;
-
-		Vector2i _startPosition = Vector2i((int)_startPositionX,(int)_startPositionY);
-		Vector2i _endPosition = Vector2i((int)_endPositionX, (int)_endPositionY);
-
-		Path* _path = new Path(_startPosition, _endPosition);
-		vector<Tile*> _pathTiles = _path->GetTiles();
-		paths.push_back(_path);
-		tiles.insert(tiles.end(), _pathTiles.begin(), _pathTiles.end());
-	}
-}
-
-void Map::GenerateWalls()
-{
-	cout << "Generating walls..." << endl;
-	vector<Vector2i> _posToCheck = {
-		Vector2i(-1, -1),
-		Vector2i(0, -1),
-		Vector2i(1, -1),
-		Vector2i(-1, 0),
-		Vector2i(1,0),
-		Vector2i(-1,1),
-		Vector2i(0,1),
-		Vector2i(1,1)
-	};
-
-	for (int _index = 0; _index < 4; _index++)
-	{
-		vector<Vector2f> _wallPosition;
-		for (const Vector2f& _tilesPos : tilesPosition)
-		{
-			for (const Vector2i& _offset : _posToCheck)
-			{
-				Vector2f _newTilePos = _tilesPos;
-				const Vector2f& _tileOffset = Vector2f(_offset.x * TILE_SIZE.x, _offset.y * TILE_SIZE.x);
-				_newTilePos += _tileOffset;
-				if (!Contains<Vector2f>(_newTilePos, tilesPosition))
-				{
-					if (_index == 3)
-					{
-						tiles.push_back(new Wall(_newTilePos, WT_INVULNERABLE));
-					}
-					else
-					{
-						tiles.push_back(new Wall(_newTilePos,WT_DIRT));
-					}
-					_wallPosition.push_back(_newTilePos);
-				}
-			}
-		}
-		tilesPosition.insert(tilesPosition.end(), _wallPosition.begin(), _wallPosition.end());
-		_wallPosition.clear();
-	}
-}
-
-void Map::GenerateShopRoom()
-{
-	vector<Vector2i> _posToCheck = {
-		Vector2i(-1, -1),
-		Vector2i(0, -1),
-		Vector2i(1, -1),
-		Vector2i(-1, 0),
-		Vector2i(1,0),
-		Vector2i(-1,1),
-		Vector2i(0,1),
-		Vector2i(1,1)
-	};
-
-	vector<Vector2f> _availablePosition;
-	for (const Vector2f& _tilesPos : tilesPosition)
-	{
-		for (const Vector2i& _offset : _posToCheck)
-		{
-			Vector2f _newTilePos = _tilesPos;
-			const Vector2f& _tileOffset = Vector2f(_offset.x * TILE_SIZE.x, _offset.y * TILE_SIZE.x);
-			_newTilePos += _tileOffset;
-			if (!Contains<Vector2f>(_newTilePos, tilesPosition))
-			{
-				_availablePosition.push_back(_newTilePos);
-			}
-		}
-	}
-
-	const Vector2f& _position = _availablePosition[rand() % _availablePosition.size() - 1];
-
-	tilesPosition.push_back(_position);
-	Room* _room = new Room(Vector2i(5,7), _position);
-	vector<Tile*> _tiles = _room->Generate();
-	tiles.insert(tiles.end(), _tiles.begin(), _tiles.end());
-
-	for (Tile* _tile : _tiles)
-	{
-		tilesPosition.push_back(_tile->GetPosition());
-	}
-
-
-	rooms.push_back(_room);
-	PlaceWallsAroundRoom(_room,WT_SHOP);
+	
 }
 
 void Map::Generate(const int _roomCount)
 {
-	GenerateRooms(_roomCount);
-	GeneratePaths();
-	SetTilesPosition();
-	GenerateShopRoom();
-	GenerateWalls();
-	EraseOverlappingTiles();
-	SetAllTilesOriginColor();
+	InitMap(_roomCount);
 	tempoIndex = 1;
+	SetAllTilesOriginColor();
+	new Path({ 0,0 }, { 10,10 });
 	chainToggle = true;
 }
 
-void Map::GenerateRooms(const int _roomCount)
+void Map::InitMap(const int _roomCount)
 {
-	cout << "Placing rooms..." << endl;
 	for (int _index = 0; _index < _roomCount; _index++)
 	{
-		Room* _room = new Room(GetRandomRoomSize(), Vector2f(GetRandomRoomPosition()));
-		rooms.push_back(_room);
+		rooms.push_back(new Room(GetRandomRoomSize(), Vector2f(GetRandomRoomPosition()),tilesPosition));
+		UpdateTiles(rooms[_index]);
 	}
-
-	cout << "Generating rooms" << endl;
-
-	for (Room* _room : rooms)
-	{
-		vector<Tile*> _floor = _room->Generate();
-		tiles.insert(tiles.end(), _floor.begin(), _floor.end());
-	}
+	SpawnEnnemy();
 }
 
-void Map::Load(const string _path)
+void Map::UpdateTiles(const Room* _room)
 {
-	ifstream _in = ifstream(_path);
-
-	if (!_in)
+	for (Tile* _tile : _room->GetAllTiles())
 	{
-		cerr << "Erreur de chargement de " << _path << " !" << endl;
-		return;
-	}
-
-	map<char, function<void(const Vector2f& _position)>> _elements = {
-		{ '#', [this](const Vector2f& _position) { new Wall(_position, WT_SHOP); }},
-		{ ' ', [this](const Vector2f& _position) { tiles.push_back(new Tile("wall.png", _position)); }},
-		{ '.', nullptr },
-	};
-
-	string _line;
-	Vector2i _tilePosition = Vector2i(0, 0);
-	while (getline(_in, _line))
-	{
-		for (const char _char : _line)
-		{
-			function<void(const Vector2f& _position)> _callback = _elements[_char];
-			if (_callback)
-			{
-				float _positionX = (float)_tilePosition.x * TILE_SIZE.x;
-				float _positionY = (float)_tilePosition.y * TILE_SIZE.y;
-				_callback(Vector2f(_positionX, _positionY));
-			}
-			_tilePosition.x += 1;
-		}
-		_tilePosition.x = 0;
-		_tilePosition.y += 1;
-	}
-
-	SetTilesPosition();
-	SetAllTilesOriginColor();
-}
-
-void Map::AddTileAt(const Vector2f& _position)
-{
-	Tile* _tile = new Tile("wall.png", _position);
-	tiles.push_back(_tile);
-	const Vector2i _tilePosition = Vector2i(_position.x / int(TILE_SIZE.x), _position.y / int(TILE_SIZE.y));
-	if ((_tilePosition.x + _tilePosition.y) % 2 == 0)
-	{
-		if (!isPurple) _tile->SetColors(Color(135, 79, 2, 255), Color(135, 79, 2, 200));
-		else _tile->SetColors(Color(135, 79, 2, 200), Color(135, 79, 2, 255));
-	}
-	else
-	{
-		if (!isPurple) _tile->SetColors(Color(135, 79, 2, 200), Color(135, 79, 2, 255));
-		else _tile->SetColors(Color(135, 79, 2, 255), Color(135, 79, 2, 200));
+		tiles.push_back(_tile);
+		tilesPosition.push_back(_tile->GetShape()->getPosition());
 	}
 }
 
 void Map::Update()
 {
-	isPurple = !isPurple;
 	if (tempoIndex == 3)
 	{
 		tempoIndex = 1;
@@ -280,13 +102,9 @@ void Map::Update()
 
 void Map::ResetAllTilesColor()
 {
-	for (Entity* _tile : tiles)
+	for (Tile* _tile : tiles)
 	{
-		if (_tile->GetType() == ET_FLOOR)
-		{
-			Tile* _floor = dynamic_cast<Tile*>(_tile);
-			_floor->ResetColor();
-		}
+		_tile->ResetColor();
 	}
 }
 
@@ -295,10 +113,8 @@ void Map::SetAllTilesOriginColor()
 	const int _size = static_cast<const int>(tiles.size());
 	for (int _index = 0; _index < _size; _index++)
 	{
-		Entity* _entity = tiles[_index];
-		if (_entity->GetType() != ET_FLOOR) continue;
-		Tile* _tile = dynamic_cast<Tile*>(_entity);
-		Shape* _shape = _entity->GetShape();
+		Tile* _tile = tiles[_index];
+		Shape* _shape = tiles[_index]->GetShape();
 		const Vector2i& _position = Vector2i(_shape->getPosition());
 		const Vector2i _tilePosition = Vector2i(_position.x / int(TILE_SIZE.x), _position.y / int(TILE_SIZE.y));
 		if ((_tilePosition.x + _tilePosition.y) % 2 == 0)
@@ -313,46 +129,28 @@ void Map::SetAllTilesOriginColor()
 	}
 }
 
-void Map::PlaceWallsAroundRoom(Room* _room,const WallType& _type)
+void Map::SpawnEnnemy(const int _ennemyCount)
 {
-	cout << "Generating walls..." << endl;
-
-
-	vector<Vector2f> _tilesPosition;
-
-	for (const Tile* _tile : _room->GetFloor())
+	/*vector<Enemy*> _enemyList =
 	{
-		_tilesPosition.push_back(_tile->GetPosition());
-	}
-	
+		new Bat(GetRandomTilePosition()),
+		new GreenSlime(GetRandomTilePosition()),
+		new BlueSlime(GetRandomTilePosition()),
+		new OrangeSlime(GetRandomTilePosition()),
+	};*/
 
-	vector<Vector2i> _posToCheck = {
-		Vector2i(-1, -1),
-		Vector2i(0, -1),
-		Vector2i(1, -1),
-		Vector2i(-1, 0),
-		Vector2i(1,0),
-		Vector2i(-1,1),
-		Vector2i(0,1),
-		Vector2i(1,1)
+	vector<function<void()>> _enemyList =
+	{
+	[this]() { new Bat(GetRandomTilePosition()); },
+	[this]() { new GreenSlime(GetRandomTilePosition()); },
+	[this]() { new BlueSlime(GetRandomTilePosition()); },
+	[this]() { new OrangeSlime(GetRandomTilePosition()); },
 	};
 
-	vector<Vector2f> _wallPosition;
-	for (const Vector2f& _tilesPos : _tilesPosition)
+	int _randIndex;
+	for (int _index = 0; _index < _ennemyCount; _index++)
 	{
-		for (const Vector2i& _offset : _posToCheck)
-		{
-			Vector2f _newTilePos = _tilesPos;
-			const Vector2f& _tileOffset = Vector2f(_offset.x * TILE_SIZE.x, _offset.y * TILE_SIZE.x);
-			_newTilePos += _tileOffset;
-			if (!Contains<Vector2f>(_newTilePos, _tilesPosition))
-			{
-				new Wall(_newTilePos,_type);
-				_wallPosition.push_back(_newTilePos);
-			}
-		}
+		_randIndex = Random(static_cast<int>(_enemyList.size()), 0);
+		_enemyList[_randIndex]();
 	}
-	tilesPosition.insert(tilesPosition.end(), _wallPosition.begin(), _wallPosition.end());
-	_wallPosition.clear();
-
 }

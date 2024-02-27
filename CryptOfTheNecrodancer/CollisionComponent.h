@@ -3,19 +3,15 @@
 #include<vector>
 #include"Component.h"
 #include<SFML/Graphics.hpp>
-#include"Entity.h"
-
 using namespace std;
 using namespace sf;
 struct CollisionReaction
 {
 	function<void(Entity* _entity)> callback;
-	EntityType type;
 
-	CollisionReaction(const EntityType& _type, const function<void(Entity* _entity)>& _callback)
+	CollisionReaction(const function<void(Entity* _entity)>& _callback)
 	{
 		callback = _callback;
-		type = _type;
 	}
 
 };

@@ -6,14 +6,6 @@ int GetUniqueID()
 	return _id++;
 }
 
-int Random(const int _max, const int _min)
-{
-	random_device _rd;
-	mt19937 _seed(_rd());
-	uniform_int_distribution<int> _distribution(_min, _max);
-	return _distribution(_seed);
-}
-
 float Length(Vector2f& _vector)
 {
 	return sqrt(_vector.x * _vector.x + _vector.y * _vector.y);

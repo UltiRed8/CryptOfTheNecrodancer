@@ -3,7 +3,6 @@
 Tile::Tile(const string& _tilePath, const Vector2f& _position) : Entity(STRING_ID("Tile"), _tilePath, _position)
 {
 	entities = vector<Entity*>();
-	type = ET_FLOOR;
 }
 
 void Tile::InvertColors()

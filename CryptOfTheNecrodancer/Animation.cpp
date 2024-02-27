@@ -4,7 +4,7 @@
 #include"EntityManager.h"
 #include"Macro.h"
 
-Animation::Animation(const string& _name, AnimationComponent* _owner, Sprite* _sprite, const AnimationData& _data) : IManagable(_name)
+Animation::Animation(const string& _name, AnimationComponent* _owner, Sprite* _sprite, const AnimationData& _data) : IManagable(STRING_ID(_name))
 {
 	owner = _owner;
 	sprite = _sprite;
@@ -14,7 +14,6 @@ Animation::Animation(const string& _name, AnimationComponent* _owner, Sprite* _s
 	const Vector2i& _size = Vector2i(static_cast<const int>(data.size.x), static_cast<const int>(data.size.y));
 	const IntRect& _rect = IntRect(_position, _size);
 	sprite->setTextureRect(_rect);
-
 }
 
 

@@ -3,19 +3,15 @@
 #include "TimerManager.h"
 #include "Map.h"
 #include "Player.h"
-#include "UIImage.h"
 #include "MovementComponent.h"
 #include "RythmComponent.h"
-#include "MenuManager.h"
 
 MusicManager::MusicManager()
 {
 	volume = 10.f;
 	rythmLoop = nullptr;
 	isRunning = false;
-	acceptDelay = 300;
-	playSpeed = 1.0f;
-	currentBPM = 0;
+	acceptDelay = 200;
 }
 
 void MusicManager::Play(const string& _path, const int _bpm)
@@ -63,74 +59,6 @@ void MusicManager::Unpause()
 	}
 }
 
-void MusicManager::SpeedUp()
-{
-	if (playSpeed != 1.0f) return;
-	cout << "SpeedUp!" << endl;
-	SetPlaySpeed(1.5f);
-	new Timer("ResetPlaySpeed", [this]() {
-		SetPlaySpeed(1.0f);
-	}, seconds(5.0f), 1, true);
-}
-
-void MusicManager::SpeedDown()
-{
-	if (playSpeed != 1.0f) return;
-	cout << "SpeedDown!" << endl;
-	SetPlaySpeed(0.5f);
-	new Timer("ResetPlaySpeed", [this]() {
-		SetPlaySpeed(1.0f);
-	}, seconds(5.0f), 1, true);
-}
-
-void MusicManager::SetPlaySpeed(const float _newValue)
-{
-	playSpeed = _newValue;
-	GetCurrent()->setPitch(playSpeed);
-	rythmLoop->SetDuration(seconds(1.f / ((currentBPM* playSpeed) / 60.f)));
-}
-
-void MusicManager::IncreaseVolume()
-{
-	if (volume >= 0.f && volume < 100.f)
-	{
-		GetCurrent()->setVolume(volume += 10.f);
-	}
-
-	else if (volume >= 100)
-	{
-		GetCurrent()->setVolume(100);
-	}
-}
-
-void MusicManager::DecreaseVolume()
-{
-	if (volume > 0.f && volume <= 100.f)
-	{
-		GetCurrent()->setVolume(volume -= 10.f);
-	}
-	
-	else if (volume <= 0)
-	{
-		GetCurrent()->setVolume(0);
-	}
-}
-
-void MusicManager::ToggleVolume()
-{
-	if (GetCurrent()->getVolume() > 0)
-	{
-		tempVolume = volume;
-		volume = 0;
-		GetCurrent()->setVolume(volume);
-	}
-	else
-	{
-		GetCurrent()->setVolume(tempVolume);
-		volume = tempVolume;
-	}
-}
-
 void MusicManager::UpdateLoop(const int _bpm)
 {
 	if (rythmLoop)
@@ -138,18 +66,9 @@ void MusicManager::UpdateLoop(const int _bpm)
 		rythmLoop->Destroy();
 	}
 
-	currentBPM = _bpm;
-
 	rythmLoop = new Timer("Timer", [this]() {
 
-		for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
-		{
-			if (RythmComponent* _component = _entity->GetComponent<RythmComponent>())
-			{
-				_component->BeforeUpdate();
-			}
-		};
-
+		EntityManager::GetInstance().Get("Player")->GetComponent<MovementComponent>()->SetCanMove(true);
 		new Timer("InputsTooSoon", [this]() {
 			Map::GetInstance().Update();
 			
@@ -157,31 +76,17 @@ void MusicManager::UpdateLoop(const int _bpm)
 			{
 				if (RythmComponent* _component = _entity->GetComponent<RythmComponent>())
 				{
-					_component->TimedUpdate();
+					_component->RythmUpdate();
 				}
 			};
-
-			Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->GetElements()[0])->GetShape();
-			TextureManager::GetInstance().Load(_shape, "RythmHearts1.png");
-			new Timer("HeartIndicatorReset", [this]() {
-				Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->GetElements()[0])->GetShape();
-				TextureManager::GetInstance().Load(_shape, "RythmHearts0.png");
-			}, seconds(0.1f), 1, true);
-			
 		}, milliseconds(acceptDelay / 2), 1, true);
-
-
-
-
 		new Timer("InputsTooLate", [this]() {
-			for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
-			{
-				if (RythmComponent* _component = _entity->GetComponent<RythmComponent>())
-				{
-					_component->AfterUpdate();
-				}
-			};
+			EntityManager::GetInstance().Get("Player")->GetComponent<MovementComponent>()->SetCanMove(false);
 		}, milliseconds(acceptDelay), 1, true);
 
 	}, seconds(1.f / (_bpm / 60.f)), -1);
 }
+
+// un nombre entre 1 et 3 (nombre de points de chemins entre chaque salle)
+// créer un object path (position start, end, int width, int chanceToPlaceWall, int chanceToBeCleanPath)
+// dans path method "CreatePath" qui part du start, calculer direction avec macro

@@ -1,11 +1,9 @@
 #include "RythmComponent.h"
 #include"Entity.h"
 #include"TimerManager.h"
-RythmComponent::RythmComponent(Entity* _owner, const function<void()>& _beforeCallback, const function<void()>& _timedCallback, const function<void()>& _afterCallback) : Component(_owner)
+RythmComponent::RythmComponent(Entity* _owner,const vector<function<void()>>& _callbacks):Component(_owner)
 {
-	beforeCallback = _beforeCallback;
-	timedCallback = _timedCallback;
-	afterCallback = _afterCallback;
+	callbacks = _callbacks;
 }
 
 void RythmComponent::Update()
@@ -13,26 +11,10 @@ void RythmComponent::Update()
 
 }
 
-void RythmComponent::BeforeUpdate()
+void RythmComponent::RythmUpdate()
 {
-	if (beforeCallback)
+	for (function<void()> _callback : callbacks)
 	{
-		beforeCallback();
-	}
-}
-
-void RythmComponent::TimedUpdate()
-{
-	if (timedCallback)
-	{
-		timedCallback();
-	}
-}
-
-void RythmComponent::AfterUpdate()
-{
-	if (afterCallback)
-	{
-		afterCallback();
+		_callback();
 	}
 }

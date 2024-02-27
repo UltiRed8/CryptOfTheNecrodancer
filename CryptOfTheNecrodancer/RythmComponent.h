@@ -5,18 +5,13 @@
 using namespace std;
 class RythmComponent : public Component
 {
-	function<void()> beforeCallback;
-	function<void()> timedCallback;
-	function<void()> afterCallback;
+	vector<function<void()>> callbacks;
 
 public:
-	RythmComponent(Entity* _owner, const function<void()>& _beforeCallback, const function<void()>& _timedCallback, const function<void()>& _afterCallback);
+	RythmComponent(Entity* _owner, const vector<function<void()>>& _callbacks);
 
 	// Hérité via Component
 	void Update() override;
-	void BeforeUpdate();
-	void TimedUpdate();
-	void AfterUpdate();
-	// todo a passer en callback par méthodes
+	void RythmUpdate();
 };
 
