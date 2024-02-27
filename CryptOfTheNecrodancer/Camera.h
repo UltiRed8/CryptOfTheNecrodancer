@@ -23,6 +23,7 @@ public:
 
 public:
 	void Update();
+
 private:
 	virtual void Register() override;
 	void Init();

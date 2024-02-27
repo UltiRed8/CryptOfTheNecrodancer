@@ -2,7 +2,6 @@
 
 class TextureManager;
 class EntityManager;
-class MapManager;
 
 template<typename ID>
 class IManagable

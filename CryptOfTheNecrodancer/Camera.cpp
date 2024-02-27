@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include "CameraManager.h"
 #include "EntityManager.h"
+#include "Macro.h"
 
 Camera::Camera(const string& _id, const CameraType& _type, const Vector2f& _from, const Vector2f& _to) : IManagable(_id), View(_from, _to)
 {
@@ -33,7 +34,14 @@ void Camera::Update()
 {
 	if (type == CAMERA_PLAYER)
 	{
-		setCenter(EntityManager::GetInstance().Get("Player")->GetPosition());
-		//cout << EntityManager::GetInstance().Get("Player")->GetPosition().x << " " << EntityManager::GetInstance().Get("Player")->GetPosition().y;
+		const Vector2f& _currentPosition = getCenter();
+		const Vector2f& _playerPosition = EntityManager::GetInstance().Get("Player")->GetPosition();
+
+		Vector2f _offset = Vector2f(0.0f, 0.0f);
+		_offset.x = _currentPosition.x > _playerPosition.x ? -0.1f : 0.1f;
+		_offset.y = _currentPosition.y > _playerPosition.y ? -0.1f : 0.1f;
+
+		move(_offset);
+		//setCenter(_playerPosition);
 	}
 }

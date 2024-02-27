@@ -3,6 +3,7 @@
 #include "InputManager.h"
 #include "MovementComponent.h"
 #include "AnimationComponent.h"
+#include "RythmComponent.h"
 
 #define PATH_PLAYER "PlayerSprite.png"
 
@@ -26,10 +27,10 @@ Player::~Player()
 void Player::InitInput()
 {
 	new ActionMap("Mouvements",
-		{ ActionData("Haut", [this]() { GetComponent<MovementComponent>()->SetDirection(new Vector2i(0,-1)); }, {Event::KeyPressed, Keyboard::Up}),
-		  ActionData("Bas", [this]() { GetComponent<MovementComponent>()->SetDirection(new Vector2i(0, 1)); }, {Event::KeyPressed, Keyboard::Down}),
-		  ActionData("Droite", [this]() { GetComponent<MovementComponent>()->SetDirection(new Vector2i(1, 0)); }, {Event::KeyPressed, Keyboard::Right}),
-		  ActionData("Gauche", [this]() { GetComponent<MovementComponent>()->SetDirection(new Vector2i(-1, 0)); }, {Event::KeyPressed, Keyboard::Left})
+		{ ActionData("Haut", [this]() { GetComponent<MovementComponent>()->SetDirection(Vector2i(0,-1)); cout << "t" << endl; }, {Event::KeyPressed, Keyboard::Up}),
+		  ActionData("Bas", [this]() { GetComponent<MovementComponent>()->SetDirection(Vector2i(0, 1)); cout << "t" << endl; }, {Event::KeyPressed, Keyboard::Down}),
+		  ActionData("Droite", [this]() { GetComponent<MovementComponent>()->SetDirection(Vector2i(1, 0)); cout << "t" << endl; }, {Event::KeyPressed, Keyboard::Right}),
+		  ActionData("Gauche", [this]() { GetComponent<MovementComponent>()->SetDirection(Vector2i(-1, 0)); cout << "t" << endl; }, {Event::KeyPressed, Keyboard::Left})
 		});
 
 	// TODO remove

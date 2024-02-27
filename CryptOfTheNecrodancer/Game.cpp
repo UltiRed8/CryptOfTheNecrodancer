@@ -6,6 +6,7 @@
 #include "MenuManager.h"
 #include "UIImage.h"
 #include "CameraManager.h"
+#include "MovementComponent.h"
 
 
 Game::Game()
@@ -33,13 +34,11 @@ void Game::Start()
 
 	// TODO temporaire
 
-	map = new Map(1);
-
-	MusicManager::GetInstance().Play("Lobby.mp3");
+	Map::GetInstance().Generate(1);
 
 	//TheWighttoRemain.mp3
 
-	new Timer("Timer", [this]() { map->Update(); }, seconds(1.f/(130/60.f)), -1);
+	MusicManager::GetInstance().Play("Lobby.mp3", 130);
 
 	player = new Player("Player",{0.f,0.f},{});
 
@@ -57,8 +56,8 @@ void Game::Update()
 	{
 		TimerManager::GetInstance().Update();
 		InputManager::GetInstance().Update(window);
-		EntityManager::GetInstance().Update();
 		CameraManager::GetInstance().Update(window);
+		EntityManager::GetInstance().Update();
 		UpdateWindow();
 		window->setView(*CameraManager::GetInstance().Get("PlayerCamera"));
 	}

@@ -86,6 +86,7 @@ public:
 	Value* Get(const Key& _key)
 	{
 		if (!Exist(_key)) return nullptr;
+		current = allValues[_key];
 		return allValues[_key];
 	}
 	map<Key, Value*> GetAll() const

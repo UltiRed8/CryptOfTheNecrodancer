@@ -64,7 +64,7 @@ static void Debug(const Key& _key, Value* _value)
 	string _name = typeid(_value).name();
 	_name = _name.substr(_name.find_first_of(' ') + 1, _name.length());
 	_name = _name.substr(0, _name.find_first_of('*') - 1);
-	cout << RED << "[GarbageCollector]> " << DARK_ORANGE << "Removed " << _name << " with id '" << _key << "'!" << COLOR_RESET << endl;
+	//cout << RED << "[GarbageCollector]> " << DARK_ORANGE << "Removed " << _name << " with id '" << _key << "'!" << COLOR_RESET << endl;
 }
 
 template <typename Value>
@@ -73,5 +73,5 @@ static void Debug(Value* _value)
 	string _name = typeid(_value).name();
 	_name = _name.substr(_name.find_first_of(' ') + 1, _name.length());
 	_name = _name.substr(0, _name.find_first_of('*') - 1);
-	cout << RED << "[GarbageCollector]> " << DARK_ORANGE << "Removed unregistered " << _name << "!" << COLOR_RESET << endl;
+	//cout << RED << "[GarbageCollector]> " << DARK_ORANGE << "Removed unregistered " << _name << "!" << COLOR_RESET << endl;
 }
