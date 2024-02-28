@@ -6,17 +6,13 @@
 Menu::Menu(const string& _id, const vector<UIElement*>& _elements, const int& _zIndex) : IManagable(_id)
 {
 	wantsToCloseMenu = false;
-	elements = _elements;
+	for (UIElement* _element : _elements)
+	{
+		_element->SetOwner(this);
+		_element->Register();
+	}
 	zIndex = _zIndex;
 	Register();
-}
-
-Menu::~Menu()
-{
-	for (UIElement* _element : elements)
-	{
-		delete _element;
-	}
 }
 
 void Menu::Open()
@@ -41,7 +37,7 @@ void Menu::Register()
 
 bool Menu::ClickAction()
 {
-	for (UIElement* _element : elements)
+	for (UIElement* _element : GetAllValues())
 	{
 		UIButton* _button;
 		if (_button = dynamic_cast<UIButton*>(_element))
@@ -60,7 +56,7 @@ bool Menu::ClickAction()
 void Menu::Update(RenderWindow* _window)
 {
 	const Vector2i& _mousePosition = Mouse::getPosition(*_window);
-	for (UIElement* _element : elements)
+	for (UIElement* _element : GetAllValues())
 	{
 		_element->Update(_mousePosition);
 	}
@@ -69,7 +65,7 @@ void Menu::Update(RenderWindow* _window)
 vector<Drawable*> Menu::GetDrawables()
 {
 	vector<Drawable*> _drawables;
-	for (UIElement* _element : elements)
+	for (UIElement* _element : GetAllValues())
 	{
 		vector<Drawable*> _elementDrawables = _element->GetDrawables();
 		_drawables.insert(_drawables.end(), _elementDrawables.begin(), _elementDrawables.end());

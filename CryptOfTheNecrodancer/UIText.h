@@ -22,7 +22,7 @@ public:
 	}
 
 public:
-	UIText(const Vector2f& _position, const Color& _color, const string& _textValue, const int _textSize, const string& _fontPath, bool _italic = false, int* _additionalValue = nullptr);
+	UIText(const string &_id, const Vector2f& _position, const Color& _color, const string& _textValue, const int _textSize, const string& _fontPath, bool _italic = false, int* _additionalValue = nullptr);
 	~UIText();
 
 public:

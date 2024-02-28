@@ -23,11 +23,12 @@ public :
 	void ClickAction();
 	void Update();
 
+	void InitMenu(RenderWindow* _window);
+
 	void InitHUD();
+	void InitInventory();
 
 	#pragma region MenuPause
-
-	void InitMenu(RenderWindow* _window);
 
 	void InitMenuPause();
 

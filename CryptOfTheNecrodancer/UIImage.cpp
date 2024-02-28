@@ -1,7 +1,7 @@
 #include "UIImage.h"
 #include "TextureManager.h"
 
-UIImage::UIImage(const Vector2f& _position, const Vector2f& _size, const string& _path) : UIElement(_position)
+UIImage::UIImage(const string& _id, const Vector2f& _position, const Vector2f& _size, const string& _path) : UIElement(_id, _position)
 {
 	shape = new RectangleShape(_size);
 	shape->setPosition(_position);
