@@ -8,6 +8,7 @@
 #include "Macro.h"
 #include "CameraManager.h"
 #include "TimerManager.h"
+#include "Player.h"
 
 vector<Drawable*> MenuManager::GetDrawables()
 {
@@ -80,10 +81,31 @@ void MenuManager::Update()
 	}
 }
 
+void MenuManager::InitHUD()
+{
+	Menu* _hud = new Menu("HUD", {
+		//Rythmed Heart
+		new UIImage(Vector2f(SCREEN_WIDTH / 2 - 20 * 2, SCREEN_HEIGHT - 55 * 2), Vector2f(40.0f, 50.0f) * 2.0f, "RythmHearts0.png"),
+
+		//Multiplier
+		new UIText(Vector2f(SCREEN_WIDTH / 2 - 20 * 0.5, SCREEN_HEIGHT - 55 * 0.2), Color::White, "Coin Multiplier: " , 15,"Assets/Font/Font.ttf", false, dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetChainMultiplier()),
+
+		//Coins
+		new UIImage(Vector2f(SCREEN_WIDTH - 55 * 3, SCREEN_HEIGHT - 55 * 12.8), Vector2f(25.0f, 25.0f) * 2.0f, "Coin.png"),
+		new UIText(Vector2f(SCREEN_WIDTH - 55 * 1.2, SCREEN_HEIGHT - 55 * 12.5), Color::White, "x " ,25,"Assets/Font/Font.ttf", false, dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetRessources().GetMoney()),
+
+		//Diamond
+		new UIImage(Vector2f(SCREEN_WIDTH - 55 * 3, SCREEN_HEIGHT - 55 * 11.6), Vector2f(25.0f, 25.0f) * 2.0f, "Diamond.png"),
+		new UIText(Vector2f(SCREEN_WIDTH - 55 * 1.2, SCREEN_HEIGHT - 55 * 11.3), Color::White, "x " ,25,"Assets/Font/Font.ttf", false, dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetRessources().GetDiamonds()),
+		});
+
+	_hud->Open();
+}
+
 void MenuManager::InitMenu(RenderWindow* _window)
 {
 	window = _window;
-
+	InitHUD();
 	InitMenuPause();
 	InitMenuOptions();
 	InitMenuClose();

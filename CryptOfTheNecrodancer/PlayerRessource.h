@@ -3,15 +3,15 @@
 class PlayerRessource
 {
 protected :
-	int money;
-	int diamonds;
+	int* money;
+	int* diamonds;
 
 public :
-	int GetMoney() const
+	int* GetMoney() const
 	{
 		return money;
 	}
-	int GetDiamonds() const
+	int* GetDiamonds() const
 	{
 		return diamonds;
 	}

@@ -4,7 +4,7 @@
 
 void Map::UpdateTilesColor()
 {
-	const bool _hasChain = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetChainMultiplier() > 1.0f;
+	const bool _hasChain = *dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetChainMultiplier() > 1.0f;
 
 	ResetFloorColor();
 

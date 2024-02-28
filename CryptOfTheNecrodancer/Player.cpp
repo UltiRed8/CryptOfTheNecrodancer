@@ -31,13 +31,14 @@ Player::Player(const string _id, const Vector2f& _position, PlayerRessource _res
 	});
 	InitInput();
 	zIndex = 1;
-	chainMultiplier = 1.0f;
+	chainMultiplier = new int(1);
 	type = ET_PLAYER;
 }
 
 Player::~Player()
 {
 	delete inventory;
+	delete chainMultiplier;
 }
 
 void Player::InitInput()
@@ -51,8 +52,8 @@ void Player::InitInput()
 
 	// TODO remove
 	new ActionMap("TempDebug",
-		{ ActionData("Decrease", [this]() { chainMultiplier = 1.0f; cout << "Set chain multiplier to: 1.0f!" << endl; }, {Event::KeyPressed, Keyboard::Num1}),
-		  ActionData("Increase", [this]() { chainMultiplier = 2.0f; cout << "Set chain multiplier to: 2.0f!" << endl; }, {Event::KeyPressed, Keyboard::Num2}),
+		{ ActionData("Decrease", [this]() { *chainMultiplier = 1; cout << "Set chain multiplier to: 1!" << endl; }, {Event::KeyPressed, Keyboard::Num1}),
+		  ActionData("Increase", [this]() { *chainMultiplier = 2; cout << "Set chain multiplier to: 2!" << endl; }, {Event::KeyPressed, Keyboard::Num2}),
 		  ActionData("SpeedIncrease", [this]() { MusicManager::GetInstance().SpeedUp(); }, {Event::KeyPressed, Keyboard::Num3}),
 		  ActionData("SpeedDecrease", [this]() { MusicManager::GetInstance().SpeedDown(); }, {Event::KeyPressed, Keyboard::Num4}),
 		});

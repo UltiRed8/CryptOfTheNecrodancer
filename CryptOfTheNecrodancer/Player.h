@@ -7,10 +7,10 @@ class Player : public Entity
 {
 	Inventory* inventory;
 	PlayerRessource ressources;
-	float chainMultiplier;
+	int* chainMultiplier;
 
 public:
-	float GetChainMultiplier() const
+	int* GetChainMultiplier() const
 	{
 		return chainMultiplier;
 	}
