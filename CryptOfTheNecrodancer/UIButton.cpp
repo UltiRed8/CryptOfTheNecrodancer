@@ -2,33 +2,34 @@
 #include "UIImage.h"
 #include "UIText.h"
 #include "SoundManager.h"
+#include "Macro.h"
 
 // Text
-UIButton::UIButton(const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const string& _textValue, const int _textSize, const string& _fontPath, const string& _soundPath, const function<void()>& _callback, int* _additionalValue) : UIElement(_position)
+UIButton::UIButton(const string& _id, const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const string& _textValue, const int _textSize, const string& _fontPath, const string& _soundPath, const function<void()>& _callback, int* _additionalValue) : UIElement(_id, _position)
 {
 	unhoverColor = _unhoverColor;
 	hoverColor = _hoverColor;
 	callback = _callback;
-	UIText* _text = new UIText(_position, _unhoverColor, _textValue, _textSize, _fontPath, false, _additionalValue);
+	UIText* _text = new UIText(_id + "Text", _position, _unhoverColor, _textValue, _textSize, _fontPath, false, _additionalValue);
 	elements.push_back(_text);
 	box = _text->GetText()->getGlobalBounds();
 	soundPath = _soundPath;
 }
 
 // Image
-UIButton::UIButton(const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const string& _path, const Vector2f& _imageSize, const string& _soundPath, const function<void()>& _callback) : UIElement(_position)
+UIButton::UIButton(const string& _id, const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const string& _path, const Vector2f& _imageSize, const string& _soundPath, const function<void()>& _callback) : UIElement(_id, _position)
 {
 	unhoverColor = _unhoverColor;
 	hoverColor = _hoverColor;
 	callback = _callback;
-	UIImage* _image = new UIImage(_position, _imageSize, _path);
+	UIImage* _image = new UIImage(_id + "Image", _position, _imageSize, _path);
 	elements.push_back(_image);
 	box = _image->GetShape()->getGlobalBounds();
 	soundPath = _soundPath;
 }
 
 // Custom
-UIButton::UIButton(const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const vector<UIElement*>& _elements, const string& _soundPath, const function<void()>& _callback, const FloatRect& _box) : UIElement(_position)
+UIButton::UIButton(const string& _id, const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const vector<UIElement*>& _elements, const string& _soundPath, const function<void()>& _callback, const FloatRect& _box) : UIElement(_id, _position)
 {
 	unhoverColor = _unhoverColor;
 	hoverColor = _hoverColor;

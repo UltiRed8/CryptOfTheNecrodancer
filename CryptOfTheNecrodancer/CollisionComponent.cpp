@@ -16,17 +16,20 @@ void CollisionComponent::CheckCollision(const vector<CollisionReaction>& _reacti
 	{
 		Shape* _shape = _entity->GetShape();
 
-		if (_shape == _currentShape) continue;
-
-		if (_rect.intersects(_shape->getGlobalBounds()))
+		if (_shape)
 		{
-			const EntityType& _entityType = _entity->GetType();
+			if (_shape == _currentShape) continue;
 
-			for (const CollisionReaction& _reaction : _reactions)
+			if (_rect.intersects(_shape->getGlobalBounds()))
 			{
-				if (_entityType == _reaction.type)
+				const EntityType& _entityType = _entity->GetType();
+
+				for (const CollisionReaction& _reaction : _reactions)
 				{
-					_reaction.callback(_entity);
+					if (_entityType == _reaction.type)
+					{
+						_reaction.callback(_entity);
+					}
 				}
 			}
 		}

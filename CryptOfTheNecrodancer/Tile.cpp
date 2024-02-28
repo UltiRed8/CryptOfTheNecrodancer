@@ -4,10 +4,15 @@
 #define C_PURPLE Color(255, 62, 216, 255)
 #define C_GREEN Color(53, 233, 136, 255)
 
-Tile::Tile(const string& _tilePath, const Vector2f& _position) : Entity(STRING_ID("Tile"), _tilePath, _position)
+Tile::Tile(const string& _tilePath, const Vector2f& _position, const EntityType& _type) : Entity(STRING_ID("Tile"), _tilePath, _position)
 {
 	entities = vector<Entity*>();
-	type = ET_FLOOR;
+	type = _type;
+	if (_type == ET_SHADOW)
+	{
+		shape->setFillColor(Color::Black);
+		zIndex = 3;
+	}
 }
 
 void Tile::InvertAlpha(const bool _reset)

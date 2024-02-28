@@ -11,7 +11,6 @@ class MenuManager : public Singleton<MenuManager>, public IManager<string, Menu>
 	RenderWindow* window;
 	Vector2f factor;
 	float* index;
-	int fps;
 
 public:
 	vector<Drawable*> GetDrawables();
@@ -24,9 +23,12 @@ public :
 	void ClickAction();
 	void Update();
 
-	#pragma region MenuPause
-
 	void InitMenu(RenderWindow* _window);
+
+	void InitHUD();
+	void InitInventory();
+
+	#pragma region MenuPause
 
 	void InitMenuPause();
 

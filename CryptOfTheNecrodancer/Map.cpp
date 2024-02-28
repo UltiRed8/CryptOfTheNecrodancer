@@ -1,13 +1,15 @@
 #include "Map.h"
 #include "EntityManager.h"
 #include "Player.h"
+#include "LightningManager.h"
+#define PATH_STAIR "stairs.png"
 
 #define C_BROWN Color(135, 79, 2, 255)
 #define C_LIGHT_BROWN Color(135, 79, 2, 200)
 
 void Map::UpdateTilesColor()
 {
-	const bool _hasChain = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetChainMultiplier() > 1.0f;
+	const bool _hasChain = *dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetChainMultiplier() > 1.0f;
 
 	if (!_hasChain)
 	{
@@ -80,6 +82,7 @@ Map::Map()
 	chainToggle = true;
 	isPurple = false;
 	shop = nullptr;
+	stair = nullptr;
 }
 
 Map::~Map()
@@ -104,6 +107,8 @@ void Map::Generate(const int _roomCount)
 	GenerateWalls();
 	EraseOverlappings();
 	SetAllFloorOriginColor();
+	LightningManager::GetInstance().Construct(GetAllPositions(floors));
+	LightningManager::GetInstance().Construct(GetAllPositions(walls));
 }
 
 void Map::EraseOverlappings()
@@ -184,8 +189,9 @@ void Map::Load(const string _path)
 
 	map<char, function<void(const Vector2f& _position)>> _elements = {
 		{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP)); }},
-		{ ' ', [this](const Vector2f& _position) { floors.push_back(new Tile("wall.png", _position)); }},
+		{ ' ', [this](const Vector2f& _position) { floors.push_back(new Tile("floor.png", _position)); }},
 		{ '.', nullptr },
+		{ 'S', [this](const Vector2f& _position) { stair = new Stair(PATH_STAIR, _position); }},
 	};
 
 	string _line;
@@ -212,7 +218,7 @@ void Map::Load(const string _path)
 
 void Map::AddFloorAt(const Vector2f& _position)
 {
-	Tile* _floor = new Tile("wall.png", _position);
+	Tile* _floor = new Tile("floor.png", _position);
 	floors.push_back(_floor);
 	SetFloorColor(_floor);
 }
@@ -336,8 +342,10 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 		[this](const Vector2f& _position) { new NormalSkeleton(_position); },
 	};
 
+
 	int _randIndex;
 	vector<Vector2f> _positions = GetSpawnPositions();
+	new Shopkeeper(_positions[0]);
 	if (_positions.empty()) return;
 	for (int _index = 0; _index < _ennemyCount; _index++)
 	{
@@ -346,4 +354,45 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 		_randIndex = Random(static_cast<int>(_enemyList.size() - 1), 0);
 		_enemyList[_randIndex](_position);
 	}
+}
+
+void Map::NextLevel()
+{
+	DeleteAll();
+	Generate(6);
+	
+	EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(GetFirstTilePosition());
+}
+
+void Map::DeleteAll()
+{
+	for (Tile* _floor : floors)
+	{
+		_floor->Destroy();
+	}
+	floors.clear();
+	for (Wall* _wall : walls)
+	{
+		_wall->Destroy();
+	}
+	walls.clear();
+
+	stair->Destroy();
+	stair = nullptr;
+	for (Room* _room : rooms)
+	{
+		delete _room;
+	}
+	rooms.clear();
+	shop = nullptr;
+
+	for (Path* _path : paths)
+	{
+		delete _path;
+	}
+	paths.clear();
+
+	tempoIndex = 1;
+	chainToggle = true;
+	isPurple = false;
 }

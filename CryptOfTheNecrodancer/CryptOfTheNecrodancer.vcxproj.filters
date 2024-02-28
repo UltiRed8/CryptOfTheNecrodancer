@@ -256,6 +256,21 @@
       <Filter>Source Files\Monster</Filter>
     </ClCompile>
     <ClCompile Include="Skeleton.cpp">
+      <Filter>Source Files\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Shopkeeper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Stair.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Trap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LightningComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LightningManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -438,6 +453,21 @@
       <Filter>Source Files\Monster</Filter>
     </ClInclude>
     <ClInclude Include="Skeleton.h">
+      <Filter>Source Files\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Shopkeeper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Stair.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Trap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LightningComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LightningManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

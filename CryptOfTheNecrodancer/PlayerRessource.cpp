@@ -2,6 +2,6 @@
 
 PlayerRessource::PlayerRessource()
 {
-	money = 0;
-	diamonds = 0;
+	money = new int(0);
+	diamonds = new int(0);
 }

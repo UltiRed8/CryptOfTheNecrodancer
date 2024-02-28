@@ -7,6 +7,7 @@
 #include "MovementComponent.h"
 #include "RythmComponent.h"
 #include "MenuManager.h"
+#include "LightningManager.h"
 
 MusicManager::MusicManager()
 {
@@ -42,6 +43,32 @@ void MusicManager::Play(const string& _path, const int _bpm)
 	_music->setVolume(*volume);
 	UpdateLoop(_bpm);
 	isRunning = true;
+}
+
+void MusicManager::PlayMusicOnPosition(const string& _path, const int _bpm, const Vector2f& _position)
+{
+	if (_path == "") return;
+
+	MusicData* _music = Get(_path);
+
+	if (!_music)
+	{
+		_music = new MusicData(_path);
+		if (!_music->openFromFile("Assets/Music/" + _path))
+		{
+			cerr << "La texture n'a pas été correctement chargée !" << endl;
+		}
+	}
+
+	new Timer("StartMusicDelay", [&]() { GetCurrent()->play(); }, milliseconds(acceptDelay / 2), 1, true);
+	_music->setVolume(*volume);
+	UpdateLoop(_bpm);
+	isRunning = true;
+
+	_music->setAttenuation(100.0f);
+	_music->setRelativeToListener(true);
+	_music->setPosition(_position.x, _position.y, 0);
+	_music->setMinDistance(0.0f);
 }
 
 void MusicManager::Toggle()
@@ -167,12 +194,12 @@ void MusicManager::UpdateLoop(const int _bpm)
 				}
 			};
 
-			Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->GetElements()[0])->GetShape();
+			Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
 			TextureManager::GetInstance().Load(_shape, "RythmHearts1.png");
 			new Timer("HeartIndicatorReset", [this]() {
-				Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->GetElements()[0])->GetShape();
+				Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
 				TextureManager::GetInstance().Load(_shape, "RythmHearts0.png");
-			}, seconds(0.1f), 1, true);
+				}, seconds(0.1f), 1, true);
 			
 		}, milliseconds(acceptDelay / 2), 1, true);
 
