@@ -154,6 +154,7 @@ Map::Map()
 	chainToggle = true;
 	isPurple = false;
 	shop = nullptr;
+	stair = nullptr;
 }
 
 Map::~Map()
@@ -260,7 +261,7 @@ void Map::Load(const string _path)
 		{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP)); }},
 		{ ' ', [this](const Vector2f& _position) { floors.push_back(new Tile("floor.png", _position)); }},
 		{ '.', nullptr },
-		{ 'S', [this](const Vector2f& _position) { new Stair(PATH_STAIR, _position); }},
+		{ 'S', [this](const Vector2f& _position) { stair = new Stair(PATH_STAIR, _position); }},
 	};
 
 	string _line;
@@ -419,18 +420,42 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 	}
 }
 
-
 void Map::NextLevel()
 {
-	// DeleteAll();
+	DeleteAll();
 	Generate(6);
+	EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(GetFirstTilePosition());
 }
 
 void Map::DeleteAll()
 {
-	// delete rooms, tiles, shoptiles, tilesPosition.
+	for (Tile* _floor : floors)
+	{
+		_floor->Destroy();
+	}
+	floors.clear();
+	for (Wall* _wall : walls)
+	{
+		_wall->Destroy();
+	}
+	walls.clear();
+
+	stair->Destroy();
+	stair = nullptr;
 	for (Room* _room : rooms)
 	{
 		delete _room;
 	}
+	rooms.clear();
+	shop = nullptr;
+
+	for (Path* _path : paths)
+	{
+		delete _path;
+	}
+	paths.clear();
+
+	tempoIndex = 1;
+	chainToggle = true;
+	isPurple = false;
 }
