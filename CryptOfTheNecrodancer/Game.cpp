@@ -46,8 +46,9 @@ void Game::Start()
 
 	//TheWighttoRemain.mp3 160
 	//Lobby.mp3 130
+	//zone4_1.ogg 130
 
-	MusicManager::GetInstance().Play("TheWighttoRemain.mp3", 160);
+	MusicManager::GetInstance().Play("zone4_1.ogg", 130);
 
 	player = new Player("Player",{0.f,0.f},{});
 

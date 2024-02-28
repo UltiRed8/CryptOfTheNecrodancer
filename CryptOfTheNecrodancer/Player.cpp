@@ -26,7 +26,7 @@ Player::Player(const string _id, const Vector2f& _position, PlayerRessource _res
 		CollisionReaction(ET_WALL, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
 			Wall* _wall = dynamic_cast<Wall*>(_entity);
-			_wall->Destroy();
+			_wall->DestroyWall();
 		}),
 	});
 	InitInput();

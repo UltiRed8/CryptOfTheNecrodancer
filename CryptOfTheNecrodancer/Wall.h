@@ -26,7 +26,7 @@ public:
 	}
 
 public:
-	void Destroy(const bool _usingBomb = false);
+	void DestroyWall(const bool _usingBomb = false);
 	void Update() override;
 };
 
