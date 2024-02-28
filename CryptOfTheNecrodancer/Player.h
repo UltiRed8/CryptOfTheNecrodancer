@@ -15,6 +15,11 @@ public:
 		return chainMultiplier;
 	}
 
+	PlayerRessource GetRessources() const
+	{
+		return ressources;
+	}
+
 public :
 	Player(const string _id, const Vector2f& _position, PlayerRessource _ressources);
 	~Player();
