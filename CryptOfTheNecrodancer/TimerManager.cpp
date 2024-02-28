@@ -10,7 +10,7 @@ TimerManager::TimerManager()
 	timeScale = 1.0f;
 	deltaTime = 0.0f;
 	framesCount = 0;
-	maxFrameRate = 60;
+	maxFrameRate = new int(60);
 	fps = 0.0f;
 }
 
@@ -42,5 +42,20 @@ void TimerManager::Update()
 		{
 			renderCallback();
 		}
+	}
+}
+
+void TimerManager::UpdateFrameRate(int _addValue)
+{
+	*maxFrameRate += _addValue;
+
+	if (*maxFrameRate < 10)
+	{
+		*maxFrameRate = 10;
+	}
+
+	else if (*maxFrameRate > 240)
+	{
+		*maxFrameRate = 240;
 	}
 }

@@ -4,6 +4,10 @@
 #include "ProgressBar.h"
 #include "MusicManager.h"
 #include "Soundmanager.h"
+#include "EntityManager.h"
+#include "Macro.h"
+#include "CameraManager.h"
+#include "TimerManager.h"
 
 vector<Drawable*> MenuManager::GetDrawables()
 {
@@ -38,6 +42,17 @@ vector<Drawable*> MenuManager::GetDrawables()
 	} while (_shouldContinue);
 	
 	return _drawables;
+}
+
+float* MenuManager::GetIndex()
+{
+	return index;
+}
+
+MenuManager::MenuManager()
+{
+	window = new RenderWindow();
+	index = new float(10.0f);
 }
 
 void MenuManager::ClickAction()
@@ -89,7 +104,7 @@ void MenuManager::InitMenuPause()
 	function<void()> _callbackContinue = [this]() { Get("GamePause")->Toggle(); MusicManager::GetInstance().Unpause(); };
 	function<void()> _callbackRestart = [this]() {}; //TODO
 	function<void()> _callbackOptions = [this]() { Get("GamePause")->Toggle(); OptionsMenu(); };
-	function<void()> _callbackLobby = [this]() {}; //TODO
+	function<void()> _callbackLobby = [this]() { GoToLobby(); }; //TODO
 	function<void()> _callbackDelete = [this]() { DeleteSaveDataMenu(); };
 	function<void()> _callbackEchap = [this]() { Get("GamePause")->Toggle(); CloseMenu(); };
 
@@ -105,7 +120,7 @@ void MenuManager::InitMenuPause()
 void MenuManager::InitDeleteSaveDataMenu()
 {
 	function<void()> _delete = [&]() { Delete(); };
-	function<void()> _return = [this]() { DeleteSaveDataMenu();  Get("GamePause")->Toggle(); };
+	function<void()> _return = [this]() { DeleteSaveDataMenu(); };
 
 	new Menu("Delete", { new UIImage(Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "AreYouSure.png"),
 		new UIText(Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 4)), Color::White, "Are you sure you want to",35,"Assets/Font/Font.ttf"),
@@ -145,14 +160,14 @@ void MenuManager::InitMenuOptions()
 
 	new Menu("Options", { new UIImage(Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "OptionsMenu.png"),
 		//Menu Graphique
-		new UIButton(Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 4)), Color::White, Color::Cyan, "Graphical Options", 40, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_start.ogg", _graphics),
+		new UIButton(Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 4.2)), Color::White, Color::Cyan, "Graphical Options", 40, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_start.ogg", _graphics),
 
 		// Activer/Désactiver le Sound
-		new UIText(Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 2.8)), Color(172, 172,173), "Sound",40,"Assets/Font/Font.ttf", true),
-		new UIButton(Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(window->getSize().y / 2.8)), Color::White, Color(0,139,139), {
-			new UIImage(Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(window->getSize().y / 2.8)), Vector2f(30.0f, 30.0f), "EmptyCheckbox.png"),
-			new UIText(Vector2f(static_cast<float>(window->getSize().x / 1.425), static_cast<float>(window->getSize().y / 2.8)), Color(0,139,139), "X", 40, "Assets/Font/Font.ttf", false)
-		}, "Assets/Sounds/sfx_ui_toggle.ogg", _activateSound, FloatRect(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(window->getSize().y / 2.8), 30.0f, 30.0f)),
+		new UIText(Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 3)), Color(172, 172,173), "Toggle Sound",40,"Assets/Font/Font.ttf", true),
+		new UIButton(Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(window->getSize().y / 3)), Color::White, Color(0,139,139), {
+			new UIImage(Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(window->getSize().y / 3)), Vector2f(30.0f, 30.0f), "EmptyCheckbox.png"),
+			new UIText(Vector2f(static_cast<float>(window->getSize().x / 1.425), static_cast<float>(window->getSize().y / 3)), Color(0,139,139), "X", 40, "Assets/Font/Font.ttf", false)
+		}, "Assets/Sounds/sfx_ui_toggle.ogg", _activateSound, FloatRect(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(window->getSize().y / 3), 30.0f, 30.0f)),
 
 		// Monter/Descendre le son du Sound
 		new UIText(Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 2.4)), Color(172, 172,173), "Sound Volume",40,"Assets/Font/Font.ttf", true),
@@ -161,14 +176,14 @@ void MenuManager::InitMenuOptions()
 		new UIButton(Vector2f(static_cast<float>(window->getSize().x / 3.2), static_cast<float>(window->getSize().y / 2.19)), Color::White, Color::Cyan, "<", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_select_down.ogg", _volumeDownS),
 
 		// Activer/Désactiver la musique
-		new UIText(Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.75)), Color(172, 172,173), "Music",40,"Assets/Font/Font.ttf", true),
+		new UIText(Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.75)), Color(172, 172,173), "Toggle Music",40,"Assets/Font/Font.ttf", true),
 		new UIButton(Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(window->getSize().y / 1.75)), Color::White, Color(0,139,139), {
 			new UIImage(Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(window->getSize().y / 1.75)), Vector2f(30.0f, 30.0f), "EmptyCheckbox.png"),
 			new UIText(Vector2f(static_cast<float>(window->getSize().x / 1.425), static_cast<float>(window->getSize().y / 1.75)), Color(0,139,139), "X", 40, "Assets/Font/Font.ttf", false)
 		}, "Assets/Sounds/sfx_ui_toggle.ogg", _activateMusic, FloatRect(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(window->getSize().y / 1.75), 30.0f, 30.0f)),
 
 		// Monter/Descendre le son de la musique
-		new UIText(Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.55)), Color(172, 172,173), "Music Volume",40,"Assets/Font/Font.ttf", true),
+		new UIText(Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.52)), Color(172, 172,173), "Music Volume",40,"Assets/Font/Font.ttf", true),
 		new ProgressBar(PT_LEFT, Vector2f(static_cast<float>(window->getSize().x / 2.9), static_cast<float>(window->getSize().y / 1.4)), Vector2f(400.0f, 30.0f), "EmptyBar.png", "FullBar.png", MusicManager::GetInstance().GetVolume()),
 		new UIButton(Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(window->getSize().y / 1.43)), Color::White, Color::Cyan, ">", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_select_up.ogg", _volumeUpM),
 		new UIButton(Vector2f(static_cast<float>(window->getSize().x / 3.2), static_cast<float>(window->getSize().y / 1.43)), Color::White, Color::Cyan, "<", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_select_down.ogg", _volumeDownM),
@@ -200,16 +215,27 @@ void MenuManager::CloseMenu()
 
 void MenuManager::InitGraphicMenu()
 {
-	function<void()> _fullscreen = [this]() { /*Toggle FullScreen*/ };
+	Vector2f _index;
+	function<void()> _up = [this]() { CameraManager::GetInstance().ZoomOut(); };
+	function<void()> _down = [this]() { CameraManager::GetInstance().ZoomIn(); };
+
+	function<void()> _more = [this]() { TimerManager::GetInstance().UpdateFrameRate(10); };
+	function<void()> _less = [this]() { TimerManager::GetInstance().UpdateFrameRate(-10); };
+
 	function<void()> _close = [this]() { OptionsMenu(); Get("Graphics")->Toggle(); };
 
 	new Menu("Graphics", { new UIImage(Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "GraphicsMenu.png"),
-		//Fullscreen on/off
-		new UIText(Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 3.3)), Color(172, 172,173), "Fullscreen",35,"Assets/Font/Font.ttf", true),
-		new UIButton(Vector2f(static_cast<float>(window->getSize().x / 1.6), static_cast<float>(window->getSize().y / 3.3)), Color::White, Color(0,139,139), {
-			new UIImage(Vector2f(static_cast<float>(window->getSize().x / 1.6), static_cast<float>(window->getSize().y / 3.3)), Vector2f(30.0f, 30.0f), "EmptyCheckbox.png"),
-			new UIText(Vector2f(static_cast<float>(window->getSize().x / 1.57), static_cast<float>(window->getSize().y / 3.3)), Color(0,139,139), "X", 40, "Assets/Font/Font.ttf", false)
-		}, "Assets/Sounds/sfx_ui_toggle.ogg", _fullscreen, FloatRect(static_cast<float>(window->getSize().x / 1.6), static_cast<float>(window->getSize().y / 3.3), 30.0f, 30.0f)),
+		//View Multiplier
+		new UIText(Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 3.2)), Color(172, 172,173), "View Multiplier",40,"Assets/Font/Font.ttf", true),
+		new ProgressBar(PT_LEFT, Vector2f(static_cast<float>(window->getSize().x / 2.9), static_cast<float>(window->getSize().y / 2.72)), Vector2f(400.0f, 30.0f), "EmptyBar.png", "FullBar.png", CameraManager::GetInstance().GetZoomIndex(), 1.1f),
+		new UIButton(Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(window->getSize().y / 2.79)), Color::White, Color::Cyan, ">", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_select_up.ogg", _up),
+		new UIButton(Vector2f(static_cast<float>(window->getSize().x / 3.2), static_cast<float>(window->getSize().y / 2.79)), Color::White, Color::Cyan, "<", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_select_down.ogg", _down),
+		
+		//SetFrameRateLimit
+		new UIText(Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 2)), Color(172, 172,173), "Framerate Limit",40,"Assets/Font/Font.ttf", true),
+		new UIText(Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.7)), Color(172, 172,173), "",40,"Assets/Font/Font.ttf", true, TimerManager::GetInstance().GetMaxFrameRate()),
+		new UIButton(Vector2f(static_cast<float>(window->getSize().x / 1.7), static_cast<float>(window->getSize().y / 1.75)), Color::White, Color::Cyan, "+", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_select_up.ogg", _more),
+		new UIButton(Vector2f(static_cast<float>(window->getSize().x / 2.5), static_cast<float>(window->getSize().y / 1.75)), Color::White, Color::Cyan, "-", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_select_down.ogg", _less),
 
 		new UIButton(Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.2)), Color::White, Color::Cyan, "Done", 40, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_back.ogg", _close) }, 3);
 }

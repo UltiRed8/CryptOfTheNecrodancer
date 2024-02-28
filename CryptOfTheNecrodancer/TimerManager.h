@@ -20,18 +20,22 @@ class TimerManager : public Singleton<TimerManager>, public IManager<string, Tim
 	float timeScale;
 	float deltaTime;
 	unsigned int framesCount;
-	unsigned int maxFrameRate;
+	int* maxFrameRate;
 	float fps;
 	function<void()> renderCallback;
 
 public:
+	int* GetMaxFrameRate() const
+	{
+		return maxFrameRate;
+	}
 	void SetTimeScale(const float _timeScale)
 	{
 		timeScale = _timeScale;
 	}
-	void SetMaxFrameRate(const unsigned int _maxFrameRate)
+	void SetMaxFrameRate(const int _maxFrameRate)
 	{
-		maxFrameRate = _maxFrameRate;
+		*maxFrameRate = _maxFrameRate;
 	}
 	float GetFPS() const
 	{
@@ -43,7 +47,7 @@ public:
 	}
 	bool Render()
 	{
-		if (lastFrameTime == 0 || time - lastFrameTime >= 1000.0f / maxFrameRate)
+		if (lastFrameTime == 0 || time - lastFrameTime >= 1000.0f / *maxFrameRate)
 		{
 			ComputeFPS();
 			lastFrameTime = time;
@@ -69,4 +73,5 @@ private:
 
 public:
 	void Update();
+	void UpdateFrameRate(int _addValue);
 };
