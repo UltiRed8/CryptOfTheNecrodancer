@@ -53,8 +53,11 @@ static void SetOriginCentered(Type* _element)
 	_element->setOrigin(_element->getGlobalBounds().getSize() / 2.0f);
 }
 
-template <typename Type>
-static void EraseElement(vector<Type>& _vector, Type _element)
+template <typename Class, typename Type>
+static void EraseElements(vector<Class>& _vector, vector<Type> _element)
 {
-	_vector.erase(remove(_vector.begin(), _vector.end(), _element), _vector.end());
+	for (Type _value : _element)
+	{
+		_vector.erase(remove(_vector.begin(), _vector.end(), _value), _vector.end());
+	}
 }
