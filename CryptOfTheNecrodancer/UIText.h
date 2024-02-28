@@ -13,11 +13,16 @@ class UIText : public UIElement
 	Font font;
 	int* value;
 	string textValue;
-protected:
 	Text* text;
 
 public:
-	UIText(const Vector2f& _position, const Color& _color, const string& _textValue, const int _textSize, const string& _fontPath, int* _additionalValue = nullptr);
+	Text* GetText() const
+	{
+		return text;
+	}
+
+public:
+	UIText(const Vector2f& _position, const Color& _color, const string& _textValue, const int _textSize, const string& _fontPath, bool _italic = false, int* _additionalValue = nullptr);
 	~UIText();
 
 public:

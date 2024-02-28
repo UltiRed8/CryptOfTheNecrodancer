@@ -235,7 +235,6 @@
     <ClInclude Include="Saveable.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Slime.h" />
-    <ClInclude Include="SlimeType.h" />
     <ClInclude Include="SoundData.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="TextureData.h" />

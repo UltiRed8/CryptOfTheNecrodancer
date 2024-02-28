@@ -14,6 +14,7 @@ Animation::Animation(const string& _name, AnimationComponent* _owner, Sprite* _s
 	const Vector2i& _size = Vector2i(static_cast<const int>(data.size.x), static_cast<const int>(data.size.y));
 	const IntRect& _rect = IntRect(_position, _size);
 	sprite->setTextureRect(_rect);
+
 }
 
 

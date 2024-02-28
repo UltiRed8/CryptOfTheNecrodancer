@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <random>
 
 using namespace std;
 using namespace sf;
@@ -15,11 +16,8 @@ using namespace sf;
 
 int GetUniqueID();
 
-template <typename T>
-T Random(const T _max, const T _min = T(0))
-{
-	return int(rand() % (int)_max) + _min;
-}
+
+int Random(const int _max, const int _min = 0);
 
 template <typename T>
 bool IsEqual(const T& _first, const T& _second, const float _minRange = 0.001f)
@@ -36,9 +34,9 @@ Vector2i NormalizeDistance(const Vector2f& _vector);
 float Distance(const Vector2f& _first, const Vector2f& _second);
 
 template <typename T>
-bool Contains(T* _valueToFind, const vector<T*>& _vector)
+bool Contains(T _valueToFind, const vector<T>& _vector)
 {
-	for (T* _value : _vector)
+	for (T _value : _vector)
 	{
 		if (_value == _valueToFind) return true;
 	}
@@ -53,4 +51,13 @@ template <typename Type>
 static void SetOriginCentered(Type* _element)
 {
 	_element->setOrigin(_element->getGlobalBounds().getSize() / 2.0f);
+}
+
+template <typename Class, typename Type>
+static void EraseElements(vector<Class>& _vector, vector<Type> _element)
+{
+	for (Type _value : _element)
+	{
+		_vector.erase(remove(_vector.begin(), _vector.end(), _value), _vector.end());
+	}
 }

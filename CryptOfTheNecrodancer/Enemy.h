@@ -1,9 +1,13 @@
 #pragma once
 #include"Entity.h"
+#include "MovementComponent.h"
+#include "CollisionComponent.h"	
 class Enemy:public Entity
 {
 protected:
-	int indexPattern;
+	int indexPatern;
+	int currentCooldown;
+	int cooldown;
 	vector<Vector2i>directionsPatern;
 
 public:
