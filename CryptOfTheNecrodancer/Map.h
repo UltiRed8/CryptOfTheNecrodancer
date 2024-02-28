@@ -17,78 +17,112 @@ using namespace std;
 class Map : public Singleton<Map>
 {
 	vector<Room*> rooms;
-	vector<Entity*> tiles;
-	vector<Tile*> shopTiles;
-	vector<Vector2f> tilesPosition;
 	vector<Path*> paths;
+
+	vector<Tile*> floors;
+	vector<Wall*> walls;
+
+	Room* shop;
+
 	int tempoIndex;
 	bool chainToggle;
 	bool isPurple;
 
 public:
-	Vector2i GetRandomRoomSize() const
+	Vector2i GetRandomRoomPosition(const int _min = 0, const int _max = 30) const
 	{
-		const int _sizeX = Random(6, 4);
-		const int _sizeY = Random(6, 4);
+		Vector2i _pos = Vector2i(GetRandomVector2i(_min, _max));
 
-		return Vector2i(_sizeX, _sizeY);
-	}
+		_pos.x *= (int)TILE_SIZE.x;
+		_pos.y *= (int)TILE_SIZE.y;
 
-	Vector2i GetRandomRoomPosition() const
-	{
-
-		const int _x = Random(30, 0) * int(TILE_SIZE.x);
-		const int  _y = Random(30, 0) * int(TILE_SIZE.y);
-
-		return Vector2i(_x, _y);
+		return _pos;
 	}
 
 	Vector2f GetFirstTilePosition() const
 	{
-		return tiles[0]->GetShape()->getPosition();
+		if (floors.empty()) return Vector2f();
+		return floors[0]->GetShape()->getPosition();
 	}
 
-	Vector2f GetPositionOfRandomTileOfType(const EntityType& _type)
+	vector<Vector2f> GetSpawnPositions()
 	{
-		SetTilesPosition();
-		vector<Vector2f> _position;
-		for (Entity* _entity : tiles)
+		vector<Vector2f> _positions;
+		for (Tile* _floor : floors)
 		{
-			if (_entity->GetType() == _type)
+			_positions.push_back(_floor->GetPosition());
+		}
+
+		if (shop)
+		{
+			for (Tile* _floor : shop->GetFloor())
 			{
-				_position.push_back(_entity->GetPosition());
+				EraseElement(_positions, _floor->GetPosition());
 			}
 		}
 
-		return _position[Random((int)_position.size() - 1)];
-	}
-
-
-	void SetTilesPosition() 
-	{
-		tilesPosition.clear();
-		cout << tiles.size() << endl;
-		for (Entity* _tile : tiles)
+		for (Wall* _wall : walls)
 		{
-			tilesPosition.push_back(_tile->GetPosition());
+			EraseElement(_positions, _wall->GetPosition());
 		}
+
+		return _positions;
 	}
+
+public:
+	Map();
+	~Map();
 
 public:
 	void Generate(const int _roomCount);
 	void GenerateRooms(const int _roomCount);
 	void Load(const string _path);
-	void AddTileAt(const Vector2f& _position);
+	void AddFloorAt(const Vector2f& _position);
 
-	void ResetAllTilesColor();
+	void ResetFloorColor();
+	void SetFloorColor(Tile* _floor);
 	void Update();
 	void UpdateTilesColor();
-	void EraseOverlappingTiles();
 	void GeneratePaths();
 	void GenerateWalls();
 	void GenerateShopRoom();
-	void SetAllTilesOriginColor();
-	void PlaceWallsAroundRoom(Room* _room, const WallType& _type);
+	void SetAllFloorOriginColor();
+	void PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const bool _finalDestructible, const WallType& _type);
 	void SpawnEnnemy(const int _ennemyCount = 10);
-};
+	void EraseOverlappings();
 
+	template <typename Type>
+	vector<Vector2f> GetEmptyTilesAround(const vector<Type*>& _entities)
+	{
+		const vector<Vector2i>& _offsets = {
+			Vector2i(-1, -1),
+			Vector2i(0, -1),
+			Vector2i(1, -1),
+			Vector2i(-1, 0),
+			Vector2i(1,0),
+			Vector2i(-1,1),
+			Vector2i(0,1),
+			Vector2i(1,1),
+		};
+
+		vector<Vector2f> _availablePositions;
+
+		vector<Vector2f> _allPositions = GetAllPositions(_entities);
+
+		for (const Vector2f& _position : _allPositions)
+		{
+			for (const Vector2i& _currentOffset : _offsets)
+			{
+				Vector2f _newTilePos = _position;
+				const Vector2f& _tileOffset = Vector2f(_currentOffset.x * TILE_SIZE.x, _currentOffset.y * TILE_SIZE.x);
+				_newTilePos += _tileOffset;
+				if (!Contains<Vector2f>(_newTilePos, _allPositions))
+				{
+					_availablePositions.push_back(_newTilePos);
+				}
+			}
+		}
+
+		return _availablePositions;
+	}
+};

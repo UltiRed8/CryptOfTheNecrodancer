@@ -4,9 +4,10 @@ Room::Room(const Vector2i& _size, const Vector2f& _startPosition)
 {
 	size = _size;
 	startPosition = _startPosition;
+	Generate();
 }
 
-vector<Tile*> Room::Generate()
+void Room::Generate()
 {
 	for (int _rowIndex = 0; _rowIndex < size.y; _rowIndex++)
 	{
@@ -18,5 +19,4 @@ vector<Tile*> Room::Generate()
 			floor.push_back(new Tile("wall.png", _position));
 		}
 	}
-	return floor;
 }

@@ -16,8 +16,28 @@ using namespace sf;
 
 int GetUniqueID();
 
+template <typename Type>
+vector<Vector2f> GetAllPositions(const vector<Type>& _entities)
+{
+	vector<Vector2f> _allPositions;
+	for (Type _entity : _entities)
+	{
+		_allPositions.push_back(_entity->GetPosition());
+	}
+	return _allPositions;
+}
 
 int Random(const int _max, const int _min = 0);
+
+
+template <typename Type>
+Type GetRandomElementInVector(const vector<Type> _elements)
+{
+	return _elements[Random((int)_elements.size() - 1, 0)];
+}
+
+
+Vector2i GetRandomVector2i(const int _min, const int _max);
 
 template <typename T>
 bool IsEqual(const T& _first, const T& _second, const float _minRange = 0.001f)
@@ -56,8 +76,15 @@ static void SetOriginCentered(Type* _element)
 template <typename Class, typename Type>
 static void EraseElements(vector<Class>& _vector, vector<Type> _element)
 {
+	cout << "Removing " << _element.size() << " elements from " << _vector.size() << endl;
 	for (Type _value : _element)
 	{
 		_vector.erase(remove(_vector.begin(), _vector.end(), _value), _vector.end());
 	}
+}
+
+template <typename T>
+static void EraseElement(vector<T>& _vector, const T& _element)
+{
+	_vector.erase(remove(_vector.begin(), _vector.end(), _element), _vector.end());
 }
