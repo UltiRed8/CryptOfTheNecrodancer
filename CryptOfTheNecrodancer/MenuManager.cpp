@@ -41,7 +41,8 @@ vector<Drawable*> MenuManager::GetDrawables()
 
 		_currentZIndex++;
 	} while (_shouldContinue);
-	
+
+
 	return _drawables;
 }
 
@@ -144,13 +145,14 @@ void MenuManager::InitMenuPause()
 	function<void()> _callbackDelete = [this]() { DeleteSaveDataMenu(); };
 	function<void()> _callbackEchap = [this]() { Get("GamePause")->Toggle(); CloseMenu(); };
 
-	new Menu("GamePause", { new UIImage("PauseMenu", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "PauseMenu.png"),
+	new Menu("GamePause", {
 		new UIButton("ContinueButton", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 5)),Color::White, Color::Cyan, "Continue Game", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_start.ogg", _callbackContinue),
 		new UIButton("RestartButton", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 3.5)), Color::White, Color::Cyan, "Quick Restart", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_start.ogg", _callbackRestart),
 		new UIButton("OptionsButton", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 2.7)), Color::White, Color::Cyan, "Options", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_start.ogg", _callbackOptions),
 		new UIButton("ReturnLobbyButton", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 2.2)), Color::White, Color::Cyan, "Quit to Lobby", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_back.ogg", _callbackLobby),
 		new UIButton("DeleteSaveDataButton", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.85)), Color::White, Color::Cyan, "Delete Save Data", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_start.ogg", _callbackDelete),
-		new UIButton("Exit", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.3)), Color::White, Color::Cyan, "Exit Game", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_back.ogg", _callbackEchap) }, 1);
+		new UIButton("Exit", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.3)), Color::White, Color::Cyan, "Exit Game", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_back.ogg", _callbackEchap),
+		new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "PauseMenu.png"),}, 1);
 }
 
 void MenuManager::InitDeleteSaveDataMenu()
@@ -158,7 +160,7 @@ void MenuManager::InitDeleteSaveDataMenu()
 	function<void()> _delete = [&]() { Delete(); };
 	function<void()> _return = [this]() { DeleteSaveDataMenu(); };
 
-	new Menu("Delete", { new UIImage("AreYouSureMenu", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "AreYouSure.png"),
+	new Menu("Delete", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "AreYouSure.png"),
 		new UIText("AreYouSureText1", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 4)), Color::White, "Are you sure you want to",35,"Assets/Font/Font.ttf"),
 		new UIText("AreYouSureText2", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 3.3)), Color::White, "delete your save data ?",35,"Assets/Font/Font.ttf"),
 		new UIButton("StayText", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.8)), Color::White, Color::Cyan, "No, stay here", 35, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_back.ogg", _return),
@@ -194,7 +196,7 @@ void MenuManager::InitMenuOptions()
 	function<void()> _close = [this]() { OptionsMenu(); Get("GamePause")->Toggle(); };
 	function<void()> _graphics = [this]() { GraphicMenu();  Get("Options")->Toggle(); };
 
-	new Menu("Options", { new UIImage("OptionsMenu", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "OptionsMenu.png"),
+	new Menu("Options", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "OptionsMenu.png"),
 		//Menu Graphique
 		new UIButton("GraphicalOptionsButton", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 4.2)), Color::White, Color::Cyan, "Graphical Options", 40, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_start.ogg", _graphics),
 
@@ -238,7 +240,7 @@ void MenuManager::InitMenuClose()
 	function<void()> _close = [&]() { window->close(); };
 	function<void()> _return = [this]() { CloseMenu(); MenuManager::GetInstance().Get("GamePause")->Toggle(); };
 
-	new Menu("AreYouSure", { new UIImage("AreYouSureMenuClose", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "AreYouSure.png"),
+	new Menu("AreYouSure", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "AreYouSure.png"),
 		new UIText("AreYouSureTextClose", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 3.3)), Color::White, "Are you sure you want to leave?",35,"Assets/Font/Font.ttf"),
 		new UIButton("StayAreYouSure", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.8)), Color::White, Color::Cyan, "No, stay here", 35, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_back.ogg", _return),
 		new UIButton("LeaveGame", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.6)), Color::White, Color::Cyan, "Yes, quit the game", 35, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_start.ogg", _close) }, 2);
@@ -260,7 +262,7 @@ void MenuManager::InitGraphicMenu()
 
 	function<void()> _close = [this]() { OptionsMenu(); Get("Graphics")->Toggle(); };
 
-	new Menu("Graphics", { new UIImage("GraphicsMenu", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "GraphicsMenu.png"),
+	new Menu("Graphics", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "GraphicsMenu.png"),
 		//View Multiplier
 		new UIText("ViewText", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 3.2)), Color(172, 172,173), "View Multiplier",40,"Assets/Font/Font.ttf", true),
 		new ProgressBar("ViewBar", PT_LEFT, Vector2f(static_cast<float>(window->getSize().x / 2.9), static_cast<float>(window->getSize().y / 2.72)), Vector2f(400.0f, 30.0f), "EmptyBar.png", "FullBar.png", CameraManager::GetInstance().GetZoomIndex(), 1.1f),
