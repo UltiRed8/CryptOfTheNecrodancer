@@ -39,14 +39,14 @@ void Game::Start()
 
 	// TODO temporaire
 
-	Map::GetInstance().Generate(6);
-	Map::GetInstance().SpawnEnnemy(25);
-	//Map::GetInstance().Load("Assets/Saved/Lobby.txt");
+	// Map::GetInstance().Generate(6);
+	// Map::GetInstance().SpawnEnnemy(25);
+	Map::GetInstance().Load("Assets/Saved/Lobby.txt");
 
 	//TheWighttoRemain.mp3 160
 	//Lobby.mp3 130
 
-	MusicManager::GetInstance().Play("TheWighttoRemain.mp3", 160);
+	MusicManager::GetInstance().Play("TheWighttoRemain.mp3", 160); // TO DECOMENT
 
 	player = new Player("Player",{0.f,0.f},{});
 

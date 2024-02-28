@@ -6,7 +6,7 @@
 
 enum EntityType
 {
-	ET_NONE, ET_FLOOR, ET_WALL, ET_ENEMY, ET_PLAYER, ET_ITEM
+	ET_NONE, ET_FLOOR, ET_WALL, ET_ENEMY, ET_PLAYER, ET_ITEM, ET_STAIR
 };
 
 class Entity : public Object, public IManagable<string>

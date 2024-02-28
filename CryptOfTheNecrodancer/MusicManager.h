@@ -38,6 +38,7 @@ public:
 
 public:
 	void Play(const string& _path, const int _bpm);
+	void PlayMusicOnPosition(const string& _path, const int _bpm, const Vector2f& _position);
 	void Toggle();
 	void Pause();
 	void Unpause();

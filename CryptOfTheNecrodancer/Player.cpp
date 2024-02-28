@@ -6,6 +6,8 @@
 #include "AnimationComponent.h"
 #include "RythmComponent.h"
 #include "Wall.h"
+#include "Stair.h"
+#include "Map.h"
 
 #define PATH_PLAYER "PlayerSprite.png"
 
@@ -28,11 +30,21 @@ Player::Player(const string _id, const Vector2f& _position, PlayerRessource _res
 			Wall* _wall = dynamic_cast<Wall*>(_entity);
 			_wall->Destroy();
 		}),
+		CollisionReaction(ET_STAIR, [this](Entity* _entity) {
+			GetComponent<MovementComponent>()->UndoMove();
+			Stair* _stair = dynamic_cast<Stair*>(_entity);
+			Map::GetInstance().NextLevel();
+		}),
 	});
+
+
+
 	InitInput();
 	zIndex = 1;
 	chainMultiplier = 1.0f;
 	type = ET_PLAYER;
+
+	// listener = new Listener();
 }
 
 Player::~Player()
@@ -61,5 +73,7 @@ void Player::InitInput()
 void Player::Update()
 {
 	Entity::Update();
+	/*Vector2f _playerPos = GetPosition();
+	listener->setPosition(_playerPos.x, _playerPos.y, 0);*/
 	GetComponent<AnimationComponent>()->Update();
 }

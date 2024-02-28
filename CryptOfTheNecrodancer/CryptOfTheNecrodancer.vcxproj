@@ -173,10 +173,12 @@
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="RythmComponent.cpp" />
     <ClCompile Include="Saveable.cpp" />
+    <ClCompile Include="Shopkeeper.cpp" />
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="Slime.cpp" />
     <ClCompile Include="SoundData.cpp" />
     <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="Stair.cpp" />
     <ClCompile Include="TextureData.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Throwable.cpp" />
@@ -234,11 +236,13 @@
     <ClInclude Include="Room.h" />
     <ClInclude Include="RythmComponent.h" />
     <ClInclude Include="Saveable.h" />
+    <ClInclude Include="Shopkeeper.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="Slime.h" />
     <ClInclude Include="SoundData.h" />
     <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="Stair.h" />
     <ClInclude Include="TextureData.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Throwable.h" />

@@ -4,10 +4,13 @@
 #include "Singleton.h"
 #include "Path.h"
 #include "Macro.h"
+#include "Stair.h"
 
 #include "Bat.h"
 #include "Slime.h"
 #include "Skeleton.h"
+
+#include "Shopkeeper.h"
 
 #include <iostream>
 #include <functional>
@@ -76,7 +79,7 @@ public:
 	}
 
 public:
-	void Generate(const int _roomCount);
+	void Generate(const int _roomCount = 6);
 	void GenerateRooms(const int _roomCount);
 	void Load(const string _path);
 	void AddTileAt(const Vector2f& _position);
@@ -91,5 +94,7 @@ public:
 	void SetAllTilesOriginColor();
 	void PlaceWallsAroundRoom(Room* _room, const WallType& _type);
 	void SpawnEnnemy(const int _ennemyCount = 10);
+	void NextLevel();
+	void DeleteAll();
 };
 

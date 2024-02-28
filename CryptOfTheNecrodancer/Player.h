@@ -3,10 +3,15 @@
 #include "PlayerRessource.h"
 #include "Entity.h"
 
+#include <SFML/Audio.hpp>
+
+using namespace sf;
+
 class Player : public Entity
 {
 	Inventory* inventory;
 	PlayerRessource ressources;
+	// Listener* listener;
 	float chainMultiplier;
 
 public:
@@ -15,7 +20,7 @@ public:
 		return chainMultiplier;
 	}
 
-public :
+public:
 	Player(const string _id, const Vector2f& _position, PlayerRessource _ressources);
 	~Player();
 
