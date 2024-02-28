@@ -37,39 +37,21 @@ void Game::Init()
 
 void Game::Start()
 {
+	player = new Player("Player",{0.f,0.f},{});
+
 	Init();
 
 	// TODO temporaire
 
-	Map::GetInstance().Generate(6);
-	Map::GetInstance().SpawnEnnemy(25);
-	//Map::GetInstance().Load("Assets/Saved/Lobby.txt");
+	// Map::GetInstance().Generate(6);
+	// Map::GetInstance().SpawnEnnemy(25);
+	Map::GetInstance().Load("Assets/Saved/Lobby.txt");
 
 	//TheWighttoRemain.mp3 160
 	//Lobby.mp3 130
 	//zone4_1.ogg 130
 
 	MusicManager::GetInstance().Play("zone4_1.ogg", 130);
-
-	player = new Player("Player",{0.f,0.f},{});
-
-	Menu* _hud = new Menu("HUD", {
-		//Rythmed Heart
-		new UIImage(Vector2f(SCREEN_WIDTH/2 - 20*2, SCREEN_HEIGHT - 55*2), Vector2f(40.0f, 50.0f) * 2.0f, "RythmHearts0.png"),
-
-		//Multiplier
-		new UIText(Vector2f(SCREEN_WIDTH / 2 - 20 * 0.5, SCREEN_HEIGHT - 55 * 0.2), Color::White, "Coin Multiplier: " + to_string(player->GetChainMultiplier()),15,"Assets/Font/Font.ttf"),
-
-		//Coins
-		new UIImage(Vector2f(SCREEN_WIDTH - 55 * 3, SCREEN_HEIGHT - 55 * 12.8), Vector2f(25.0f, 25.0f) * 2.0f, "Coin.png"),
-		new UIText(Vector2f(SCREEN_WIDTH - 55 * 1.2, SCREEN_HEIGHT - 55 * 12.5), Color::White, "x " + to_string(player->GetRessources().GetMoney()),25,"Assets/Font/Font.ttf"),
-
-		//Diamond
-		new UIImage(Vector2f(SCREEN_WIDTH - 55 * 3, SCREEN_HEIGHT - 55 * 11.6), Vector2f(25.0f, 25.0f) * 2.0f, "Diamond.png"),
-		new UIText(Vector2f(SCREEN_WIDTH - 55 * 1.2, SCREEN_HEIGHT - 55 * 11.3), Color::White, "x " + to_string(player->GetRessources().GetDiamonds()),25,"Assets/Font/Font.ttf"),
-	});
-
-	_hud->Open();
 	Camera* _playerCamera = new Camera("PlayerCamera", CAMERA_PLAYER, Vector2f(0.f,0.f), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
 
 	player->GetShape()->setPosition(Map::GetInstance().GetFirstTilePosition());

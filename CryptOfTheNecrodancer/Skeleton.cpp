@@ -54,6 +54,4 @@ void Skeleton::UpdateRythm()
         currentCooldown = cooldown;
         SelectDirection();
     }
-
-    // SelectDirection();
 }

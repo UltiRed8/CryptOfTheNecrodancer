@@ -10,6 +10,8 @@ Camera::Camera(const string& _id, const CameraType& _type, const Vector2f& _from
 	area = { getViewport().getPosition(), getViewport().getSize() };
 	Register();
 	Init();
+
+	// listener = new Listener();
 }
 
 void Camera::Register()
@@ -34,6 +36,9 @@ void Camera::InitPosition()
 
 void Camera::Update()
 {
+	//Vector2f _camPos = getViewport().getPosition();
+	//listener->setPosition(_camPos.x, _camPos.y, 0);
+
 	if (type == CAMERA_PLAYER)
 	{
 		const Vector2f& _currentPosition = getCenter();

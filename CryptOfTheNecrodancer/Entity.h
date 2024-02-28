@@ -6,7 +6,7 @@
 
 enum EntityType
 {
-	ET_NONE, ET_FLOOR, ET_WALL, ET_ENEMY, ET_PLAYER, ET_ITEM,ET_SHADOW
+	ET_NONE, ET_FLOOR, ET_WALL, ET_ENEMY, ET_PLAYER, ET_ITEM, ET_STAIR, ET_TRAP,ET_SHADOW
 };
 
 class Entity : public Object, public IManagable<string>
@@ -46,7 +46,7 @@ public:
 	Entity(const string& _id,const string& _path, const Vector2f& _position);
 	~Entity();
 
-	// Hérité via IManagable
+	// Hï¿½ritï¿½ via IManagable
 	void Register() override;
 	virtual void Update();
 };

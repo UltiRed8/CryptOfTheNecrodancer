@@ -7,6 +7,9 @@
 #include "RythmComponent.h"
 #include "Wall.h"
 #include "LightningManager.h"
+#include "Stair.h"
+#include "Map.h"
+
 #define PATH_PLAYER "PlayerSprite.png"
 
 Player::Player(const string _id, const Vector2f& _position, PlayerRessource _ressources) : Entity(_id, "", _position)
@@ -29,16 +32,27 @@ Player::Player(const string _id, const Vector2f& _position, PlayerRessource _res
 			Wall* _wall = dynamic_cast<Wall*>(_entity);
 			_wall->DestroyWall();
 		}),
+		CollisionReaction(ET_STAIR, [this](Entity* _entity) {
+			GetComponent<MovementComponent>()->UndoMove();
+			Stair* _stair = dynamic_cast<Stair*>(_entity);
+			Map::GetInstance().NextLevel();
+		}),
 	});
+
+
+
 	InitInput();
 	zIndex = 1;
-	chainMultiplier = 1.0f;
+	chainMultiplier = new int(1);
 	type = ET_PLAYER;
+
+	// listener = new Listener();
 }
 
 Player::~Player()
 {
 	delete inventory;
+	delete chainMultiplier;
 }
 
 void Player::InitInput()
@@ -52,8 +66,8 @@ void Player::InitInput()
 
 	// TODO remove
 	new ActionMap("TempDebug",
-		{ ActionData("Decrease", [this]() { chainMultiplier = 1.0f; cout << "Set chain multiplier to: 1.0f!" << endl; }, {Event::KeyPressed, Keyboard::Num1}),
-		  ActionData("Increase", [this]() { chainMultiplier = 2.0f; cout << "Set chain multiplier to: 2.0f!" << endl; }, {Event::KeyPressed, Keyboard::Num2}),
+		{ ActionData("Decrease", [this]() { *chainMultiplier = 1; cout << "Set chain multiplier to: 1!" << endl; }, {Event::KeyPressed, Keyboard::Num1}),
+		  ActionData("Increase", [this]() { *chainMultiplier = 2; cout << "Set chain multiplier to: 2!" << endl; }, {Event::KeyPressed, Keyboard::Num2}),
 		  ActionData("SpeedIncrease", [this]() { MusicManager::GetInstance().SpeedUp(); }, {Event::KeyPressed, Keyboard::Num3}),
 		  ActionData("SpeedDecrease", [this]() { MusicManager::GetInstance().SpeedDown(); }, {Event::KeyPressed, Keyboard::Num4}),
 		});
@@ -62,5 +76,7 @@ void Player::InitInput()
 void Player::Update()
 {
 	Entity::Update();
+	/*Vector2f _playerPos = GetPosition();
+	listener->setPosition(_playerPos.x, _playerPos.y, 0);*/
 	GetComponent<AnimationComponent>()->Update();
 }

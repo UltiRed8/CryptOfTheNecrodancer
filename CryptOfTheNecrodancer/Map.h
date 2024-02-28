@@ -4,10 +4,13 @@
 #include "Singleton.h"
 #include "Path.h"
 #include "Macro.h"
+#include "Stair.h"
 
 #include "Bat.h"
 #include "Slime.h"
 #include "Skeleton.h"
+
+#include "Shopkeeper.h"
 
 #include <iostream>
 #include <functional>
@@ -20,6 +23,7 @@ class Map : public Singleton<Map>
 	vector<Room*> rooms;
 	vector<Path*> paths;
 
+	Stair* stair;
 	vector<Tile*> floors;
 	vector<Wall*> walls;
 
@@ -76,7 +80,7 @@ public:
 	~Map();
 
 public:
-	void Generate(const int _roomCount);
+	void Generate(const int _roomCount = 6);
 	void GenerateRooms(const int _roomCount);
 	void Load(const string _path);
 	void AddFloorAt(const Vector2f& _position);
@@ -92,6 +96,8 @@ public:
 	void PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const bool _finalDestructible, const WallType& _type);
 	void SpawnEnnemy(const int _ennemyCount = 10);
 	void EraseOverlappings();
+	void NextLevel();
+	void DeleteAll();
 
 	template <typename Type>
 	vector<Vector2f> GetEmptyTilesAround(const vector<Type*>& _entities)

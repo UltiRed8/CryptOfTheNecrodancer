@@ -44,7 +44,7 @@ public:
 	}
 
 public:
-	ProgressBar(const ProgressType& _type, const Vector2f& _position, const Vector2f& _size, 
+	ProgressBar(const string& _id, const ProgressType& _type, const Vector2f& _position, const Vector2f& _size,
 		const string& _emptyPath, const string& _fullPath, float* _currentValue, const float _maxValue = 100.0f);
 	~ProgressBar();
 
