@@ -2,6 +2,7 @@
 
 #include "MenuManager.h"
 #include "Action.h"
+#include "Macro.h"
 
 Menu::Menu(const string& _id, const vector<UIElement*>& _elements, const int& _zIndex) : IManagable(_id)
 {

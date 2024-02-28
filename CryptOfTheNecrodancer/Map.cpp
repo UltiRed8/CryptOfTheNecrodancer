@@ -1,6 +1,7 @@
 #include "Map.h"
 #include "EntityManager.h"
 #include "Player.h"
+#include "LightningManager.h"
 #define PATH_STAIR "stairs.png"
 
 void Map::UpdateTilesColor()
@@ -179,6 +180,8 @@ void Map::Generate(const int _roomCount)
 	GenerateWalls();
 	EraseOverlappings();
 	SetAllFloorOriginColor();
+	LightningManager::GetInstance().Construct(GetAllPositions(floors));
+	LightningManager::GetInstance().Construct(GetAllPositions(walls));
 }
 
 void Map::EraseOverlappings()
@@ -424,6 +427,7 @@ void Map::NextLevel()
 {
 	DeleteAll();
 	Generate(6);
+	
 	EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(GetFirstTilePosition());
 }
 

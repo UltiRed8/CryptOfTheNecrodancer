@@ -194,12 +194,12 @@ void MusicManager::UpdateLoop(const int _bpm)
 				}
 			};
 
-			Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->GetElements()[0])->GetShape();
+			Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
 			TextureManager::GetInstance().Load(_shape, "RythmHearts1.png");
 			new Timer("HeartIndicatorReset", [this]() {
-				Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->GetElements()[0])->GetShape();
+				Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
 				TextureManager::GetInstance().Load(_shape, "RythmHearts0.png");
-			}, seconds(0.1f), 1, true);
+				}, seconds(0.1f), 1, true);
 			
 		}, milliseconds(acceptDelay / 2), 1, true);
 
