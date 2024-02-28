@@ -80,8 +80,7 @@ public:
 	void Load(const string _path);
 	void AddFloorAt(const Vector2f& _position);
 
-	void ResetFloorColor();
-	void SetFloorColor(Tile* _floor);
+	void SetFloorColor(Tile* _floor, const bool _creation = false);
 	void Update();
 	void UpdateTilesColor();
 	void GeneratePaths();
