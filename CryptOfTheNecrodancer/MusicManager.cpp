@@ -99,7 +99,7 @@ void MusicManager::IncreaseVolume()
 {
 	if (*volume >= 0.f && *volume < 100.f)
 	{
-		GetCurrent()->setVolume(*volume += 10.f);
+		GetCurrent()->setVolume(*volume += 1.f);
 	}
 
 	else if (*volume >= 100)
@@ -112,7 +112,7 @@ void MusicManager::DecreaseVolume()
 {
 	if (*volume > 0.f && *volume <= 100.f)
 	{
-		GetCurrent()->setVolume(*volume -= 10.f);
+		GetCurrent()->setVolume(*volume -= 1.f);
 	}
 	
 	else if (*volume <= 0)

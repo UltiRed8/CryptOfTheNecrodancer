@@ -17,6 +17,13 @@ enum CameraType
 class Camera : public IManagable<string>, public View
 {
 	CameraType type;
+	FloatRect area;
+
+public :
+	FloatRect GetDefaultZoom()
+	{
+		return area;
+	}
 
 public:
 	Camera(const string& _id, const CameraType& _type, const Vector2f& _from, const Vector2f& _to);

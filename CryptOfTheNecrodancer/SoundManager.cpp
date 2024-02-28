@@ -35,7 +35,7 @@ void SoundManager::IncreaseVolume()
 {
 	if (*volume >= 0.f && *volume < 100.f)
 	{
-		sound.setVolume(*volume += 10.f);
+		sound.setVolume(*volume += 1.f);
 	}
 
 	else if (*volume >= 100)
@@ -48,7 +48,7 @@ void SoundManager::DecreaseVolume()
 {
 	if (*volume > 0.f && *volume <= 100.f)
 	{
-		sound.setVolume(*volume -= 10.f);
+		sound.setVolume(*volume -= 1.f);
 	}
 
 	else if (*volume <= 0)

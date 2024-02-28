@@ -9,9 +9,16 @@
 class MenuManager : public Singleton<MenuManager>, public IManager<string, Menu>
 {
 	RenderWindow* window;
+	Vector2f factor;
+	float* index;
+	int fps;
 
 public:
 	vector<Drawable*> GetDrawables();
+	float* GetIndex();
+
+public :
+	MenuManager();
 	
 public :
 	void ClickAction();
@@ -37,6 +44,9 @@ public :
 
 	void InitGraphicMenu();
 	void GraphicMenu();
+
+	void ZoomIn();
+	void ZoomOut();
 
 	#pragma endregion
 };

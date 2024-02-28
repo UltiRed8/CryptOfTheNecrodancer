@@ -7,6 +7,7 @@
 Camera::Camera(const string& _id, const CameraType& _type, const Vector2f& _from, const Vector2f& _to) : IManagable(_id), View(_from, _to)
 {
 	type = _type;
+	area = { getViewport().getPosition(), getViewport().getSize() };
 	Register();
 	Init();
 }
