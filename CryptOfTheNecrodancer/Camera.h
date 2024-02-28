@@ -4,6 +4,7 @@
 
 #include <string>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 using namespace std;
 using namespace sf;
@@ -24,10 +25,11 @@ public :
 	{
 		return area;
 	}
+	// Listener* listener;
 
 public:
 	Camera(const string& _id, const CameraType& _type, const Vector2f& _from, const Vector2f& _to);
-
+	
 public:
 	void Update();
 

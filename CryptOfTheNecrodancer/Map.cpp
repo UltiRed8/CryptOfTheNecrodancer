@@ -1,6 +1,7 @@
 #include "Map.h"
 #include "EntityManager.h"
 #include "Player.h"
+#define PATH_STAIR "stairs.png"
 
 void Map::UpdateTilesColor()
 {
@@ -259,6 +260,7 @@ void Map::Load(const string _path)
 		{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP)); }},
 		{ ' ', [this](const Vector2f& _position) { floors.push_back(new Tile("wall.png", _position)); }},
 		{ '.', nullptr },
+		{ 'S', [this](const Vector2f& _position) { tiles.push_back(new Stair(PATH_STAIR, _position)); }},
 	};
 
 	string _line;
@@ -403,6 +405,8 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 		[this](const Vector2f& _position) { new NormalSkeleton(_position); },
 	};
 
+	new Shopkeeper(GetPositionOfRandomTileOfType(ET_FLOOR));
+
 	int _randIndex;
 	vector<Vector2f> _positions = GetSpawnPositions();
 	if (_positions.empty()) return;
@@ -412,5 +416,29 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 		EraseElement(_positions, _position);
 		_randIndex = Random(static_cast<int>(_enemyList.size() - 1), 0);
 		_enemyList[_randIndex](_position);
+	}
+}
+
+
+void Map::NextLevel()
+{
+	// DeleteAll();
+	Generate(6);
+}
+
+void Map::DeleteAll()
+{
+	// delete rooms, tiles, shoptiles, tilesPosition.
+	for (Room* _room : rooms)
+	{
+		delete _room;
+	}
+	for (Tile* _shopTile : shopTiles)
+	{
+		delete _shopTile;
+	}
+	for (Entity* _tile : tiles)
+	{
+		delete _tile;
 	}
 }
