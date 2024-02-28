@@ -7,7 +7,7 @@
 #include "AnimationComponent.h"
 
 
-Slime::Slime(const Vector2f& _position, const string _path) : Enemy(STRING_ID("Slime"), _path, _position)
+Slime::Slime(const Vector2f& _position, const string& _path) : Enemy(STRING_ID("Slime"), _path, _position)
 {
     // Random Slime Type
 

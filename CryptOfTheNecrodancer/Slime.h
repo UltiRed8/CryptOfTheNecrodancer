@@ -16,7 +16,7 @@ class Slime : public Enemy
 protected:
     SlimeType slimeType;
 public:
-    Slime(const Vector2f& _position, const string _path);
+    Slime(const Vector2f& _position, const string& _path);
 
 public:
     void DieEvent() override;

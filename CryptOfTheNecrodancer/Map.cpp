@@ -370,6 +370,9 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 	[this]() { new GreenSlime(GetPositionOfRandomTileOfType(ET_FLOOR)); },
 	[this]() { new BlueSlime(GetPositionOfRandomTileOfType(ET_FLOOR)); },
 	[this]() { new OrangeSlime(GetPositionOfRandomTileOfType(ET_FLOOR)); },
+	[this]() { new NormalSkeleton(GetPositionOfRandomTileOfType(ET_FLOOR)); },
+	//[this]() { new YellowSkeleton(GetPositionOfRandomTileOfType(ET_FLOOR)); },
+	//[this]() { new BlackSkeleton(GetPositionOfRandomTileOfType(ET_FLOOR)); },
 	};
 
 	int _randIndex;

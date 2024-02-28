@@ -7,6 +7,7 @@
 
 #include "Bat.h"
 #include "Slime.h"
+#include "Skeleton.h"
 
 #include <iostream>
 #include <functional>
