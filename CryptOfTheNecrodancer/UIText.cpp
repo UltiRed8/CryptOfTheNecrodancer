@@ -1,6 +1,6 @@
 #include "UIText.h"
 
-UIText::UIText(const Vector2f& _position, const Color& _color, const string& _textValue, const int _textSize, const string& _fontPath, bool _italic, int* _additionalValue) : UIElement(_position)
+UIText::UIText(const string& _id, const Vector2f& _position, const Color& _color, const string& _textValue, const int _textSize, const string& _fontPath, bool _italic, int* _additionalValue) : UIElement(_id, _position)
 {
 	value = _additionalValue;
 	text = new Text();

@@ -10,9 +10,8 @@
 using namespace sf;
 using namespace std;
 
-class Menu : public IManagable<string>
+class Menu : public IManagable<string>, public IManager<string, UIElement>
 {
-	vector<UIElement*> elements;
 	bool wantsToCloseMenu;
 	bool isOpened;	
 	int zIndex;
@@ -24,7 +23,7 @@ public:
 	}
 	vector<UIElement*> GetElements() const
 	{
-		return elements;
+		return GetAllValues();
 	}
 	bool IsOpened() const
 	{
@@ -33,7 +32,6 @@ public:
 
 public:
 	Menu(const string& _id, const vector<UIElement*>& _elements, const int& _zIndex = 0);
-	~Menu();
 
 private:
 	virtual void Register() override;

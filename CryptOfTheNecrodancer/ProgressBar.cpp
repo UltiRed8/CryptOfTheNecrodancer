@@ -1,8 +1,8 @@
 #include "ProgressBar.h"
 #include "TextureManager.h"
 
-ProgressBar::ProgressBar(const ProgressType& _type, const Vector2f& _position, const Vector2f& _size,
-	const string& _emptyPath, const string& _fullPath, float* _currentValue, const float _maxValue) : UIElement(_position)
+ProgressBar::ProgressBar(const string& _id, const ProgressType& _type, const Vector2f& _position, const Vector2f& _size,
+	const string& _emptyPath, const string& _fullPath, float* _currentValue, const float _maxValue) : UIElement(_id, _position)
 {
     type = _type;
 

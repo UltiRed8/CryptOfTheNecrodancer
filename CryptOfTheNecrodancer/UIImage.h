@@ -19,7 +19,7 @@ public:
 	}
 
 public:
-	UIImage(const Vector2f& _position, const Vector2f& _size, const string& _path);
+	UIImage(const string& _id, const Vector2f& _position, const Vector2f& _size, const string& _path);
 	~UIImage();
 
 private:
