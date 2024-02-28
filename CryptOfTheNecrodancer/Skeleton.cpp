@@ -4,7 +4,7 @@
 #include"LifeComponent.h"
 #include "RythmComponent.h"
 #include "AnimationComponent.h"
-
+#include "LightningComponent.h"
 #include "EntityManager.h"
 
 Skeleton::Skeleton(const Vector2f& _position, const string& _path) : Enemy(STRING_ID("Skeleton"), _path, _position)

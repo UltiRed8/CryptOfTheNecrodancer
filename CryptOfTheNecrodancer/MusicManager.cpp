@@ -7,6 +7,7 @@
 #include "MovementComponent.h"
 #include "RythmComponent.h"
 #include "MenuManager.h"
+#include "LightningManager.h"
 
 MusicManager::MusicManager()
 {

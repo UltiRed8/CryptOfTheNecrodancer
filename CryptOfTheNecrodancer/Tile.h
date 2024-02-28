@@ -18,7 +18,7 @@ public:
 	}
 
 public:
-	Tile(const string& _tilePath,const Vector2f& _position);
+	Tile(const string& _tilePath,const Vector2f& _position,const EntityType& _type = ET_FLOOR);
 
 public:
 	void InvertColors();

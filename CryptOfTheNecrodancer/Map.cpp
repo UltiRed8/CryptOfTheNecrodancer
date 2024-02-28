@@ -1,14 +1,15 @@
 #include "Map.h"
 #include "EntityManager.h"
 #include "Player.h"
+#include "LightningManager.h"
 
 void Map::UpdateTilesColor()
 {
-	const bool _hasChain = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetChainMultiplier() > 1.0f;
+	hasChain = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetChainMultiplier() > 1.0f;
 
 	ResetFloorColor();
 
-	if (!_hasChain)
+	if (!hasChain)
 	{
 		for (Tile* _floor : floors)
 		{
@@ -35,7 +36,7 @@ void Map::UpdateTilesColor()
 
 void Map::GeneratePaths()
 {
-	const int _roomCount = (const int) rooms.size() - 1;
+	const int _roomCount = (const int)rooms.size() - 1;
 	for (int _index = 0; _index < _roomCount; _index++)
 	{
 		Tile* _startTile = GetRandomElementInVector(rooms[_index]->GetFloor());
@@ -50,7 +51,7 @@ void Map::GeneratePaths()
 		const float _endPositionX = _endShape->getPosition().x / TILE_SIZE.x;
 		const float _endPositionY = _endShape->getPosition().y / TILE_SIZE.y;
 
-		const Vector2i& _startPosition = Vector2i((int)_startPositionX,(int)_startPositionY);
+		const Vector2i& _startPosition = Vector2i((int)_startPositionX, (int)_startPositionY);
 		const Vector2i& _endPosition = Vector2i((int)_endPositionX, (int)_endPositionY);
 
 		Path* _path = new Path(_startPosition, _endPosition);
@@ -137,7 +138,7 @@ void Map::GenerateShopRoom()
 
 	const Vector2f& _position = _availablePosition[rand() % _availablePosition.size() - 1];
 
-	shop = new Room(Vector2i(5,7), _position);
+	shop = new Room(Vector2i(5, 7), _position);
 
 	const vector<Tile*>& _shopFloors = shop->GetFloor();
 	floors.insert(floors.end(), _shopFloors.begin(), _shopFloors.end());
@@ -177,6 +178,8 @@ void Map::Generate(const int _roomCount)
 	GenerateWalls();
 	EraseOverlappings();
 	SetAllFloorOriginColor();
+	LightningManager::GetInstance().Construct(GetAllPositions(floors));
+	LightningManager::GetInstance().Construct(GetAllPositions(walls));
 }
 
 void Map::EraseOverlappings()
@@ -313,6 +316,7 @@ void Map::SetFloorColor(Tile* _floor)
 {
 	const Vector2f& _position = _floor->GetPosition();
 	const Vector2i& _tilePosition = Vector2i(_position.x / int(TILE_SIZE.x), _position.y / int(TILE_SIZE.y));
+
 	if ((_tilePosition.x + _tilePosition.y) % 2 == 0)
 	{
 		_floor->SetColors(Color(135, 79, 2, isPurple ? 200 : 255), Color(135, 79, 2, isPurple ? 255 : 200));
@@ -321,7 +325,21 @@ void Map::SetFloorColor(Tile* _floor)
 	{
 		_floor->SetColors(Color(135, 79, 2, isPurple ? 255 : 200), Color(135, 79, 2, isPurple ? 200 : 255));
 	}
+
+	/*if (hasChain)
+	{ 
+		Shape* _shape = _floor->GetShape();
+		const int _a = tempoIndex == 1 ? 255 : 200;
+		if (_shape->getFillColor().a == _a)
+		{
+			_shape->setOutlineColor(Color(0, 0, 0, 100));
+			_shape->setOutlineThickness(-5.0f);
+			Color _color = tempoIndex == 1 ? Color(53, 233, 136, 255) : Color(255, 62, 216, 255);
+			_shape->setFillColor(_color);
+		}
+	}*/
 }
+
 
 void Map::SetAllFloorOriginColor()
 {
@@ -352,7 +370,7 @@ void Map::PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const b
 
 		for (const Vector2f& _position : _allPositionsAround)
 		{
-			walls.push_back(new Wall(_position, (_index == _width-1 && _finalDestructible) ? WT_INVULNERABLE : _type));
+			walls.push_back(new Wall(_position, (_index == _width - 1 && _finalDestructible) ? WT_INVULNERABLE : _type));
 		}
 	}
 
@@ -361,7 +379,7 @@ void Map::PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const b
 	{
 		_tilesPosition.push_back(_floor->GetPosition());
 	}
-	
+
 	vector<Vector2i> _posToCheck = {
 		Vector2i(-1, -1),
 		Vector2i(0, -1),

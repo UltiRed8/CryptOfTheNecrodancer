@@ -1,5 +1,6 @@
 #include "MovementComponent.h"
 #include"TimerManager.h"
+
 MovementComponent::MovementComponent(Entity* _owner, const int _speed ):Component(_owner)
 {
 	canMove = true;

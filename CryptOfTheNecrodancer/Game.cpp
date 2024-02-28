@@ -9,7 +9,7 @@
 #include "CameraManager.h"
 #include "MovementComponent.h"
 #include "UIText.h"
-
+#include "LightningManager.h"
 Game::Game()
 {
 	window = nullptr;
@@ -30,6 +30,7 @@ void Game::Init()
 	TimerManager::GetInstance().SetMaxFrameRate(60);
 	TimerManager::GetInstance().SetRenderCallback([this]() {
 		EntityManager::GetInstance().Update();
+		LightningManager::GetInstance().Update();
 		UpdateWindow();
 	});
 }
@@ -78,6 +79,7 @@ void Game::Update()
 {
 	while (window->isOpen())
 	{
+
 		TimerManager::GetInstance().Update();
 		InputManager::GetInstance().Update(window);
 		MenuManager::GetInstance().Update();
