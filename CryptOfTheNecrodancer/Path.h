@@ -10,7 +10,7 @@ class Path
 	int width;
 
 public:
-	vector<Tile*> GetTiles() 
+	vector<Tile*> GetFloor()
 	{
 		return tiles; 
 	}

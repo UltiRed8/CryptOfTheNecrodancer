@@ -30,7 +30,7 @@ void Wall::Update()
 {
 }
 
-void Wall::Destroy(const bool _usingBomb)
+void Wall::DestroyWall(const bool _usingBomb)
 {
 	if (IsToRemove()) return;
 	bool _canBreak = true;
@@ -42,7 +42,7 @@ void Wall::Destroy(const bool _usingBomb)
 		SoundManager::GetInstance().Play(SOUND_DIG_FAIL);
 		return;
 	}
-	Map::GetInstance().AddTileAt(GetPosition());
+	Map::GetInstance().AddFloorAt(GetPosition());
 	SoundManager::GetInstance().Play(SOUND_DIG_DIRT);
-	IManagable::Destroy();
+	Destroy();
 }

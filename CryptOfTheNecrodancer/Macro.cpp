@@ -14,6 +14,13 @@ int Random(const int _max, const int _min)
 	return _distribution(_seed);
 }
 
+Vector2i GetRandomVector2i(const int _min, const int _max)
+{
+	const int _sizeX = Random(_max, _min);
+	const int _sizeY = Random(_max, _min);
+	return Vector2i(_sizeX, _sizeY);
+}
+
 float Length(Vector2f& _vector)
 {
 	return sqrt(_vector.x * _vector.x + _vector.y * _vector.y);

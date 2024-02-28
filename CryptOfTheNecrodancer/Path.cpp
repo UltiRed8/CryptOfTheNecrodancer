@@ -5,7 +5,7 @@ Path::Path(const Vector2i& _start, const Vector2i& _end)
 {
 	start = _start;
 	end = _end;
-	width = Random(3, 1);
+	width = Random(4, 2);
 	Generate();
 }
 
