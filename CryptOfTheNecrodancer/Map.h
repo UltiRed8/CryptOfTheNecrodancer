@@ -23,16 +23,15 @@ class Map : public Singleton<Map>
 	vector<Room*> rooms;
 	vector<Path*> paths;
 
-	Stair* stair;
 	vector<Tile*> floors;
 	vector<Wall*> walls;
+	vector<Entity*> others; // doors, stairs...
 
 	Room* shop;
 
 	int tempoIndex;
 	bool chainToggle;
 	bool isPurple;
-	bool hasChain;
 
 public:
 	Vector2i GetRandomRoomPosition(const int _min = 0, const int _max = 30) const
@@ -74,17 +73,28 @@ public:
 
 		return _positions;
 	}
+	Entity* GetEntityAt(const Vector2f& _position)
+	{
+		for (Wall* _wall : walls)
+		{
+			if (_wall->GetPosition() == _position)
+			{
+				return _wall;
+			}
+		}
+		return nullptr;
+	}
 
 public:
 	Map();
 	~Map();
 
 public:
-	void Generate(const int _roomCount = 6);
+	void Generate(const int _roomCount = 6, const int _amountOfEnemies = 25);
 	void GenerateRooms(const int _roomCount);
 	void Load(const string _path);
 	void AddFloorAt(const Vector2f& _position);
-
+	void UpdateDoors();
 	void SetFloorColor(Tile* _floor, const bool _creation = false);
 	void Update();
 	void UpdateTilesColor();

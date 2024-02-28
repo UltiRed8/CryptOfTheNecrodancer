@@ -3,10 +3,9 @@
 #include "IManagable.h"
 #include "Component.h"
 
-
 enum EntityType
 {
-	ET_NONE, ET_FLOOR, ET_WALL, ET_ENEMY, ET_PLAYER, ET_ITEM, ET_STAIR, ET_TRAP,ET_SHADOW
+	ET_NONE, ET_FLOOR, ET_WALL, ET_ENEMY, ET_PLAYER, ET_ITEM, ET_STAIR, ET_TRAP,ET_SHADOW, ET_DOOR
 };
 
 class Entity : public Object, public IManagable<string>

@@ -8,6 +8,7 @@
 #include "Wall.h"
 #include "LightningManager.h"
 #include "Stair.h"
+#include "Door.h"
 #include "Map.h"
 
 #define PATH_PLAYER "PlayerSprite.png"
@@ -34,12 +35,14 @@ Player::Player(const string _id, const Vector2f& _position, PlayerRessource _res
 		}),
 		CollisionReaction(ET_STAIR, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
-			Stair* _stair = dynamic_cast<Stair*>(_entity);
 			Map::GetInstance().NextLevel();
 		}),
+		CollisionReaction(ET_DOOR, [this](Entity* _entity) {
+			GetComponent<MovementComponent>()->UndoMove();
+			Door* _door = dynamic_cast<Door*>(_entity);
+			_door->OpenDoor();
+		}),
 	});
-
-
 
 	InitInput();
 	zIndex = 1;

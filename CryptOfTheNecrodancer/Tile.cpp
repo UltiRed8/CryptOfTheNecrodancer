@@ -11,7 +11,7 @@ Tile::Tile(const string& _tilePath, const Vector2f& _position, const EntityType&
 	if (_type == ET_SHADOW)
 	{
 		shape->setFillColor(Color::Black);
-		zIndex = 3;
+		zIndex = 2;
 	}
 }
 
