@@ -258,9 +258,9 @@ void Map::Load(const string _path)
 
 	map<char, function<void(const Vector2f& _position)>> _elements = {
 		{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP)); }},
-		{ ' ', [this](const Vector2f& _position) { floors.push_back(new Tile("wall.png", _position)); }},
+		{ ' ', [this](const Vector2f& _position) { floors.push_back(new Tile("floor.png", _position)); }},
 		{ '.', nullptr },
-		{ 'S', [this](const Vector2f& _position) { tiles.push_back(new Stair(PATH_STAIR, _position)); }},
+		{ 'S', [this](const Vector2f& _position) { new Stair(PATH_STAIR, _position); }},
 	};
 
 	string _line;
@@ -287,7 +287,7 @@ void Map::Load(const string _path)
 
 void Map::AddFloorAt(const Vector2f& _position)
 {
-	Tile* _floor = new Tile("wall.png", _position);
+	Tile* _floor = new Tile("floor.png", _position);
 	floors.push_back(_floor);
 	SetFloorColor(_floor);
 }
@@ -405,10 +405,10 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 		[this](const Vector2f& _position) { new NormalSkeleton(_position); },
 	};
 
-	new Shopkeeper(GetPositionOfRandomTileOfType(ET_FLOOR));
 
 	int _randIndex;
 	vector<Vector2f> _positions = GetSpawnPositions();
+	new Shopkeeper(_positions[0]);
 	if (_positions.empty()) return;
 	for (int _index = 0; _index < _ennemyCount; _index++)
 	{
@@ -432,13 +432,5 @@ void Map::DeleteAll()
 	for (Room* _room : rooms)
 	{
 		delete _room;
-	}
-	for (Tile* _shopTile : shopTiles)
-	{
-		delete _shopTile;
-	}
-	for (Entity* _tile : tiles)
-	{
-		delete _tile;
 	}
 }

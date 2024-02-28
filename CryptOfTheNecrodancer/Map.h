@@ -23,6 +23,7 @@ class Map : public Singleton<Map>
 	vector<Room*> rooms;
 	vector<Path*> paths;
 
+	Stair* stair;
 	vector<Tile*> floors;
 	vector<Wall*> walls;
 
@@ -96,7 +97,6 @@ public:
 	void EraseOverlappings();
 	void NextLevel();
 	void DeleteAll();
-};
 
 	template <typename Type>
 	vector<Vector2f> GetEmptyTilesAround(const vector<Type*>& _entities)
