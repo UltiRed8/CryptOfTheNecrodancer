@@ -3,8 +3,13 @@
 SoundManager::SoundManager()
 {
 	sound = Sound();
-	volume = 20.f;
-	sound.setVolume(volume);
+	volume = new float(20.f);
+	sound.setVolume(*volume);
+}
+
+SoundManager::~SoundManager()
+{
+	delete volume;
 }
 
 void SoundManager::Play(const string& _path)
@@ -28,12 +33,12 @@ void SoundManager::Play(const string& _path)
 
 void SoundManager::IncreaseVolume()
 {
-	if (volume >= 0.f && volume < 100.f)
+	if (*volume >= 0.f && *volume < 100.f)
 	{
-		sound.setVolume(volume += 10.f);
+		sound.setVolume(*volume += 10.f);
 	}
 
-	else if (volume >= 100)
+	else if (*volume >= 100)
 	{
 		sound.setVolume(100);
 	}
@@ -41,12 +46,12 @@ void SoundManager::IncreaseVolume()
 
 void SoundManager::DecreaseVolume()
 {
-	if (volume > 0.f && volume <= 100.f)
+	if (*volume > 0.f && *volume <= 100.f)
 	{
-		sound.setVolume(volume -= 10.f);
+		sound.setVolume(*volume -= 10.f);
 	}
 
-	else if (volume <= 0)
+	else if (*volume <= 0)
 	{
 		sound.setVolume(0);
 	}
@@ -56,14 +61,14 @@ void SoundManager::ToggleVolume()
 {
 	if (sound.getVolume() > 0)
 	{
-		tempVolume = volume;
-		volume = 0;
-		sound.setVolume(volume);
+		sound.setVolume(0);
+		tempVolume = *volume;
+		*volume = 0;
 	}
 	else
 	{
-		sound.setVolume(tempVolume); 
-		volume = tempVolume;
+		*volume = tempVolume;
+		sound.setVolume(*volume);
 	}
 }
 

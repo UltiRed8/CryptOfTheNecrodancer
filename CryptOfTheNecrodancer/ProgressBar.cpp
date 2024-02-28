@@ -2,7 +2,7 @@
 #include "TextureManager.h"
 
 ProgressBar::ProgressBar(const ProgressType& _type, const Vector2f& _position, const Vector2f& _size,
-	const string& _emptyPath, const string& _fullPath, const float _maxValue) : UIElement(_position)
+	const string& _emptyPath, const string& _fullPath, float* _currentValue, const float _maxValue) : UIElement(_position)
 {
     type = _type;
 
@@ -14,7 +14,7 @@ ProgressBar::ProgressBar(const ProgressType& _type, const Vector2f& _position, c
     UpdateOriginAndPosition();
 
     maxValue = _maxValue;
-    currentValue = maxValue;
+    currentValue = _currentValue;
 
     InitTextures(_fullPath, _emptyPath);
 }
@@ -109,7 +109,7 @@ vector<Drawable*> ProgressBar::GetDrawables()
 
 void ProgressBar::Update(const Vector2i& _mousePosition)
 {
-    const float _fillPercent = currentValue / maxValue;
+    const float _fillPercent = *currentValue / maxValue;
     const IntRect& _rect = MakeRect(_fillPercent);
     foreground->setTextureRect(_rect);
 
