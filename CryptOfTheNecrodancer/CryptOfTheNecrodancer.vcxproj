@@ -150,6 +150,7 @@
     <ClCompile Include="FontData.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Heart.cpp" />
     <ClCompile Include="InputData.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Inventory.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="FontData.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Heart.h" />
     <ClInclude Include="IManagable.h" />
     <ClInclude Include="IManager.h" />
     <ClInclude Include="InputData.h" />

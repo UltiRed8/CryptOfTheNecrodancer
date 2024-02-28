@@ -9,6 +9,7 @@
 #include "CameraManager.h"
 #include "TimerManager.h"
 #include "Player.h"
+#include "Heart.h"
 
 vector<Drawable*> MenuManager::GetDrawables()
 {
@@ -100,16 +101,12 @@ void MenuManager::InitHUD()
 		new UIText("DiamondUpdateText", Vector2f(SCREEN_WIDTH - 55 * 1.2, SCREEN_HEIGHT - 55 * 11.3), Color::White, "x " ,25,"Assets/Font/Font.ttf", false, dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetRessources().GetDiamonds()),
 		});
 
-	int _heartCount = 3;
-	float _gap = 1.0f;
-	Menu* _hearts = new Menu("Hearts", {
-		new UIImage("Heart1", Vector2f(SCREEN_WIDTH - 55 * 4.2, SCREEN_HEIGHT - 55 * 12.8), Vector2f(25.0f, 25.0f) * 2.0f, "FullHeart.png"),
-		//new UIImage("Heart2", Vector2f(SCREEN_WIDTH - 55 * (4.2 + _gap), SCREEN_HEIGHT - 55 * 12.8), Vector2f(25.0f, 25.0f) * 2.0f, "FullHeart.png"),
-	});
+	vector<Heart*> _hearts;
+	_hearts.push_back(new Heart("1", Vector2f(SCREEN_WIDTH - 55 * 4.2f, SCREEN_HEIGHT - 55 * 12.8)));
 
 
 	_hud->Open();
-	_hearts->Open();
+	//_hearts->Open();
 }
 
 void MenuManager::InitInventory()

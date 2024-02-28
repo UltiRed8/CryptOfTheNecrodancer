@@ -6,6 +6,7 @@
 #include "UIButton.h"
 #include "InputManager.h"
 #include "TextureManager.h"
+#include "UIIMage.h"
 
 using namespace sf;
 using namespace std;
