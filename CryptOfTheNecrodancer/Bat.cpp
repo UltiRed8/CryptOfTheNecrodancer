@@ -6,6 +6,8 @@
 #include"Macro.h"
 #include "RythmComponent.h"
 #include "AnimationComponent.h"
+#include "Coin.h"
+
 
 #define PATH_BAT "BatSprite.png"
 
@@ -31,6 +33,8 @@ Bat::Bat(const Vector2f& _position) :Enemy(STRING_ID("Bat"), PATH_BAT, _position
 void Bat::DieEvent()
 {
 	//Drop 2 gold
+	Destroy();
+	new Coin(2, STRING_ID("Coin"), GetPosition());
 }
 
 void Bat::SelectDirection()

@@ -43,6 +43,7 @@ void Game::Start()
 
 	// TODO temporaire
 
+
 	//Map::GetInstance().Generate(6);
 	Map::GetInstance().Load("Assets/Saved/Lobby.txt");
 

@@ -11,6 +11,7 @@ Entity::Entity(const string& _id, const string& _path, const Vector2f& _position
 	drawables.push_back(shape);
 	TextureManager::GetInstance().Load(shape, _path);
 	type = ET_NONE;
+	
 }
 
 Entity::~Entity()

@@ -1,5 +1,5 @@
 #pragma once
-#include "Items.h"
+#include "Item.h"
 
 enum ListWearable
 {
@@ -8,7 +8,7 @@ enum ListWearable
 	HARGREAVES, BOOTS_OF_STRENGTH // Boots
 };
 
-class Wearable : public Items
+class Wearable : public Item
 {
 	ListWearable type;
 public :
