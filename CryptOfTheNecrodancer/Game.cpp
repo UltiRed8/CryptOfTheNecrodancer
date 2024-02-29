@@ -29,7 +29,7 @@ void Game::Init()
 	MenuManager::GetInstance().InitMenu(window);
 	TimerManager::GetInstance().SetMaxFrameRate(60);
 	TimerManager::GetInstance().SetRenderCallback([this]() {
-		EntityManager::GetInstance().Update();
+		//EntityManager::GetInstance().Update();
 		LightningManager::GetInstance().Update();
 		UpdateWindow();
 	});
@@ -51,7 +51,7 @@ void Game::Update()
 {
 	while (window->isOpen())
 	{
-
+		MusicManager::GetInstance().Update();
 		TimerManager::GetInstance().Update();
 		InputManager::GetInstance().Update(window);
 		MenuManager::GetInstance().Update();

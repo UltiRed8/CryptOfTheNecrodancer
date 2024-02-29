@@ -31,7 +31,6 @@ Player::Player(const string _id, const Vector2f& _position) : Entity(_id, PATH_P
 	components.push_back(new AnimationComponent(this, PATH_PLAYER, {
 		AnimationData("Idle", Vector2f(0, 0), Vector2f(26, 26), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f)
 	}, ANIM_DIR_NONE));
-	components.push_back(new RythmComponent(this, [this]() { GetComponent<MovementComponent>()->SetCanMove(true); }, nullptr, [&]() { GetComponent<MovementComponent>()->SetCanMove(false); }));
 	CollisionComponent* _collisions = new CollisionComponent(this);
 	components.push_back(_collisions);
 	_movement->InitCollisions(_collisions, {
@@ -106,8 +105,12 @@ void Player::InitInput()
 		{ ActionData("Haut", [this]() {
 		if (!alreadyMoved)
 			{
-				 GetComponent<MovementComponent>()->SetDirection(Vector2i(0,-1));
-				 alreadyMoved = true;
+				GetComponent<MovementComponent>()->SetDirection(Vector2i(0,-1));
+				if (!MusicManager::GetInstance().TriggerEvent())
+				{
+					GetComponent<MovementComponent>()->SetDirection(Vector2i(0,0));
+				}
+				alreadyMoved = true;
 			}}, {Event::KeyPressed, Keyboard::Up}),
 
 		  ActionData("HautR", [this]() { alreadyMoved = false; }, {Event::KeyReleased, Keyboard::Up}),
@@ -117,6 +120,10 @@ void Player::InitInput()
 		  ActionData("Bas", [this]() { if (!alreadyMoved)
 			{
 				 GetComponent<MovementComponent>()->SetDirection(Vector2i(0,1));
+				 if (!MusicManager::GetInstance().TriggerEvent())
+				 {
+					 GetComponent<MovementComponent>()->SetDirection(Vector2i(0, 0));
+				 }
 				 alreadyMoved = true;
 			}; }, {Event::KeyPressed, Keyboard::Down}),
 
@@ -127,6 +134,10 @@ void Player::InitInput()
 		  ActionData("Droite", [this]() { if (!alreadyMoved)
 			{
 				 GetComponent<MovementComponent>()->SetDirection(Vector2i(1,0));
+				 if (!MusicManager::GetInstance().TriggerEvent())
+				 {
+					 GetComponent<MovementComponent>()->SetDirection(Vector2i(0, 0));
+				 }
 				 alreadyMoved = true;
 			}}, {Event::KeyPressed, Keyboard::Right}),
 
@@ -136,6 +147,10 @@ void Player::InitInput()
 		  ActionData("Gauche", [this]() { if (!alreadyMoved)
 			{
 				 GetComponent<MovementComponent>()->SetDirection(Vector2i(-1,0));
+				 if (!MusicManager::GetInstance().TriggerEvent())
+				 {
+					 GetComponent<MovementComponent>()->SetDirection(Vector2i(0, 0));
+				 }
 				 alreadyMoved = true;
 			}; }, {Event::KeyPressed, Keyboard::Left}),
 

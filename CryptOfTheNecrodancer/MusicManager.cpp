@@ -14,18 +14,26 @@ MusicManager::MusicManager()
 	volume = new float(10.f);
 	rythmLoop = nullptr;
 	isRunning = false;
-	acceptDelay = new float(300.0f);
+	acceptDelay = new float(300);
 	minAcceptDelay = 0.0f;
 	maxAcceptDelay = 450.0f;
 	playSpeed = 1.0f;
 	currentBPM = 0;
 	tempVolume = 0.0f;
+	delta = 0.0f;
+	beatDelay = 0;
+	didEvent = false;
 }
 
 MusicManager::~MusicManager()
 {
 	delete volume;
 	delete acceptDelay;
+}
+
+void MusicManager::Update()
+{
+	delta += TimerManager::GetInstance().GetDeltaTime();
 }
 
 MusicData* MusicManager::GetMusic(const string& _path, const Vector2f& _position)
@@ -78,23 +86,17 @@ void MusicManager::PlayMain(const string& _path, const int _bpm, const bool _wit
 	{
 		_music->setLoop(_shouldLoop);
 
-		new Timer("StartMusicDelay", [&]() {
-			MusicData* _current = GetCurrent();
-			_current->play();
-		}, milliseconds((Int32)(*acceptDelay / 2)), 1, true);
+		MusicData* _current = GetCurrent();
+		_current->play();
 
 		if (_withShopkeeper)
 		{
-			new Timer("StartMusicDelayShopkeeper", [&]() {
-				MusicData* _current = GetCurrent();
-				_current->play();
-				Vector2f _shopkeeperPosition = EntityManager::GetInstance().Get("Player")->GetPosition();// = Map::GetInstance().GetShopkeeper().GetPosition(); // TODO
-				if (MusicData* _music = GetMusic(_current->GetID() + "_shopkeeper", _shopkeeperPosition))
-				{
-					_music->play();
-					_music->setVolume(100.0f);
-				}
-			}, milliseconds((Int32)(*acceptDelay / 2)), 1, true);
+			const Vector2f& _shopkeeperPosition = Map::GetInstance().GetShopkeeper()->GetPosition();
+			if (MusicData* _music = GetMusic(_current->GetID() + "_shopkeeper", _shopkeeperPosition))
+			{
+				_music->play();
+				_music->setVolume(100.0f);
+			}
 		}
 
 		UpdateLoop(_bpm);
@@ -221,45 +223,33 @@ void MusicManager::UpdateLoop(const int _bpm)
 
 	currentBPM = _bpm;
 
+	beatDelay = seconds(1.f / (_bpm / 60.f)).asMilliseconds();
+
 	rythmLoop = new Timer("Timer", [this]() {
-
-		for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
-		{
-			if (RythmComponent* _component = _entity->GetComponent<RythmComponent>())
-			{
-				_component->BeforeUpdate();
-			}
-		};
-
-		new Timer("InputsTooSoon", [this]() {
-			Map::GetInstance().Update();
-			
-			for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
-			{
-				if (RythmComponent* _component = _entity->GetComponent<RythmComponent>())
-				{
-					_component->TimedUpdate();
-				}
-			};
-
-			Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
-			TextureManager::GetInstance().Load(_shape, "RythmHearts1.png");
-			new Timer("HeartIndicatorReset", [this]() {
-				Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
-				TextureManager::GetInstance().Load(_shape, "RythmHearts0.png");
-				}, seconds(0.1f), 1, true);
-			
-		}, milliseconds((Int32)(*acceptDelay / 2)), 1, true);
-
-		new Timer("InputsTooLate", [this]() {
-			for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
-			{
-				if (RythmComponent* _component = _entity->GetComponent<RythmComponent>())
-				{
-					_component->AfterUpdate();
-				}
-			};
-		}, milliseconds((Int32)(*acceptDelay)), 1, true);
-
+		new Timer("ResetEvent", [this]() {
+			TriggerEvent();
+			didEvent = false;
+		}, milliseconds(*acceptDelay / 2), 1, true);
+		delta = 0;
 	}, seconds(1.f / (_bpm / 60.f)), -1);
+}
+
+bool MusicManager::TriggerEvent()
+{
+	if (didEvent) return false;
+
+	const float _delay = *acceptDelay / 2;
+
+	if (delta - 10 <= _delay || delta >= (beatDelay - _delay))
+	{
+		didEvent = true;
+		Map::GetInstance().Update();
+		EntityManager::GetInstance().Update();
+		return true;
+	}
+	else
+	{
+		cout << "bad timing!" << endl;
+		return false;
+	}
 }

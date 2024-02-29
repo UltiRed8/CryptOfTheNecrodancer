@@ -11,7 +11,7 @@ Skeleton::Skeleton(const Vector2f& _position, const string& _path, const int _dr
 {
 	skeletonType = SK_NONE;
 	cooldown = 2;
-	components.push_back(new RythmComponent(this, nullptr, [this]() { UpdateRythm(); }, nullptr));
+	//components.push_back(new RythmComponent(this, nullptr, [this]() { UpdateRythm(); }, nullptr));
 	//components.push_back(new AnimationComponent(this, _path, {
 	/*	AnimationData(STRING_ID("SkeletonIdle"), Vector2f(0, 0), Vector2f(24, 26), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f),
 		AnimationData(STRING_ID("SkeletonAttack"), Vector2f(24*4, 0), Vector2f(24, 26), READ_RIGHT, ANIM_DIR_UP, true, 4, 0.1f),
@@ -38,7 +38,7 @@ void Skeleton::SelectDirection()
 		_direction.x = _playerPos.x - _skeletonPos.x;
 		_direction.x = (_direction.x > 0) ? 1 : -1;
 	}
-	GetComponent< MovementComponent>()->SetDirection(_direction, false);
+	GetComponent< MovementComponent>()->SetDirection(_direction);
 
 }
 

@@ -20,7 +20,7 @@ Bat::Bat(const Vector2f& _position) :Enemy(STRING_ID("Bat"), PATH_BAT, _position
 	};
 
 	//AnimationData _animation = AnimationData(STRING_ID("Bat"), Vector2f(0, 0), Vector2f(24, 24), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f);
-	components.push_back(new RythmComponent(this,nullptr, [this]() { UpdateRythm(); }	,nullptr ));
+	//components.push_back(new RythmComponent(this,nullptr, [this]() { UpdateRythm(); }	,nullptr ));
 	//components.push_back(new AnimationComponent(this, PATH_BAT, { _animation }, ANIM_DIR_NONE));
 	cooldown = 2;
 	InitAllBattlesComponents(50.f, 100.f);
@@ -29,7 +29,7 @@ Bat::Bat(const Vector2f& _position) :Enemy(STRING_ID("Bat"), PATH_BAT, _position
 void Bat::SelectDirection()
 {
 	int _direction=Random((int)directionsPatern.size() - 1);
-	GetComponent< MovementComponent>()->SetDirection(directionsPatern[_direction],false);
+	GetComponent< MovementComponent>()->SetDirection(directionsPatern[_direction]);
 
 }
 
