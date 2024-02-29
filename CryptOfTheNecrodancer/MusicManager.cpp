@@ -203,7 +203,7 @@ void MusicManager::UpdateLoop(const int _bpm)
 			
 		}, milliseconds(acceptDelay / 2), 1, true);
 
-
+		cout << EntityManager::GetInstance().GetAllValues().size() << endl;
 
 
 		new Timer("InputsTooLate", [this]() {

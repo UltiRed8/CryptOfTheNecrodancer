@@ -10,6 +10,7 @@ class LightningManager : public IManager<string, LightningComponent>, public Sin
 public:
 	void Construct(const vector<Vector2f>& _allEntitiesPos);
 
+	void ClearAll();
 public:
 	void Update();
 };

@@ -24,15 +24,17 @@ Player::Player(const string _id, const Vector2f& _position) : Entity(_id, "", _p
 	ressources = new PlayerRessource();
 	MovementComponent* _movement = new MovementComponent(this);
 	components.push_back(_movement);
-	AnimationData _animation = AnimationData("Idle", Vector2f(0, 0),Vector2f(26,26), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f);
-	components.push_back(new RythmComponent(this, [this]() { GetComponent<MovementComponent>()->SetCanMove(true); },nullptr , [&]() { GetComponent<MovementComponent>()->SetCanMove(false); }));
+	AnimationData _animation = AnimationData("Idle", Vector2f(0, 0), Vector2f(26, 26), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f);
+	components.push_back(new RythmComponent(this, [this]() { GetComponent<MovementComponent>()->SetCanMove(true); }, nullptr, [&]() { GetComponent<MovementComponent>()->SetCanMove(false); }));
 	components.push_back(new AnimationComponent(this, PATH_PLAYER, { _animation }, ANIM_DIR_NONE));
+
+	alreadyMoved = false;
 
 	CollisionComponent* _collisions = new CollisionComponent(this);
 	components.push_back(_collisions);
 	components.push_back(new LightningComponent("PlayerLight", this, 350));
 	components.push_back(new LifeComponent(this, [this]() { cout << "Tu est mort ! " << endl; }, false, 100.f));
-	components.push_back(new DamageComponent(this,100.f));
+	components.push_back(new DamageComponent(this, 100.f));
 
 	_movement->InitCollisions(_collisions, {
 		CollisionReaction(ET_WALL, [this](Entity* _entity) {
@@ -42,17 +44,21 @@ Player::Player(const string _id, const Vector2f& _position) : Entity(_id, "", _p
 		}),
 		CollisionReaction(ET_STAIR, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
-			if (true)
+			if (Map::GetInstance().GetCurrentZone() == CL_Lobby)
 			{
 				if (*ressources->GetDiamonds() == 0)
 				{
-					Map::GetInstance().NextLevel();
+					Map::GetInstance().NextMap();
 				}
 				else
 				{
 					Menu* _leaveMenu = MenuManager::GetInstance().Get("LeaveLobby");
 					_leaveMenu->Open();
 				}
+			}
+			else
+			{
+				Map::GetInstance().NextMap();
 			}
 		}),
 		CollisionReaction(ET_DOOR, [this](Entity* _entity) {
@@ -75,7 +81,11 @@ Player::Player(const string _id, const Vector2f& _position) : Entity(_id, "", _p
 			GetComponent<DamageComponent>()->Attack(_entity);
 			cout << _entity->GetID() << " was killed!" << endl;
 		}),
-	} );
+
+		CollisionReaction(ET_EPHAESTUS, [this](Entity* _entity) {
+			GetComponent<MovementComponent>()->UndoMove();
+		}),
+		});
 
 	InitInput();
 	zIndex = 1;
@@ -95,10 +105,44 @@ Player::~Player()
 void Player::InitInput()
 {
 	new ActionMap("Mouvements",
-		{ ActionData("Haut", [this]() { GetComponent<MovementComponent>()->SetDirection(Vector2i(0,-1)); }, {Event::KeyPressed, Keyboard::Up}),
-		  ActionData("Bas", [this]() { GetComponent<MovementComponent>()->SetDirection(Vector2i(0, 1)); }, {Event::KeyPressed, Keyboard::Down}),
-		  ActionData("Droite", [this]() { GetComponent<MovementComponent>()->SetDirection(Vector2i(1, 0)); }, {Event::KeyPressed, Keyboard::Right}),
-		  ActionData("Gauche", [this]() { GetComponent<MovementComponent>()->SetDirection(Vector2i(-1, 0)); }, {Event::KeyPressed, Keyboard::Left})
+		{ ActionData("Haut", [this]() {
+		if (!alreadyMoved)
+			{
+				 GetComponent<MovementComponent>()->SetDirection(Vector2i(0,-1));
+				 alreadyMoved = true;
+			}}, {Event::KeyPressed, Keyboard::Up}),
+
+		  ActionData("HautR", [this]() { alreadyMoved = false; }, {Event::KeyReleased, Keyboard::Up}),
+
+
+
+		  ActionData("Bas", [this]() { if (!alreadyMoved)
+			{
+				 GetComponent<MovementComponent>()->SetDirection(Vector2i(0,1));
+				 alreadyMoved = true;
+			}; }, {Event::KeyPressed, Keyboard::Down}),
+
+		  ActionData("BasR", [this]() { alreadyMoved = false; }, {Event::KeyReleased, Keyboard::Down}),
+
+
+
+		  ActionData("Droite", [this]() { if (!alreadyMoved)
+			{
+				 GetComponent<MovementComponent>()->SetDirection(Vector2i(1,0));
+				 alreadyMoved = true;
+			}}, {Event::KeyPressed, Keyboard::Right}),
+
+		  ActionData("DroiteR", [this]() { alreadyMoved = false; }, {Event::KeyReleased, Keyboard::Right}),
+
+
+		  ActionData("Gauche", [this]() { if (!alreadyMoved)
+			{
+				 GetComponent<MovementComponent>()->SetDirection(Vector2i(-1,0));
+				 alreadyMoved = true;
+			}; }, {Event::KeyPressed, Keyboard::Left}),
+
+		  ActionData("GaucheR", [this]() { alreadyMoved = false; }, {Event::KeyReleased, Keyboard::Left}),
+
 		});
 
 	// TODO remove

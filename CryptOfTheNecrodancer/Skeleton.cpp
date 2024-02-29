@@ -12,10 +12,10 @@ Skeleton::Skeleton(const Vector2f& _position, const string& _path, const int _dr
 	skeletonType = SK_NONE;
 	cooldown = 2;
 	components.push_back(new RythmComponent(this, nullptr, [this]() { UpdateRythm(); }, nullptr));
-	components.push_back(new AnimationComponent(this, _path, {
-		AnimationData(STRING_ID("SkeletonIdle"), Vector2f(0, 0), Vector2f(24, 26), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f),
+	//components.push_back(new AnimationComponent(this, _path, {
+	/*	AnimationData(STRING_ID("SkeletonIdle"), Vector2f(0, 0), Vector2f(24, 26), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f),
 		AnimationData(STRING_ID("SkeletonAttack"), Vector2f(24*4, 0), Vector2f(24, 26), READ_RIGHT, ANIM_DIR_UP, true, 4, 0.1f),
-	}, ANIM_DIR_NONE));
+	}, ANIM_DIR_NONE));*/
 	InitAllBattlesComponents(50.f, 100.f);
 }
 
@@ -46,8 +46,8 @@ void Skeleton::SelectDirection()
 void Skeleton::UpdateRythm()
 {
 	currentCooldown--;
-	if (currentCooldown == 1) GetComponent<AnimationComponent>()->SetDirection(ANIM_DIR_UP);
-	else GetComponent<AnimationComponent>()->SetDirection(ANIM_DIR_NONE);
+	/*if (currentCooldown == 1) GetComponent<AnimationComponent>()->SetDirection(ANIM_DIR_UP);
+	else GetComponent<AnimationComponent>()->SetDirection(ANIM_DIR_NONE);*/
 	if (currentCooldown <= 0)
 	{
 		currentCooldown = cooldown;

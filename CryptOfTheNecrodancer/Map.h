@@ -18,6 +18,11 @@
 
 using namespace std;
 
+enum CurrentZone
+{
+	CL_Lobby,CL_ZONE1,CL_ZONE2
+};
+
 class Map : public Singleton<Map>
 {
 	vector<Room*> rooms;
@@ -33,6 +38,11 @@ class Map : public Singleton<Map>
 	bool chainToggle;
 	bool isPurple;
 
+	CurrentZone currentZone;
+	int currentLevel;
+
+	Shopkeeper* shopkeeper;
+
 public:
 	Vector2i GetRandomRoomPosition(const int _min = 0, const int _max = 30) const
 	{
@@ -42,6 +52,16 @@ public:
 		_pos.y *= (int)TILE_SIZE.y;
 
 		return _pos;
+	}
+
+	Shopkeeper* GetShopkeeper() const
+	{
+		return shopkeeper;
+	}
+
+	CurrentZone GetCurrentZone() const
+	{
+		return currentZone;
 	}
 
 	Vector2f GetFirstTilePosition() const
@@ -107,6 +127,7 @@ public:
 	void SpawnEnnemy(const int _ennemyCount = 10);
 	void EraseOverlappings();
 	void NextLevel();
+	void NextMap();
 	void DeleteAll();
 
 	template <typename Type>
