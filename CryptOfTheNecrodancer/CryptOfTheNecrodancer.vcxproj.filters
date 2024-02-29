@@ -82,9 +82,6 @@
     <Filter Include="Source Files\Object\Entity\Player">
       <UniqueIdentifier>{88536bd7-de51-4ea6-b5a9-b5ed68a87419}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Monster">
-      <UniqueIdentifier>{6b6735ec-bed8-465a-88b0-0c836948d141}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -180,7 +177,7 @@
     <ClCompile Include="Inventory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Items.cpp">
+    <ClCompile Include="Item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PlayerRessource.cpp">
@@ -222,41 +219,17 @@
     <ClCompile Include="Tile.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DamageComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LifeComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MovementComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Saveable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Wall.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Source Files\Object\Entity\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Object\Entity\Player</Filter>
     </ClCompile>
     <ClCompile Include="Path.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Slime.cpp">
-      <Filter>Source Files\Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="Bat.cpp">
-      <Filter>Source Files\Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="Skeleton.cpp">
-      <Filter>Source Files\Monster</Filter>
     </ClCompile>
     <ClCompile Include="Shopkeeper.cpp">
       <Filter>Source Files</Filter>
@@ -267,13 +240,43 @@
     <ClCompile Include="Trap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LightningComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LightningManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Door.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>Source Files\Object\Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files\Object\Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Skeleton.cpp">
+      <Filter>Source Files\Object\Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Slime.cpp">
+      <Filter>Source Files\Object\Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionComponent.cpp">
+      <Filter>Source Files\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="DamageComponent.cpp">
+      <Filter>Source Files\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="LifeComponent.cpp">
+      <Filter>Source Files\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="LightningComponent.cpp">
+      <Filter>Source Files\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementComponent.cpp">
+      <Filter>Source Files\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Diamond.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -380,7 +383,7 @@
     <ClInclude Include="Inventory.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Items.h">
+    <ClInclude Include="Item.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="PlayerRessource.h">
@@ -422,41 +425,17 @@
     <ClInclude Include="Tile.h">
       <Filter>Source Files\Map</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DamageComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LifeComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MovementComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Saveable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Wall.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Source Files\Object\Entity\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Source Files\Object\Entity\Player</Filter>
     </ClInclude>
     <ClInclude Include="Path.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Slime.h">
-      <Filter>Source Files\Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="Bat.h">
-      <Filter>Source Files\Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="Skeleton.h">
-      <Filter>Source Files\Monster</Filter>
     </ClInclude>
     <ClInclude Include="Shopkeeper.h">
       <Filter>Header Files</Filter>
@@ -467,13 +446,43 @@
     <ClInclude Include="Trap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LightningComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LightningManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Door.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>Source Files\Object\Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Slime.h">
+      <Filter>Source Files\Object\Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Source Files\Object\Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Skeleton.h">
+      <Filter>Source Files\Object\Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="DamageComponent.h">
+      <Filter>Source Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionComponent.h">
+      <Filter>Source Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="LightningComponent.h">
+      <Filter>Source Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="LifeComponent.h">
+      <Filter>Source Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementComponent.h">
+      <Filter>Source Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Diamond.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

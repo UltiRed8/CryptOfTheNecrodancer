@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "Door.h"
 #include "LightningManager.h"
+#include "Coin.h"
+#include "Diamond.h"
 
 #define PATH_STAIR "stairs.png"
 
@@ -78,6 +80,16 @@ void Map::GenerateShopRoom()
 	PlaceWallsAroundFloor(_shopFloors, 1, false, WT_SHOP);
 }
 
+void Map::GenerateDiamonds(const int _quantity)
+{
+	/*for (int _index = 0; _index < _quantity/2; _index++)
+	{
+		new Diamond("Diamond", floors[Random(floors.size(), 0), 0]->GetPosition());
+		new Diamond("Diamond", static_cast<Vector2f>(GetRandomRoomPosition()));
+	}*/
+	
+}
+
 Map::Map()
 {
 	tempoIndex = 1;
@@ -111,6 +123,7 @@ void Map::Generate(const int _roomCount, const int _amountOfEnemies)
 	LightningManager::GetInstance().Construct(GetAllPositions(walls));
 	UpdateDoors();
 	SpawnEnnemy(_amountOfEnemies);
+	GenerateDiamonds();
 }
 
 void Map::EraseOverlappings()
@@ -320,10 +333,13 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 	vector<function<void(const Vector2f& _position)>> _enemyList =
 	{
 		[this](const Vector2f& _position) { new Bat(_position); },
-		[this](const Vector2f& _position) { new GreenSlime(_position); },
+		/*[this](const Vector2f& _position) { new GreenSlime(_position); },
 		[this](const Vector2f& _position) { new BlueSlime(_position); },
 		[this](const Vector2f& _position) { new OrangeSlime(_position); },
-		[this](const Vector2f& _position) { new NormalSkeleton(_position); },
+		[this](const Vector2f& _position) { new NormalSkeleton(_position); },*/
+		//[this](const Vector2f& _position) { new Coin(5, "coin", _position); }, // COIN SPAWN TEST
+		//[this](const Vector2f& _position) { new Diamond("Diamond", _position); }, // DIAMOND SPAWN TEST
+
 	};
 
 	int _randIndex;

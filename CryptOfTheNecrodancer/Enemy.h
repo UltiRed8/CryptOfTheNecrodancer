@@ -2,6 +2,7 @@
 #include"Entity.h"
 #include "MovementComponent.h"
 #include "CollisionComponent.h"	
+
 class Enemy:public Entity
 {
 protected:
