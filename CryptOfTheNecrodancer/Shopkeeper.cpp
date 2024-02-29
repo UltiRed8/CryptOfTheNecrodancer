@@ -37,12 +37,12 @@ void Shopkeeper::SelectDirection()
 
     if (Random(1, 0))
     {
-        _direction.x = _playerPos.x - _ownPosition.x;
+        _direction.x = (int)(_playerPos.x - _ownPosition.x);
         _direction.x = (_direction.x > 0) ? 1 : -1, 0;
     }
     else
     {
-        _direction.y = _playerPos.y - _ownPosition.y;
+        _direction.y = (int)(_playerPos.y - _ownPosition.y);
         _direction.y = (_direction.y > 0) ? 1 : -1, 0;
     }
     GetComponent< MovementComponent>()->SetDirection(_direction, false);
