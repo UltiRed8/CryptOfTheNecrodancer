@@ -10,6 +10,6 @@ public:
 	Hephaestus(const Vector2f& _position);
 
 public:
-	void UpdateRythm();
+	virtual void Update() override;
 };
 

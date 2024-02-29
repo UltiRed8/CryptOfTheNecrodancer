@@ -6,14 +6,14 @@
 #include "RythmComponent.h"
 #include "AnimationComponent.h"
 
-Shopkeeper::Shopkeeper(const Vector2f& _position) : Enemy(STRING_ID("ShopKeeper"), PATH_SHOPKEEPER, _position, 0)
+Shopkeeper::Shopkeeper(const Vector2f& _position) : Enemy(1000.f,900.f,STRING_ID("ShopKeeper"), PATH_SHOPKEEPER, _position, 0)
 {
 	directionsPatern = {
 		   Vector2i(0,0),
 	};
 
 	//AnimationData _animation = AnimationData("ShopKeeper", Vector2f(0, 0), Vector2f(47, 38), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f);
-	components.push_back(new RythmComponent(this, nullptr, [this]() { UpdateRythm(); }, nullptr));
+	//components.push_back(new RythmComponent(this, nullptr, [this]() { UpdateRythm(); }, nullptr));
 	//components.push_back(new AnimationComponent(this, PATH_SHOPKEEPER, { _animation }, ANIM_DIR_NONE));
     GetComponent<MovementComponent>()->SetCanMove(false);
 	cooldown = 0;
@@ -40,16 +40,5 @@ void Shopkeeper::SelectDirection()
         _direction.y = (int)(_playerPos.y - _ownPosition.y);
         _direction.y = (_direction.y > 0) ? 1 : -1, 0;
     }
-    GetComponent< MovementComponent>()->SetDirection(_direction, false);
+    GetComponent< MovementComponent>()->SetDirection(_direction);
 }
-
-void Shopkeeper::UpdateRythm()
-{
-    currentCooldown--;
-    if (currentCooldown <= 0)
-    {
-        currentCooldown = cooldown;
-        SelectDirection();
-    }
-}
-

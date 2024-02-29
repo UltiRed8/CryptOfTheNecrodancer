@@ -23,21 +23,51 @@ Game::~Game()
 	delete map;
 }
 
+// TODO LIST :
+// animation component a refaire
+// lightning component qui n'est plus un component
+// music et sound manager :'(
+// finir le jeu
+// plusieurs zones (textures et musiques)
+// finir le jeu
+// shopkeeper et pnj du spawn a mettre en NPC
+// finir le jeu
+// la vie du joueur
+// les vies des livings au dessus d'eux
+// encore finir le jeu
+// ajouter des ennemis
+// finir encore plus le jeu
+// les torches sur les murs
+// terminer le jeu
+// le faire en .exe
+// avoir fini le jeu
+// le vendre
+// faire un post sur twitter
+// finir le jeu (pour de vrai)
+// ajouter des features pour encore plus finir le jeu
+// les traps
+// et le jeu
+// les boss
+// non
+// fin (le jeu est fini)
+
 void Game::Init()
 {
 	window = new RenderWindow(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer");
 	MenuManager::GetInstance().InitMenu(window);
 	TimerManager::GetInstance().SetMaxFrameRate(60);
 	TimerManager::GetInstance().SetRenderCallback([this]() {
-		EntityManager::GetInstance().Update();
+		//EntityManager::GetInstance().Update();
 		LightningManager::GetInstance().Update();
 		UpdateWindow();
 	});
 }
 
+// TODO finir le jeu
+
 void Game::Start()
 {
-	player = new Player("Player",{0.f,0.f});
+	player = new Player(100.f,100.f,"Player",{0.f,0.f});
 
 	Init();
 
@@ -51,7 +81,7 @@ void Game::Update()
 {
 	while (window->isOpen())
 	{
-
+		MusicManager::GetInstance().Update();
 		TimerManager::GetInstance().Update();
 		InputManager::GetInstance().Update(window);
 		MenuManager::GetInstance().Update();

@@ -3,8 +3,6 @@
 #include "Player.h"
 #include "Door.h"
 #include "LightningManager.h"
-#include "Coin.h"
-#include "Diamond.h"
 #include "CameraManager.h"
 #include "Hephaestus.h"
 
@@ -77,8 +75,8 @@ void Map::GenerateShopRoom()
 	vector<Tile*> _shopkeeperTiles = shop->GetFloor();
 	const Vector2f& _shopkeeperPosition = _shopkeeperTiles[12]->GetPosition();
 	shopkeeper = new Shopkeeper(_shopkeeperPosition);
-	new Tile("ShopTile.png", _shopkeeperTiles[11]->GetPosition());
-	new Tile("ShopTile.png", _shopkeeperTiles[13]->GetPosition());
+	others.push_back(new Tile("ShopTile.png", _shopkeeperTiles[11]->GetPosition()));
+	others.push_back(new Tile("ShopTile.png", _shopkeeperTiles[13]->GetPosition()));
 	others.push_back(shopkeeper);
 
 	const vector<Tile*>& _shopFloors = shop->GetFloor();
@@ -345,7 +343,7 @@ void Map::GenerateDiamond(const int _diamondOnFloor, int _diamondInWall)
 {
 	for (int _i = 0; _i < _diamondOnFloor; _i++)
 	{
-		new Diamond(STRING_ID("Diamond"), GetRandomElementInVector(floors)->GetPosition());
+		new Pickable(1, PT_DIAMOND, STRING_ID("Diamond"), GetRandomElementInVector(floors)->GetPosition());
 	}
 
 	while (_diamondInWall >= 1)
@@ -361,14 +359,13 @@ void Map::GenerateDiamond(const int _diamondOnFloor, int _diamondInWall)
 
 void Map::SpawnEnnemy(const int _ennemyCount)
 {
-	vector<function<Entity*(const Vector2f& _position)>> _enemyList =
+	vector<function<Entity* (const Vector2f& _position)>> _enemyList =
 	{
-
-		[this](const Vector2f& _position) { return new Bat(_position); },
+		//[this](const Vector2f& _position) { return new Bat(_position); },
 		[this](const Vector2f& _position) { return new GreenSlime(_position); },
 		[this](const Vector2f& _position) { return new BlueSlime(_position); },
 		[this](const Vector2f& _position) { return new OrangeSlime(_position); },
-		[this](const Vector2f& _position) { return new NormalSkeleton(_position); },
+		//[this](const Vector2f& _position) { return new NormalSkeleton(_position); },
 	};
 
 	int _randIndex;
@@ -376,7 +373,7 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 
 	Vector2f _position = _positions[Random((int)_positions.size() - 1, 0)];
 	if (_positions.empty()) return;
-	for (int _index = 0; _index < _ennemyCount; _index++)
+	for (int _index = 0; _index < 50; _index++)
 	{
 		_position = _positions[Random((int)_positions.size() - 1, 0)];
 		EraseElement(_positions, _position);
