@@ -184,6 +184,8 @@ void MenuManager::Delete()
 
 void MenuManager::GoToLobby()
 {
+	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
+	_player->GetRessources()->SetMoney(0);
 	Map::GetInstance().DeleteAll();
 	LightningManager::GetInstance().ClearAll();
 	Map::GetInstance().Load("Assets/Saved/Lobby.txt");
