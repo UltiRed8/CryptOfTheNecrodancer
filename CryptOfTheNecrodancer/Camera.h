@@ -18,13 +18,7 @@ enum CameraType
 class Camera : public IManagable<string>, public View
 {
 	CameraType type;
-	FloatRect area;
 
-public :
-	FloatRect GetDefaultZoom()
-	{
-		return area;
-	}
 	// Listener* listener;
 
 public:

@@ -38,8 +38,6 @@ vector<Drawable*> EntityManager::GetDrawables() const
 				if (AnimationComponent* _anim = _entity->GetComponent<AnimationComponent>())
 				{
 					_tempDrawables = _anim->GetDrawables();
-					/*vector<Drawable*> _entitiesDrawables= _entity->GetDrawables();
-					_tempDrawables.insert(_tempDrawables.end(), _entitiesDrawables.begin(), _entitiesDrawables.end());*/
 				}
 				else
 				{

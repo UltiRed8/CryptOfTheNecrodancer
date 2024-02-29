@@ -273,7 +273,7 @@
     <ClCompile Include="LightningManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Heart.cpp">
+    <ClCompile Include="Door.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -473,7 +473,7 @@
     <ClInclude Include="LightningManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Heart.h">
+    <ClInclude Include="Door.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

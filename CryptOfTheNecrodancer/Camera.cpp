@@ -7,7 +7,6 @@
 Camera::Camera(const string& _id, const CameraType& _type, const Vector2f& _from, const Vector2f& _to) : IManagable(_id), View(_from, _to)
 {
 	type = _type;
-	area = { getViewport().getPosition(), getViewport().getSize() };
 	Register();
 	Init();
 
@@ -41,24 +40,25 @@ void Camera::Update()
 
 	if (type == CAMERA_PLAYER)
 	{
+		Entity* _player = EntityManager::GetInstance().Get("Player");
 		const Vector2f& _currentPosition = getCenter();
-		const Vector2f& _playerPosition = EntityManager::GetInstance().Get("Player")->GetPosition();
+		const Vector2f& _target = _player->GetPosition() + (TILE_SIZE / 2.0f);
 
 		Vector2f _offset = Vector2f(0.0f, 0.0f);
 
-		if (abs(_currentPosition.x - _playerPosition.x) > 10)
+		if (abs(_currentPosition.x - _target.x) > 10)
 		{
-			_offset.x = _currentPosition.x > _playerPosition.x ? -0.3f : 0.3f;
+			_offset.x = _currentPosition.x > _target.x ? -0.3f : 0.3f;
 		}
-		if (abs(_currentPosition.y - _playerPosition.y) > 10)
+		if (abs(_currentPosition.y - _target.y) > 10)
 		{
-			_offset.y = _currentPosition.y > _playerPosition.y ? -0.3f : 0.3f;
+			_offset.y = _currentPosition.y > _target.y ? -0.3f : 0.3f;
 		}
 
 		float _deltaTime = TimerManager::GetInstance().GetDeltaTime();
 		_offset *= _deltaTime;
 
 		move(_offset);
-		//setCenter(_playerPosition);
+		//setCenter(_target);
 	}
 }

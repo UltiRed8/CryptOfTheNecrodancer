@@ -14,11 +14,12 @@ AnimationComponent::AnimationComponent(Entity* _owner, const string& _path, cons
 
 void AnimationComponent::InitAnimations(const string& _path, const vector<AnimationData>& _animationsData)
 {
+	Sprite* _sprite = new Sprite();
+	_sprite->setPosition(Vector2f(owner->GetPosition()));
+	TextureManager::GetInstance().LoadSprite(_sprite, _path);
+
 	for (const AnimationData& _data : _animationsData)
 	{
-		Sprite* _sprite = new Sprite();
-		_sprite->setPosition(Vector2f(owner->GetPosition()));
-		TextureManager::GetInstance().LoadSprite(_sprite, _path);
 		new Animation(_data.name, this, _sprite, _data);
 	}
 }

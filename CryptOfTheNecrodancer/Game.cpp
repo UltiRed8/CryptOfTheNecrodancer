@@ -43,9 +43,8 @@ void Game::Start()
 
 	// TODO temporaire
 
-	/* Map::GetInstance().Generate(6);
-	 Map::GetInstance().SpawnEnnemy(25);*/
-	Map::GetInstance().Load("Assets/Saved/Lobby.txt");
+	Map::GetInstance().Generate(6);
+	//Map::GetInstance().Load("Assets/Saved/Lobby.txt");
 
 	//TheWighttoRemain.mp3 160
 	//Lobby.mp3 130

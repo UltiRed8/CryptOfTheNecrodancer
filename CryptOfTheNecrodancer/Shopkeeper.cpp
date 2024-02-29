@@ -15,17 +15,15 @@ Shopkeeper::Shopkeeper(const Vector2f& _position) : Enemy(STRING_ID("ShopKeeper"
 	AnimationData _animation = AnimationData("ShopKeeper", Vector2f(0, 0), Vector2f(47, 38), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f);
 	components.push_back(new RythmComponent(this, nullptr, [this]() { UpdateRythm(); }, nullptr));
 	components.push_back(new AnimationComponent(this, PATH_SHOPKEEPER, { _animation }, ANIM_DIR_NONE));
-	components.push_back(new MovementComponent(this));
+    GetComponent<MovementComponent>()->SetCanMove(false);
 	components.push_back(new DamageComponent(this, 0.5));
 	components.push_back(new LifeComponent(this, [this]() {DieEvent(); }, false, 1));
-
-	cooldown = 2;
+	cooldown = 0;
 
     // MUSIC
 
     // Time _currentMusicTime = MusicManager::GetInstance().GetCurrent()->getPlayingOffset();
 	// MusicManager::GetInstance().PlayMusicOnPosition("TheWighttoRemain.mp3", 160, _position);
-    
 }
 
 void Shopkeeper::DieEvent()
@@ -34,28 +32,27 @@ void Shopkeeper::DieEvent()
 
 void Shopkeeper::SelectDirection()
 {
-    Vector2i _playerPos = static_cast<Vector2i>(EntityManager::GetInstance().Get("Player")->GetPosition());
-    Vector2i _skeletonPos = static_cast<Vector2i>(GetPosition());
+    const Vector2f& _playerPos = EntityManager::GetInstance().Get("Player")->GetPosition();
+    const Vector2f& _ownPosition = GetPosition();
 
-    bool _isPriority = Random(1, 0);
+    Vector2i _direction = Vector2i(0, 0);
 
-    if (_isPriority)
+    if (Random(1, 0))
     {
-        int _directionX = _playerPos.x - _skeletonPos.x;
-        _directionX = (_directionX > 0) ? 1 : -1, 0;
-        GetComponent< MovementComponent>()->SetDirection(Vector2i(_directionX, 0), false);
+        _direction.x = _playerPos.x - _ownPosition.x;
+        _direction.x = (_direction.x > 0) ? 1 : -1, 0;
     }
     else
     {
-        int _directionY = _playerPos.y - _skeletonPos.y;
-        _directionY = (_directionY > 0) ? 1 : -1, 0;
-        GetComponent< MovementComponent>()->SetDirection(Vector2i(0, _directionY), false);
+        _direction.y = _playerPos.y - _ownPosition.y;
+        _direction.y = (_direction.y > 0) ? 1 : -1, 0;
     }
+    GetComponent< MovementComponent>()->SetDirection(_direction, false);
+
 }
 
 void Shopkeeper::UpdateRythm()
 {
-    /*MusicManager::GetInstance().GetCurrent()->setPosition(GetPosition().x, GetPosition().y, 0);*/
     currentCooldown--;
     if (currentCooldown <= 0)
     {

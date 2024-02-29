@@ -57,7 +57,7 @@ void FontManager::Load(Text* _text, const string& _path, const bool _isSmooth)
 			cerr << "La police d'écriture n'a pas été correctement chargée !" << endl;
 		}
 
-		_fontData->setSmooth(_isSmooth);
+		_fontData->setSmooth(false);
 	}
 
 	_text->setFont(*_fontData);

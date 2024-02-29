@@ -1,5 +1,9 @@
 #include "Tile.h"
 #include "Macro.h"
+
+#define C_PURPLE Color(255, 62, 216, 255)
+#define C_GREEN Color(53, 233, 136, 255)
+
 Tile::Tile(const string& _tilePath, const Vector2f& _position, const EntityType& _type) : Entity(STRING_ID("Tile"), _tilePath, _position)
 {
 	entities = vector<Entity*>();
@@ -7,31 +11,34 @@ Tile::Tile(const string& _tilePath, const Vector2f& _position, const EntityType&
 	if (_type == ET_SHADOW)
 	{
 		shape->setFillColor(Color::Black);
-		zIndex = 3;
+		zIndex = 2;
 	}
 }
 
-void Tile::InvertColors()
+void Tile::InvertAlpha(const bool _reset)
 {
-	Color _currentColor = shape->getFillColor();
-	if (firstColor == _currentColor)
+	if (_reset)
 	{
-		shape->setFillColor(secondColor);
-		lastColor = secondColor;
+		baseColor = defaultColor;
+		shape->setFillColor(baseColor);
+		return;
+	}
+	baseColor.a = baseColor.a == 255 ? 200 : 255;
+	shape->setFillColor(baseColor);
+}
+
+void Tile::ToggleHighlight(const int _alphaValueToHighlight)
+{
+	if (defaultColor.a == _alphaValueToHighlight)
+	{
+		shape->setFillColor(defaultColor.a == 255 ? C_PURPLE : C_GREEN);
 	}
 	else
 	{
-		shape->setFillColor(firstColor);
-		lastColor = firstColor;
+		shape->setFillColor(defaultColor);
 	}
 }
 
 void Tile::Update()
 {
-}
-
-void Tile::ResetColor()
-{
-	shape->setFillColor(lastColor);
-	shape->setOutlineThickness(0.f);
 }

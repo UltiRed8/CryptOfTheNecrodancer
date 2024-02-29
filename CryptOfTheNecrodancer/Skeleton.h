@@ -1,9 +1,9 @@
 #pragma once
 #include "Enemy.h"
 
-#define PATH_SKELETON "SkeletonSprite2.png"
-#define PATH_YELLOW_SKELETON "Yellow_Skeleton.png"
-#define PATH_BLACK_SKELETON "Black_Skeleton.png"
+#define PATH_SKELETON "SkeletonSprite.png"
+#define PATH_YELLOW_SKELETON "empty"
+#define PATH_BLACK_SKELETON "empty"
 
 enum SkeletonType
 {
