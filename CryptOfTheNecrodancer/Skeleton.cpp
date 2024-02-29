@@ -11,17 +11,12 @@ Skeleton::Skeleton(const Vector2f& _position, const string& _path) : Enemy(STRIN
 {
 	skeletonType = SK_NONE;
 	cooldown = 2;
-	components.push_back(new DamageComponent(this, 0.5));
-	components.push_back(new LifeComponent(this, [this]() {DieEvent(); }, false, 1));
 	components.push_back(new RythmComponent(this, nullptr, [this]() { UpdateRythm(); }, nullptr));
 	components.push_back(new AnimationComponent(this, _path, {
 		AnimationData(STRING_ID("SkeletonIdle"), Vector2f(0, 0), Vector2f(24, 26), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f),
 		AnimationData(STRING_ID("SkeletonAttack"), Vector2f(24*4, 0), Vector2f(24, 26), READ_RIGHT, ANIM_DIR_UP, true, 4, 0.1f),
 	}, ANIM_DIR_NONE));
-}
-
-void Skeleton::DieEvent()
-{
+	InitAllBattlesComponents(50.f, 100.f);
 }
 
 void Skeleton::SelectDirection()

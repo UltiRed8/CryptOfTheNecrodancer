@@ -18,7 +18,6 @@ public:
 	Skeleton(const Vector2f& _position, const string& _path);
 
 public:
-	void DieEvent() override;
 	void SelectDirection();
 	void UpdateRythm();
 };

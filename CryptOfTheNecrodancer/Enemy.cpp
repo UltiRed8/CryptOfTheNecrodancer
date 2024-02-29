@@ -17,9 +17,24 @@ Enemy::Enemy(const string& _id,const string& _path,const Vector2f& _position):En
 		CollisionReaction(ET_ENEMY, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
 		}),
+		CollisionReaction(ET_PLAYER, [this](Entity* _entity) {
+			GetComponent<MovementComponent>()->UndoMove();
+			GetComponent<DamageComponent>()->Attack(_entity);
+		}),
 		});
 	components.push_back(_collision);
 	components.push_back(_movement);
 
 	type = ET_ENEMY;
+}
+
+void Enemy::InitAllBattlesComponents(const float _damagesAmounts, const float _maxHealth)
+{
+	components.push_back(new DamageComponent(this, _damagesAmounts));
+	components.push_back(new LifeComponent(this, [this]() {DieEvent(); }, false, _maxHealth));
+}
+
+void Enemy::DieEvent()
+{
+	this->Destroy();
 }

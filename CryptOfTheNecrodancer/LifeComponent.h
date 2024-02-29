@@ -10,7 +10,7 @@ class LifeComponent:public Component
 	float maxHealth;
 	function<void()> deathcallback;
 	bool isAlive;
-	Timer* damageVisualEffect;
+
 	void ResetHealth()
 	{
 		isAlive = true;
@@ -27,11 +27,6 @@ class LifeComponent:public Component
 	float GetMaxHealth() const
 	{
 		return maxHealth;
-	}
-	
-	Timer* GetTimerdamage() const
-	{
-		return damageVisualEffect;
 	}
 	
 public:

@@ -2,6 +2,7 @@
 #include "Macro.h"
 #include "EntityManager.h"
 #include "TextureManager.h"
+#include "AnimationComponent.h"
 
 Entity::Entity(const string& _id, const string& _path, const Vector2f& _position) : IManagable(_id)
 {
@@ -16,7 +17,12 @@ Entity::Entity(const string& _id, const string& _path, const Vector2f& _position
 
 Entity::~Entity()
 {
-	delete shape;
+	for (Component* _component : components)
+	{
+		delete _component;
+	}
+	components.clear();	
+	delete shape;	
 }
 
 void Entity::Register()
@@ -26,6 +32,17 @@ void Entity::Register()
 
 void Entity::Update()
 {
+	if (IsToRemove())
+	{
+		if (AnimationComponent* _comp = GetComponent<AnimationComponent>())
+		{
+			for (Animation* _animation : _comp->GetAllValues())
+			{
+				_animation->Stop();
+			}
+		}
+		return;
+	}
 	for (Component* _component : components)
 	{
 		_component->Update();
