@@ -1,12 +1,12 @@
 #pragma once
-#include "Items.h"
+#include "Item.h"
 
 enum ListConsommable
 {
 	APPLE, CHEESE, DRUMSTICK, HAM, CARROT, COOKIES
 };
 
-class Consommable : public Items
+class Consommable : public Item
 {
 	ListConsommable type;
 

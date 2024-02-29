@@ -1,12 +1,12 @@
 #pragma once
-#include "Items.h"
+#include "Item.h"
 
 enum ListThrowable
 {
 	SPEAR, BOMB, THREE_BOMBS
 };
 
-class Throwable : public Items
+class Throwable : public Item
 {
 	ListThrowable type;
 

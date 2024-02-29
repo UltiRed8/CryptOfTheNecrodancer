@@ -1,5 +1,5 @@
 #pragma once
-#include "Items.h"
+#include "Item.h"
 
 enum ListUsable
 {
@@ -7,7 +7,7 @@ enum ListUsable
 	DAGGER, BROADSWORD, STAFF, BLUNDERBUSS // Weapons
 };
 
-class Usable : public Items
+class Usable : public Item
 {
 	int damage;
 	ListUsable type;

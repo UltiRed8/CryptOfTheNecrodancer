@@ -140,10 +140,12 @@
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
+    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="CollisionComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Consommable.cpp" />
     <ClCompile Include="DamageComponent.cpp" />
+    <ClCompile Include="Diamond.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -154,7 +156,7 @@
     <ClCompile Include="InputData.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Inventory.cpp" />
-    <ClCompile Include="Items.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="LifeComponent.cpp" />
     <ClCompile Include="LightningComponent.cpp" />
     <ClCompile Include="LightningManager.cpp" />
@@ -205,11 +207,13 @@
     <ClInclude Include="Bat.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="Coin.h" />
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Consommable.h" />
     <ClInclude Include="DamageComponent.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="Diamond.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
@@ -222,7 +226,7 @@
     <ClInclude Include="InputData.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Inventory.h" />
-    <ClInclude Include="Items.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="LifeComponent.h" />
     <ClInclude Include="LightningComponent.h" />
     <ClInclude Include="LightningManager.h" />

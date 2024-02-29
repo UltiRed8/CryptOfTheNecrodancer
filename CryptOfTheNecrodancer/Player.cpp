@@ -6,10 +6,13 @@
 #include "AnimationComponent.h"
 #include "RythmComponent.h"
 #include "Wall.h"
+#include "SoundManager.h"
 #include "LightningManager.h"
 #include "Stair.h"
 #include "Door.h"
 #include "Map.h"
+#include "Coin.h"
+#include "Diamond.h"
 
 #define PATH_PLAYER "PlayerSprite.png"
 
@@ -41,6 +44,14 @@ Player::Player(const string _id, const Vector2f& _position, PlayerRessource _res
 			GetComponent<MovementComponent>()->UndoMove();
 			Door* _door = dynamic_cast<Door*>(_entity);
 			_door->OpenDoor();
+		}),
+		CollisionReaction(ET_COIN, [this](Entity* _entity) {
+			Coin* _coins = dynamic_cast<Coin*>(_entity);
+			_coins->PickUpCoin();
+		}),
+		CollisionReaction(ET_DIAMOND, [this](Entity* _entity) {
+			Diamond* _diamond = dynamic_cast<Diamond*>(_entity);
+			_diamond->PickUpDiamond();
 		}),
 	});
 
@@ -75,6 +86,8 @@ void Player::InitInput()
 		  ActionData("SpeedDecrease", [this]() { MusicManager::GetInstance().SpeedDown(); }, {Event::KeyPressed, Keyboard::Num4}),
 		});
 }
+
+
 
 void Player::Update()
 {

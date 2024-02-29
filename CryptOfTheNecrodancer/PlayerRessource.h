@@ -15,6 +15,14 @@ public :
 	{
 		return diamonds;
 	}
+	void AddDiamonds(const int _diamonds = 1)
+	{
+		*diamonds += _diamonds;
+	}
+	void AddMoney(const int _money)
+	{
+		*money += _money;
+	}
 
 public :
 	PlayerRessource();

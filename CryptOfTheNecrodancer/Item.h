@@ -1,11 +1,12 @@
 #pragma once
 #include "Entity.h"
 
-class Items : public Entity
+
+class Item : public Entity
 {
 public:
-	Items(const string& _id, const string& _path, const Vector2f& _position);
-	Items(const string& _id, const Vector2f& _position);
+	Item(const string& _id, const string& _path, const Vector2f& _position);
+	Item(const string& _id, const Vector2f& _position);
 
 protected :
 	void SetPath(Shape* _shape, const string& _path);
