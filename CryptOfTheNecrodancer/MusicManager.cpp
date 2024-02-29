@@ -17,6 +17,7 @@ MusicManager::MusicManager()
 	acceptDelay = 300;
 	playSpeed = 1.0f;
 	currentBPM = 0;
+	tempVolume = 0.0f;
 }
 
 MusicManager::~MusicManager()
@@ -24,51 +25,78 @@ MusicManager::~MusicManager()
 	delete volume;
 }
 
-void MusicManager::Play(const string& _path, const int _bpm)
+MusicData* MusicManager::GetMusic(const string& _path, const Vector2f& _position)
 {
-	if (_path == "") return;
-
 	MusicData* _music = Get(_path);
 
 	if (!_music)
 	{
 		_music = new MusicData(_path);
-		if (!_music->openFromFile("Assets/Music/" + _path))
+		if (!_music->openFromFile("Assets/Music/" + _path + ".ogg"))
 		{
-			cerr << "La texture n'a pas été correctement chargée !" << endl;
+			cerr << "La musique n'a pas été correctement chargée ! (" << _path << ".ogg)" << endl;
+			return nullptr;
 		}
 	}
-	
-	new Timer("StartMusicDelay", [&]() { GetCurrent()->play(); }, milliseconds(acceptDelay/2), 1, true);
+
 	_music->setVolume(*volume);
-	UpdateLoop(_bpm);
-	isRunning = true;
+	_music->setPosition(_position.x + TILE_SIZE.x / 2.0f, _position.y + TILE_SIZE.y / 2.0f, 0);
+
+	return _music;
 }
 
-void MusicManager::PlayMusicOnPosition(const string& _path, const int _bpm, const Vector2f& _position)
+void MusicManager::Play(const string& _path, const Vector2f& _position, const bool _shouldLoop)
+{
+	if (_path == "") return;
+	Music* _music = GetMusic(_path, _position);
+	if (_music)
+	{
+		_music->setLoop(_shouldLoop);
+		_music->play();
+	}
+}
+
+void MusicManager::PlayMain(const string& _path, const int _bpm, const bool _withShopkeeper, const bool _shouldLoop)
 {
 	if (_path == "") return;
 
-	MusicData* _music = Get(_path);
+	StopAll();
 
-	if (!_music)
+	if (isRunning)
 	{
-		_music = new MusicData(_path);
-		if (!_music->openFromFile("Assets/Music/" + _path))
-		{
-			cerr << "La texture n'a pas été correctement chargée !" << endl;
-		}
+		playSpeed = 1.0f;
+		currentBPM = _bpm;
+		rythmLoop->SetDuration(seconds(1.f / ((currentBPM * playSpeed) / 60.f)));
+		rythmLoop->Pause();
 	}
 
-	new Timer("StartMusicDelay", [&]() { GetCurrent()->play(); }, milliseconds(acceptDelay / 2), 1, true);
-	_music->setVolume(*volume);
-	UpdateLoop(_bpm);
-	isRunning = true;
+	Music* _music = GetMusic(_path, Vector2f(0.0f, 0.0f));
+	if (_music)
+	{
+		_music->setLoop(_shouldLoop);
 
-	_music->setAttenuation(100.0f);
-	_music->setRelativeToListener(true);
-	_music->setPosition(_position.x, _position.y, 0);
-	_music->setMinDistance(0.0f);
+		new Timer("StartMusicDelay", [&]() {
+			MusicData* _current = GetCurrent();
+			_current->play();
+		}, milliseconds(acceptDelay / 2), 1, true);
+
+		if (_withShopkeeper)
+		{
+			new Timer("StartMusicDelayShopkeeper", [&]() {
+				MusicData* _current = GetCurrent();
+				_current->play();
+				Vector2f _shopkeeperPosition = EntityManager::GetInstance().Get("Player")->GetPosition();// = Map::GetInstance().GetShopkeeper().GetPosition(); // TODO
+				if (MusicData* _music = GetMusic(_current->GetID() + "_shopkeeper", _shopkeeperPosition))
+				{
+					_music->play();
+					_music->setVolume(100.0f);
+				}
+			}, milliseconds(acceptDelay / 2), 1, true);
+		}
+
+		UpdateLoop(_bpm);
+		isRunning = true;
+	}
 }
 
 void MusicManager::Toggle()
@@ -83,6 +111,14 @@ void MusicManager::Pause()
 	if (rythmLoop)
 	{
 		rythmLoop->Pause();
+	}
+}
+
+void MusicManager::StopAll()
+{
+	for (MusicData* _music : GetAllValues())
+	{
+		_music->stop();
 	}
 }
 
@@ -128,7 +164,6 @@ void MusicManager::IncreaseVolume()
 	{
 		GetCurrent()->setVolume(*volume += 1.f);
 	}
-
 	else if (*volume >= 100)
 	{
 		GetCurrent()->setVolume(100);
@@ -141,7 +176,6 @@ void MusicManager::DecreaseVolume()
 	{
 		GetCurrent()->setVolume(*volume -= 1.f);
 	}
-	
 	else if (*volume <= 0)
 	{
 		GetCurrent()->setVolume(0);
@@ -158,7 +192,6 @@ void MusicManager::ToggleVolume()
 	}
 	else
 	{
-
 		*volume = tempVolume;
 		GetCurrent()->setVolume(*volume);
 	}
@@ -166,6 +199,12 @@ void MusicManager::ToggleVolume()
 
 void MusicManager::UpdateLoop(const int _bpm)
 {
+	if (isRunning)
+	{
+		rythmLoop->Run();
+		return;
+	}
+
 	if (rythmLoop)
 	{
 		rythmLoop->Destroy();
@@ -202,9 +241,6 @@ void MusicManager::UpdateLoop(const int _bpm)
 				}, seconds(0.1f), 1, true);
 			
 		}, milliseconds(acceptDelay / 2), 1, true);
-
-
-
 
 		new Timer("InputsTooLate", [this]() {
 			for (Entity* _entity : EntityManager::GetInstance().GetAllValues())

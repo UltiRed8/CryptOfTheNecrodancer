@@ -33,6 +33,10 @@ class Map : public Singleton<Map>
 	bool chainToggle;
 	bool isPurple;
 
+	string mapName; // "lobby", "zone1", "zone2", ...
+	int level; // 0, (1 - 2 - 3)
+
+
 public:
 	Vector2i GetRandomRoomPosition(const int _min = 0, const int _max = 30) const
 	{

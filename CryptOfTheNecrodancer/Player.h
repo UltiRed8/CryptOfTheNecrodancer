@@ -12,7 +12,6 @@ class Player : public Entity
 	Inventory* inventory;
 	PlayerRessource ressources;
 	int* chainMultiplier;
-	// Listener* listener;
 
 public:
 	int* GetChainMultiplier() const
@@ -32,8 +31,6 @@ public:
 
 public :
 	void InitInput();
-
-	// Hérité via Entity
 	void Update() override;
 };
 

@@ -9,20 +9,19 @@
 
 class MusicManager : public IManager<string, MusicData>, public Singleton<MusicManager>
 {
+	int acceptDelay;
+	int currentBPM;
+	bool isRunning;
+	float playSpeed;
+	float tempVolume;
 	float* volume;
 	Timer* rythmLoop;
-	bool isRunning;
-	int acceptDelay;
-	float playSpeed;
-	int currentBPM;
-	float tempVolume;
 
 public:
 	float* GetVolume() const
 	{
 		return volume;
 	}
-
 	void SetVolume(float _volume)
 	{
 		*volume = _volume;
@@ -37,8 +36,10 @@ public:
 	~MusicManager();
 
 public:
-	void Play(const string& _path, const int _bpm);
-	void PlayMusicOnPosition(const string& _path, const int _bpm, const Vector2f& _position);
+	MusicData* GetMusic(const string& _path, const Vector2f& _position);
+	void Play(const string& _path, const Vector2f& _position, const bool _shouldLoop = false);
+	void PlayMain(const string& _path, const int _bpm, const bool _withShopkeeper = false, const bool _shouldLoop = false);
+	void StopAll();
 	void Toggle();
 	void Pause();
 	void Unpause();
@@ -51,5 +52,4 @@ public:
 
 private:
 	void UpdateLoop(const int _bpm);
-
 };

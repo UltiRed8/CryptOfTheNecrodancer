@@ -48,8 +48,6 @@ Player::Player(const string _id, const Vector2f& _position, PlayerRessource _res
 	zIndex = 1;
 	chainMultiplier = new int(1);
 	type = ET_PLAYER;
-
-	// listener = new Listener();
 }
 
 Player::~Player()
@@ -79,7 +77,5 @@ void Player::InitInput()
 void Player::Update()
 {
 	Entity::Update();
-	/*Vector2f _playerPos = GetPosition();
-	listener->setPosition(_playerPos.x, _playerPos.y, 0);*/
 	GetComponent<AnimationComponent>()->Update();
 }
