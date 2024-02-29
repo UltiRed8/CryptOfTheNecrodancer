@@ -9,7 +9,9 @@
 
 class MusicManager : public IManager<string, MusicData>, public Singleton<MusicManager>
 {
-	int acceptDelay;
+	float* acceptDelay;
+	float minAcceptDelay;
+	float maxAcceptDelay;
 	int currentBPM;
 	bool isRunning;
 	float playSpeed;
@@ -18,11 +20,30 @@ class MusicManager : public IManager<string, MusicData>, public Singleton<MusicM
 	Timer* rythmLoop;
 
 public:
+	float* GetAcceptDelay() const
+	{
+		return acceptDelay;
+	}
+
+	void SetAcceptDelay(const float _acceptDelay)
+	{
+		*acceptDelay += _acceptDelay;
+
+		if (*acceptDelay < minAcceptDelay)
+		{
+			*acceptDelay = minAcceptDelay;
+		}
+		if (*acceptDelay > maxAcceptDelay)
+		{
+			*acceptDelay = maxAcceptDelay;
+		}
+	}
+
 	float* GetVolume() const
 	{
 		return volume;
 	}
-	void SetVolume(float _volume)
+	void SetVolume(const float _volume)
 	{
 		*volume = _volume;
 		for (MusicData* _music : GetAllValues())

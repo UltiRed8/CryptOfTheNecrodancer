@@ -14,7 +14,9 @@ MusicManager::MusicManager()
 	volume = new float(10.f);
 	rythmLoop = nullptr;
 	isRunning = false;
-	acceptDelay = 300;
+	acceptDelay = new float(300.0f);
+	minAcceptDelay = 0.0f;
+	maxAcceptDelay = 500.0f;
 	playSpeed = 1.0f;
 	currentBPM = 0;
 	tempVolume = 0.0f;
@@ -23,6 +25,7 @@ MusicManager::MusicManager()
 MusicManager::~MusicManager()
 {
 	delete volume;
+	delete acceptDelay;
 }
 
 MusicData* MusicManager::GetMusic(const string& _path, const Vector2f& _position)
@@ -78,7 +81,7 @@ void MusicManager::PlayMain(const string& _path, const int _bpm, const bool _wit
 		new Timer("StartMusicDelay", [&]() {
 			MusicData* _current = GetCurrent();
 			_current->play();
-		}, milliseconds(acceptDelay / 2), 1, true);
+		}, milliseconds((Int32)(*acceptDelay / 2)), 1, true);
 
 		if (_withShopkeeper)
 		{
@@ -91,7 +94,7 @@ void MusicManager::PlayMain(const string& _path, const int _bpm, const bool _wit
 					_music->play();
 					_music->setVolume(100.0f);
 				}
-			}, milliseconds(acceptDelay / 2), 1, true);
+			}, milliseconds((Int32)(*acceptDelay / 2)), 1, true);
 		}
 
 		UpdateLoop(_bpm);
@@ -107,7 +110,10 @@ void MusicManager::Toggle()
 
 void MusicManager::Pause()
 {
-	GetCurrent()->pause();
+	for (MusicData* _music : GetAllValues())
+	{
+		_music->pause();
+	}
 	if (rythmLoop)
 	{
 		rythmLoop->Pause();
@@ -124,7 +130,10 @@ void MusicManager::StopAll()
 
 void MusicManager::Unpause()
 {
-	GetCurrent()->play();
+	for (MusicData* _music : GetAllValues())
+	{
+		_music->play();
+	}
 	if (rythmLoop)
 	{
 		rythmLoop->Resume();
@@ -240,7 +249,7 @@ void MusicManager::UpdateLoop(const int _bpm)
 				TextureManager::GetInstance().Load(_shape, "RythmHearts0.png");
 				}, seconds(0.1f), 1, true);
 			
-		}, milliseconds(acceptDelay / 2), 1, true);
+		}, milliseconds((Int32)(*acceptDelay / 2)), 1, true);
 
 		new Timer("InputsTooLate", [this]() {
 			for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
@@ -250,7 +259,7 @@ void MusicManager::UpdateLoop(const int _bpm)
 					_component->AfterUpdate();
 				}
 			};
-		}, milliseconds(acceptDelay), 1, true);
+		}, milliseconds((Int32)(*acceptDelay)), 1, true);
 
 	}, seconds(1.f / (_bpm / 60.f)), -1);
 }
