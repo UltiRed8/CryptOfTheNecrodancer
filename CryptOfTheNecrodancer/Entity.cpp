@@ -22,7 +22,7 @@ Entity::~Entity()
 		delete _component;
 	}
 	components.clear();	
-	delete shape;	
+	delete shape;
 }
 
 void Entity::Register()
@@ -43,6 +43,7 @@ void Entity::Update()
 		}
 		return;
 	}
+
 	for (Component* _component : components)
 	{
 		_component->Update();

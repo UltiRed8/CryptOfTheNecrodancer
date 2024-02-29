@@ -13,7 +13,6 @@ class Player : public Entity
 	PlayerRessource* ressources;
 	int* chainMultiplier;
 	bool alreadyMoved;
-	// Listener* listener;
 
 public:
 	int* GetChainMultiplier() const
@@ -32,8 +31,6 @@ public:
 
 public :
 	void InitInput();
-
-	// Hérité via Entity
 	void Update() override;
 };
 

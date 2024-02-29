@@ -26,20 +26,19 @@ void Skeleton::SelectDirection()
 	Vector2i _playerPos = static_cast<Vector2i>(EntityManager::GetInstance().Get("Player")->GetPosition());
 	Vector2i _skeletonPos = static_cast<Vector2i>(GetPosition());
 
-	bool _isPriority = Random(1, 0);
+	Vector2i _direction = Vector2i(0, 0);
 
-	if (_isPriority)
+	if (_playerPos.y != _skeletonPos.y)
 	{
-		int _directionX = _playerPos.x - _skeletonPos.x;
-		_directionX = (_directionX > 0) ? 1 : -1, 0;
-		GetComponent< MovementComponent>()->SetDirection(Vector2i(_directionX, 0), false);
+		_direction.y = _playerPos.y - _skeletonPos.y;
+		_direction.y = (_direction.y > 0) ? 1 : -1;
 	}
 	else
 	{
-		int _directionY = _playerPos.y - _skeletonPos.y;
-		_directionY = (_directionY > 0) ? 1 : -1, 0;
-		GetComponent< MovementComponent>()->SetDirection(Vector2i(0, _directionY), false);
+		_direction.x = _playerPos.x - _skeletonPos.x;
+		_direction.x = (_direction.x > 0) ? 1 : -1;
 	}
+	GetComponent< MovementComponent>()->SetDirection(_direction, false);
 
 }
 

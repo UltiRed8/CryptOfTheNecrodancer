@@ -13,8 +13,6 @@ Camera::Camera(const string& _id, const CameraType& _type, const Vector2f& _from
 	{
 		zoom(0.9f);
 	}
-
-	// listener = new Listener();
 }
 
 void Camera::Register()
@@ -48,8 +46,9 @@ void Camera::SetCameraToPlayer()
 
 void Camera::Update()
 {
-	//Vector2f _camPos = getViewport().getPosition();
-	//listener->setPosition(_camPos.x, _camPos.y, 0);
+	Vector2f _camPos = getCenter();
+	Listener::setPosition(_camPos.x, _camPos.y, 0);
+	Listener::setDirection(0, -1, 0);
 
 	if (type == CAMERA_PLAYER)
 	{
