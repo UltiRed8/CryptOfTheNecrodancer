@@ -33,10 +33,6 @@ void LifeComponent::ChangeHealth(const float _byAmount)
 	cout << *currentHealth << endl;
 	*currentHealth += _byAmount;
 	cout << *currentHealth << endl;
-	if (_byAmount < 0)
-	{
-		owner->GetShape()->setFillColor(Color::Red);
-	}
 	if (*currentHealth <= 0.0f)
 	{
 		*currentHealth = 0.0f;

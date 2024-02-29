@@ -372,7 +372,7 @@
     <ClCompile Include="Wall.cpp">
       <Filter>Source Files\Object\Entity\Wall</Filter>
     </ClCompile>
-    <ClCompile Include="DiamondTile.cpp">
+    <ClCompile Include="Hephaestus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -584,7 +584,7 @@
     <ClInclude Include="Wall.h">
       <Filter>Source Files\Object\Entity\Wall</Filter>
     </ClInclude>
-    <ClInclude Include="DiamondTile.h">
+    <ClInclude Include="Hephaestus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

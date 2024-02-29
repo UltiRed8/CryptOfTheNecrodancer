@@ -20,6 +20,7 @@ void AnimationComponent::InitAnimations(const string& _path, const vector<Animat
 
 	for (const AnimationData& _data : _animationsData)
 	{
+		
 		new Animation(_data.name, this, _sprite, _data);
 	}
 }

@@ -18,24 +18,22 @@
 
 #define PATH_PLAYER "PlayerSprite.png"
 
-Player::Player(const string _id, const Vector2f& _position) : Entity(_id, "", _position)
+Player::Player(const string _id, const Vector2f& _position) : Entity(_id, PATH_PLAYER, _position)
 {
 	inventory = new Inventory();
 	ressources = new PlayerRessource();
+	alreadyMoved = false;
+	zIndex = 1;
+	chainMultiplier = new int(1);
+	type = ET_PLAYER;
 	MovementComponent* _movement = new MovementComponent(this);
 	components.push_back(_movement);
-	AnimationData _animation = AnimationData("Idle", Vector2f(0, 0), Vector2f(26, 26), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f);
+	components.push_back(new AnimationComponent(this, PATH_PLAYER, {
+		AnimationData("Idle", Vector2f(0, 0), Vector2f(26, 26), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f)
+	}, ANIM_DIR_NONE));
 	components.push_back(new RythmComponent(this, [this]() { GetComponent<MovementComponent>()->SetCanMove(true); }, nullptr, [&]() { GetComponent<MovementComponent>()->SetCanMove(false); }));
-	components.push_back(new AnimationComponent(this, PATH_PLAYER, { _animation }, ANIM_DIR_NONE));
-
-	alreadyMoved = false;
-
 	CollisionComponent* _collisions = new CollisionComponent(this);
 	components.push_back(_collisions);
-	components.push_back(new LightningComponent("PlayerLight", this, 350));
-	components.push_back(new LifeComponent(this, [this]() { cout << "Tu est mort ! " << endl; }, false, 100.f));
-	components.push_back(new DamageComponent(this, 100.f));
-
 	_movement->InitCollisions(_collisions, {
 		CollisionReaction(ET_WALL, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
@@ -85,12 +83,14 @@ Player::Player(const string _id, const Vector2f& _position) : Entity(_id, "", _p
 		CollisionReaction(ET_EPHAESTUS, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
 		}),
-		});
+	});
+	new LightningComponent("PlayerLight", this, 350);
+	components.push_back(new LifeComponent(this, [this]() { cout << "Tu est mort ! " << endl; }, false, 100.f));
+	components.push_back(new DamageComponent(this, 100.f));
+
+	
 
 	InitInput();
-	zIndex = 1;
-	chainMultiplier = new int(1);
-	type = ET_PLAYER;
 }
 
 Player::~Player()
@@ -157,5 +157,4 @@ void Player::InitInput()
 void Player::Update()
 {
 	Entity::Update();
-	GetComponent<AnimationComponent>()->Update();
 }
