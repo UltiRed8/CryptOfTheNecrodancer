@@ -114,6 +114,7 @@ Map::~Map()
 
 void Map::Generate(const int _roomCount, const int _amountOfEnemies)
 {
+	MusicManager::GetInstance().StopAll();
 	GenerateRooms(_roomCount);
 	GeneratePaths();
 	EraseOverlappings();
@@ -126,6 +127,7 @@ void Map::Generate(const int _roomCount, const int _amountOfEnemies)
 	UpdateDoors();
 	SpawnEnnemy(_amountOfEnemies);
 	GenerateDiamond();
+	MusicManager::GetInstance().PlayMain("zone1_1", 130, true);
 }
 
 void Map::EraseOverlappings()

@@ -19,8 +19,6 @@ class Camera : public IManagable<string>, public View
 {
 	CameraType type;
 
-	// Listener* listener;
-
 public:
 	Camera(const string& _id, const CameraType& _type, const Vector2f& _from, const Vector2f& _to);
 	
