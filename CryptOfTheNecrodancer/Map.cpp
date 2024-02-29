@@ -219,13 +219,11 @@ void Map::Load(const string _path)
 
 	map<char, function<void(const Vector2f& _position)>> _elements =
 	{
+		{ '.', nullptr },
 		{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP)); }},
 		{ ' ', [this](const Vector2f& _position) { floors.push_back(new Tile("floor.png", _position)); }},
-		{ '.', nullptr },
 		{ 'S', [this](const Vector2f& _position) { others.push_back(new Stair(PATH_STAIR, _position)); }},
-		{ '3', [this](const Vector2f& _position) {floors.push_back(new Tile("floor.png", _position));
-													others.push_back(new Door(_position)); }},
-
+		{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile("floor.png", _position)); others.push_back(new Door(_position)); }},
 		{ 'E', [this](const Vector2f& _position) {	others.push_back(new Hephaestus(_position)); }},
 	};
 
@@ -333,7 +331,6 @@ void Map::PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const b
 			}
 			
 		}
-		
 
 		_allPositionsAround = GetEmptyTilesAround(_allEntities);
 
@@ -344,16 +341,22 @@ void Map::PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const b
 	}
 }
 
-void Map::GenerateDiamond(const int _diamondOnFloor, const int _diamondInWall)
+void Map::GenerateDiamond(const int _diamondOnFloor, int _diamondInWall)
 {
 	for (int _i = 0; _i < _diamondOnFloor; _i++)
 	{
-		new Diamond("Diamond", GetRandomElementInVector(floors)->GetPosition());
+		new Diamond(STRING_ID("Diamond"), GetRandomElementInVector(floors)->GetPosition());
 	}
-	for (int _i = 0; _i < _diamondInWall; _i++)
+
+	while (_diamondInWall >= 1)
 	{
-		GetRandomElementInVector(walls)->SetHasDiamond(true);
-	}	
+		Wall* _wall = GetRandomElementInVector(walls);
+		if (_wall->GetWallType() == WT_DIRT)
+		{
+			_wall->SetHasDiamond(true);
+			_diamondInWall--;
+		}
+	}
 }
 
 void Map::SpawnEnnemy(const int _ennemyCount)

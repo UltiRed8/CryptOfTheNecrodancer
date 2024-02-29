@@ -30,7 +30,7 @@ class Map : public Singleton<Map>
 
 	vector<Tile*> floors;
 	vector<Wall*> walls;
-	vector<Entity*> others; // doors, stairs...
+	vector<Entity*> others;
 
 	Room* shop;
 
@@ -123,7 +123,7 @@ public:
 	void GenerateShopRoom();
 	void SetAllFloorOriginColor();
 	void PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const bool _finalDestructible, const WallType& _type);
-	void GenerateDiamond(const int _diamondOnFloor = 1, const int _diamondInWall = 1000);
+	void GenerateDiamond(const int _diamondOnFloor = 1, int _diamondInWall = 2);
 	void SpawnEnnemy(const int _ennemyCount = 10);
 	void EraseOverlappings();
 	void NextLevel();

@@ -13,6 +13,7 @@ Camera::Camera(const string& _id, const CameraType& _type, const Vector2f& _from
 	{
 		zoom(0.9f);
 	}
+	SetCameraToPlayer();
 }
 
 void Camera::Register()
@@ -46,12 +47,12 @@ void Camera::SetCameraToPlayer()
 
 void Camera::Update()
 {
-	Vector2f _camPos = getCenter();
-	Listener::setPosition(_camPos.x, _camPos.y, 0);
-	Listener::setDirection(0, -1, 0);
-
 	if (type == CAMERA_PLAYER)
 	{
+		Vector2f _camPos = getCenter();
+
+		Listener::setPosition(_camPos.x, _camPos.y, 0);
+		Listener::setDirection(0, -1, 0);
 		Entity* _player = EntityManager::GetInstance().Get("Player");
 		const Vector2f& _currentPosition = getCenter();
 		const Vector2f& _target = _player->GetPosition() + (TILE_SIZE / 2.0f);
@@ -71,6 +72,5 @@ void Camera::Update()
 		_offset *= _deltaTime;
 
 		move(_offset);
-		//setCenter(_target);
 	}
 }
