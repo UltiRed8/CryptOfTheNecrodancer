@@ -41,7 +41,7 @@ vector<Drawable*> EntityManager::GetDrawables() const
 				}
 				else
 				{
-					_tempDrawables = _entity->GetDrawables();
+					_tempDrawables.push_back(_entity->GetDrawable());
 				}
 				_drawables.insert(_drawables.end(), _tempDrawables.begin(), _tempDrawables.end());
 			}

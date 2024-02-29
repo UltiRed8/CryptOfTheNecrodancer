@@ -1,7 +1,7 @@
 #include "Enemy.h"
-#include "Coin.h"
 
-Enemy::Enemy(const string& _id,const string& _path,const Vector2f& _position, const int _droppedCoins) : Entity(_id,_path,_position)
+Enemy::Enemy(const float _maxHp, const float _maxDammage, const string& _id, const string& _path, const Vector2f& _position, const int _droppedCoins)
+	: Living(_maxHp,_maxDammage, _path, _id,_position)
 {
 	indexPatern = 0;
 	zIndex = 1;
@@ -9,7 +9,7 @@ Enemy::Enemy(const string& _id,const string& _path,const Vector2f& _position, co
 	currentCooldown = 0;
 	cooldown = 0;
 
-	MovementComponent* _movement = new MovementComponent(this);
+	MovementComponent* _movement =	GetComponent<MovementComponent>();
 	CollisionComponent* _collision = new CollisionComponent(this);
 	_movement->InitCollisions(_collision, {
 		CollisionReaction(ET_WALL, [this](Entity* _entity) {
@@ -29,14 +29,8 @@ Enemy::Enemy(const string& _id,const string& _path,const Vector2f& _position, co
 	type = ET_ENEMY;
 }
 
-void Enemy::InitAllBattlesComponents(const float _damagesAmounts, const float _maxHealth)
-{
-	components.push_back(new DamageComponent(this, _damagesAmounts));
-	components.push_back(new LifeComponent(this, [this]() {DieEvent(); }, false, _maxHealth));
-}
-
 void Enemy::DieEvent()
 {
-	new Coin(droppedCoins, "coin", GetPosition());
+	new Pickable(droppedCoins, PT_COIN,STRING_ID("coin"), GetPosition());
 	this->Destroy();
 }

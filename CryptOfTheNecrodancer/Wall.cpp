@@ -3,12 +3,11 @@
 #include "TextureManager.h"
 #include "SoundManager.h"
 #include "Map.h"
-#include "Diamond.h"
 
 #define SOUND_DIG_DIRT "Assets/Sounds/mov_dig_dirt.ogg"
 #define SOUND_DIG_FAIL "Assets/Sounds/mov_dig_fail.ogg"
 
-Wall::Wall(const Vector2f& _position, const WallType& _type) : Entity(STRING_ID("Wall"), "", _position)
+Wall::Wall(const Vector2f& _position, const WallType& _type) : Placable(STRING_ID("Wall"), "", _position)
 {
 	wallType = _type;
 
@@ -46,7 +45,7 @@ void Wall::DestroyWall(const bool _usingBomb)
 	SoundManager::GetInstance().Play(SOUND_DIG_DIRT);
 	if (hasDiamond)
 	{
-		new Diamond("Diamond", GetPosition());
+		new Pickable(1, PT_DIAMOND, STRING_ID("Diamond"), GetPosition());
 	}
 	Destroy();
 }

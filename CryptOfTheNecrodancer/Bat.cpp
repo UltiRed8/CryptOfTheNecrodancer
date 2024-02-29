@@ -10,7 +10,7 @@
 #define PATH_BAT "BatSprite.png"
 
 
-Bat::Bat(const Vector2f& _position) :Enemy(STRING_ID("Bat"), PATH_BAT, _position, 2)
+Bat::Bat(const Vector2f& _position) :Enemy(100.f,50.f,STRING_ID("Bat"), PATH_BAT, _position, 2)
 {
 	directionsPatern = {
 		Vector2i(1,0),
@@ -23,7 +23,6 @@ Bat::Bat(const Vector2f& _position) :Enemy(STRING_ID("Bat"), PATH_BAT, _position
 	components.push_back(new RythmComponent(this,nullptr, [this]() { UpdateRythm(); }	,nullptr ));
 	//components.push_back(new AnimationComponent(this, PATH_BAT, { _animation }, ANIM_DIR_NONE));
 	cooldown = 2;
-	InitAllBattlesComponents(50.f, 100.f);
 }
 
 void Bat::SelectDirection()

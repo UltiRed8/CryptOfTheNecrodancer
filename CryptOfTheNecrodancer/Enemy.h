@@ -1,12 +1,12 @@
 #pragma once
-#include"Entity.h"
+#include "Living.h"
 #include "MovementComponent.h"
 #include "CollisionComponent.h"	
 #include "LifeComponent.h"
 #include "DamageComponent.h"
+#include "Pickable.h"
 
-
-class Enemy:public Entity
+class Enemy:public Living
 {
 protected:
 	int indexPatern;
@@ -16,8 +16,7 @@ protected:
 	vector<Vector2i>directionsPatern;
 
 public:
-	Enemy(const string& _id, const string& _path, const Vector2f& _position, const int _droppedCoins);
-	void InitAllBattlesComponents(const float _damagesAmounts,const float _maxHealth);
+	Enemy(const float _maxHp,const float _maxDammage,const string& _id, const string& _path, const Vector2f& _position, const int _droppedCoins);
 public:
 	void DieEvent();
 };

@@ -9,7 +9,7 @@ Hephaestus::Hephaestus(const Vector2f& _position) : Entity("Hephaestus", PATH_HE
 	//AnimationData _animation = AnimationData("ShopKeeper", Vector2f(0, 0), Vector2f(65, 68), READ_RIGHT, ANIM_DIR_NONE, true, 5, 0.1f);
 	components.push_back(new RythmComponent(this, nullptr, [this]() { UpdateRythm(); }, nullptr));
 	//components.push_back(new AnimationComponent(this, PATH_HEPHAESTUS, { _animation }, ANIM_DIR_NONE));
-	zIndex = 2;
+	zIndex = 2; 
 	type = ET_EPHAESTUS;
 }
 

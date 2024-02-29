@@ -1,8 +1,7 @@
 #pragma once
-#include "Entity.h"
+#include "Placable.h"
 
-
-class Tile : public Entity
+class Tile : public Placable
 {
 	vector<Entity*> entities;
 	Color defaultColor;

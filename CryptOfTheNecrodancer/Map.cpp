@@ -3,8 +3,6 @@
 #include "Player.h"
 #include "Door.h"
 #include "LightningManager.h"
-#include "Coin.h"
-#include "Diamond.h"
 #include "CameraManager.h"
 #include "Hephaestus.h"
 
@@ -76,7 +74,7 @@ void Map::GenerateShopRoom()
 
 	vector<Tile*> _shopkeeperTiles = shop->GetFloor();
 	const Vector2f& _shopkeeperPosition = _shopkeeperTiles[12]->GetPosition();
-	shopkeeper = new Shopkeeper(_shopkeeperPosition);
+	//shopkeeper = new Shopkeeper(_shopkeeperPosition);
 	new Tile("ShopTile.png", _shopkeeperTiles[11]->GetPosition());
 	new Tile("ShopTile.png", _shopkeeperTiles[13]->GetPosition());
 	others.push_back(shopkeeper);
@@ -219,12 +217,12 @@ void Map::Load(const string _path)
 
 	map<char, function<void(const Vector2f& _position)>> _elements =
 	{
-		{ '.', nullptr },
+		/*{ '.', nullptr },
 		{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP)); }},
-		{ ' ', [this](const Vector2f& _position) { floors.push_back(new Tile("floor.png", _position)); }},
+		{ ' ', [this](const Vector2f& _position) { floors.push_back(new Tile("floor.png", _position)); }},*/
 		{ 'S', [this](const Vector2f& _position) { others.push_back(new Stair(PATH_STAIR, _position)); }},
-		{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile("floor.png", _position)); others.push_back(new Door(_position)); }},
-		{ 'E', [this](const Vector2f& _position) {	others.push_back(new Hephaestus(_position)); }},
+		//{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile("floor.png", _position)); others.push_back(new Door(_position)); }},
+		//{ 'E', [this](const Vector2f& _position) {	others.push_back(new Hephaestus(_position)); }},
 	};
 
 	string _line;
@@ -345,7 +343,7 @@ void Map::GenerateDiamond(const int _diamondOnFloor, int _diamondInWall)
 {
 	for (int _i = 0; _i < _diamondOnFloor; _i++)
 	{
-		new Diamond(STRING_ID("Diamond"), GetRandomElementInVector(floors)->GetPosition());
+		new Pickable(1, PT_DIAMOND, STRING_ID("Diamond"), GetRandomElementInVector(floors)->GetPosition());
 	}
 
 	while (_diamondInWall >= 1)
@@ -361,14 +359,13 @@ void Map::GenerateDiamond(const int _diamondOnFloor, int _diamondInWall)
 
 void Map::SpawnEnnemy(const int _ennemyCount)
 {
-	vector<function<Entity*(const Vector2f& _position)>> _enemyList =
+	vector<function<Entity* (const Vector2f& _position)>> _enemyList =
 	{
-
-		[this](const Vector2f& _position) { return new Bat(_position); },
-		[this](const Vector2f& _position) { return new GreenSlime(_position); },
-		[this](const Vector2f& _position) { return new BlueSlime(_position); },
-		[this](const Vector2f& _position) { return new OrangeSlime(_position); },
-		[this](const Vector2f& _position) { return new NormalSkeleton(_position); },
+		//[this](const Vector2f& _position) { return new Bat(_position); },
+		//[this](const Vector2f& _position) { return new GreenSlime(_position); },
+		//[this](const Vector2f& _position) { return new BlueSlime(_position); },
+		//[this](const Vector2f& _position) { return new OrangeSlime(_position); },
+		//[this](const Vector2f& _position) { return new NormalSkeleton(_position); },
 	};
 
 	int _randIndex;
@@ -380,8 +377,8 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 	{
 		_position = _positions[Random((int)_positions.size() - 1, 0)];
 		EraseElement(_positions, _position);
-		_randIndex = Random(static_cast<int>(_enemyList.size() - 1), 0);
-		others.push_back(_enemyList[_randIndex](_position));
+		//_randIndex = Random(static_cast<int>(_enemyList.size() - 1), 0);
+		//others.push_back(_enemyList[_randIndex](_position));
 	}
 	_position = _positions[Random((int)_positions.size() - 1, 0)];
 	EraseElement(_positions, _position);

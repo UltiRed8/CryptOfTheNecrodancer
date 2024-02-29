@@ -1,19 +1,25 @@
 #pragma once
-#include "Object.h"
 #include "IManagable.h"
 #include "Component.h"
+#include <SFML/Graphics.hpp>
+#include "TextureManager.h"
+
+using namespace std;
+using namespace sf;
 
 enum EntityType
 {
-	ET_NONE, ET_FLOOR, ET_WALL, ET_ENEMY, ET_PLAYER, ET_ITEM, ET_STAIR, ET_TRAP,ET_SHADOW, ET_DOOR, ET_COIN, ET_DIAMOND,ET_EPHAESTUS
+	ET_NONE, ET_FLOOR, ET_WALL, ET_ENEMY, ET_PLAYER, ET_ITEM, ET_STAIR, ET_TRAP,ET_SHADOW, ET_DOOR,ET_PICKABLE,ET_EPHAESTUS
 };
 
-class Entity : public Object, public IManagable<string>
+
+class Entity : public IManagable<string>
 {
 protected:
 	vector<Component*> components;
 	Shape* shape;
 	EntityType type;
+	int zIndex;
 
 public:
 	EntityType GetType() const
@@ -24,6 +30,17 @@ public:
 	{ 
 		return shape;
 	}
+
+	int GetZIndex() const
+	{
+		return zIndex;
+	}
+
+	Drawable* GetDrawable() const
+	{
+		return shape;
+	}
+
 	template <typename Type>
 	Type* GetComponent()
 	{
@@ -39,6 +56,11 @@ public:
 	Vector2f GetPosition()const 
 	{
 		return shape->getPosition();
+	}
+
+	void SetTexture(const string& _path)
+	{
+		TextureManager::GetInstance().Load(shape, _path);
 	}
 
 public:

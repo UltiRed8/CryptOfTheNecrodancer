@@ -13,12 +13,9 @@
 #include "Map.h"
 #include "MenuManager.h"
 
-#include "Coin.h"
-#include "Diamond.h"
-
 #define PATH_PLAYER "PlayerSprite.png"
 
-Player::Player(const string _id, const Vector2f& _position) : Entity(_id, PATH_PLAYER, _position)
+Player::Player(const float _maxHp, const float _maxDammage, const string _id, const Vector2f& _position) : Living(_maxHp, _maxDammage,PATH_PLAYER,_id, _position)
 {
 	inventory = new Inventory();
 	ressources = new PlayerRessource();
@@ -26,14 +23,15 @@ Player::Player(const string _id, const Vector2f& _position) : Entity(_id, PATH_P
 	zIndex = 1;
 	chainMultiplier = new int(1);
 	type = ET_PLAYER;
-	MovementComponent* _movement = new MovementComponent(this);
-	components.push_back(_movement);
 	components.push_back(new AnimationComponent(this, PATH_PLAYER, {
 		AnimationData("Idle", Vector2f(0, 0), Vector2f(26, 26), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f)
 	}, ANIM_DIR_NONE));
+
 	components.push_back(new RythmComponent(this, [this]() { GetComponent<MovementComponent>()->SetCanMove(true); }, nullptr, [&]() { GetComponent<MovementComponent>()->SetCanMove(false); }));
+
 	CollisionComponent* _collisions = new CollisionComponent(this);
 	components.push_back(_collisions);
+	MovementComponent* _movement = GetComponent<MovementComponent>();
 	_movement->InitCollisions(_collisions, {
 		CollisionReaction(ET_WALL, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
@@ -65,13 +63,9 @@ Player::Player(const string _id, const Vector2f& _position) : Entity(_id, PATH_P
 			_door->OpenDoor();
 		}),
 
-		CollisionReaction(ET_COIN, [this](Entity* _entity) {
-			Coin* _coins = dynamic_cast<Coin*>(_entity);
-			_coins->PickUpCoin();
-		}),
-		CollisionReaction(ET_DIAMOND, [this](Entity* _entity) {
-			Diamond* _diamond = dynamic_cast<Diamond*>(_entity);
-			_diamond->PickUpDiamond();
+		CollisionReaction(ET_PICKABLE, [this](Entity* _entity) {
+			Pickable* _pickable = dynamic_cast<Pickable*>(_entity);
+			_pickable->PickUp();
 		}),
 
 		CollisionReaction(ET_ENEMY, [this](Entity* _entity) {
@@ -85,10 +79,6 @@ Player::Player(const string _id, const Vector2f& _position) : Entity(_id, PATH_P
 		}),
 	});
 	new LightningComponent("PlayerLight", this, 350);
-	components.push_back(new LifeComponent(this, [this]() { cout << "Tu est mort ! " << endl; }, false, 100.f));
-	components.push_back(new DamageComponent(this, 100.f));
-
-	
 
 	InitInput();
 }
