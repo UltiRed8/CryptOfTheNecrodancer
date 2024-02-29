@@ -39,7 +39,7 @@ Player::Player(const string _id, const Vector2f& _position) : Entity(_id, "", _p
 			GetComponent<MovementComponent>()->UndoMove();
 			if (true)
 			{
-				if (ressources->GetDiamonds() == 0)
+				if (*ressources->GetDiamonds() == 0)
 				{
 					Map::GetInstance().NextLevel();
 				}

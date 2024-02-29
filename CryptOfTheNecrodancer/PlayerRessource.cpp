@@ -3,7 +3,7 @@
 PlayerRessource::PlayerRessource()
 {
 	money = new int(0);
-	diamonds = new int(3);
+	diamonds = new int(0);
 }
 
 PlayerRessource::~PlayerRessource()
