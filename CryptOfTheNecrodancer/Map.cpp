@@ -269,7 +269,7 @@ void Map::Update()
 void Map::SetFloorColor(Tile* _floor, const bool _creation)
 {
 	const Vector2f& _position = _floor->GetPosition();
-	const Vector2i& _tilePosition = Vector2i(_position.x / int(TILE_SIZE.x), _position.y / int(TILE_SIZE.y));
+	const Vector2i& _tilePosition = Vector2i(int(_position.x / TILE_SIZE.x), int(_position.y / TILE_SIZE.y));
 	const bool _posEven = (_tilePosition.x + _tilePosition.y) % 2 == 0;
 
 	Color _baseColor;
@@ -333,12 +333,12 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 	vector<function<void(const Vector2f& _position)>> _enemyList =
 	{
 		[this](const Vector2f& _position) { new Bat(_position); },
-		/*[this](const Vector2f& _position) { new GreenSlime(_position); },
+		[this](const Vector2f& _position) { new GreenSlime(_position); },
 		[this](const Vector2f& _position) { new BlueSlime(_position); },
 		[this](const Vector2f& _position) { new OrangeSlime(_position); },
-		[this](const Vector2f& _position) { new NormalSkeleton(_position); },*/
-		//[this](const Vector2f& _position) { new Coin(5, "coin", _position); }, // COIN SPAWN TEST
-		//[this](const Vector2f& _position) { new Diamond("Diamond", _position); }, // DIAMOND SPAWN TEST
+		[this](const Vector2f& _position) { new NormalSkeleton(_position); },
+		[this](const Vector2f& _position) { new Coin(5, "coin", _position); }, // COIN SPAWN TEST
+		[this](const Vector2f& _position) { new Diamond("Diamond", _position); }, // DIAMOND SPAWN TEST
 
 	};
 

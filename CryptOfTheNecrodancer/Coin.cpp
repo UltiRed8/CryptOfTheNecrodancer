@@ -19,7 +19,7 @@ Coin::Coin(const int _coins, const string& _id, const Vector2f& _position)
 void Coin::PickUpCoin()
 {
 	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
-	_player->GetRessources().AddMoney(coins);
+	_player->GetRessources()->AddMoney(coins);
 	Destroy();
 	SoundManager::GetInstance().Play(PATH_COIN_SOUND);
 }

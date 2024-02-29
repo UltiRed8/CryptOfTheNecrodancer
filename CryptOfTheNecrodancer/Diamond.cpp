@@ -14,7 +14,7 @@ Diamond::Diamond(const string& _id, const Vector2f& _position) : Tile(PATH_DIAMO
 void Diamond::PickUpDiamond()
 {
 	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
-	_player->GetRessources().AddDiamonds();
+	_player->GetRessources()->AddDiamonds();
 	Destroy();
 	SoundManager::GetInstance().Play(PATH_DIAMOND_PICKED_UP);
 }

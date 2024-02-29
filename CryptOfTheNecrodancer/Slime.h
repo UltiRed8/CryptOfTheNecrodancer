@@ -62,7 +62,8 @@ struct OrangeSlime : public Slime
             Vector2i(-1,0),
         };
         InitAllBattlesComponents(50.f, 100.f);
-		indexPatern = Random(directionsPatern.size() - 1);
+		const int _size = static_cast<const int>(directionsPatern.size());
+		indexPatern = Random(_size - 1);
     }
 };
 
