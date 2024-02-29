@@ -64,6 +64,11 @@ public:
 		return currentZone;
 	}
 
+	void SetCurrentZone(const CurrentZone _currentZone)
+	{
+		currentZone = _currentZone;
+	}
+
 	Vector2f GetFirstTilePosition() const
 	{
 		if (floors.empty()) return Vector2f();

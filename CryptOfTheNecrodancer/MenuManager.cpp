@@ -138,10 +138,10 @@ void MenuManager::InitMenuPause()
 			{ MenuManager::GetInstance().ClickAction(); },
 			{Event::MouseButtonPressed, Mouse::Left}) });
 
-	function<void()> _callbackContinue = [this]() { Get("GamePause")->Toggle(); MusicManager::GetInstance().Unpause(); };
+	function<void()> _callbackContinue = [this]() { Get("GamePause")->Toggle(); MusicManager::GetInstance().Unpause(); }; //TODO Fix
 	function<void()> _callbackRestart = [this]() {}; //TODO
 	function<void()> _callbackOptions = [this]() { Get("GamePause")->Toggle(); OptionsMenu(); };
-	function<void()> _callbackLobby = [this]() {Get("GamePause")->Toggle(); GoToLobby(); MusicManager::GetInstance().Unpause(); };
+	function<void()> _callbackLobby = [this]() {Get("GamePause")->Toggle(); GoToLobby(); MusicManager::GetInstance().PlayMain("Lobby", 130, false, true); };
 	function<void()> _callbackDelete = [this]() { DeleteSaveDataMenu(); };
 	function<void()> _callbackCalibration = [this]() { Get("GamePause")->Toggle(); LatencyMenu(); };
 	function<void()> _callbackEchap = [this]() { Get("GamePause")->Toggle(); CloseMenu(); };
@@ -188,6 +188,7 @@ void MenuManager::GoToLobby()
 	_player->GetRessources()->SetMoney(0);
 	Map::GetInstance().DeleteAll();
 	LightningManager::GetInstance().ClearAll();
+	Map::GetInstance().SetCurrentZone(CL_Lobby);
 	Map::GetInstance().Load("Assets/Saved/Lobby.txt");
 }
 

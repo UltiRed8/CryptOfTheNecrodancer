@@ -394,9 +394,9 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 void Map::NextLevel()
 {
 	currentLevel++;
-	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
-	_player->GetRessources()->SetDiamonds(0);
-	_player->GetRessources()->SetMoney(0);
+	//Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
+	//_player->GetRessources()->SetDiamonds(*_player->GetRessources()->GetDiamonds());
+	//_player->GetRessources()->SetMoney(*_player->GetRessources()->GetMoney());
 	DeleteAll();
 	LightningManager::GetInstance().ClearAll();
 	tempoIndex = 1;
@@ -408,6 +408,7 @@ void Map::NextLevel()
 
 void Map::NextMap()
 {
+	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
 	if (currentZone == CL_Lobby)
 	{
 		currentZone = CL_ZONE1;
@@ -415,6 +416,8 @@ void Map::NextMap()
 	}
 	else if (currentLevel >= 3)
 	{
+		_player->GetRessources()->SetDiamonds(*_player->GetRessources()->GetDiamonds());
+		_player->GetRessources()->SetMoney(0);
 		currentZone = CL_Lobby;
 		currentLevel = 0;
 		Map::GetInstance().DeleteAll();
