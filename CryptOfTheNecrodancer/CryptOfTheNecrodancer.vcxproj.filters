@@ -91,6 +91,87 @@
     <Filter Include="Source Files\Manager\Light">
       <UniqueIdentifier>{0183e336-2994-466b-b12d-2f3625d66b57}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{0a4d105c-a2ba-4ce6-87a1-f457db54d50b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Map\Room">
+      <UniqueIdentifier>{8908e230-f6da-4126-9719-a22caa4435a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Map\Tile">
+      <UniqueIdentifier>{b2c656ec-a312-40dd-bb0f-365740f5348f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Inventory\Item">
+      <UniqueIdentifier>{34e69d28-4940-48b4-b138-1637b81b35f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component\Collision">
+      <UniqueIdentifier>{0c366de2-4b03-4655-b69d-b1f07f260ef6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component\Damage">
+      <UniqueIdentifier>{38d9f45e-3b25-49e6-ae45-082619d10dca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component\Movement">
+      <UniqueIdentifier>{387d5de6-e2e0-429c-a4ae-38d9aebe2281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component\Life">
+      <UniqueIdentifier>{c6460399-646b-4e8d-b1c4-c78769537bb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component\Lightning">
+      <UniqueIdentifier>{7fb2e93d-9254-4adf-8de9-bdaa4a6ac604}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Able\Saveable">
+      <UniqueIdentifier>{150ad12c-2cfa-45b6-ba4f-7a9eedcd85a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Able\Consommable">
+      <UniqueIdentifier>{c9f8c9d5-1b5d-48d8-80ef-922d7f69609a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Able\Throwable">
+      <UniqueIdentifier>{5a283412-e000-4034-9430-b0f7ece5a67d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Able\Usable">
+      <UniqueIdentifier>{08cb9f72-85e5-40b0-9fd1-adb6bda56383}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Able\Wearable">
+      <UniqueIdentifier>{3c2a748a-f1b6-481e-b0a9-073971ab74b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\UiElement\ProgressBar">
+      <UniqueIdentifier>{010cad2e-90bd-4f51-a711-ae7b8677a29f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\UiElement\UIImage">
+      <UniqueIdentifier>{835facd2-562f-47b4-963d-a50c660f9e16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\UiElement\UIButton">
+      <UniqueIdentifier>{a9e28fdd-65d1-4a63-9a9d-3c605e4f110c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\UiElement\UIImage\Heart">
+      <UniqueIdentifier>{c4555242-c6de-4eae-9d86-a1e5e96e7031}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\UiElement\UIText">
+      <UniqueIdentifier>{1c2ba4a1-89fd-4162-9c61-842f05907667}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Player\PlayerRessource">
+      <UniqueIdentifier>{427e4f6e-7c0d-492a-9953-cb652aba53cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Coin">
+      <UniqueIdentifier>{11e69b42-77dc-435f-bac8-b8985e109cac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Diamond">
+      <UniqueIdentifier>{432052d4-e8ff-4ea6-94ca-c60682aa2b4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Door">
+      <UniqueIdentifier>{ca7df201-8f3d-40a1-9758-73844ab4f07d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Path">
+      <UniqueIdentifier>{6a7de074-f973-4a07-b364-487ddd0b49aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Stair">
+      <UniqueIdentifier>{25042389-0d21-448f-afec-2afcafe6dcd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Trap">
+      <UniqueIdentifier>{badf7bb1-a86d-414c-b4cb-492c40187d77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Wall">
+      <UniqueIdentifier>{4d1668c3-65ca-4a3e-92b2-49f05bdbd9ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -156,23 +237,11 @@
     <ClCompile Include="Component.cpp">
       <Filter>Source Files\Component</Filter>
     </ClCompile>
-    <ClCompile Include="UIButton.cpp">
-      <Filter>Source Files\Object\UiElement</Filter>
-    </ClCompile>
     <ClCompile Include="UIElement.cpp">
-      <Filter>Source Files\Object\UiElement</Filter>
-    </ClCompile>
-    <ClCompile Include="UIText.cpp">
-      <Filter>Source Files\Object\UiElement</Filter>
-    </ClCompile>
-    <ClCompile Include="ProgressBar.cpp">
       <Filter>Source Files\Object\UiElement</Filter>
     </ClCompile>
     <ClCompile Include="Macro.cpp">
       <Filter>Source Files\Macro</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Manager\Camera</Filter>
@@ -192,12 +261,6 @@
     <ClCompile Include="Map.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="Room.cpp">
-      <Filter>Source Files\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile.cpp">
-      <Filter>Source Files\Map</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Object\Entity\Player</Filter>
     </ClCompile>
@@ -210,67 +273,7 @@
     <ClCompile Include="Slime.cpp">
       <Filter>Source Files\Object\Entity\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionComponent.cpp">
-      <Filter>Source Files\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="DamageComponent.cpp">
-      <Filter>Source Files\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="LifeComponent.cpp">
-      <Filter>Source Files\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="LightningComponent.cpp">
-      <Filter>Source Files\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="MovementComponent.cpp">
-      <Filter>Source Files\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Coin.cpp">
-      <Filter>Source Files\Object\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Diamond.cpp">
-      <Filter>Source Files\Object\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Door.cpp">
-      <Filter>Source Files\Object\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Path.cpp">
-      <Filter>Source Files\Object\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Wall.cpp">
-      <Filter>Source Files\Object\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Wearable.cpp">
-      <Filter>Source Files\Able</Filter>
-    </ClCompile>
-    <ClCompile Include="Throwable.cpp">
-      <Filter>Source Files\Able</Filter>
-    </ClCompile>
-    <ClCompile Include="Usable.cpp">
-      <Filter>Source Files\Able</Filter>
-    </ClCompile>
-    <ClCompile Include="Consommable.cpp">
-      <Filter>Source Files\Able</Filter>
-    </ClCompile>
-    <ClCompile Include="Saveable.cpp">
-      <Filter>Source Files\Able</Filter>
-    </ClCompile>
-    <ClCompile Include="Heart.cpp">
-      <Filter>Source Files\Object\UiElement</Filter>
-    </ClCompile>
-    <ClCompile Include="UIImage.cpp">
-      <Filter>Source Files\Object\UiElement</Filter>
-    </ClCompile>
-    <ClCompile Include="Trap.cpp">
-      <Filter>Source Files\Object\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Stair.cpp">
-      <Filter>Source Files\Object\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="Inventory.cpp">
-      <Filter>Source Files\Inventory</Filter>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
       <Filter>Source Files\Inventory</Filter>
     </ClCompile>
     <ClCompile Include="MusicData.cpp">
@@ -282,14 +285,92 @@
     <ClCompile Include="LightningManager.cpp">
       <Filter>Source Files\Manager\Light</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerRessource.cpp">
-      <Filter>Source Files\Object\Entity\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Bat.cpp">
       <Filter>Source Files\Object\Entity\Enemy\Bat</Filter>
     </ClCompile>
     <ClCompile Include="Shopkeeper.cpp">
       <Filter>Source Files\Object\Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>Source Files\Map\Room</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>Source Files\Map\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Source Files\Inventory\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionComponent.cpp">
+      <Filter>Source Files\Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="LifeComponent.cpp">
+      <Filter>Source Files\Component\Life</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementComponent.cpp">
+      <Filter>Source Files\Component\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="DamageComponent.cpp">
+      <Filter>Source Files\Component\Damage</Filter>
+    </ClCompile>
+    <ClCompile Include="LightningComponent.cpp">
+      <Filter>Source Files\Component\Lightning</Filter>
+    </ClCompile>
+    <ClCompile Include="Consommable.cpp">
+      <Filter>Source Files\Able\Consommable</Filter>
+    </ClCompile>
+    <ClCompile Include="Saveable.cpp">
+      <Filter>Source Files\Able\Saveable</Filter>
+    </ClCompile>
+    <ClCompile Include="Throwable.cpp">
+      <Filter>Source Files\Able\Throwable</Filter>
+    </ClCompile>
+    <ClCompile Include="Usable.cpp">
+      <Filter>Source Files\Able\Usable</Filter>
+    </ClCompile>
+    <ClCompile Include="Wearable.cpp">
+      <Filter>Source Files\Able\Wearable</Filter>
+    </ClCompile>
+    <ClCompile Include="UIButton.cpp">
+      <Filter>Source Files\Object\UiElement\UIButton</Filter>
+    </ClCompile>
+    <ClCompile Include="UIImage.cpp">
+      <Filter>Source Files\Object\UiElement\UIImage</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressBar.cpp">
+      <Filter>Source Files\Object\UiElement\ProgressBar</Filter>
+    </ClCompile>
+    <ClCompile Include="Heart.cpp">
+      <Filter>Source Files\Object\UiElement\UIImage\Heart</Filter>
+    </ClCompile>
+    <ClCompile Include="UIText.cpp">
+      <Filter>Source Files\Object\UiElement\UIText</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerRessource.cpp">
+      <Filter>Source Files\Object\Entity\Player\PlayerRessource</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>Source Files\Object\Entity\Coin</Filter>
+    </ClCompile>
+    <ClCompile Include="Diamond.cpp">
+      <Filter>Source Files\Object\Entity\Diamond</Filter>
+    </ClCompile>
+    <ClCompile Include="Door.cpp">
+      <Filter>Source Files\Object\Entity\Door</Filter>
+    </ClCompile>
+    <ClCompile Include="Path.cpp">
+      <Filter>Source Files\Object\Entity\Path</Filter>
+    </ClCompile>
+    <ClCompile Include="Stair.cpp">
+      <Filter>Source Files\Object\Entity\Stair</Filter>
+    </ClCompile>
+    <ClCompile Include="Trap.cpp">
+      <Filter>Source Files\Object\Entity\Trap</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Source Files\Object\Entity\Wall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -362,16 +443,7 @@
     <ClInclude Include="Component.h">
       <Filter>Source Files\Component</Filter>
     </ClInclude>
-    <ClInclude Include="UIButton.h">
-      <Filter>Source Files\Object\UiElement</Filter>
-    </ClInclude>
     <ClInclude Include="UIElement.h">
-      <Filter>Source Files\Object\UiElement</Filter>
-    </ClInclude>
-    <ClInclude Include="UIText.h">
-      <Filter>Source Files\Object\UiElement</Filter>
-    </ClInclude>
-    <ClInclude Include="ProgressBar.h">
       <Filter>Source Files\Object\UiElement</Filter>
     </ClInclude>
     <ClInclude Include="Macro.h">
@@ -398,12 +470,6 @@
     <ClInclude Include="Map.h">
       <Filter>Source Files\Map</Filter>
     </ClInclude>
-    <ClInclude Include="Room.h">
-      <Filter>Source Files\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile.h">
-      <Filter>Source Files\Map</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Source Files\Object\Entity\Player</Filter>
     </ClInclude>
@@ -416,67 +482,7 @@
     <ClInclude Include="Skeleton.h">
       <Filter>Source Files\Object\Entity\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="DamageComponent.h">
-      <Filter>Source Files\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionComponent.h">
-      <Filter>Source Files\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="LightningComponent.h">
-      <Filter>Source Files\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="LifeComponent.h">
-      <Filter>Source Files\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="MovementComponent.h">
-      <Filter>Source Files\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Wall.h">
-      <Filter>Source Files\Object\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Path.h">
-      <Filter>Source Files\Object\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Door.h">
-      <Filter>Source Files\Object\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Diamond.h">
-      <Filter>Source Files\Object\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Coin.h">
-      <Filter>Source Files\Object\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Wearable.h">
-      <Filter>Source Files\Able</Filter>
-    </ClInclude>
-    <ClInclude Include="Throwable.h">
-      <Filter>Source Files\Able</Filter>
-    </ClInclude>
-    <ClInclude Include="Usable.h">
-      <Filter>Source Files\Able</Filter>
-    </ClInclude>
-    <ClInclude Include="Consommable.h">
-      <Filter>Source Files\Able</Filter>
-    </ClInclude>
-    <ClInclude Include="Saveable.h">
-      <Filter>Source Files\Able</Filter>
-    </ClInclude>
-    <ClInclude Include="Heart.h">
-      <Filter>Source Files\Object\UiElement</Filter>
-    </ClInclude>
-    <ClInclude Include="UIImage.h">
-      <Filter>Source Files\Object\UiElement</Filter>
-    </ClInclude>
-    <ClInclude Include="Trap.h">
-      <Filter>Source Files\Object\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Stair.h">
-      <Filter>Source Files\Object\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="Inventory.h">
-      <Filter>Source Files\Inventory</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
       <Filter>Source Files\Inventory</Filter>
     </ClInclude>
     <ClInclude Include="MusicData.h">
@@ -488,9 +494,6 @@
     <ClInclude Include="LightningManager.h">
       <Filter>Source Files\Manager\Light</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerRessource.h">
-      <Filter>Source Files\Object\Entity\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Shopkeeper.h">
       <Filter>Source Files\Object\Entity\Enemy</Filter>
     </ClInclude>
@@ -498,7 +501,85 @@
       <Filter>Source Files\Object\Entity\Enemy\Bat</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>Source Files\Map\Room</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>Source Files\Map\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Source Files\Inventory\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionComponent.h">
+      <Filter>Source Files\Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="LifeComponent.h">
+      <Filter>Source Files\Component\Life</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementComponent.h">
+      <Filter>Source Files\Component\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="DamageComponent.h">
+      <Filter>Source Files\Component\Damage</Filter>
+    </ClInclude>
+    <ClInclude Include="LightningComponent.h">
+      <Filter>Source Files\Component\Lightning</Filter>
+    </ClInclude>
+    <ClInclude Include="Consommable.h">
+      <Filter>Source Files\Able\Consommable</Filter>
+    </ClInclude>
+    <ClInclude Include="Saveable.h">
+      <Filter>Source Files\Able\Saveable</Filter>
+    </ClInclude>
+    <ClInclude Include="Throwable.h">
+      <Filter>Source Files\Able\Throwable</Filter>
+    </ClInclude>
+    <ClInclude Include="Usable.h">
+      <Filter>Source Files\Able\Usable</Filter>
+    </ClInclude>
+    <ClInclude Include="Wearable.h">
+      <Filter>Source Files\Able\Wearable</Filter>
+    </ClInclude>
+    <ClInclude Include="UIButton.h">
+      <Filter>Source Files\Object\UiElement\UIButton</Filter>
+    </ClInclude>
+    <ClInclude Include="UIImage.h">
+      <Filter>Source Files\Object\UiElement\UIImage</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressBar.h">
+      <Filter>Source Files\Object\UiElement\ProgressBar</Filter>
+    </ClInclude>
+    <ClInclude Include="Heart.h">
+      <Filter>Source Files\Object\UiElement\UIImage\Heart</Filter>
+    </ClInclude>
+    <ClInclude Include="UIText.h">
+      <Filter>Source Files\Object\UiElement\UIText</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerRessource.h">
+      <Filter>Source Files\Object\Entity\Player\PlayerRessource</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Source Files\Object\Entity\Coin</Filter>
+    </ClInclude>
+    <ClInclude Include="Diamond.h">
+      <Filter>Source Files\Object\Entity\Diamond</Filter>
+    </ClInclude>
+    <ClInclude Include="Door.h">
+      <Filter>Source Files\Object\Entity\Door</Filter>
+    </ClInclude>
+    <ClInclude Include="Path.h">
+      <Filter>Source Files\Object\Entity\Path</Filter>
+    </ClInclude>
+    <ClInclude Include="Stair.h">
+      <Filter>Source Files\Object\Entity\Stair</Filter>
+    </ClInclude>
+    <ClInclude Include="Trap.h">
+      <Filter>Source Files\Object\Entity\Trap</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>Source Files\Object\Entity\Wall</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
