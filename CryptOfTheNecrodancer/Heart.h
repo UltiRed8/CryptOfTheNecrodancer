@@ -2,17 +2,14 @@
 #include "UIElement.h"
 #include "UIImage.h"
 
-class Heart : public UIElement
+class Heart : public UIImage
 {
 	string path;
-	UIImage* heart;
 
 public :
-	Heart(const string& _id, const Vector2f& _position);
+	Heart(const string& _id, const Vector2f& _size, const Vector2f& _position);
 public :
 	void UpdateLife(); //Change la vie ?
 	void UIHeart(); //Change taille imageAnimation
-	virtual void Update(const Vector2i& _mousePosition) override;
-	virtual vector<Drawable*> GetDrawables() override;
 };
 

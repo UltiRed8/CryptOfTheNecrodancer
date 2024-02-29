@@ -7,7 +7,7 @@ CameraManager::CameraManager()
 {
 	zoomIndex = new float(1.0f);
 	minimumZoomIndex = new float(0.1f);
-	maximumZoomIndex = new float(2.0f);
+	maximumZoomIndex = new float(1.5f);
 
 	// TODO temp innpus, to remove!!
 	new ActionMap("Camera", {
@@ -28,10 +28,10 @@ void CameraManager::Update(RenderWindow* _window)
 void CameraManager::ZoomIn()
 {
 	Camera* _player = Get("PlayerCamera");
-	if (*zoomIndex <= *minimumZoomIndex) return;
+	if (*zoomIndex < *minimumZoomIndex) return;
 	const Vector2f& _cameraPosition = _player->getCenter();
 	_player->reset(FloatRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT));
-	*zoomIndex -= 0.05f;
+	*zoomIndex -= 0.1f;
 	_player->zoom(*zoomIndex);
 	_player->setCenter(EntityManager::GetInstance().Get("Player")->GetPosition());
 }
@@ -39,10 +39,10 @@ void CameraManager::ZoomIn()
 void CameraManager::ZoomOut()
 {
 	Camera* _player = Get("PlayerCamera");
-	if (*zoomIndex >= *maximumZoomIndex) return;
+	if (*zoomIndex > *maximumZoomIndex) return;
 	const Vector2f& _cameraPosition = _player->getCenter();
 	_player->reset(FloatRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT));
-	*zoomIndex += 0.05f;
+	*zoomIndex += 0.1f;
 	_player->zoom(*zoomIndex);
 	_player->setCenter(EntityManager::GetInstance().Get("Player")->GetPosition());
 }

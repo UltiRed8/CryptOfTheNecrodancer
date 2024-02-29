@@ -9,8 +9,10 @@ using namespace sf;
 
 class UIImage : public UIElement
 {
-	RectangleShape* shape;
 	string texturePath;
+
+protected :
+	RectangleShape* shape;
 
 public:
 	RectangleShape* GetShape() const

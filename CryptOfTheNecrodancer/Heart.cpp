@@ -1,38 +1,27 @@
 #include "Heart.h"
 #include "UIImage.h"
 #include "TextureManager.h"
+#include "ActionMap.h"
 
-Heart::Heart(const string& _id, const Vector2f& _position) : UIElement(_id, _position)
+#define PATH_HEART "FullHeart.png"
+#define PATH_EMPTY_HEART "EmptyHeart.png"
+#define PATH_HALFHEART "HalfHeart.png"
+
+Heart::Heart(const string& _id, const Vector2f& _size, const Vector2f& _position) : UIImage(_id, _position, _size, "FullHeart.png")
 {
 	path = "FullHeart.png";
-	heart = new UIImage("Heart", _position, Vector2f(25.0f, 25.0f) * 2.0f, path);
 }
 
 void Heart::UpdateLife() //Change la vie
 {
-	if (Event::KeyPressed && Keyboard::A)
-	{
-		path = "HalfHeart.png";
-	}
-
-	if (Event::KeyPressed && Keyboard::D)
-	{
-		path = "EmptyHeart.png";
-	}
+	// TODO temp innpus, to remove!!
+	new ActionMap("life", {
+		ActionData("Vide", [this]() { TextureManager::GetInstance().Load(shape, PATH_EMPTY_HEART); }, {Event::KeyPressed, Keyboard::A}),
+		ActionData("moitie", [this]() { TextureManager::GetInstance().Load(shape, PATH_HALFHEART); }, {Event::KeyPressed, Keyboard::D}),
+		});
 }
 
 void Heart::UIHeart() //Change taille imageAnimation
 {
 	
 }
-
-void Heart::Update(const Vector2i& _mousePosition)
-{
-}
-
-vector<Drawable*> Heart::GetDrawables()
-{
-	vector<Drawable*> _drawables = heart->GetDrawables();
-	return _drawables;
-}
-

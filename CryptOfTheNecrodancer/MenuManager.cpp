@@ -103,11 +103,10 @@ void MenuManager::InitHUD()
 		});
 
 	vector<Heart*> _hearts;
-	_hearts.push_back(new Heart("1", Vector2f(SCREEN_WIDTH - 55 * 4.2f, SCREEN_HEIGHT - 55 * 12.8)));
+	_hearts.push_back(new Heart("1", Vector2f(25.0f, 25.0f) * 2.0f, Vector2f(SCREEN_WIDTH - 55 * 4.2f, SCREEN_HEIGHT - 55 * 12.8)));
 
 
 	_hud->Open();
-	//_hearts->Open();
 }
 
 void MenuManager::InitInventory()
@@ -140,7 +139,7 @@ void MenuManager::InitMenuPause()
 	function<void()> _callbackContinue = [this]() { Get("GamePause")->Toggle(); MusicManager::GetInstance().Unpause(); };
 	function<void()> _callbackRestart = [this]() {}; //TODO
 	function<void()> _callbackOptions = [this]() { Get("GamePause")->Toggle(); OptionsMenu(); };
-	function<void()> _callbackLobby = [this]() { GoToLobby(); }; //TODO
+	function<void()> _callbackLobby = [this]() { Get("GamePause")->Toggle(); GoToLobby(); };
 	function<void()> _callbackDelete = [this]() { DeleteSaveDataMenu(); };
 	function<void()> _callbackEchap = [this]() { Get("GamePause")->Toggle(); CloseMenu(); };
 
@@ -181,7 +180,8 @@ void MenuManager::Delete()
 
 void MenuManager::GoToLobby()
 {
-	//return to lobby
+	Map::GetInstance().DeleteAll();
+	Map::GetInstance().Load("Assets/Saved/Lobby.txt");
 }
 
 void MenuManager::InitMenuOptions()
@@ -264,7 +264,7 @@ void MenuManager::InitGraphicMenu()
 	new Menu("Graphics", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "GraphicsMenu.png"),
 		//View Multiplier
 		new UIText("ViewText", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 3.2)), Color(172, 172,173), "View Multiplier",40,"Assets/Font/Font.ttf", true),
-		new ProgressBar("ViewBar", PT_LEFT, Vector2f(static_cast<float>(window->getSize().x / 2.9), static_cast<float>(window->getSize().y / 2.72)), Vector2f(400.0f, 30.0f), "EmptyBar.png", "FullBar.png", CameraManager::GetInstance().GetZoomIndex(), 1.1f),
+		new ProgressBar("ViewBar", PT_LEFT, Vector2f(static_cast<float>(window->getSize().x / 2.9), static_cast<float>(window->getSize().y / 2.72)), Vector2f(400.0f, 30.0f), "EmptyBar.png", "FullBar.png", CameraManager::GetInstance().GetZoomIndex(), 1.5f),
 		new UIButton("ViewMore", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(window->getSize().y / 2.79)), Color::White, Color::Cyan, ">", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_select_up.ogg", _up),
 		new UIButton("ViewLess", Vector2f(static_cast<float>(window->getSize().x / 3.2), static_cast<float>(window->getSize().y / 2.79)), Color::White, Color::Cyan, "<", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_select_down.ogg", _down),
 		
