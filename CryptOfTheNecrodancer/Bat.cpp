@@ -33,7 +33,7 @@ Bat::Bat(const Vector2f& _position) :Enemy(STRING_ID("Bat"), PATH_BAT, _position
 void Bat::DieEvent()
 {
 	//Drop 2 gold
-	this->Destroy();
+	Destroy();
 	new Coin(2, STRING_ID("Coin"), GetPosition());
 }
 
