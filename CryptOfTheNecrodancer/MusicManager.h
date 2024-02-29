@@ -12,12 +12,33 @@ class MusicManager : public IManager<string, MusicData>, public Singleton<MusicM
 	float* volume;
 	Timer* rythmLoop;
 	bool isRunning;
-	int acceptDelay;
+	float* acceptDelay;
+	float maxAcceptDelay;
+	float minAcceptDelay;
 	float playSpeed;
 	int currentBPM;
 	float tempVolume;
 
 public:
+	float* GetAcceptDelay() const
+	{
+		return acceptDelay;
+	}
+
+	void SetAcceptDelay(float _acceptDelay)
+	{
+		*acceptDelay += _acceptDelay;
+
+		if (*acceptDelay < minAcceptDelay)
+		{
+			*acceptDelay = minAcceptDelay;
+		}
+		if (*acceptDelay > maxAcceptDelay)
+		{
+			*acceptDelay = maxAcceptDelay;
+		}
+	}
+
 	float* GetVolume() const
 	{
 		return volume;

@@ -5,7 +5,7 @@
 
 CameraManager::CameraManager()
 {
-	zoomIndex = new float(1.0f);
+	zoomIndex = new float(0.9f);
 	minimumZoomIndex = new float(0.1f);
 	maximumZoomIndex = new float(1.5f);
 
@@ -43,6 +43,16 @@ void CameraManager::ZoomOut()
 	const Vector2f& _cameraPosition = _player->getCenter();
 	_player->reset(FloatRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT));
 	*zoomIndex += 0.1f;
+	_player->zoom(*zoomIndex);
+	_player->setCenter(EntityManager::GetInstance().Get("Player")->GetPosition());
+}
+
+void CameraManager::Reset()
+{
+	Camera* _player = Get("PlayerCamera");
+	const Vector2f& _cameraPosition = _player->getCenter();
+	_player->reset(FloatRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT));
+	*zoomIndex = 0.9f;
 	_player->zoom(*zoomIndex);
 	_player->setCenter(EntityManager::GetInstance().Get("Player")->GetPosition());
 }

@@ -23,4 +23,5 @@ public:
 	void Update(RenderWindow* _window);
 	void ZoomIn();
 	void ZoomOut();
+	void Reset();
 };

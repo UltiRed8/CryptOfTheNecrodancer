@@ -50,8 +50,8 @@ public :
 	void InitLeaveLobby();
 	void LeaveLobby();
 
-	void ZoomIn();
-	void ZoomOut();
+	void InitMenuLatency();
+	void LatencyMenu();
 
 	#pragma endregion
 };
