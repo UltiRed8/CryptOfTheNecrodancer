@@ -9,6 +9,10 @@ Camera::Camera(const string& _id, const CameraType& _type, const Vector2f& _from
 	type = _type;
 	Register();
 	Init();
+	if (_type == CAMERA_PLAYER)
+	{
+		zoom(0.9f);
+	}
 
 	// listener = new Listener();
 }

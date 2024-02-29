@@ -14,7 +14,9 @@ MusicManager::MusicManager()
 	volume = new float(10.f);
 	rythmLoop = nullptr;
 	isRunning = false;
-	acceptDelay = 300;
+	acceptDelay = new float(300.0f);
+	minAcceptDelay = 0.0f;
+	maxAcceptDelay = 500.0f;
 	playSpeed = 1.0f;
 	currentBPM = 0;
 }
@@ -22,6 +24,7 @@ MusicManager::MusicManager()
 MusicManager::~MusicManager()
 {
 	delete volume;
+	delete acceptDelay;
 }
 
 void MusicManager::Play(const string& _path, const int _bpm)
@@ -39,7 +42,7 @@ void MusicManager::Play(const string& _path, const int _bpm)
 		}
 	}
 	
-	new Timer("StartMusicDelay", [&]() { GetCurrent()->play(); }, milliseconds(acceptDelay/2), 1, true);
+	new Timer("StartMusicDelay", [&]() { GetCurrent()->play(); }, milliseconds((Int32)*acceptDelay/2), 1, true);
 	_music->setVolume(*volume);
 	UpdateLoop(_bpm);
 	isRunning = true;
@@ -60,7 +63,7 @@ void MusicManager::PlayMusicOnPosition(const string& _path, const int _bpm, cons
 		}
 	}
 
-	new Timer("StartMusicDelay", [&]() { GetCurrent()->play(); }, milliseconds(acceptDelay / 2), 1, true);
+	new Timer("StartMusicDelay", [&]() { GetCurrent()->play(); }, milliseconds((Int32)*acceptDelay / 2), 1, true);
 	_music->setVolume(*volume);
 	UpdateLoop(_bpm);
 	isRunning = true;
@@ -201,7 +204,7 @@ void MusicManager::UpdateLoop(const int _bpm)
 				TextureManager::GetInstance().Load(_shape, "RythmHearts0.png");
 				}, seconds(0.1f), 1, true);
 			
-		}, milliseconds(acceptDelay / 2), 1, true);
+		}, milliseconds((Int32)*acceptDelay / 2), 1, true);
 
 		cout << EntityManager::GetInstance().GetAllValues().size() << endl;
 
@@ -214,7 +217,7 @@ void MusicManager::UpdateLoop(const int _bpm)
 					_component->AfterUpdate();
 				}
 			};
-		}, milliseconds(acceptDelay), 1, true);
+		}, milliseconds((Int32)*acceptDelay), 1, true);
 
 	}, seconds(1.f / (_bpm / 60.f)), -1);
 }

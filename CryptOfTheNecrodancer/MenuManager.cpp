@@ -119,6 +119,7 @@ void MenuManager::InitMenu(RenderWindow* _window)
 {
 	window = _window;
 	InitLeaveLobby();
+	InitMenuLatency();
 	InitHUD();
 	InitMenuPause();
 	InitMenuOptions();
@@ -142,6 +143,7 @@ void MenuManager::InitMenuPause()
 	function<void()> _callbackOptions = [this]() { Get("GamePause")->Toggle(); OptionsMenu(); };
 	function<void()> _callbackLobby = [this]() {Get("GamePause")->Toggle(); GoToLobby(); MusicManager::GetInstance().Unpause(); };
 	function<void()> _callbackDelete = [this]() { DeleteSaveDataMenu(); };
+	function<void()> _callbackCalibration = [this]() { Get("GamePause")->Toggle(); LatencyMenu(); };
 	function<void()> _callbackEchap = [this]() { Get("GamePause")->Toggle(); CloseMenu(); };
 
 	new Menu("GamePause", {
@@ -150,6 +152,7 @@ void MenuManager::InitMenuPause()
 		new UIButton("OptionsButton", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 2.7)), Color::White, Color::Cyan, "Options", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_start.ogg", _callbackOptions),
 		new UIButton("ReturnLobbyButton", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 2.2)), Color::White, Color::Cyan, "Quit to Lobby", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_back.ogg", _callbackLobby),
 		new UIButton("DeleteSaveDataButton", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.85)), Color::White, Color::Cyan, "Delete Save Data", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_start.ogg", _callbackDelete),
+		new UIButton("Calibration", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.58)), Color::White, Color::Cyan, "Calibration Latency", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_start.ogg", _callbackCalibration),
 		new UIButton("Exit", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.3)), Color::White, Color::Cyan, "Exit Game", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_back.ogg", _callbackEchap),
 		new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "PauseMenu.png"),}, 1);
 }
@@ -261,6 +264,8 @@ void MenuManager::InitGraphicMenu()
 	function<void()> _more = [this]() { TimerManager::GetInstance().UpdateFrameRate(10); };
 	function<void()> _less = [this]() { TimerManager::GetInstance().UpdateFrameRate(-10); };
 
+	function<void()> _resetZoom = [this]() { CameraManager::GetInstance().Reset(); };
+
 	function<void()> _close = [this]() { OptionsMenu(); Get("Graphics")->Toggle(); };
 
 	new Menu("Graphics", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "GraphicsMenu.png"),
@@ -270,11 +275,18 @@ void MenuManager::InitGraphicMenu()
 		new UIButton("ViewMore", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(window->getSize().y / 2.79)), Color::White, Color::Cyan, ">", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_select_up.ogg", _up),
 		new UIButton("ViewLess", Vector2f(static_cast<float>(window->getSize().x / 3.2), static_cast<float>(window->getSize().y / 2.79)), Color::White, Color::Cyan, "<", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_select_down.ogg", _down),
 		
+		// Activer/Désactiver le Sound
+		new UIText("ToggleZText", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 2)), Color(172, 172,173), "Zoom per default",40,"Assets/Font/Font.ttf", true),
+		new UIButton("CheckBoxZ", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(window->getSize().y / 2)), Color::White, Color(0,139,139), {
+			new UIImage("CheckBoxImageZ", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(window->getSize().y / 2)), Vector2f(30.0f, 30.0f), "EmptyCheckbox.png"),
+			new UIText("CheckBoxTextZ", Vector2f(static_cast<float>(window->getSize().x / 1.425), static_cast<float>(window->getSize().y / 2)), Color(0,139,139), "X", 40, "Assets/Font/Font.ttf", false)
+		}, "Assets/Sounds/sfx_ui_toggle.ogg", _resetZoom, FloatRect(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(window->getSize().y / 2), 30.0f, 30.0f)),
+
 		//SetFrameRateLimit
-		new UIText("FPS", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 2)), Color(172, 172,173), "Framerate Limit",40,"Assets/Font/Font.ttf", true),
-		new UIText("FPSTextUpdate", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.7)), Color(172, 172,173), "",40,"Assets/Font/Font.ttf", true, TimerManager::GetInstance().GetMaxFrameRate()),
-		new UIButton("FPSMore", Vector2f(static_cast<float>(window->getSize().x / 1.7), static_cast<float>(window->getSize().y / 1.75)), Color::White, Color::Cyan, "+", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_select_up.ogg", _more),
-		new UIButton("FPSLess", Vector2f(static_cast<float>(window->getSize().x / 2.5), static_cast<float>(window->getSize().y / 1.75)), Color::White, Color::Cyan, "-", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_select_down.ogg", _less),
+		new UIText("FPS", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.6)), Color(172, 172,173), "Framerate Limit",40,"Assets/Font/Font.ttf", true),
+		new UIText("FPSTextUpdate", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.4)), Color(172, 172,173), "",40,"Assets/Font/Font.ttf", true, TimerManager::GetInstance().GetMaxFrameRate()),
+		new UIButton("FPSMore", Vector2f(static_cast<float>(window->getSize().x / 1.7), static_cast<float>(window->getSize().y / 1.45)), Color::White, Color::Cyan, "+", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_select_up.ogg", _more),
+		new UIButton("FPSLess", Vector2f(static_cast<float>(window->getSize().x / 2.5), static_cast<float>(window->getSize().y / 1.45)), Color::White, Color::Cyan, "-", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_select_down.ogg", _less),
 
 		new UIButton("ReturnGraphics", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.2)), Color::White, Color::Cyan, "Done", 40, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_back.ogg", _close) }, 3);
 }
@@ -299,4 +311,27 @@ void MenuManager::InitLeaveLobby()
 void MenuManager::LeaveLobby()
 {
 	Get("LeaveLobby")->Toggle();
+}
+
+void MenuManager::InitMenuLatency()
+{
+	function<void()> _calibrationUp = [this]() { MusicManager::GetInstance().SetAcceptDelay(10.0f); dynamic_cast<UIText*>(Get("LatencyMenu")->Get("CalibTextUpdate"))->GetText()->setString(to_string(*MusicManager::GetInstance().GetAcceptDelay()).substr(0,3)); }; //TODO
+	function<void()> _calibrationDown = [this]() { MusicManager::GetInstance().SetAcceptDelay(-10.0f); dynamic_cast<UIText*>(Get("LatencyMenu")->Get("CalibTextUpdate"))->GetText()->setString(to_string(*MusicManager::GetInstance().GetAcceptDelay()).substr(0, 3)); }; //TODO
+	function<void()> _close = [this]() { LatencyMenu(); Get("GamePause")->Toggle(); };
+
+	new Menu("LatencyMenu", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "LatencyMenu.png"), 
+		new UIText("CalibText", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 4)), Color::White, "Video/Audio Latency : ",35,"Assets/Font/Font.ttf"),
+		new ProgressBar("CalibBar", PT_LEFT, Vector2f(static_cast<float>(window->getSize().x / 2.9), static_cast<float>(window->getSize().y / 2.72)), Vector2f(400.0f, 30.0f), "EmptyBar.png", "FullBar.png", MusicManager::GetInstance().GetAcceptDelay(), 500.0f),
+		new UIButton("CalibUp", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(window->getSize().y / 2.79)), Color::White, Color::Cyan, ">", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_select_up.ogg", _calibrationUp),
+		new UIButton("CalibDown", Vector2f(static_cast<float>(window->getSize().x / 3.2), static_cast<float>(window->getSize().y / 2.79)), Color::White, Color::Cyan, "<", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_select_down.ogg", _calibrationDown),
+		new UIText("CalibTextUpdate", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 2)), Color(172, 172,173), "300",40,"Assets/Font/Font.ttf", true),
+
+		// Retour menu précédent
+		new UIButton("ReturnOptions", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.2)), Color::White, Color::Cyan, "Done", 40, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_back.ogg", _close)
+		}, 5);
+}
+
+void MenuManager::LatencyMenu()
+{
+	Get("LatencyMenu")->Toggle();
 }
