@@ -74,9 +74,9 @@ void Map::GenerateShopRoom()
 
 	vector<Tile*> _shopkeeperTiles = shop->GetFloor();
 	const Vector2f& _shopkeeperPosition = _shopkeeperTiles[12]->GetPosition();
-	//shopkeeper = new Shopkeeper(_shopkeeperPosition);
-	new Tile("ShopTile.png", _shopkeeperTiles[11]->GetPosition());
-	new Tile("ShopTile.png", _shopkeeperTiles[13]->GetPosition());
+	shopkeeper = new Shopkeeper(_shopkeeperPosition);
+	others.push_back(new Tile("ShopTile.png", _shopkeeperTiles[11]->GetPosition()));
+	others.push_back(new Tile("ShopTile.png", _shopkeeperTiles[13]->GetPosition()));
 	others.push_back(shopkeeper);
 
 	const vector<Tile*>& _shopFloors = shop->GetFloor();
@@ -217,12 +217,12 @@ void Map::Load(const string _path)
 
 	map<char, function<void(const Vector2f& _position)>> _elements =
 	{
-		/*{ '.', nullptr },
+		{ '.', nullptr },
 		{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP)); }},
-		{ ' ', [this](const Vector2f& _position) { floors.push_back(new Tile("floor.png", _position)); }},*/
+		{ ' ', [this](const Vector2f& _position) { floors.push_back(new Tile("floor.png", _position)); }},
 		{ 'S', [this](const Vector2f& _position) { others.push_back(new Stair(PATH_STAIR, _position)); }},
-		//{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile("floor.png", _position)); others.push_back(new Door(_position)); }},
-		//{ 'E', [this](const Vector2f& _position) {	others.push_back(new Hephaestus(_position)); }},
+		{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile("floor.png", _position)); others.push_back(new Door(_position)); }},
+		{ 'E', [this](const Vector2f& _position) {	others.push_back(new Hephaestus(_position)); }},
 	};
 
 	string _line;
@@ -362,9 +362,9 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 	vector<function<Entity* (const Vector2f& _position)>> _enemyList =
 	{
 		//[this](const Vector2f& _position) { return new Bat(_position); },
-		//[this](const Vector2f& _position) { return new GreenSlime(_position); },
-		//[this](const Vector2f& _position) { return new BlueSlime(_position); },
-		//[this](const Vector2f& _position) { return new OrangeSlime(_position); },
+		[this](const Vector2f& _position) { return new GreenSlime(_position); },
+		[this](const Vector2f& _position) { return new BlueSlime(_position); },
+		[this](const Vector2f& _position) { return new OrangeSlime(_position); },
 		//[this](const Vector2f& _position) { return new NormalSkeleton(_position); },
 	};
 
@@ -373,12 +373,12 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 
 	Vector2f _position = _positions[Random((int)_positions.size() - 1, 0)];
 	if (_positions.empty()) return;
-	for (int _index = 0; _index < _ennemyCount; _index++)
+	for (int _index = 0; _index < 50; _index++)
 	{
 		_position = _positions[Random((int)_positions.size() - 1, 0)];
 		EraseElement(_positions, _position);
-		//_randIndex = Random(static_cast<int>(_enemyList.size() - 1), 0);
-		//others.push_back(_enemyList[_randIndex](_position));
+		_randIndex = Random(static_cast<int>(_enemyList.size() - 1), 0);
+		others.push_back(_enemyList[_randIndex](_position));
 	}
 	_position = _positions[Random((int)_positions.size() - 1, 0)];
 	EraseElement(_positions, _position);

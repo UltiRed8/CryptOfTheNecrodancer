@@ -4,13 +4,14 @@ Enemy::Enemy(const float _maxHp, const float _maxDammage, const string& _id, con
 	: Living(_maxHp,_maxDammage, _path, _id,_position)
 {
 	indexPatern = 0;
-	zIndex = 1;
+	zIndex = 2;
 	droppedCoins = _droppedCoins;
 	currentCooldown = 0;
 	cooldown = 0;
 
-	MovementComponent* _movement =	GetComponent<MovementComponent>();
+	MovementComponent* _movement = GetComponent<MovementComponent>();
 	CollisionComponent* _collision = new CollisionComponent(this);
+	components.push_back(_collision);
 	_movement->InitCollisions(_collision, {
 		CollisionReaction(ET_WALL, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
@@ -22,9 +23,7 @@ Enemy::Enemy(const float _maxHp, const float _maxDammage, const string& _id, con
 			GetComponent<MovementComponent>()->UndoMove();
 			GetComponent<DamageComponent>()->Attack(_entity);
 		}),
-		});
-	components.push_back(_collision);
-	components.push_back(_movement);
+	});
 
 	type = ET_ENEMY;
 }
@@ -33,4 +32,16 @@ void Enemy::DieEvent()
 {
 	new Pickable(droppedCoins, PT_COIN,STRING_ID("coin"), GetPosition());
 	this->Destroy();
+}
+
+void Enemy::Update()
+{
+	currentCooldown--;
+	if (currentCooldown <= 0)
+	{
+		currentCooldown = cooldown;
+		SelectDirection();
+	}
+	Entity::Update();
+
 }

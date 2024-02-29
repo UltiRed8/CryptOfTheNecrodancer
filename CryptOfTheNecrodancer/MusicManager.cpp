@@ -224,8 +224,8 @@ void MusicManager::UpdateLoop(const int _bpm)
 	currentBPM = _bpm;
 
 	beatDelay = seconds(1.f / (_bpm / 60.f)).asMilliseconds();
-
 	rythmLoop = new Timer("Timer", [this]() {
+		return;
 		new Timer("ResetEvent", [this]() {
 			TriggerEvent();
 			didEvent = false;
@@ -236,7 +236,7 @@ void MusicManager::UpdateLoop(const int _bpm)
 
 bool MusicManager::TriggerEvent()
 {
-	if (didEvent) return false;
+	//if (didEvent) return false;
 
 	const float _delay = *acceptDelay / 2;
 

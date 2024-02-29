@@ -8,7 +8,7 @@
 #include "EntityManager.h"
 
 Skeleton::Skeleton(const float _maxHp, const float _maxDammage, const Vector2f& _position, const string& _path, const int _droppedCoins) 
-	: Enemy(_maxHp,_maxDammage,STRING_ID("Skeleton"), "", _position, _droppedCoins)
+	: Enemy(_maxHp,_maxDammage,STRING_ID("Skeleton"), PATH_SKELETON, _position, _droppedCoins)
 {
 	skeletonType = SK_NONE;
 	cooldown = 2;
@@ -37,7 +37,7 @@ void Skeleton::SelectDirection()
 		_direction.x = _playerPos.x - _skeletonPos.x;
 		_direction.x = (_direction.x > 0) ? 1 : -1;
 	}
-	GetComponent< MovementComponent>()->SetDirection(_direction);
+	GetComponent<MovementComponent>()->SetDirection(_direction);
 
 }
 

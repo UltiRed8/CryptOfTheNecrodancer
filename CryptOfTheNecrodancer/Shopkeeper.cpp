@@ -42,14 +42,3 @@ void Shopkeeper::SelectDirection()
     }
     GetComponent< MovementComponent>()->SetDirection(_direction);
 }
-
-void Shopkeeper::UpdateRythm()
-{
-    currentCooldown--;
-    if (currentCooldown <= 0)
-    {
-        currentCooldown = cooldown;
-        SelectDirection();
-    }
-}
-

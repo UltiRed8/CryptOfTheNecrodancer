@@ -12,6 +12,8 @@ Pickable::Pickable(const int _amount, const PickableType& _type, const string& _
 	amount = _amount;
 	pickableType = _type;
 
+	zIndex = 1;
+
 	if (_type != PT_CUSTOM)
 	{
 		SetTexture(_type == PT_COIN ? PATH_COIN :  PATH_DIAMOND);

@@ -65,7 +65,6 @@ public:
 		for (const Key& _key : _keysToRemove)
 		{
 			Value* _value = allValues[_key];
-			cout << "Removed: " << _key << endl;
 			Debug(_key, _value);
 			allValues.erase(_key);
 			delete _value;

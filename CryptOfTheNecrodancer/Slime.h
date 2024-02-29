@@ -20,7 +20,7 @@ public:
 
 public:
     void SetNextDirection();
-    virtual void UpdateRythm();
+    virtual void SelectDirection() override;
 };
 
 
