@@ -101,9 +101,9 @@ public:
 	void GeneratePaths();
 	void GenerateWalls();
 	void GenerateShopRoom();
-	void GenerateDiamonds(const int _quantity = 30);
 	void SetAllFloorOriginColor();
 	void PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const bool _finalDestructible, const WallType& _type);
+	void GenerateDiamond(const int _diamondOnFloor = 1, const int _diamondInWall = 1000);
 	void SpawnEnnemy(const int _ennemyCount = 10);
 	void EraseOverlappings();
 	void NextLevel();

@@ -372,6 +372,9 @@
     <ClCompile Include="Wall.cpp">
       <Filter>Source Files\Object\Entity\Wall</Filter>
     </ClCompile>
+    <ClCompile Include="DiamondTile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EntityManager.h">
@@ -580,6 +583,9 @@
     </ClInclude>
     <ClInclude Include="Wall.h">
       <Filter>Source Files\Object\Entity\Wall</Filter>
+    </ClInclude>
+    <ClInclude Include="DiamondTile.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

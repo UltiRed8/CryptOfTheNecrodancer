@@ -81,16 +81,6 @@ void Map::GenerateShopRoom()
 	PlaceWallsAroundFloor(_shopFloors, 1, false, WT_SHOP);
 }
 
-void Map::GenerateDiamonds(const int _quantity)
-{
-	/*for (int _index = 0; _index < _quantity/2; _index++)
-	{
-		new Diamond("Diamond", floors[Random(floors.size(), 0), 0]->GetPosition());
-		new Diamond("Diamond", static_cast<Vector2f>(GetRandomRoomPosition()));
-	}*/
-	
-}
-
 Map::Map()
 {
 	tempoIndex = 1;
@@ -124,7 +114,7 @@ void Map::Generate(const int _roomCount, const int _amountOfEnemies)
 	LightningManager::GetInstance().Construct(GetAllPositions(walls));
 	UpdateDoors();
 	SpawnEnnemy(_amountOfEnemies);
-	GenerateDiamonds();
+	GenerateDiamond();
 }
 
 void Map::EraseOverlappings()
@@ -317,8 +307,17 @@ void Map::PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const b
 		}
 		for (Wall* _wall : walls)
 		{
-			_allEntities.push_back(_wall);
+			if (_wall->GetHasDiamond())
+			{
+				_allEntities.push_back(_wall);
+			}
+			else
+			{
+				_allEntities.push_back(_wall);
+			}
+			
 		}
+		
 
 		_allPositionsAround = GetEmptyTilesAround(_allEntities);
 
@@ -327,6 +326,18 @@ void Map::PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const b
 			walls.push_back(new Wall(_position, (_index == _width-1 && _finalDestructible) ? WT_INVULNERABLE : _type));
 		}
 	}
+}
+
+void Map::GenerateDiamond(const int _diamondOnFloor, const int _diamondInWall)
+{
+	for (int _i = 0; _i < _diamondOnFloor; _i++)
+	{
+		new Diamond("Diamond", GetRandomElementInVector(floors)->GetPosition());
+	}
+	for (int _i = 0; _i < _diamondInWall; _i++)
+	{
+		GetRandomElementInVector(walls)->SetHasDiamond(true);
+	}	
 }
 
 void Map::SpawnEnnemy(const int _ennemyCount)
@@ -339,13 +350,15 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 		[this](const Vector2f& _position) { new OrangeSlime(_position); },
 		[this](const Vector2f& _position) { new NormalSkeleton(_position); },
 		//[this](const Vector2f& _position) { new Coin(5, "coin", _position); }, // COIN SPAWN TEST
-		[this](const Vector2f& _position) { new Diamond("Diamond", _position); }, // DIAMOND SPAWN TEST
+		[this](const Vector2f& _position) { ; }, // DIAMOND SPAWN TEST
 
 	};
 
 	int _randIndex;
 	vector<Vector2f> _positions = GetSpawnPositions();
-	new Shopkeeper(_positions[0]);
+	auto _shopKeeper = shop->GetFloor()[Random(shop->GetFloor().size()), 0];
+	Vector2f _shopKeeperPos = _shopKeeper->GetPosition();
+	new Shopkeeper(_shopKeeperPos);
 	if (_positions.empty()) return;
 	for (int _index = 0; _index < _ennemyCount; _index++)
 	{

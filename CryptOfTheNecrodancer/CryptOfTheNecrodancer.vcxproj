@@ -146,6 +146,7 @@
     <ClCompile Include="Consommable.cpp" />
     <ClCompile Include="DamageComponent.cpp" />
     <ClCompile Include="Diamond.cpp" />
+    <ClCompile Include="DiamondTile.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="DamageComponent.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Diamond.h" />
+    <ClInclude Include="DiamondTile.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
