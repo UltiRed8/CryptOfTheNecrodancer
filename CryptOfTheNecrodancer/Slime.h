@@ -19,7 +19,6 @@ public:
     Slime(const Vector2f& _position, const string& _path);
 
 public:
-    void DieEvent() override;
     void SetNextDirection();
     virtual void UpdateRythm();
 };
@@ -32,6 +31,7 @@ struct GreenSlime : public Slime
     {
 		slimeType = S_GREEN; 
         directionsPatern = { Vector2i(0, 0) };
+		InitAllBattlesComponents(5000.f,100.f);
     }
 
 };
@@ -45,7 +45,7 @@ struct BlueSlime : public Slime
             Vector2i(0,-1),
             Vector2i(0,1),
         };
-
+		InitAllBattlesComponents(100.f,200.f);
         cooldown = 2;
     }
 };
@@ -61,7 +61,7 @@ struct OrangeSlime : public Slime
             Vector2i(0,1),
             Vector2i(-1,0),
         };
-
+        InitAllBattlesComponents(50.f, 100.f);
 		indexPatern = Random(directionsPatern.size() - 1);
     }
 };

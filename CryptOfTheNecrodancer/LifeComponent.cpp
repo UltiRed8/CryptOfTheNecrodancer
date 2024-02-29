@@ -7,15 +7,11 @@ LifeComponent::LifeComponent(Entity* _owner, const function<void()> _deathCallba
 	currentHealth = new float(maxHealth);
 	deathcallback = _deathCallback;
 	isAlive = true;
-	damageVisualEffect = new Timer(owner->GetID() + "DamageVisualEffect", [this]() { owner->GetShape()->setFillColor(Color::White); }, seconds(0.25f), 0);
-
 }
 
 LifeComponent::~LifeComponent()
 {
 	delete currentHealth;
-	damageVisualEffect->Pause();
-	damageVisualEffect->Destroy();
 }
 
 void LifeComponent::Death()
@@ -34,12 +30,12 @@ void LifeComponent::Update()
 void LifeComponent::ChangeHealth(const float _byAmount)
 {
 	if (invulnerable) return;
+	cout << *currentHealth << endl;
 	*currentHealth += _byAmount;
+	cout << *currentHealth << endl;
 	if (_byAmount < 0)
 	{
 		owner->GetShape()->setFillColor(Color::Red);
-		
-		damageVisualEffect->Run(1);
 	}
 	if (*currentHealth <= 0.0f)
 	{

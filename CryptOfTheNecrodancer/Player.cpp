@@ -26,6 +26,8 @@ Player::Player(const string _id, const Vector2f& _position, PlayerRessource _res
 	CollisionComponent* _collisions = new CollisionComponent(this);
 	components.push_back(_collisions);
 	components.push_back(new LightningComponent("PlayerLight", this, 350));
+	components.push_back(new LifeComponent(this, [this]() { cout << "Tu est mort ! " << endl; }, false, 100.f));
+	components.push_back(new DamageComponent(this,100.f));
 
 	_movement->InitCollisions(_collisions, {
 		CollisionReaction(ET_WALL, [this](Entity* _entity) {
@@ -41,6 +43,11 @@ Player::Player(const string _id, const Vector2f& _position, PlayerRessource _res
 			GetComponent<MovementComponent>()->UndoMove();
 			Door* _door = dynamic_cast<Door*>(_entity);
 			_door->OpenDoor();
+		}),
+		CollisionReaction(ET_ENEMY, [this](Entity* _entity) {
+			GetComponent<MovementComponent>()->UndoMove();
+			GetComponent<DamageComponent>()->Attack(_entity);
+			cout << _entity->GetID() << " was killed!" << endl;
 		}),
 	});
 
