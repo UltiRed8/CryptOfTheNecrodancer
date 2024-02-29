@@ -24,7 +24,7 @@ private:
 	void Load(const string& _path);
 
 public:
-	void Play(const string& _path);
+	void Play(const string& _path, const bool _isRelative = true);
 	void IncreaseVolume();
 	void DecreaseVolume();
 	void ToggleVolume();

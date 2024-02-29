@@ -16,7 +16,7 @@ MusicManager::MusicManager()
 	isRunning = false;
 	acceptDelay = new float(300.0f);
 	minAcceptDelay = 0.0f;
-	maxAcceptDelay = 500.0f;
+	maxAcceptDelay = 450.0f;
 	playSpeed = 1.0f;
 	currentBPM = 0;
 	tempVolume = 0.0f;

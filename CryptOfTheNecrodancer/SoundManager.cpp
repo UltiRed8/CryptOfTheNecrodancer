@@ -12,7 +12,7 @@ SoundManager::~SoundManager()
 	delete volume;
 }
 
-void SoundManager::Play(const string& _path)
+void SoundManager::Play(const string& _path, const bool _isRelative)
 {
 	if (_path == "") return;
 
@@ -27,6 +27,7 @@ void SoundManager::Play(const string& _path)
 	if (_soundData)
 	{
 		sound.setBuffer(*_soundData);
+		sound.setRelativeToListener(_isRelative);
 		sound.play();
 	}
 }

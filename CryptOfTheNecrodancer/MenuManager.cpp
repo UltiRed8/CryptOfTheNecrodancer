@@ -317,13 +317,13 @@ void MenuManager::LeaveLobby()
 
 void MenuManager::InitMenuLatency()
 {
-	function<void()> _calibrationUp = [this]() { MusicManager::GetInstance().SetAcceptDelay(10.0f); dynamic_cast<UIText*>(Get("LatencyMenu")->Get("CalibTextUpdate"))->GetText()->setString(to_string(*MusicManager::GetInstance().GetAcceptDelay()).substr(0,3)); }; //TODO
-	function<void()> _calibrationDown = [this]() { MusicManager::GetInstance().SetAcceptDelay(-10.0f); dynamic_cast<UIText*>(Get("LatencyMenu")->Get("CalibTextUpdate"))->GetText()->setString(to_string(*MusicManager::GetInstance().GetAcceptDelay()).substr(0, 3)); }; //TODO
+	function<void()> _calibrationUp = [this]() { MusicManager::GetInstance().SetAcceptDelay(10.0f); dynamic_cast<UIText*>(Get("LatencyMenu")->Get("CalibTextUpdate"))->GetText()->setString(to_string(*MusicManager::GetInstance().GetAcceptDelay()).substr(0, to_string(*MusicManager::GetInstance().GetAcceptDelay()).find_first_of('.'))); }; //TODO
+	function<void()> _calibrationDown = [this]() { MusicManager::GetInstance().SetAcceptDelay(-10.0f); dynamic_cast<UIText*>(Get("LatencyMenu")->Get("CalibTextUpdate"))->GetText()->setString(to_string(*MusicManager::GetInstance().GetAcceptDelay()).substr(0, to_string(*MusicManager::GetInstance().GetAcceptDelay()).find_first_of('.'))); }; //TODO
 	function<void()> _close = [this]() { LatencyMenu(); Get("GamePause")->Toggle(); };
 
 	new Menu("LatencyMenu", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "LatencyMenu.png"), 
 		new UIText("CalibText", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 4)), Color::White, "Video/Audio Latency : ",35,"Assets/Font/Font.ttf"),
-		new ProgressBar("CalibBar", PT_LEFT, Vector2f(static_cast<float>(window->getSize().x / 2.9), static_cast<float>(window->getSize().y / 2.72)), Vector2f(400.0f, 30.0f), "EmptyBar.png", "FullBar.png", MusicManager::GetInstance().GetAcceptDelay(), 500.0f),
+		new ProgressBar("CalibBar", PT_LEFT, Vector2f(static_cast<float>(window->getSize().x / 2.9), static_cast<float>(window->getSize().y / 2.72)), Vector2f(400.0f, 30.0f), "EmptyBar.png", "FullBar.png", MusicManager::GetInstance().GetAcceptDelay(), 450.0f),
 		new UIButton("CalibUp", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(window->getSize().y / 2.79)), Color::White, Color::Cyan, ">", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_select_up.ogg", _calibrationUp),
 		new UIButton("CalibDown", Vector2f(static_cast<float>(window->getSize().x / 3.2), static_cast<float>(window->getSize().y / 2.79)), Color::White, Color::Cyan, "<", 50, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_select_down.ogg", _calibrationDown),
 		new UIText("CalibTextUpdate", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 2)), Color(172, 172,173), "300",40,"Assets/Font/Font.ttf", true),
