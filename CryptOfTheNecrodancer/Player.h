@@ -1,13 +1,12 @@
 #pragma once
 #include "Inventory.h"
 #include "PlayerRessource.h"
-#include "Entity.h"
-
+#include "Living.h"
 #include <SFML/Audio.hpp>
 
 using namespace sf;
 
-class Player : public Entity
+class Player : public Living
 {
 	Inventory* inventory;
 	PlayerRessource* ressources;
@@ -26,7 +25,8 @@ public:
 	}
 
 public:
-	Player(const string _id, const Vector2f& _position);
+	//const float _maxHp, const float _maxDammage, const string& _path, const string& _id, const Vector2f& _pos
+	Player(const float _maxHp,const float _maxDamages,const string _id, const Vector2f& _position);
 	~Player();
 
 public :

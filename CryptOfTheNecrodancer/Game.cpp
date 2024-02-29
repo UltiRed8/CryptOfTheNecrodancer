@@ -37,7 +37,7 @@ void Game::Init()
 
 void Game::Start()
 {
-	player = new Player("Player",{0.f,0.f});
+	player = new Player(100.f,100.f,"Player",{0.f,0.f});
 
 	Init();
 

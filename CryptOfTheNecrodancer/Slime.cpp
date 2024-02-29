@@ -7,7 +7,7 @@
 #include "AnimationComponent.h"
 
 
-Slime::Slime(const Vector2f& _position, const string& _path, const int _droppedCoins) : Enemy(STRING_ID("Slime"), _path, _position, _droppedCoins)
+Slime::Slime(const float _maxHp, const float _maxDammage, const Vector2f& _position, const string& _path, const int _droppedCoins) : Enemy(_maxHp,_maxDammage,("Slime"), _path, _position, _droppedCoins)
 {
     slimeType = S_NONE;
    // AnimationData _animation = AnimationData(STRING_ID("Slimitus Nutritus"), Vector2f(0, 0), Vector2f(26, 26), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f);
