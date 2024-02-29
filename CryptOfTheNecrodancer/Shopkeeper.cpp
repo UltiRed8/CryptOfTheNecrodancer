@@ -16,12 +16,10 @@ Shopkeeper::Shopkeeper(const Vector2f& _position) : Enemy(STRING_ID("ShopKeeper"
 	components.push_back(new RythmComponent(this, nullptr, [this]() { UpdateRythm(); }, nullptr));
 	components.push_back(new AnimationComponent(this, PATH_SHOPKEEPER, { _animation }, ANIM_DIR_NONE));
     GetComponent<MovementComponent>()->SetCanMove(false);
-	components.push_back(new DamageComponent(this, 0.5));
-	components.push_back(new LifeComponent(this, [this]() {DieEvent(); }, false, 1));
 	cooldown = 0;
 
     // MUSIC
-
+    InitAllBattlesComponents(1000.f,900.f);
     // Time _currentMusicTime = MusicManager::GetInstance().GetCurrent()->getPlayingOffset();
 	// MusicManager::GetInstance().PlayMusicOnPosition("TheWighttoRemain.mp3", 160, _position);
 }
