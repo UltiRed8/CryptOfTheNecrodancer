@@ -37,14 +37,14 @@ void Game::Init()
 
 void Game::Start()
 {
-	player = new Player("Player",{0.f,0.f},{});
+	player = new Player("Player",{0.f,0.f});
 
 	Init();
 
 	// TODO temporaire
 
-	Map::GetInstance().Generate(6);
-	//Map::GetInstance().Load("Assets/Saved/Lobby.txt");
+	//Map::GetInstance().Generate(6);
+	Map::GetInstance().Load("Assets/Saved/Lobby.txt");
 
 	//TheWighttoRemain.mp3 160
 	//Lobby.mp3 130

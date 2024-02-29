@@ -10,7 +10,7 @@ using namespace sf;
 class Player : public Entity
 {
 	Inventory* inventory;
-	PlayerRessource ressources;
+	PlayerRessource* ressources;
 	int* chainMultiplier;
 	// Listener* listener;
 
@@ -20,14 +20,14 @@ public:
 		return chainMultiplier;
 	}
 	
-	PlayerRessource GetRessources() const
+	PlayerRessource* GetRessources() const
 	{
 		return ressources;
 	}
 
 
 public:
-	Player(const string _id, const Vector2f& _position, PlayerRessource _ressources);
+	Player(const string _id, const Vector2f& _position);
 	~Player();
 
 public :

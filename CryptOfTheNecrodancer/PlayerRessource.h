@@ -1,4 +1,5 @@
 #pragma once
+#include "MenuManager.h"
 
 class PlayerRessource
 {
@@ -15,8 +16,17 @@ public :
 	{
 		return diamonds;
 	}
+	void SetDiamonds(int _diamonds)
+	{
+		*diamonds = _diamonds;
+	}
+	void SetMoney(int _money)
+	{
+		*money = _money;
+	}
 
 public :
 	PlayerRessource();
+	~PlayerRessource();
 };
 

@@ -47,6 +47,9 @@ public :
 	void InitGraphicMenu();
 	void GraphicMenu();
 
+	void InitLeaveLobby();
+	void LeaveLobby();
+
 	void ZoomIn();
 	void ZoomOut();
 

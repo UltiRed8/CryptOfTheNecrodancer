@@ -10,6 +10,7 @@
 #include "TimerManager.h"
 #include "Player.h"
 #include "Heart.h"
+#include "Map.h"
 
 vector<Drawable*> MenuManager::GetDrawables()
 {
@@ -93,12 +94,12 @@ void MenuManager::InitHUD()
 		new UIText("CoinMultText", Vector2f(SCREEN_WIDTH / 2 - 20 * 0.5, SCREEN_HEIGHT - 55 * 0.2), Color::White, "Coin Multiplier: " , 15,"Assets/Font/Font.ttf", false, dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetChainMultiplier()),
 
 		//Coins
-		new UIImage("CoinText", Vector2f(SCREEN_WIDTH - 55 * 3, SCREEN_HEIGHT - 55 * 12.8), Vector2f(25.0f, 25.0f) * 2.0f, "Coin.png"),
-		new UIText("CoinUpdateText", Vector2f(SCREEN_WIDTH - 55 * 1.2, SCREEN_HEIGHT - 55 * 12.5), Color::White, "x " ,25,"Assets/Font/Font.ttf", false, dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetRessources().GetMoney()),
+		new UIImage("Coin", Vector2f(SCREEN_WIDTH - 55 * 3, SCREEN_HEIGHT - 55 * 12.8), Vector2f(25.0f, 25.0f) * 2.0f, "Coin.png"),
+		new UIText("CoinUpdateText", Vector2f(SCREEN_WIDTH - 55 * 1.2, SCREEN_HEIGHT - 55 * 12.5), Color::White, "x " ,25,"Assets/Font/Font.ttf", false, dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetRessources()->GetMoney()),
 
 		//Diamond
-		new UIImage("DiamondText", Vector2f(SCREEN_WIDTH - 55 * 3, SCREEN_HEIGHT - 55 * 11.6), Vector2f(25.0f, 25.0f) * 2.0f, "Diamond.png"),
-		new UIText("DiamondUpdateText", Vector2f(SCREEN_WIDTH - 55 * 1.2, SCREEN_HEIGHT - 55 * 11.3), Color::White, "x " ,25,"Assets/Font/Font.ttf", false, dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetRessources().GetDiamonds()),
+		new UIImage("Diamond", Vector2f(SCREEN_WIDTH - 55 * 3, SCREEN_HEIGHT - 55 * 11.6), Vector2f(25.0f, 25.0f) * 2.0f, "Diamond.png"),
+		new UIText("DiamondUpdateText", Vector2f(SCREEN_WIDTH - 55 * 1.2, SCREEN_HEIGHT - 55 * 11.3), Color::White, "x " ,25,"Assets/Font/Font.ttf", false, dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetRessources()->GetDiamonds()),
 		});
 
 	vector<Heart*> _hearts;
@@ -117,6 +118,7 @@ void MenuManager::InitInventory()
 void MenuManager::InitMenu(RenderWindow* _window)
 {
 	window = _window;
+	InitLeaveLobby();
 	InitHUD();
 	InitMenuPause();
 	InitMenuOptions();
@@ -278,4 +280,21 @@ void MenuManager::InitGraphicMenu()
 void MenuManager::GraphicMenu()
 {
 	Get("Graphics")->Toggle();
+}
+
+void MenuManager::InitLeaveLobby()
+{
+	function<void()> _nextLevel = [&]() { LeaveLobby(); Map::GetInstance().NextLevel(); };
+	function<void()> _return = [this]() { LeaveLobby(); };
+
+	new Menu("LeaveLobby", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "AreYouSure.png"),
+		new UIText("AreYouSureText1", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 4)), Color::White, "You have Diamonds !",35,"Assets/Font/Font.ttf"),
+		new UIText("AreYouSureText2", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 3.3)), Color::White, "Are you sure you want to leave the lobby?",35,"Assets/Font/Font.ttf"),
+		new UIButton("StayText", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.8)), Color::White, Color::Cyan, "No, spend Diamonds here", 35, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_back.ogg", _return),
+		new UIButton("DeleteShit", Vector2f(static_cast<float>(window->getSize().x / 2), static_cast<float>(window->getSize().y / 1.6)), Color::White, Color::Cyan, "Yes ! Go to fight !", 35, "Assets/Font/Font.ttf", "Assets/Sounds/sfx_ui_start.ogg", _nextLevel) }, 4);
+}
+
+void MenuManager::LeaveLobby()
+{
+	Get("LeaveLobby")->Toggle();
 }

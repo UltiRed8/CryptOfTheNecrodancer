@@ -10,13 +10,15 @@
 #include "Stair.h"
 #include "Door.h"
 #include "Map.h"
+#include "MenuManager.h"
+
 
 #define PATH_PLAYER "PlayerSprite.png"
 
-Player::Player(const string _id, const Vector2f& _position, PlayerRessource _ressources) : Entity(_id, "", _position)
+Player::Player(const string _id, const Vector2f& _position) : Entity(_id, "", _position)
 {
 	inventory = new Inventory();
-	ressources = _ressources;
+	ressources = new PlayerRessource();
 	MovementComponent* _movement = new MovementComponent(this);
 	components.push_back(_movement);
 	AnimationData _animation = AnimationData("Idle", Vector2f(0, 0),Vector2f(26,26), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f);
@@ -35,7 +37,18 @@ Player::Player(const string _id, const Vector2f& _position, PlayerRessource _res
 		}),
 		CollisionReaction(ET_STAIR, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
-			Map::GetInstance().NextLevel();
+			if (true)
+			{
+				if (ressources->GetDiamonds() == 0)
+				{
+					Map::GetInstance().NextLevel();
+				}
+				else
+				{
+					Menu* _leaveMenu = MenuManager::GetInstance().Get("LeaveLobby");
+					_leaveMenu->Open();
+				}
+			}
 		}),
 		CollisionReaction(ET_DOOR, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
@@ -56,6 +69,7 @@ Player::~Player()
 {
 	delete inventory;
 	delete chainMultiplier;
+	delete ressources;
 }
 
 void Player::InitInput()

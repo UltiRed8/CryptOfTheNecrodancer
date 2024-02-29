@@ -342,12 +342,15 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 
 void Map::NextLevel()
 {
+	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
+	_player->GetRessources()->SetDiamonds(0);
+	_player->GetRessources()->SetMoney(0);
 	DeleteAll();
 	tempoIndex = 1;
 	chainToggle = true;
 	isPurple = false;
 	Generate(6);
-	EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(GetFirstTilePosition());
+	_player->GetShape()->setPosition(GetFirstTilePosition());
 }
 
 void Map::DeleteAll()
