@@ -291,6 +291,9 @@
     <ClCompile Include="Shopkeeper.cpp">
       <Filter>Source Files\Object\Entity\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Hephaestus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EntityManager.h">
@@ -499,6 +502,9 @@
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hephaestus.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

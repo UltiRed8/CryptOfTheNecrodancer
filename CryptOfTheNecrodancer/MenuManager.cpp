@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "Heart.h"
 #include "Map.h"
+#include "LightningManager.h"
 
 vector<Drawable*> MenuManager::GetDrawables()
 {
@@ -139,7 +140,7 @@ void MenuManager::InitMenuPause()
 	function<void()> _callbackContinue = [this]() { Get("GamePause")->Toggle(); MusicManager::GetInstance().Unpause(); };
 	function<void()> _callbackRestart = [this]() {}; //TODO
 	function<void()> _callbackOptions = [this]() { Get("GamePause")->Toggle(); OptionsMenu(); };
-	function<void()> _callbackLobby = [this]() { Get("GamePause")->Toggle(); GoToLobby(); };
+	function<void()> _callbackLobby = [this]() {Get("GamePause")->Toggle(); GoToLobby(); MusicManager::GetInstance().Unpause(); };
 	function<void()> _callbackDelete = [this]() { DeleteSaveDataMenu(); };
 	function<void()> _callbackEchap = [this]() { Get("GamePause")->Toggle(); CloseMenu(); };
 
@@ -181,6 +182,7 @@ void MenuManager::Delete()
 void MenuManager::GoToLobby()
 {
 	Map::GetInstance().DeleteAll();
+	LightningManager::GetInstance().ClearAll();
 	Map::GetInstance().Load("Assets/Saved/Lobby.txt");
 }
 
@@ -284,7 +286,7 @@ void MenuManager::GraphicMenu()
 
 void MenuManager::InitLeaveLobby()
 {
-	function<void()> _nextLevel = [&]() { LeaveLobby(); Map::GetInstance().NextLevel(); };
+	function<void()> _nextLevel = [&]() { LeaveLobby(); Map::GetInstance().NextMap(); };
 	function<void()> _return = [this]() { LeaveLobby(); };
 
 	new Menu("LeaveLobby", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)window->getSize().y), "AreYouSure.png"),

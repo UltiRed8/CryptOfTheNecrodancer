@@ -12,6 +12,7 @@ class Player : public Entity
 	Inventory* inventory;
 	PlayerRessource* ressources;
 	int* chainMultiplier;
+	bool alreadyMoved;
 	// Listener* listener;
 
 public:

@@ -9,6 +9,15 @@ void LightningManager::Construct(const vector<Vector2f>& _allEntitiesPos)
 	}
 }
 
+void LightningManager::ClearAll()
+{
+	for (Tile* _tile : shadowTiles)
+	{
+		_tile->Destroy();
+	}
+	shadowTiles.clear();
+}
+
 void LightningManager::Update()
 {
 	for (Tile* _tile : shadowTiles)

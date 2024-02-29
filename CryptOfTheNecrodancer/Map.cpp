@@ -5,7 +5,7 @@
 #include "LightningManager.h"
 #include "Coin.h"
 #include "Diamond.h"
-
+#include "Hephaestus.h"
 #define PATH_STAIR "stairs.png"
 
 #define C_BROWN Color(135, 79, 2, 255)
@@ -72,6 +72,13 @@ void Map::GenerateShopRoom()
 
 	shop = new Room(Vector2i(5,7), _position);
 
+	vector<Tile*> _shopkeeperTiles = shop->GetFloor();
+	const Vector2f& _shopkeeperPosition = _shopkeeperTiles[12]->GetPosition();
+	shopkeeper = new Shopkeeper(_shopkeeperPosition);
+	new Tile("ShopTile.png", _shopkeeperTiles[11]->GetPosition());
+	new Tile("ShopTile.png", _shopkeeperTiles[13]->GetPosition());
+	others.push_back(shopkeeper);
+
 	const vector<Tile*>& _shopFloors = shop->GetFloor();
 	floors.insert(floors.end(), _shopFloors.begin(), _shopFloors.end());
 
@@ -92,10 +99,13 @@ void Map::GenerateDiamonds(const int _quantity)
 
 Map::Map()
 {
+	currentZone = CL_Lobby;
+	currentLevel = 0;
 	tempoIndex = 1;
 	chainToggle = true;
 	isPurple = false;
 	shop = nullptr;
+	shopkeeper = nullptr;
 }
 
 Map::~Map()
@@ -213,19 +223,21 @@ void Map::Load(const string _path)
 		return;
 	}
 
-	map<char, function<void(const Vector2f& _position)>> _elements = {
+	map<char, function<void(const Vector2f& _position)>> _elements =
+	{
 		{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP)); }},
 		{ ' ', [this](const Vector2f& _position) { floors.push_back(new Tile("floor.png", _position)); }},
 		{ '.', nullptr },
 		{ 'S', [this](const Vector2f& _position) { others.push_back(new Stair(PATH_STAIR, _position)); }},
-		{ '3', [this](const Vector2f& _position) {
-			floors.push_back(new Tile("floor.png", _position));
-			others.push_back(new Door(_position));
-		}},
+		{ '3', [this](const Vector2f& _position) {floors.push_back(new Tile("floor.png", _position));
+													others.push_back(new Door(_position)); }},
+
+		{ 'E', [this](const Vector2f& _position) {	others.push_back(new Hephaestus(_position)); }},
 	};
 
 	string _line;
 	Vector2i _tilePosition = Vector2i(0, 0);
+
 	while (getline(_in, _line))
 	{
 		for (const char _char : _line)
@@ -243,6 +255,7 @@ void Map::Load(const string _path)
 		_tilePosition.y += 1;
 	}
 
+	EntityManager::GetInstance().Get("Player")->GetShape()->setPosition({9 * TILE_SIZE.x,10 * TILE_SIZE.y});
 	SetAllFloorOriginColor();
 
 	UpdateDoors();
@@ -330,43 +343,69 @@ void Map::PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const b
 
 void Map::SpawnEnnemy(const int _ennemyCount)
 {
-	vector<function<void(const Vector2f& _position)>> _enemyList =
+	vector<function<Entity*(const Vector2f& _position)>> _enemyList =
 	{
-		[this](const Vector2f& _position) { new Bat(_position); },
-		[this](const Vector2f& _position) { new GreenSlime(_position); },
-		[this](const Vector2f& _position) { new BlueSlime(_position); },
-		[this](const Vector2f& _position) { new OrangeSlime(_position); },
-		[this](const Vector2f& _position) { new NormalSkeleton(_position); },
-		[this](const Vector2f& _position) { new Coin(5, "coin", _position); }, // COIN SPAWN TEST
-		[this](const Vector2f& _position) { new Diamond("Diamond", _position); }, // DIAMOND SPAWN TEST
-
+		[this](const Vector2f& _position) { return new Bat(_position); },
+		[this](const Vector2f& _position) { return new GreenSlime(_position); },
+		[this](const Vector2f& _position) { return new BlueSlime(_position); },
+		[this](const Vector2f& _position) { return new OrangeSlime(_position); },
+		[this](const Vector2f& _position) { return new NormalSkeleton(_position); },
+		[this](const Vector2f& _position) { return new Coin(5, "coin", _position); }, // COIN SPAWN TEST
+		[this](const Vector2f& _position) { return new Diamond("Diamond", _position); }, // DIAMOND SPAWN TEST
 	};
 
 	int _randIndex;
 	vector<Vector2f> _positions = GetSpawnPositions();
-	new Shopkeeper(_positions[0]);
+	Vector2f _position = _positions[Random((int)_positions.size() - 1, 0)];
 	if (_positions.empty()) return;
 	for (int _index = 0; _index < _ennemyCount; _index++)
 	{
-		const Vector2f& _position = _positions[Random((int)_positions.size() - 1, 0)];
+		_position = _positions[Random((int)_positions.size() - 1, 0)];
 		EraseElement(_positions, _position);
 		_randIndex = Random(static_cast<int>(_enemyList.size() - 1), 0);
-		_enemyList[_randIndex](_position);
+		others.push_back(_enemyList[_randIndex](_position));
 	}
-	new Door(Vector2f(0.0f, 0.0f));
+	_position = _positions[Random((int)_positions.size() - 1, 0)];
+	EraseElement(_positions, _position);
+	others.push_back(new Stair(PATH_STAIR, _position));
+	_position = _positions[Random((int)_positions.size() - 1, 0)];
+	EraseElement(_positions, _position);
+	EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position);
 }
 
 void Map::NextLevel()
 {
+	currentLevel++;
 	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
 	_player->GetRessources()->SetDiamonds(0);
 	_player->GetRessources()->SetMoney(0);
 	DeleteAll();
+	LightningManager::GetInstance().ClearAll();
 	tempoIndex = 1;
 	chainToggle = true;
 	isPurple = false;
 	Generate(6);
-	_player->GetShape()->setPosition(GetFirstTilePosition());
+}
+
+void Map::NextMap()
+{
+	if (currentZone == CL_Lobby)
+	{
+		currentZone = CL_ZONE1;
+		NextLevel();
+	}
+	else if (currentLevel >= 3)
+	{
+		currentZone = CL_Lobby;
+		currentLevel = 0;
+		Map::GetInstance().DeleteAll();
+		LightningManager::GetInstance().ClearAll();
+		Map::GetInstance().Load("Assets/Saved/Lobby.txt");
+	}
+	else
+	{
+		NextLevel();
+	}
 }
 
 void Map::DeleteAll()

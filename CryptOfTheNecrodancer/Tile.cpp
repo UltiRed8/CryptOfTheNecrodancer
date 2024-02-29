@@ -17,6 +17,7 @@ Tile::Tile(const string& _tilePath, const Vector2f& _position, const EntityType&
 
 void Tile::InvertAlpha(const bool _reset)
 {
+	shape->setOutlineThickness(0.f);
 	if (_reset)
 	{
 		baseColor = defaultColor;
@@ -32,10 +33,15 @@ void Tile::ToggleHighlight(const int _alphaValueToHighlight)
 	if (defaultColor.a == _alphaValueToHighlight)
 	{
 		shape->setFillColor(defaultColor.a == 255 ? C_PURPLE : C_GREEN);
+		Color _color = Color::Black;
+		_color.a = 100;
+		shape->setOutlineThickness(-5.f);
+		shape->setOutlineColor(_color);
 	}
 	else
 	{
 		shape->setFillColor(defaultColor);
+		shape->setOutlineThickness(0.f);
 	}
 }
 

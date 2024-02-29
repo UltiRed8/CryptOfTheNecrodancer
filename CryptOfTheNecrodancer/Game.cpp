@@ -42,19 +42,15 @@ void Game::Start()
 	Init();
 
 	// TODO temporaire
-
-
-	//Map::GetInstance().Generate(6);
-	Map::GetInstance().Load("Assets/Saved/Lobby.txt");
-
 	//TheWighttoRemain.mp3 160
 	//Lobby.mp3 130
 	//zone4_1.ogg 130
+	//Map::GetInstance().Generate(6);
+
+	Map::GetInstance().Load("Assets/Saved/Lobby.txt");
 
 	MusicManager::GetInstance().Play("zone4_1.ogg", 130);
 	Camera* _playerCamera = new Camera("PlayerCamera", CAMERA_PLAYER, Vector2f(0.f,0.f), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
-
-	player->GetShape()->setPosition(Map::GetInstance().GetFirstTilePosition());
 }
 
 void Game::Update()
