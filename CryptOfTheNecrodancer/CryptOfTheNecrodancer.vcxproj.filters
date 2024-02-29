@@ -82,6 +82,15 @@
     <Filter Include="Source Files\Object\Entity\Player">
       <UniqueIdentifier>{88536bd7-de51-4ea6-b5a9-b5ed68a87419}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Able">
+      <UniqueIdentifier>{fa77cff4-204e-4b56-bd62-86d26aa2823c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Inventory">
+      <UniqueIdentifier>{19560a30-9ec8-47c3-8416-8cbc0a4a87ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Manager\Light">
+      <UniqueIdentifier>{0183e336-2994-466b-b12d-2f3625d66b57}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -171,44 +180,14 @@
     <ClCompile Include="CameraManager.cpp">
       <Filter>Source Files\Manager\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="UIImage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Inventory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerRessource.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Throwable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Wearable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Animation.cpp">
       <Filter>Source Files\Component\Animation</Filter>
     </ClCompile>
     <ClCompile Include="AnimationComponent.cpp">
       <Filter>Source Files\Component\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="MusicData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MusicManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RythmComponent.cpp">
       <Filter>Source Files\Component\Rythm</Filter>
-    </ClCompile>
-    <ClCompile Include="Consommable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Usable.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>Source Files\Map</Filter>
@@ -219,35 +198,8 @@
     <ClCompile Include="Tile.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="Saveable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Wall.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Object\Entity\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Path.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Shopkeeper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Stair.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Trap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LightningManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Door.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Bat.cpp">
-      <Filter>Source Files\Object\Entity\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>Source Files\Object\Entity\Enemy</Filter>
@@ -274,10 +226,70 @@
       <Filter>Source Files\Component</Filter>
     </ClCompile>
     <ClCompile Include="Coin.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Object\Entity</Filter>
     </ClCompile>
     <ClCompile Include="Diamond.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Object\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Door.cpp">
+      <Filter>Source Files\Object\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Path.cpp">
+      <Filter>Source Files\Object\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Source Files\Object\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Wearable.cpp">
+      <Filter>Source Files\Able</Filter>
+    </ClCompile>
+    <ClCompile Include="Throwable.cpp">
+      <Filter>Source Files\Able</Filter>
+    </ClCompile>
+    <ClCompile Include="Usable.cpp">
+      <Filter>Source Files\Able</Filter>
+    </ClCompile>
+    <ClCompile Include="Consommable.cpp">
+      <Filter>Source Files\Able</Filter>
+    </ClCompile>
+    <ClCompile Include="Saveable.cpp">
+      <Filter>Source Files\Able</Filter>
+    </ClCompile>
+    <ClCompile Include="Heart.cpp">
+      <Filter>Source Files\Object\UiElement</Filter>
+    </ClCompile>
+    <ClCompile Include="UIImage.cpp">
+      <Filter>Source Files\Object\UiElement</Filter>
+    </ClCompile>
+    <ClCompile Include="Trap.cpp">
+      <Filter>Source Files\Object\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Stair.cpp">
+      <Filter>Source Files\Object\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>Source Files\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Source Files\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="MusicData.cpp">
+      <Filter>Source Files\Manager\Music</Filter>
+    </ClCompile>
+    <ClCompile Include="MusicManager.cpp">
+      <Filter>Source Files\Manager\Music</Filter>
+    </ClCompile>
+    <ClCompile Include="LightningManager.cpp">
+      <Filter>Source Files\Manager\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerRessource.cpp">
+      <Filter>Source Files\Object\Entity\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>Source Files\Object\Entity\Enemy\Bat</Filter>
+    </ClCompile>
+    <ClCompile Include="Shopkeeper.cpp">
+      <Filter>Source Files\Object\Entity\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -368,32 +380,11 @@
     <ClInclude Include="Debug.h">
       <Filter>Source Files\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Source Files\Manager\Camera</Filter>
     </ClInclude>
     <ClInclude Include="CameraManager.h">
       <Filter>Source Files\Manager\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="UIImage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Inventory.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerRessource.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Throwable.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Wearable.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>Source Files\Component\Animation</Filter>
@@ -401,20 +392,8 @@
     <ClInclude Include="AnimationComponent.h">
       <Filter>Source Files\Component\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="MusicData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MusicManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RythmComponent.h">
       <Filter>Source Files\Component\Rythm</Filter>
-    </ClInclude>
-    <ClInclude Include="Consommable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Usable.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>Source Files\Map</Filter>
@@ -425,35 +404,8 @@
     <ClInclude Include="Tile.h">
       <Filter>Source Files\Map</Filter>
     </ClInclude>
-    <ClInclude Include="Saveable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Wall.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Source Files\Object\Entity\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Path.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Shopkeeper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Stair.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Trap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LightningManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Door.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Bat.h">
-      <Filter>Source Files\Object\Entity\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Slime.h">
       <Filter>Source Files\Object\Entity\Enemy</Filter>
@@ -479,11 +431,74 @@
     <ClInclude Include="MovementComponent.h">
       <Filter>Source Files\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Coin.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Wall.h">
+      <Filter>Source Files\Object\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Path.h">
+      <Filter>Source Files\Object\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Door.h">
+      <Filter>Source Files\Object\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Diamond.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Object\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Source Files\Object\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Wearable.h">
+      <Filter>Source Files\Able</Filter>
+    </ClInclude>
+    <ClInclude Include="Throwable.h">
+      <Filter>Source Files\Able</Filter>
+    </ClInclude>
+    <ClInclude Include="Usable.h">
+      <Filter>Source Files\Able</Filter>
+    </ClInclude>
+    <ClInclude Include="Consommable.h">
+      <Filter>Source Files\Able</Filter>
+    </ClInclude>
+    <ClInclude Include="Saveable.h">
+      <Filter>Source Files\Able</Filter>
+    </ClInclude>
+    <ClInclude Include="Heart.h">
+      <Filter>Source Files\Object\UiElement</Filter>
+    </ClInclude>
+    <ClInclude Include="UIImage.h">
+      <Filter>Source Files\Object\UiElement</Filter>
+    </ClInclude>
+    <ClInclude Include="Trap.h">
+      <Filter>Source Files\Object\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Stair.h">
+      <Filter>Source Files\Object\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>Source Files\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Source Files\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="MusicData.h">
+      <Filter>Source Files\Manager\Music</Filter>
+    </ClInclude>
+    <ClInclude Include="MusicManager.h">
+      <Filter>Source Files\Manager\Music</Filter>
+    </ClInclude>
+    <ClInclude Include="LightningManager.h">
+      <Filter>Source Files\Manager\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerRessource.h">
+      <Filter>Source Files\Object\Entity\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Shopkeeper.h">
+      <Filter>Source Files\Object\Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>Source Files\Object\Entity\Enemy\Bat</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

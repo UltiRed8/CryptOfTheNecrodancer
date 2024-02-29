@@ -30,7 +30,7 @@ Player::Player(const string _id, const Vector2f& _position) : Entity(_id, "", _p
 
 	CollisionComponent* _collisions = new CollisionComponent(this);
 	components.push_back(_collisions);
-	components.push_back(new LightningComponent("PlayerLight", this, 350));
+	components.push_back(new LightningComponent("PlayerLight", this, 100));
 	components.push_back(new LifeComponent(this, [this]() { cout << "Tu est mort ! " << endl; }, false, 100.f));
 	components.push_back(new DamageComponent(this,100.f));
 
@@ -68,13 +68,14 @@ Player::Player(const string _id, const Vector2f& _position) : Entity(_id, "", _p
 		CollisionReaction(ET_DIAMOND, [this](Entity* _entity) {
 			Diamond* _diamond = dynamic_cast<Diamond*>(_entity);
 			_diamond->PickUpDiamond();
+		}),
 
 		CollisionReaction(ET_ENEMY, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
 			GetComponent<DamageComponent>()->Attack(_entity);
 			cout << _entity->GetID() << " was killed!" << endl;
 		}),
-	});
+	} );
 
 	InitInput();
 	zIndex = 1;
