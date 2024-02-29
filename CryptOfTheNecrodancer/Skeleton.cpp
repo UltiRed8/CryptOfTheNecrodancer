@@ -7,7 +7,7 @@
 #include "LightningComponent.h"
 #include "EntityManager.h"
 
-Skeleton::Skeleton(const Vector2f& _position, const string& _path) : Enemy(STRING_ID("Skeleton"), "", _position)
+Skeleton::Skeleton(const Vector2f& _position, const string& _path, const int _droppedCoins) : Enemy(STRING_ID("Skeleton"), "", _position, _droppedCoins)
 {
 	skeletonType = SK_NONE;
 	cooldown = 2;

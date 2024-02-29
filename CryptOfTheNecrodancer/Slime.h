@@ -16,7 +16,7 @@ class Slime : public Enemy
 protected:
     SlimeType slimeType;
 public:
-    Slime(const Vector2f& _position, const string& _path);
+    Slime(const Vector2f& _position, const string& _path, const int _droppedCoins);
 
 public:
     void SetNextDirection();
@@ -27,7 +27,7 @@ public:
 struct GreenSlime : public Slime
 {
 
-    GreenSlime(const Vector2f& _position) : Slime(_position, PATH_GREEN_SLIME)
+    GreenSlime(const Vector2f& _position) : Slime(_position, PATH_GREEN_SLIME, 1)
     {
 		slimeType = S_GREEN; 
         directionsPatern = { Vector2i(0, 0) };
@@ -38,7 +38,7 @@ struct GreenSlime : public Slime
 
 struct BlueSlime : public Slime
 {
-    BlueSlime(const Vector2f& _position) : Slime(_position, PATH_BLUE_SLIME)
+    BlueSlime(const Vector2f& _position) : Slime(_position, PATH_BLUE_SLIME, 2)
     {
 		slimeType = S_BLUE;
         directionsPatern = {
@@ -52,7 +52,7 @@ struct BlueSlime : public Slime
 
 struct OrangeSlime : public Slime
 {
-    OrangeSlime(const Vector2f& _position) : Slime(_position, PATH_ORANGE_SLIME)
+    OrangeSlime(const Vector2f& _position) : Slime(_position, PATH_ORANGE_SLIME,2)
     {
 		slimeType = S_ORANGE;
         directionsPatern = {

@@ -6,7 +6,7 @@
 #include "RythmComponent.h"
 #include "AnimationComponent.h"
 
-Shopkeeper::Shopkeeper(const Vector2f& _position) : Enemy(STRING_ID("ShopKeeper"), PATH_SHOPKEEPER, _position)
+Shopkeeper::Shopkeeper(const Vector2f& _position) : Enemy(STRING_ID("ShopKeeper"), PATH_SHOPKEEPER, _position, 0)
 {
 	directionsPatern = {
 		   Vector2i(0,0),

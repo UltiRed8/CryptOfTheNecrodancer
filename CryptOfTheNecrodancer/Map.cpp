@@ -5,6 +5,7 @@
 #include "LightningManager.h"
 #include "Coin.h"
 #include "Diamond.h"
+#include "CameraManager.h"
 
 #define PATH_STAIR "stairs.png"
 
@@ -337,7 +338,7 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 		[this](const Vector2f& _position) { new BlueSlime(_position); },
 		[this](const Vector2f& _position) { new OrangeSlime(_position); },
 		[this](const Vector2f& _position) { new NormalSkeleton(_position); },
-		[this](const Vector2f& _position) { new Coin(5, "coin", _position); }, // COIN SPAWN TEST
+		//[this](const Vector2f& _position) { new Coin(5, "coin", _position); }, // COIN SPAWN TEST
 		[this](const Vector2f& _position) { new Diamond("Diamond", _position); }, // DIAMOND SPAWN TEST
 
 	};
@@ -367,6 +368,7 @@ void Map::NextLevel()
 	isPurple = false;
 	Generate(6);
 	_player->GetShape()->setPosition(GetFirstTilePosition());
+	CameraManager::GetInstance().GetCurrent()->SetCameraToPlayer();
 }
 
 void Map::DeleteAll()

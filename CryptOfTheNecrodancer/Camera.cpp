@@ -27,10 +27,19 @@ void Camera::InitPosition()
 {
 	Vector2f _cameraPosition;
 	_cameraPosition = type == CAMERA_PLAYER ? Vector2f(0.0f, 0.0f) : Vector2f(0.8f, 0.8f);
-
+	
 	const Vector2f& _cameraSize = Vector2f(1.0f, 1.0f);
 
 	setViewport(FloatRect(_cameraPosition, _cameraSize));
+
+
+}
+
+void Camera::SetCameraToPlayer()
+{
+	Vector2f _playerPos = EntityManager::GetInstance().Get("Player")->GetPosition();
+	const Vector2f& _target = _playerPos + (TILE_SIZE / 2.0f);
+	setCenter(_target);
 }
 
 void Camera::Update()

@@ -10,7 +10,7 @@
 #define PATH_BAT "BatSprite.png"
 
 
-Bat::Bat(const Vector2f& _position) :Enemy(STRING_ID("Bat"), PATH_BAT, _position)
+Bat::Bat(const Vector2f& _position) :Enemy(STRING_ID("Bat"), PATH_BAT, _position, 2)
 {
 	directionsPatern = {
 		Vector2i(1,0),

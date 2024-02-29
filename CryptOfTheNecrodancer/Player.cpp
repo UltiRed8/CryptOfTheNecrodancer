@@ -30,7 +30,7 @@ Player::Player(const string _id, const Vector2f& _position) : Entity(_id, "", _p
 
 	CollisionComponent* _collisions = new CollisionComponent(this);
 	components.push_back(_collisions);
-	components.push_back(new LightningComponent("PlayerLight", this, 100));
+	components.push_back(new LightningComponent("PlayerLight", this, 350));
 	components.push_back(new LifeComponent(this, [this]() { cout << "Tu est mort ! " << endl; }, false, 100.f));
 	components.push_back(new DamageComponent(this,100.f));
 

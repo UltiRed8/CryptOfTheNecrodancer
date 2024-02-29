@@ -55,6 +55,7 @@ void Game::Start()
 	Camera* _playerCamera = new Camera("PlayerCamera", CAMERA_PLAYER, Vector2f(0.f,0.f), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
 
 	player->GetShape()->setPosition(Map::GetInstance().GetFirstTilePosition());
+	_playerCamera->SetCameraToPlayer();
 }
 
 void Game::Update()

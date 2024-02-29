@@ -1,10 +1,11 @@
 #include "Enemy.h"
+#include "Coin.h"
 
-Enemy::Enemy(const string& _id,const string& _path,const Vector2f& _position):Entity(_id,_path,_position)
+Enemy::Enemy(const string& _id,const string& _path,const Vector2f& _position, const int _droppedCoins) : Entity(_id,_path,_position)
 {
 	indexPatern = 0;
 	zIndex = 1;
-
+	droppedCoins = _droppedCoins;
 	currentCooldown = 0;
 	cooldown = 0;
 
@@ -36,5 +37,6 @@ void Enemy::InitAllBattlesComponents(const float _damagesAmounts, const float _m
 
 void Enemy::DieEvent()
 {
+	new Coin(droppedCoins, "coin", GetPosition());
 	this->Destroy();
 }

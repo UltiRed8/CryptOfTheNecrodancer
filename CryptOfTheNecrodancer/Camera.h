@@ -26,6 +26,7 @@ public:
 	
 public:
 	void Update();
+	void SetCameraToPlayer();
 
 private:
 	virtual void Register() override;

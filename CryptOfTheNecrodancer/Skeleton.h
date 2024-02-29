@@ -15,7 +15,7 @@ class Skeleton : public Enemy
 protected:
 	SkeletonType skeletonType;
 public:
-	Skeleton(const Vector2f& _position, const string& _path);
+	Skeleton(const Vector2f& _position, const string& _path, const int _droppedCoins);
 
 public:
 	void SelectDirection();
@@ -24,7 +24,7 @@ public:
 
 struct NormalSkeleton : public Skeleton
 {
-	NormalSkeleton(const Vector2f& _position) : Skeleton(_position, PATH_SKELETON)
+	NormalSkeleton(const Vector2f& _position) : Skeleton(_position, PATH_SKELETON, 2)
 	{
 		skeletonType = SK_NORMAL;
 	}
@@ -32,7 +32,7 @@ struct NormalSkeleton : public Skeleton
 
 struct YellowSkeleton : public Skeleton
 {
-	YellowSkeleton(const Vector2f& _position) : Skeleton(_position, PATH_YELLOW_SKELETON)
+	YellowSkeleton(const Vector2f& _position) : Skeleton(_position, PATH_YELLOW_SKELETON, 3)
 	{
 		skeletonType = SK_YELLOW;
 	}
@@ -40,7 +40,7 @@ struct YellowSkeleton : public Skeleton
 
 struct BlackSkeleton : public Skeleton
 {
-	BlackSkeleton(const Vector2f& _position) : Skeleton(_position, PATH_BLACK_SKELETON)
+	BlackSkeleton(const Vector2f& _position) : Skeleton(_position, PATH_BLACK_SKELETON, 4)
 	{
 		skeletonType = SK_BLACK;
 	}
