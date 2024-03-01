@@ -125,7 +125,7 @@ void Map::Generate(const int _roomCount, const int _amountOfEnemies)
 	UpdateDoors();
 	SpawnEnnemy(_amountOfEnemies);
 	GenerateDiamond();
-	MusicManager::GetInstance().PlayMain("zone1_1", 130, true);
+	MusicManager::GetInstance().PlayMain("zone1_1", 115, true);
 }
 
 void Map::EraseOverlappings()
@@ -391,9 +391,6 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 void Map::NextLevel()
 {
 	currentLevel++;
-	//Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
-	//_player->GetRessources()->SetDiamonds(*_player->GetRessources()->GetDiamonds());
-	//_player->GetRessources()->SetMoney(*_player->GetRessources()->GetMoney());
 	DeleteAll();
 	LightningManager::GetInstance().ClearAll();
 	tempoIndex = 1;

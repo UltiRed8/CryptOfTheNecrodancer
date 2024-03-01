@@ -9,6 +9,12 @@
 
 class MusicManager : public IManager<string, MusicData>, public Singleton<MusicManager>
 {
+	MusicData* currentMain;
+	MusicData* currentShopkeeper;
+	bool debugMode;
+
+
+
 	float* acceptDelay;
 	float minAcceptDelay;
 	float maxAcceptDelay;
@@ -61,7 +67,6 @@ public:
 
 public:
 	MusicData* GetMusic(const string& _path, const Vector2f& _position);
-	void Play(const string& _path, const Vector2f& _position, const bool _shouldLoop = false);
 	void PlayMain(const string& _path, const int _bpm, const bool _withShopkeeper = false, const bool _shouldLoop = false);
 	void StopAll();
 	void Update();
@@ -77,5 +82,5 @@ public:
 	bool TriggerEvent();
 
 private:
-	void UpdateLoop(const int _bpm);
+	void UpdateLoop();
 };
