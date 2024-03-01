@@ -27,7 +27,8 @@ void Pickable::PickUp()
 	string _path;
 	if (type == PT_DIAMOND)
 	{
-		_player->GetRessources()->AddDiamonds(amount);
+		cout << "NOUS AVONS REUSSI" << endl;
+		_player->GetRessources()->AddDiamonds();
 		_path = SOUND_DIAMOND_PICKED_UP;
 	}
 	else 

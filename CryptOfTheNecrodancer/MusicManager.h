@@ -54,6 +54,14 @@ public:
 			_music->setVolume(*volume);
 		}
 	}
+	int GetCurrentBPM() const
+	{
+		return currentBPM;
+	}
+	void SetCurrentBPM(const int _bpm)
+	{
+		currentBPM = _bpm;
+	}
 
 public:
 	MusicManager();

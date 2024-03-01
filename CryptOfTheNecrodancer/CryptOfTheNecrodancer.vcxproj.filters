@@ -378,6 +378,9 @@
     <ClCompile Include="Living.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Bomb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EntityManager.h">
@@ -588,6 +591,9 @@
       <Filter>Source Files\Object\Entity\Pickable</Filter>
     </ClInclude>
     <ClInclude Include="Living.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bomb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

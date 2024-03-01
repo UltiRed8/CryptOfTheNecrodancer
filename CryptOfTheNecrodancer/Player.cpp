@@ -17,6 +17,7 @@
 
 Player::Player(const float _maxHp, const float _maxDammage, const string _id, const Vector2f& _position) : Living(_maxHp, _maxDammage,PATH_PLAYER,_id, _position)
 {
+	isConfuse = false;
 	inventory = new Inventory();
 	ressources = new PlayerRessource();
 	alreadyMoved = false;
@@ -93,7 +94,7 @@ void Player::InitInput()
 		{ ActionData("Haut", [this]() {
 		if (!alreadyMoved)
 			{
-				GetComponent<MovementComponent>()->SetDirection(Vector2i(0,-1));
+				GetComponent<MovementComponent>()->SetDirection(Vector2i(0,-1) * GetConfusionEffect());
 				if (!MusicManager::GetInstance().TriggerEvent())
 				{
 					GetComponent<MovementComponent>()->SetDirection(Vector2i(0,0));
@@ -107,7 +108,7 @@ void Player::InitInput()
 
 		  ActionData("Bas", [this]() { if (!alreadyMoved)
 			{
-				 GetComponent<MovementComponent>()->SetDirection(Vector2i(0,1));
+				 GetComponent<MovementComponent>()->SetDirection(Vector2i(0,1) * GetConfusionEffect());
 				 if (!MusicManager::GetInstance().TriggerEvent())
 				 {
 					 GetComponent<MovementComponent>()->SetDirection(Vector2i(0, 0));
@@ -121,7 +122,7 @@ void Player::InitInput()
 
 		  ActionData("Droite", [this]() { if (!alreadyMoved)
 			{
-				 GetComponent<MovementComponent>()->SetDirection(Vector2i(1,0));
+				 GetComponent<MovementComponent>()->SetDirection(Vector2i(1,0) * GetConfusionEffect());
 				 if (!MusicManager::GetInstance().TriggerEvent())
 				 {
 					 GetComponent<MovementComponent>()->SetDirection(Vector2i(0, 0));
@@ -134,7 +135,7 @@ void Player::InitInput()
 
 		  ActionData("Gauche", [this]() { if (!alreadyMoved)
 			{
-				 GetComponent<MovementComponent>()->SetDirection(Vector2i(-1,0));
+				 GetComponent<MovementComponent>()->SetDirection(Vector2i(-1,0) * GetConfusionEffect());
 				 if (!MusicManager::GetInstance().TriggerEvent())
 				 {
 					 GetComponent<MovementComponent>()->SetDirection(Vector2i(0, 0));
