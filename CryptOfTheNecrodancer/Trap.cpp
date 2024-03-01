@@ -43,17 +43,14 @@ void Trap::ExecuteTrap(Entity* _entity)
 	}
 	if (trapType == TR_BOMB)
 	{
-		new Bomb(GetPosition(), true); // Pos and isActive
+		new Bomb(GetPosition()); // Pos and isActive
 	}
-
-
 }
 
 void Trap::Update(const float& _deltaTime)
 {
 	// ADD DELTA TIME TO THE TIMER "operationTime"
 	// operationTime += _deltaTime;
-	beatBeforeEndOfEffect--;
 
 	/*if (beatBeforeEndOfEffect == 0)
 	{
