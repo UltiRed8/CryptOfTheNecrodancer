@@ -6,6 +6,7 @@ LightSource::LightSource(const string& _id, Entity* _owner, int _range) : IManag
 	Register();
 	range = _range;
 	owner = _owner;
+	//SetToRemove();
 }
 
 void LightSource::Register()
@@ -15,7 +16,8 @@ void LightSource::Register()
 
 void LightSource::UpdateLight(const vector<Tile*> _shadowTiles)
 {
-	if (!owner) {
+	if (IsToRemove())
+	{
 		return;
 	}
 	const float _smoothness = 50;

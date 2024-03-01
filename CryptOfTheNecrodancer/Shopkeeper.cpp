@@ -1,5 +1,5 @@
 #include "Shopkeeper.h"
-#include "LightningComponent.h"
+//#include "LightningComponent.h"
 #include"MovementComponent.h"
 #include"DamageComponent.h"
 #include"LifeComponent.h"
