@@ -369,19 +369,14 @@
     <ClCompile Include="Tile.cpp">
       <Filter>Source Files\Object\Entity\Placable</Filter>
     </ClCompile>
-    <ClCompile Include="Living.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="Pickable.cpp">
-      <Filter>Source Files\Object\Entity\Pickable</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>Source Files\Object\Entity\Player</Filter>
-=======
-    <ClCompile Include="Bomb.cpp">
+      <Filter>Source Files\Object\Entity\Pickable</Filter>
+    </ClCompile>
+    <ClCompile Include="Living.cpp">
       <Filter>Source Files</Filter>
->>>>>>> main
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -593,9 +588,6 @@
       <Filter>Source Files\Object\Entity\Pickable</Filter>
     </ClInclude>
     <ClInclude Include="Living.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Bomb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
