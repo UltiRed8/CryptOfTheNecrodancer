@@ -48,8 +48,7 @@ public :
 	void InitInput();
 	void InitLife();
 
-	void Heal();
-	void TakeDamage();
+	void UpdateLife();
 
 	void Update() override;
 };

@@ -156,7 +156,8 @@ void Player::InitInput()
 		  ActionData("SpeedIncrease", [this]() { MusicManager::GetInstance().SpeedUp(); }, {Event::KeyPressed, Keyboard::Num3}),
 		  ActionData("SpeedDecrease", [this]() { MusicManager::GetInstance().SpeedDown(); }, {Event::KeyPressed, Keyboard::Num4}),
 		  ActionData("temp1", [this]() { Map::GetInstance().NextMap(); }, {Event::KeyPressed, Keyboard::Num5}),
-		  ActionData("DecreaseLife", [this]() { GetComponent<LifeComponent>()->ChangeHealth(-50); TakeDamage(); }, {Event::KeyPressed, Keyboard::M}),
+		  ActionData("DecreaseLife", [this]() { GetComponent<LifeComponent>()->ChangeHealth(-50); UpdateLife(); }, {Event::KeyPressed, Keyboard::M}),
+		  ActionData("Increase Life", [this]() { GetComponent<LifeComponent>()->ChangeHealth(50); UpdateLife(); }, {Event::KeyPressed, Keyboard::P}),
 		});
 }
 
@@ -179,12 +180,7 @@ void Player::InitLife()
 	life->Open();
 }
 
-void Player::Heal()
-{
-
-}
-
-void Player::TakeDamage()
+void Player::UpdateLife()
 {
 	vector<Heart*> _hearts; /*= life->GetAllValues();*/
 
@@ -215,24 +211,6 @@ void Player::TakeDamage()
 
 		_heart->UpdateLife();
 	}
-	/*for (Heart* _heart : _hearts)
-	{
-		_lifeCopy -= 100.0f;
-		if (_lifeCopy <= -100.0f)
-		{
-			_heart->SetState(H_EMPTY);
-		}
-		else if(_lifeCopy <= -50.0f)
-		{
-			_heart->SetState(H_HALF);
-		}
-		else
-		{
-			_heart->SetState(H_FULL);
-		}
-
-		_heart->UpdateLife();
-	}*/
 }
 
 void Player::Update()
