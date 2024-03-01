@@ -25,7 +25,7 @@ void Pickable::PickUp()
 {
 	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
 	string _path;
-	if (type == PT_DIAMOND)
+	if (pickableType == PT_DIAMOND)
 	{
 		_player->GetRessources()->AddDiamonds(amount);
 		_path = SOUND_DIAMOND_PICKED_UP;

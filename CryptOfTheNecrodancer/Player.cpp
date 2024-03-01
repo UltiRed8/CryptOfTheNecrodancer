@@ -12,6 +12,7 @@
 #include "Door.h"
 #include "Map.h"
 #include "MenuManager.h"
+#include "Heart.h"
 
 #define PATH_PLAYER "PlayerSprite.png"
 
@@ -78,6 +79,7 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 	new LightningComponent("PlayerLight", this, 350);
 
 	InitInput();
+	InitLife();
 }
 
 Player::~Player()
@@ -153,12 +155,80 @@ void Player::InitInput()
 		  ActionData("SpeedIncrease", [this]() { MusicManager::GetInstance().SpeedUp(); }, {Event::KeyPressed, Keyboard::Num3}),
 		  ActionData("SpeedDecrease", [this]() { MusicManager::GetInstance().SpeedDown(); }, {Event::KeyPressed, Keyboard::Num4}),
 		  ActionData("temp1", [this]() { Map::GetInstance().NextMap(); }, {Event::KeyPressed, Keyboard::Num5}),
+		  ActionData("DecreaseLife", [this]() { GetComponent<LifeComponent>()->ChangeHealth(-100); }, {Event::KeyPressed, Keyboard::Num6}),
 		});
 }
 
+void Player::InitLife()
+{
+	life = new Menu("PlayerLife", {});
 
+	LifeComponent* _lifeComp = GetComponent<LifeComponent>();
+
+	const float _life = _lifeComp->GetMaxHealth();
+	const int _heartsCount = (int)(_life / 100.0f);
+
+	for (int _index = 0; _index < _heartsCount; _index++)
+	{
+		Heart* _heart = new Heart(STRING_ID("Hearts"), Vector2f(25.0f, 25.0f) * 2.0f, Vector2f(SCREEN_WIDTH - 55 * (4.2f + _index), SCREEN_HEIGHT - 55 * 12.8), H_FULL);
+		_heart->SetOwner(life);
+		_heart->Register();
+	}
+
+	life->Open();
+}
+
+void Player::Heal()
+{
+
+}
+
+void Player::TakeDamage()
+{
+	vector<Heart*> _hearts; /*= life->GetAllValues();*/
+
+	for (UIElement* _element : life->GetAllValues())
+	{
+		Heart* _heart = dynamic_cast<Heart*>(_element);
+		_hearts.push_back(_heart);
+	}
+
+	float _lifeCopy = *GetComponent<LifeComponent>()->GetCurrentHealth();
+
+	for (Heart* _heart : _hearts)
+	{
+		_lifeCopy -= 100.0f;
+		if (_lifeCopy <= -100.0f)
+		{
+			_heart->SetState(H_EMPTY);
+		}
+		else if(_lifeCopy <= -50.0f)
+		{
+			_heart->SetState(H_HALF);
+		}
+		else
+		{
+			_heart->SetState(H_FULL);
+		}
+
+		_heart->UpdateLife();
+	}
+}
 
 void Player::Update()
 {
 	Entity::Update();
 }
+
+//Quand tu perds de la vie 
+//part du dernier au premier coeur
+//pour enlever vie :
+//utiliser index size - index et index commence à 1;
+//si coeur vide, index ++
+//sinon update coeur
+
+//pour heal
+//part du premier au dernier coeur
+//vérifie si coeur est plein
+//si plein index ++
+//si prochain est pas plein, update

@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "Heart.h"
 
 Enemy::Enemy(const float _maxHp, const float _maxDammage, const string& _id, const string& _path, const Vector2f& _position, const int _droppedCoins)
 	: Living(_maxHp,_maxDammage, _path, _id,_position)
@@ -32,6 +33,18 @@ void Enemy::DieEvent()
 {
 	new Pickable(droppedCoins, PT_COIN,STRING_ID("coin"), GetPosition());
 	this->Destroy();
+}
+
+void Enemy::InitLifeUI()
+{
+	//TODO Changer position
+	Menu* _ennmyLife = new Menu("PlayerLife", {
+		/*new Heart(STRING_ID("Hearts"), Vector2f(25.0f, 25.0f) * 2.0f, Vector2f(SCREEN_WIDTH - 55 * 4.2f, SCREEN_HEIGHT - 55 * 12.8)),
+		new Heart(STRING_ID("Hearts"), Vector2f(25.0f, 25.0f) * 2.0f, Vector2f(SCREEN_WIDTH - 55 * (4.2f + 1.0f), SCREEN_HEIGHT - 55 * 12.8)),
+		new Heart(STRING_ID("Hearts"), Vector2f(25.0f, 25.0f) * 2.0f, Vector2f(SCREEN_WIDTH - 55 * (4.2f + 2.0f), SCREEN_HEIGHT - 55 * 12.8)),*/
+		}, 7, false);
+
+	_ennmyLife->Open();
 }
 
 void Enemy::Update()

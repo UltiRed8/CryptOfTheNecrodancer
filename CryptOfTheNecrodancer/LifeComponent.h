@@ -11,6 +11,7 @@ class LifeComponent:public Component
 	function<void()> deathcallback;
 	bool isAlive;
 
+public :
 	void ResetHealth()
 	{
 		isAlive = true;

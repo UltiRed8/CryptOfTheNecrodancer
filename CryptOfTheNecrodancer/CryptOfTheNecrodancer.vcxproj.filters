@@ -369,14 +369,14 @@
     <ClCompile Include="Tile.cpp">
       <Filter>Source Files\Object\Entity\Placable</Filter>
     </ClCompile>
-    <ClCompile Include="Pickable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files\Object\Entity\Pickable</Filter>
-    </ClCompile>
     <ClCompile Include="Living.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Pickable.cpp">
+      <Filter>Source Files\Object\Entity\Pickable</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Object\Entity\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
