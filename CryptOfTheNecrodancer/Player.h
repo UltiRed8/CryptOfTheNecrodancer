@@ -14,7 +14,7 @@ class Player : public Living
 	bool alreadyMoved;
 	Menu* life;
 	bool isConfuse;
-
+	int heartIndex;
 
 public:
 	bool GetIsConfuse() const
@@ -49,6 +49,7 @@ public :
 	void InitLife();
 
 	void UpdateLife();
+	void UpdateHeartAnimation();
 
 	void Update() override;
 	virtual void DieEvent() override;
