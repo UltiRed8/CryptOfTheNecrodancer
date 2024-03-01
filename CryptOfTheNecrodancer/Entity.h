@@ -41,6 +41,7 @@ public:
 		return shape;
 	}
 
+
 	template <typename Type>
 	Type* GetComponent()
 	{

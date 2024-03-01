@@ -13,8 +13,22 @@ class Player : public Living
 	int* chainMultiplier;
 	bool alreadyMoved;
 	Menu* life;
+	bool isConfuse;
+
 
 public:
+	bool GetIsConfuse() const
+	{
+		return isConfuse;
+	}
+	void SetIsConfuse(const bool _isConfuse)
+	{
+		isConfuse = _isConfuse;
+	}
+	int GetConfusionEffect()
+	{
+		return isConfuse ? -1 : 1;
+	}
 	int* GetChainMultiplier() const
 	{
 		return chainMultiplier;
