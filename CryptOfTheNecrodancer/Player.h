@@ -12,7 +12,9 @@ class Player : public Living
 	PlayerRessource* ressources;
 	int* chainMultiplier;
 	bool alreadyMoved;
+	Menu* life;
 	bool isConfuse;
+
 
 public:
 	bool GetIsConfuse() const
@@ -44,6 +46,10 @@ public:
 
 public :
 	void InitInput();
+	void InitLife();
+
+	void UpdateLife();
+
 	void Update() override;
 	virtual void DieEvent() override;
 };

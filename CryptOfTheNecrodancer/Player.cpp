@@ -12,6 +12,7 @@
 #include "Door.h"
 #include "Map.h"
 #include "MenuManager.h"
+#include "Heart.h"
 
 #define PATH_PLAYER "PlayerSprite.png"
 
@@ -79,6 +80,7 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 	new LightSource("PlayerLight", this, 350);
 
 	InitInput();
+	InitLife();
 }
 
 Player::~Player()
@@ -154,10 +156,62 @@ void Player::InitInput()
 		  ActionData("SpeedIncrease", [this]() { MusicManager::GetInstance().SpeedUp(); }, {Event::KeyPressed, Keyboard::Num3}),
 		  ActionData("SpeedDecrease", [this]() { MusicManager::GetInstance().SpeedDown(); }, {Event::KeyPressed, Keyboard::Num4}),
 		  ActionData("temp1", [this]() { Map::GetInstance().NextMap(); }, {Event::KeyPressed, Keyboard::Num5}),
+		  ActionData("DecreaseLife", [this]() { GetComponent<LifeComponent>()->ChangeHealth(-50); UpdateLife(); }, {Event::KeyPressed, Keyboard::M}),
+		  ActionData("Increase Life", [this]() { GetComponent<LifeComponent>()->ChangeHealth(50); UpdateLife(); }, {Event::KeyPressed, Keyboard::P}),
 		});
 }
 
+void Player::InitLife()
+{
+	life = new Menu("PlayerLife", {});
 
+	LifeComponent* _lifeComp = GetComponent<LifeComponent>();
+
+	const float _life = _lifeComp->GetMaxHealth();
+	const int _heartsCount = (int)(_life / 100.0f);
+
+	for (int _index = 0; _index < _heartsCount; _index++)
+	{
+		Heart* _heart = new Heart(STRING_ID("Hearts"), Vector2f(25.0f, 25.0f) * 2.0f, Vector2f(SCREEN_WIDTH - 55 * (4.2f + _index), SCREEN_HEIGHT - 55 * 12.8), H_FULL);
+		_heart->SetOwner(life);
+		_heart->Register();
+	}
+
+	life->Open();
+}
+
+void Player::UpdateLife()
+{
+	vector<Heart*> _hearts; /*= life->GetAllValues();*/
+
+	for (UIElement* _element : life->GetAllValues())
+	{
+		Heart* _heart = dynamic_cast<Heart*>(_element);
+		_hearts.push_back(_heart);
+	}
+
+	float _lifeCopy = *GetComponent<LifeComponent>()->GetCurrentHealth();
+
+	for (int _index = _hearts.size() - 1; _index >= 0; _index--)
+	{
+		Heart* _heart = _hearts[_index];
+		_lifeCopy -= 100.0f;
+		if (_lifeCopy <= -100.0f)
+		{
+			_heart->SetState(H_EMPTY);
+		}
+		else if (_lifeCopy <= -50.0f)
+		{
+			_heart->SetState(H_HALF);
+		}
+		else
+		{
+			_heart->SetState(H_FULL);
+		}
+
+		_heart->UpdateLife();
+	}
+}
 
 void Player::Update()
 {

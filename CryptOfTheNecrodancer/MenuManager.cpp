@@ -103,10 +103,6 @@ void MenuManager::InitHUD()
 		new UIText("DiamondUpdateText", Vector2f(SCREEN_WIDTH - 55 * 1.2, SCREEN_HEIGHT - 55 * 11.3), Color::White, "x " ,25,"Assets/Font/Font.ttf", false, dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetRessources()->GetDiamonds()),
 		});
 
-	vector<Heart*> _hearts;
-	_hearts.push_back(new Heart("1", Vector2f(25.0f, 25.0f) * 2.0f, Vector2f(SCREEN_WIDTH - 55 * 4.2f, SCREEN_HEIGHT - 55 * 12.8)));
-
-
 	_hud->Open();
 }
 
