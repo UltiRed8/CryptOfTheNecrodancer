@@ -175,9 +175,6 @@
     <Filter Include="Source Files\Object\Entity\Living">
       <UniqueIdentifier>{0c150cc1-5a8e-4a20-9673-7268dc567feb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Object\Entity\NPC">
-      <UniqueIdentifier>{7d81c20c-8052-4c9a-bd75-25def3a8840a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -312,7 +309,7 @@
     <ClCompile Include="DamageComponent.cpp">
       <Filter>Source Files\Component\Damage</Filter>
     </ClCompile>
-    <ClCompile Include="LightSource.cpp">
+    <ClCompile Include="LightningComponent.cpp">
       <Filter>Source Files\Component\Lightning</Filter>
     </ClCompile>
     <ClCompile Include="Consommable.cpp">
@@ -381,7 +378,7 @@
     <ClCompile Include="Living.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NPC.cpp">
+    <ClCompile Include="Bomb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -530,7 +527,7 @@
     <ClInclude Include="DamageComponent.h">
       <Filter>Source Files\Component\Damage</Filter>
     </ClInclude>
-    <ClInclude Include="LightSource.h">
+    <ClInclude Include="LightningComponent.h">
       <Filter>Source Files\Component\Lightning</Filter>
     </ClInclude>
     <ClInclude Include="Consommable.h">
@@ -596,7 +593,7 @@
     <ClInclude Include="Living.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NPC.h">
+    <ClInclude Include="Bomb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

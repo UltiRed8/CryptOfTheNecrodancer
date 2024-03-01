@@ -12,8 +12,21 @@ class Player : public Living
 	PlayerRessource* ressources;
 	int* chainMultiplier;
 	bool alreadyMoved;
+	bool isConfuse;
 
 public:
+	bool GetIsConfuse() const
+	{
+		return isConfuse;
+	}
+	void SetIsConfuse(const bool _isConfuse)
+	{
+		isConfuse = _isConfuse;
+	}
+	int GetConfusionEffect()
+	{
+		return isConfuse ? -1 : 1;
+	}
 	int* GetChainMultiplier() const
 	{
 		return chainMultiplier;

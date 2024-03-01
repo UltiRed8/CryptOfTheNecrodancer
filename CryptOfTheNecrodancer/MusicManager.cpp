@@ -146,7 +146,7 @@ void MusicManager::SpeedUp()
 {
 	if (playSpeed != 1.0f) return;
 	cout << "SpeedUp!" << endl;
-	SetPlaySpeed(1.5f);
+	SetPlaySpeed(1.125f);
 	new Timer("ResetPlaySpeed", [this]() {
 		SetPlaySpeed(1.0f);
 	}, seconds(5.0f), 1, true);
@@ -156,7 +156,7 @@ void MusicManager::SpeedDown()
 {
 	if (playSpeed != 1.0f) return;
 	cout << "SpeedDown!" << endl;
-	SetPlaySpeed(0.5f);
+	SetPlaySpeed(0.875f);
 	new Timer("ResetPlaySpeed", [this]() {
 		SetPlaySpeed(1.0f);
 	}, seconds(5.0f), 1, true);
@@ -225,7 +225,7 @@ void MusicManager::UpdateLoop(const int _bpm)
 
 	beatDelay = seconds(1.f / (_bpm / 60.f)).asMilliseconds();
 	rythmLoop = new Timer("Timer", [this]() {
-		return;
+		/*return;*/
 		new Timer("ResetEvent", [this]() {
 			TriggerEvent();
 			didEvent = false;
@@ -236,7 +236,7 @@ void MusicManager::UpdateLoop(const int _bpm)
 
 bool MusicManager::TriggerEvent()
 {
-	//if (didEvent) return false;
+	if (didEvent) return false;
 
 	const float _delay = *acceptDelay / 2;
 

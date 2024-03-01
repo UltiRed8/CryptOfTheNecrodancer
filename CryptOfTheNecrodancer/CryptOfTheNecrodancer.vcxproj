@@ -138,6 +138,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="Bat.cpp" />
+    <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="CollisionComponent.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="Bat.h" />
+    <ClInclude Include="Bomb.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="CollisionComponent.h" />
