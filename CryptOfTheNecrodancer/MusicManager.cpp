@@ -266,7 +266,7 @@ void MusicManager::UpdateLoop()
 		new Timer("ResetEvent", [this]() {
 			TriggerEvent();
 			didEvent = false;
-		}, milliseconds(*acceptDelay / 2), 1, true);
+		}, milliseconds(*acceptDelay / (Int32)2), 1, true);
 		delta = 0;
 	}, seconds(1.f / (currentBPM / 60.f)), -1);
 }

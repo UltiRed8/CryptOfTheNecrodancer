@@ -9,10 +9,10 @@ Animation::Animation(const string& _name, AnimationComponent* _owner, Shape* _sh
 	data = _data;
 	Register();
 
-	const int _spritesPerLine = shape->getTexture()->getSize().x / data.size.x;
+	const int _spritesPerLine = (const int)shape->getTexture()->getSize().x / (int)data.size.x;
 
-	int _posX = (data.start % _spritesPerLine) * data.size.x;
-	int _posY = floor(data.start / _spritesPerLine) * data.size.y;
+	int _posX = (data.start % _spritesPerLine) * (int)data.size.x;
+	int _posY = (int)(floor(data.start / _spritesPerLine) * (int)data.size.y);
 
 	data.startPosition = Vector2i(_posX, _posY);
 

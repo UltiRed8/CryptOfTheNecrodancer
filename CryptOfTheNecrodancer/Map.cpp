@@ -69,7 +69,7 @@ void Map::GenerateWalls()
 void Map::GenerateShopRoom()
 {
 	const vector<Vector2f>& _availablePosition = GetEmptyTilesAround(floors);
-	const Vector2f& _position = _availablePosition[Random(_availablePosition.size() - 1, 0)];
+	const Vector2f& _position = _availablePosition[Random((int)_availablePosition.size() - 1, 0)];
 
 	shop = new Room(Vector2i(5,7), _position);
 

@@ -26,14 +26,12 @@ Enemy::Enemy(const float _maxHp, const float _maxDammage, const string& _id, con
 		}),
 	});
 	rewardAmount = _droppedCoins;
-	lightSource = new LightSource(STRING_ID("lightsource"), this, 100);
 	type = ET_ENEMY;
 }
 //Tu part de la fin des coeur 
 
 void Enemy::DieEvent()
 {
-	lightSource->Destroy();
 	Map::GetInstance().AddOther(new Pickable(rewardAmount, PT_COIN, STRING_ID("Coin"), this->GetPosition()));
 	this->Destroy();
 }
