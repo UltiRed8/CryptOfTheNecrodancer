@@ -23,47 +23,15 @@ Game::~Game()
 	delete map;
 }
 
-// TODO LIST :
-// animation component a refaire
-// lightning component qui n'est plus un component
-// music et sound manager :'(
-// finir le jeu
-// plusieurs zones (textures et musiques)
-// finir le jeu
-// shopkeeper et pnj du spawn a mettre en NPC
-// finir le jeu
-// la vie du joueur
-// les vies des livings au dessus d'eux
-// encore finir le jeu
-// ajouter des ennemis
-// finir encore plus le jeu
-// les torches sur les murs
-// terminer le jeu
-// le faire en .exe
-// avoir fini le jeu
-// le vendre
-// faire un post sur twitter
-// finir le jeu (pour de vrai)
-// ajouter des features pour encore plus finir le jeu
-// les traps
-// et le jeu
-// les boss
-// non
-// fin (le jeu est fini)
-
 void Game::Init()
 {
 	window = new RenderWindow(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer");
 	MenuManager::GetInstance().InitMenu(window);
 	TimerManager::GetInstance().SetMaxFrameRate(60);
 	TimerManager::GetInstance().SetRenderCallback([this]() {
-		//EntityManager::GetInstance().Update();
-		/*LightningManager::GetInstance().Update();*/
 		UpdateWindow();
 	});
 }
-
-// TODO finir le jeu
 
 void Game::Start()
 {
@@ -73,7 +41,8 @@ void Game::Start()
 
 	// TODO temporaire
 	Map::GetInstance().Load("Assets/Saved/Lobby.txt");
-	MusicManager::GetInstance().PlayMain("Lobby", 130, false, true);
+	MusicManager::GetInstance().PrepareMain("Lobby", 130, false, true);
+	MusicManager::GetInstance().Play();
 	Camera* _playerCamera = new Camera("PlayerCamera", CAMERA_PLAYER, Vector2f(0.f,0.f), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
 }
 

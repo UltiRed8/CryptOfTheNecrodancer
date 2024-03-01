@@ -49,13 +49,10 @@ void Camera::Update()
 {
 	if (type == CAMERA_PLAYER)
 	{
-		Vector2f _camPos = getCenter();
-
-		Listener::setPosition(_camPos.x, _camPos.y, 0);
-		Listener::setDirection(0, -1, 0);
 		Entity* _player = EntityManager::GetInstance().Get("Player");
 		const Vector2f& _currentPosition = getCenter();
 		const Vector2f& _target = _player->GetPosition() + (TILE_SIZE / 2.0f);
+		Listener::setPosition(Vector3f(_target.x, _target.y, 0.0f));
 
 		Vector2f _offset = Vector2f(0.0f, 0.0f);
 

@@ -3,6 +3,7 @@
 #include "Component.h"
 #include <SFML/Graphics.hpp>
 #include "TextureManager.h"
+#include "AnimationComponent.h"
 
 using namespace std;
 using namespace sf;
@@ -35,13 +36,6 @@ public:
 	{
 		return zIndex;
 	}
-
-	Drawable* GetDrawable() const
-	{
-		return shape;
-	}
-
-
 	template <typename Type>
 	Type* GetComponent()
 	{
@@ -54,6 +48,17 @@ public:
 		}
 		return nullptr;
 	}
+	vector<Drawable*> GetDrawables()
+	{
+		if (AnimationComponent* _anim = GetComponent<AnimationComponent>())
+		{
+			return _anim->GetDrawables();
+		}
+		vector<Drawable*> _drawables;
+		_drawables.push_back(shape);
+		return _drawables;
+	}
+
 	Vector2f GetPosition()const 
 	{
 		return shape->getPosition();
@@ -68,7 +73,6 @@ public:
 	Entity(const string& _id,const string& _path, const Vector2f& _position);
 	~Entity();
 
-	// H�rit� via IManagable
 	void Register() override;
 	virtual void Update();
 };

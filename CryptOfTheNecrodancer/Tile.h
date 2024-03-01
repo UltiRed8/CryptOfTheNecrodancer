@@ -21,6 +21,5 @@ public:
 public:
 	void InvertAlpha(const bool _reset);
 	void ToggleHighlight(const int _alphaValueToHighlight);
-	void Update() override;
 };
 

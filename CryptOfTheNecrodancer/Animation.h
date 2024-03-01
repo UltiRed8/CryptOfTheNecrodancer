@@ -1,4 +1,5 @@
 #pragma once
+
 #include "IManagable.h"
 #include "Timer.h"
 #include <SFML/Graphics.hpp>
@@ -8,39 +9,26 @@ using namespace sf;
 
 class AnimationComponent;
 
-enum AnimationDirection
-{
-	ANIM_DIR_NONE, ANIM_DIR_UP, ANIM_DIR_DOWN, ANIM_DIR_LEFT, ANIM_DIR_RIGHT
-};
-
-enum ReadDirection
-{
-	READ_DOWN, READ_RIGHT
-};
-
 struct AnimationData
 {
-	bool canLoop;
-	int count;
+	bool shouldLoop;
+	int stop;
 	float timeBetween;
 	string name;
-	Vector2f start;
+	int start;
 	Vector2f size;
-	ReadDirection readDirection;
-	AnimationDirection direction;
+	Vector2i startPosition;
 
 	AnimationData() = default;
-	AnimationData(const string& _name, const Vector2f& _start, const Vector2f& _size,
-		const ReadDirection& _readDirection, const AnimationDirection& _direction,
-		const bool _canLoop, const int _count, const float _timeBetween)
+	AnimationData(const string& _name, const Vector2f& _spriteSize, const int _startIndex,
+		const int _amountOfParts, const float _timeBetween, const bool _shouldLoop)
 	{
+		startPosition = Vector2i();
 		name = _name;
-		start = _start;
-		size = _size;
-		readDirection = _readDirection;
-		direction = _direction;
-		canLoop = _canLoop;
-		count = _count;
+		size = _spriteSize;
+		start = _startIndex;
+		shouldLoop = _shouldLoop;
+		stop = _amountOfParts;
 		timeBetween = _timeBetween;
 	}
 };
@@ -51,30 +39,37 @@ class Animation : public IManagable<string>
 	int currentIndex;
 	string path;
 	AnimationData data;
-	Sprite* sprite;
+	Shape* shape;
 	Timer* timer;
 
 public:
+	void SetDuration(const float _duration)
+	{
+		data.timeBetween = _duration / (data.stop + 1);
+		if (timer)
+		{
+			timer->SetDuration(seconds(data.timeBetween));
+		}
+	}
+	Timer* GetTimer() const
+	{
+		return timer;
+	}
 	AnimationData GetData() const
 	{
 		return data;
 	}
 	bool CanNext() const
 	{
-		return currentIndex < data.count - 1;
+		return currentIndex < data.stop;
 	}
-	AnimationDirection GetDirection() const
+	Shape* GetShape() const
 	{
-		return data.direction;
-	}
-	Sprite* GetSprite() const
-	{
-		return sprite;
+		return shape;
 	}
 
 public:
-	Animation(const string& _name, AnimationComponent* _owner, Sprite* _sprite,
-		const AnimationData& _data);
+	Animation(const string& _name, AnimationComponent* _owner, Shape* _shape, const AnimationData& _data);
 
 private:
 	virtual void Register() override;
@@ -82,8 +77,8 @@ private:
 	Vector2i GetNewStart();
 
 public:
+	void Replay();
 	void Start();
 	void Reset();
 	void Stop();
-	void Update();
 };

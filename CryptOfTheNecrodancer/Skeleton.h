@@ -19,7 +19,7 @@ public:
 
 public:
 	void SelectDirection();
-	void UpdateRythm();
+	virtual void Update() override;
 };
 
 struct NormalSkeleton : public Skeleton

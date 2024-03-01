@@ -51,3 +51,8 @@ Vector2i GetDirectionByPositions(Vector2f _entityPos, Vector2f _destination)
 
 	return NormalizeDistance(_destination - _entityPos);
 }
+
+Vector2f operator * (const Vector2f& _vector, const Vector2f& _multiplier)
+{
+	return Vector2f(_vector.x * _multiplier.x, _vector.y * _multiplier.y);
+}

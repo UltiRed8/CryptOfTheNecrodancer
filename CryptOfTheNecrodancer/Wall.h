@@ -25,9 +25,12 @@ public:
 	void SetHasDiamond(const bool _hasDiamond)
 	{
 		hasDiamond = _hasDiamond;
-		//AnimationData _animation = AnimationData("DiamondInWall", Vector2f(0, 0), Vector2f(24, 24), READ_RIGHT, ANIM_DIR_NONE, true, 3, 0.1f);
-		//components.push_back(new AnimationComponent(this, GetPathWithType(wallType), { _animation }, ANIM_DIR_NONE));
+
 		TextureManager::GetInstance().Load(shape, DIAMOND_IN_WALL);
+
+		components.push_back(new AnimationComponent(this, GetPathWithType(wallType), {
+			AnimationData("DiamondInWall", Vector2f(24, 24), Random(2, 0) * 3, 2, 0.1f, false),
+		}, "DiamondInWall", shape));
 	}
 	bool GetHasDiamond()
 	{
@@ -50,6 +53,5 @@ public:
 
 public:
 	void DestroyWall(const bool _usingBomb = false);
-	void Update() override;
 };
 

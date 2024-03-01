@@ -12,18 +12,16 @@ Skeleton::Skeleton(const float _maxHp, const float _maxDammage, const Vector2f& 
 {
 	skeletonType = SK_NONE;
 	cooldown = 2;
-	//components.push_back(new AnimationComponent(this, _path, {
-	/*	AnimationData(STRING_ID("SkeletonIdle"), Vector2f(0, 0), Vector2f(24, 26), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f),
-		AnimationData(STRING_ID("SkeletonAttack"), Vector2f(24*4, 0), Vector2f(24, 26), READ_RIGHT, ANIM_DIR_UP, true, 4, 0.1f),
-	}, ANIM_DIR_NONE));*/
+	components.push_back(new AnimationComponent(this, _path, {
+		AnimationData("Idle", Vector2f(24, 26), 0, 3, 0.1f, true),
+		AnimationData("Attack", Vector2f(24, 26), 4, 3, 0.1f, true),
+	}, "Attack", shape));
 }
 
 void Skeleton::SelectDirection()
 {
-	// Get Player Pos
-	// Set Direction to Player Pos
-	Vector2i _playerPos = static_cast<Vector2i>(EntityManager::GetInstance().Get("Player")->GetPosition());
-	Vector2i _skeletonPos = static_cast<Vector2i>(GetPosition());
+	const Vector2i& _playerPos = static_cast<Vector2i>(EntityManager::GetInstance().Get("Player")->GetPosition());
+	const Vector2i& _skeletonPos = static_cast<Vector2i>(GetPosition());
 
 	Vector2i _direction = Vector2i(0, 0);
 
@@ -38,17 +36,17 @@ void Skeleton::SelectDirection()
 		_direction.x = (_direction.x > 0) ? 1 : -1;
 	}
 	GetComponent<MovementComponent>()->SetDirection(_direction);
-
 }
 
-void Skeleton::UpdateRythm()
+void Skeleton::Update()
 {
 	currentCooldown--;
-	/*if (currentCooldown == 1) GetComponent<AnimationComponent>()->SetDirection(ANIM_DIR_UP);
-	else GetComponent<AnimationComponent>()->SetDirection(ANIM_DIR_NONE);*/
+	if (currentCooldown == 1) GetComponent<AnimationComponent>()->SetPlayingID("Attack");
+	else GetComponent<AnimationComponent>()->SetPlayingID("Idle");
 	if (currentCooldown <= 0)
 	{
 		currentCooldown = cooldown;
 		SelectDirection();
 	}
+	Entity::Update();
 }

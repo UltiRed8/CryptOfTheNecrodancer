@@ -128,16 +128,42 @@ void MenuManager::InitMenuPause()
 {
 	new ActionMap("GamePaused",
 		{ ActionData("Escape", [this]()
-			{ MenuManager::GetInstance().Get("GamePause")->Open(); MusicManager::GetInstance().Pause(); },
+			{
+				MenuManager::GetInstance().Get("GamePause")->Open();
+				MusicManager::GetInstance().Pause();
+				for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
+				{
+					if (AnimationComponent* _animationComponent = _entity->GetComponent<AnimationComponent>())
+					{
+						for (Animation* _animation : _animationComponent->GetAllValues())
+						{
+							_animation->GetTimer()->Pause();
+						}
+					}
+				}
+			},
 			{Event::KeyPressed, Keyboard::Escape}),
 		ActionData("Select", [this]()
 			{ MenuManager::GetInstance().ClickAction(); },
 			{Event::MouseButtonPressed, Mouse::Left}) });
 
-	function<void()> _callbackContinue = [this]() { Get("GamePause")->Toggle(); MusicManager::GetInstance().Unpause(); }; //TODO Fix
+	function<void()> _callbackContinue = [this]() {
+		Get("GamePause")->Toggle();
+		MusicManager::GetInstance().Unpause();
+		for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
+		{
+			if (AnimationComponent* _animationComponent = _entity->GetComponent<AnimationComponent>())
+			{
+				for (Animation* _animation : _animationComponent->GetAllValues())
+				{
+					_animation->GetTimer()->Resume();
+				}
+			}
+		}
+	}; //TODO Fix
 	function<void()> _callbackRestart = [this]() {}; //TODO
 	function<void()> _callbackOptions = [this]() { Get("GamePause")->Toggle(); OptionsMenu(); };
-	function<void()> _callbackLobby = [this]() {Get("GamePause")->Toggle(); GoToLobby(); MusicManager::GetInstance().PlayMain("Lobby", 130, false, true); };
+	function<void()> _callbackLobby = [this]() {Get("GamePause")->Toggle(); GoToLobby(); MusicManager::GetInstance().PrepareMain("Lobby", 130, false, true); };
 	function<void()> _callbackDelete = [this]() { DeleteSaveDataMenu(); };
 	function<void()> _callbackCalibration = [this]() { Get("GamePause")->Toggle(); LatencyMenu(); };
 	function<void()> _callbackEchap = [this]() { Get("GamePause")->Toggle(); CloseMenu(); };
