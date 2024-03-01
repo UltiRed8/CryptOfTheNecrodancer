@@ -145,7 +145,6 @@ void MusicManager::Unpause() //TODO Fix
 void MusicManager::SpeedUp()
 {
 	if (playSpeed != 1.0f) return;
-	cout << "SpeedUp!" << endl;
 	SetPlaySpeed(1.125f);
 	new Timer("ResetPlaySpeed", [this]() {
 		SetPlaySpeed(1.0f);
@@ -155,7 +154,6 @@ void MusicManager::SpeedUp()
 void MusicManager::SpeedDown()
 {
 	if (playSpeed != 1.0f) return;
-	cout << "SpeedDown!" << endl;
 	SetPlaySpeed(0.875f);
 	new Timer("ResetPlaySpeed", [this]() {
 		SetPlaySpeed(1.0f);

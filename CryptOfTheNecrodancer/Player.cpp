@@ -163,3 +163,8 @@ void Player::Update()
 {
 	Entity::Update();
 }
+
+void Player::DieEvent()
+{
+
+}

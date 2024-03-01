@@ -29,7 +29,6 @@ void LightningManager::Update()
 		_shape->setFillColor(_color);
 	}
 
-	cout << allValues.size() << endl;
 	for (LightSource* _lightning : GetAllValues())
 	{
 		if (_lightning->IsToRemove())

@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "Map.h"
 
 Enemy::Enemy(const float _maxHp, const float _maxDammage, const string& _id, const string& _path, const Vector2f& _position, const int _droppedCoins)
 	: Living(_maxHp,_maxDammage, _path, _id,_position)
@@ -32,8 +33,8 @@ Enemy::Enemy(const float _maxHp, const float _maxDammage, const string& _id, con
 void Enemy::DieEvent()
 {
 	lightSource->Destroy();
-	new Pickable(rewardAmount, PT_COIN,STRING_ID("coin"), GetPosition());
-	//this->Destroy();
+	Map::GetInstance().AddOther(new Pickable(rewardAmount, PT_COIN, STRING_ID("Coin"), this->GetPosition()));
+	this->Destroy();
 }
 
 void Enemy::Update()
@@ -45,5 +46,4 @@ void Enemy::Update()
 		SelectDirection();
 	}
 	Entity::Update();
-
 }

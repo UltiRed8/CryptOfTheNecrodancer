@@ -16,10 +16,6 @@ void LightSource::Register()
 
 void LightSource::UpdateLight(const vector<Tile*> _shadowTiles)
 {
-	if (IsToRemove())
-	{
-		return;
-	}
 	const float _smoothness = 50;
 	for (int _index = 0; _index < _smoothness; _index++)
 	{
@@ -52,7 +48,6 @@ void LightSource::UpdateLight(const vector<Tile*> _shadowTiles)
 				
 				_shape->setFillColor(_color);
 			}
-
 		}
 	}
 }

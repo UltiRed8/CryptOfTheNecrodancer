@@ -30,9 +30,7 @@ void LifeComponent::Update()
 void LifeComponent::ChangeHealth(const float _byAmount)
 {
 	if (invulnerable) return;
-	cout << *currentHealth << endl;
 	*currentHealth += _byAmount;
-	cout << *currentHealth << endl;
 	if (*currentHealth <= 0.0f)
 	{
 		*currentHealth = 0.0f;

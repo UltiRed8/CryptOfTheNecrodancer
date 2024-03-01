@@ -45,5 +45,6 @@ public:
 public :
 	void InitInput();
 	void Update() override;
+	virtual void DieEvent() override;
 };
 

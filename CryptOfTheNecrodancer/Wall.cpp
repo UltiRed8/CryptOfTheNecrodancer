@@ -45,7 +45,7 @@ void Wall::DestroyWall(const bool _usingBomb)
 	SoundManager::GetInstance().Play(SOUND_DIG_DIRT);
 	if (hasDiamond)
 	{
-		new Pickable(1, PT_DIAMOND, STRING_ID("Diamond"), GetPosition());
+		Map::GetInstance().AddOther(new Pickable(1, PT_DIAMOND, STRING_ID("Diamond"), GetPosition()));
 	}
 	Destroy();
 }

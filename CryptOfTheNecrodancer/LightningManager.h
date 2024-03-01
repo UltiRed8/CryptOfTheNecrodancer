@@ -3,7 +3,7 @@
 #include "Singleton.h"
 #include "LightSource.h"
 
-class LightningManager : public IManager<string, LightSource>, public Singleton<LightningManager>
+class LightningManager : public Singleton<LightningManager>, public IManager<string, LightSource>
 {
 	vector<Tile*> shadowTiles;
 

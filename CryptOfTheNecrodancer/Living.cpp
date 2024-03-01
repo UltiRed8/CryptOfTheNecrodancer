@@ -10,8 +10,7 @@ Living::Living(const float _maxHp, const float _maxDammage, const string& _path,
 	rewardAmount = 0;
 	components.push_back(new LifeComponent(this, [&]() { if (type != ET_PLAYER)
 	{
-		Map::GetInstance().AddOther(new Pickable(rewardAmount, PT_COIN, STRING_ID("Coin"), this->GetPosition()));
-		this->Destroy();
+		this->DieEvent();
 	}
 
 		}, false, _maxHp));

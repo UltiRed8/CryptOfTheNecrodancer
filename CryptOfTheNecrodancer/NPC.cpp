@@ -11,3 +11,7 @@ NPC::NPC(const string& _path, const string& _id, const Vector2f& _position)
 {
 	zIndex = 1;
 }
+
+void NPC::DieEvent()
+{
+}

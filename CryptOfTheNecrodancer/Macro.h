@@ -76,7 +76,6 @@ static void SetOriginCentered(Type* _element)
 template <typename Class, typename Type>
 static void EraseElements(vector<Class>& _vector, vector<Type> _element)
 {
-	cout << "Removing " << _element.size() << " elements from " << _vector.size() << endl;
 	for (Type _value : _element)
 	{
 		_vector.erase(remove(_vector.begin(), _vector.end(), _value), _vector.end());

@@ -30,7 +30,7 @@ void AnimationComponent::Update()
 {
 	if (currentIndex < 0)
 	{
-		cout << owner->GetID();
+		//cout << owner->GetID();
 	}
 	for (Animation* _animation:GetAllValues())
 	{
