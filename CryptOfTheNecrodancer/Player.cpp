@@ -14,7 +14,7 @@
 #include "MenuManager.h"
 #include "Heart.h"
 
-#define PATH_PLAYER "PlayerSprite.png"
+#define PATH_PLAYER "Entities/PlayerSprite.png"
 
 Player::Player(const float _maxHp, const float _maxDammage, const string _id, const Vector2f& _position) : Living(_maxHp, _maxDammage,PATH_PLAYER,_id, _position)
 {

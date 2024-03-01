@@ -3,9 +3,9 @@
 #include "TextureManager.h"
 #include "ActionMap.h"
 
-#define PATH_HEART "FullHeart.png"
-#define PATH_EMPTY_HEART "EmptyHeart.png"
-#define PATH_HALFHEART "HalfHeart.png"
+#define PATH_HEART "UI/FullHeart.png"
+#define PATH_EMPTY_HEART "UI/EmptyHeart.png"
+#define PATH_HALFHEART "UI/HalfHeart.png"
 
 Heart::Heart(const string& _id, const Vector2f& _size, const Vector2f& _position, const State& _state, const float& _maxLife) : UIImage(_id, _position, _size, "")
 {

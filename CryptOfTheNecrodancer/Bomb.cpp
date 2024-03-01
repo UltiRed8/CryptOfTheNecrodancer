@@ -4,7 +4,7 @@
 
 
 
-#define BOMB_PATH "Assets/Images/Bomb.png"
+#define BOMB_PATH "Entities/Bomb.png"
 
 Bomb::Bomb(const Vector2f& pos, const bool _isActive) : Placable(STRING_ID("Bomb"), BOMB_PATH, pos)
 {

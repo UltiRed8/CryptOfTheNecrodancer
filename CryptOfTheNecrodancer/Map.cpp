@@ -6,9 +6,8 @@
 #include "CameraManager.h"
 #include "Hephaestus.h"
 
-#define PATH_STAIR "stairs.png"
-#define PATH_SHOP_TILE "ShopTile.png"
-#define PATH_FLOOR "Floor.png"
+#define PATH_SHOP_TILE "Dungeons/ShopTile.png"
+#define PATH_FLOOR "Dungeons/Floor.png"
 
 #define C_BROWN Color(135, 79, 2, 255)
 #define C_LIGHT_BROWN Color(135, 79, 2, 200)
@@ -231,7 +230,7 @@ void Map::Load(const string _path)
 		{ '.', nullptr },
 		{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP)); }},
 		{ ' ', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); }},
-		{ 'S', [this](const Vector2f& _position) { others.push_back(new Stair(PATH_STAIR, _position)); }},
+		{ 'S', [this](const Vector2f& _position) { others.push_back(new Stair(_position)); }},
 		{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Door(_position)); }},
 		{ 'E', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Hephaestus(_position)); }},
 	};
@@ -392,7 +391,7 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 	}
 	_position = _positions[Random((int)_positions.size() - 1, 0)];
 	EraseElement(_positions, _position);
-	others.push_back(new Stair(PATH_STAIR, _position));
+	others.push_back(new Stair(_position));
 	_position = _positions[Random((int)_positions.size() - 1, 0)];
 	EraseElement(_positions, _position);
 	EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position);

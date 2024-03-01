@@ -1,7 +1,7 @@
 #include "Hephaestus.h"
 #include "SoundManager.h"
 #include "Macro.h"
-#define PATH_HEPHAESTUS "HephaestusSprite.png"
+#define PATH_HEPHAESTUS "UI/HephaestusSprite.png"
 
 Hephaestus::Hephaestus(const Vector2f& _position) : NPC(PATH_HEPHAESTUS,"Hephaestus", _position)
 {

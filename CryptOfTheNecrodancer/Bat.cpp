@@ -7,7 +7,7 @@
 #include "RythmComponent.h"
 #include "AnimationComponent.h"
 
-#define PATH_BAT "BatSprite.png"
+#define PATH_BAT "Entities/BatSprite.png"
 
 
 Bat::Bat(const Vector2f& _position) :Enemy(100.f,50.f,STRING_ID("Bat"), PATH_BAT, _position, 2)
