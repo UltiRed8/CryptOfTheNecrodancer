@@ -1,9 +1,9 @@
 #pragma once
 #include "IManager.h"
 #include "Singleton.h"
-#include "LightningComponent.h"
+#include "LightSource.h"
 
-class LightningManager : public IManager<string, LightningComponent>, public Singleton<LightningManager>
+class LightningManager : public IManager<string, LightSource>, public Singleton<LightningManager>
 {
 	vector<Tile*> shadowTiles;
 

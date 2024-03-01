@@ -1,11 +1,11 @@
 #pragma once
-#include"Enemy.h"
+#include "NPC.h"
 #include "MusicManager.h"
 
 
 #define PATH_SHOPKEEPER "ShopkeeperSprite.png"
 
-class Shopkeeper : public Enemy
+class Shopkeeper : public NPC
 {
 	
 
@@ -17,7 +17,5 @@ public:
 public:
 	void DieEvent();
 	void SelectDirection();
-	void UpdateRythm();
-
 };
 

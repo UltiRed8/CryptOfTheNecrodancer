@@ -67,7 +67,7 @@ void Map::GenerateWalls()
 void Map::GenerateShopRoom()
 {
 	const vector<Vector2f>& _availablePosition = GetEmptyTilesAround(floors);
-
+	//Todo bug a fix jsp quoi
 	const Vector2f& _position = _availablePosition[rand() % _availablePosition.size() - 1];
 
 	shop = new Room(Vector2i(5,7), _position);
@@ -78,6 +78,8 @@ void Map::GenerateShopRoom()
 	others.push_back(new Tile("ShopTile.png", _shopkeeperTiles[11]->GetPosition()));
 	others.push_back(new Tile("ShopTile.png", _shopkeeperTiles[13]->GetPosition()));
 	others.push_back(shopkeeper);
+
+	new Pickable(5, PT_DIAMOND, STRING_ID("diamond"), _shopkeeperTiles[17]->GetPosition());
 
 	const vector<Tile*>& _shopFloors = shop->GetFloor();
 	floors.insert(floors.end(), _shopFloors.begin(), _shopFloors.end());
@@ -361,11 +363,11 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 {
 	vector<function<Entity* (const Vector2f& _position)>> _enemyList =
 	{
-		//[this](const Vector2f& _position) { return new Bat(_position); },
+		[this](const Vector2f& _position) { return new Bat(_position); },
 		[this](const Vector2f& _position) { return new GreenSlime(_position); },
 		[this](const Vector2f& _position) { return new BlueSlime(_position); },
 		[this](const Vector2f& _position) { return new OrangeSlime(_position); },
-		//[this](const Vector2f& _position) { return new NormalSkeleton(_position); },
+		[this](const Vector2f& _position) { return new NormalSkeleton(_position); },
 	};
 
 	int _randIndex;
@@ -373,7 +375,7 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 
 	Vector2f _position = _positions[Random((int)_positions.size() - 1, 0)];
 	if (_positions.empty()) return;
-	for (int _index = 0; _index < 50; _index++)
+	for (int _index = 0; _index < _ennemyCount; _index++)
 	{
 		_position = _positions[Random((int)_positions.size() - 1, 0)];
 		EraseElement(_positions, _position);
@@ -425,6 +427,11 @@ void Map::NextMap()
 	{
 		NextLevel();
 	}
+}
+
+void Map::AddOther(Entity* _entity)
+{
+	others.push_back(_entity);
 }
 
 void Map::DeleteAll()

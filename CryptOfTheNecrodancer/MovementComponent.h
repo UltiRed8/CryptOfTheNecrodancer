@@ -5,7 +5,9 @@
 #include"Macro.h"
 #include"CollisionComponent.h"
 #include"Tile.h"
+
 using namespace sf;
+
 class MovementComponent :public Component
 {
 	int speed;

@@ -68,14 +68,14 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 		CollisionReaction(ET_ENEMY, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
 			GetComponent<DamageComponent>()->Attack(_entity);
-			cout << _entity->GetID() << " was killed!" << endl;
 		}),
 
 		CollisionReaction(ET_EPHAESTUS, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
 		}),
 	});
-	new LightningComponent("PlayerLight", this, 350);
+
+	new LightSource("PlayerLight", this, 350);
 
 	InitInput();
 }

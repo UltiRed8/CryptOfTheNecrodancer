@@ -58,7 +58,7 @@ void Game::Init()
 	TimerManager::GetInstance().SetMaxFrameRate(60);
 	TimerManager::GetInstance().SetRenderCallback([this]() {
 		//EntityManager::GetInstance().Update();
-		LightningManager::GetInstance().Update();
+		/*LightningManager::GetInstance().Update();*/
 		UpdateWindow();
 	});
 }

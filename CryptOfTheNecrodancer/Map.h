@@ -133,6 +133,7 @@ public:
 	void EraseOverlappings();
 	void NextLevel();
 	void NextMap();
+	void AddOther(Entity* _entity);
 	void DeleteAll();
 
 	template <typename Type>

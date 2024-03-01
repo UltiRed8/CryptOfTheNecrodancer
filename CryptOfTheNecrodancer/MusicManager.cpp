@@ -245,6 +245,7 @@ bool MusicManager::TriggerEvent()
 		didEvent = true;
 		Map::GetInstance().Update();
 		EntityManager::GetInstance().Update();
+		LightningManager::GetInstance().Update();
 		return true;
 	}
 	else

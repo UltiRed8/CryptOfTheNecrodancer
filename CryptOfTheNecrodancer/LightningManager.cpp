@@ -29,7 +29,7 @@ void LightningManager::Update()
 		_shape->setFillColor(_color);
 	}
 
-	for (LightningComponent* _lightning : GetAllValues())
+	for (LightSource* _lightning : GetAllValues())
 	{
 		_lightning->UpdateLight(shadowTiles);
 	}

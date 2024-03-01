@@ -1,11 +1,10 @@
 #include "Enemy.h"
-
+#include "LightSource.h"
 Enemy::Enemy(const float _maxHp, const float _maxDammage, const string& _id, const string& _path, const Vector2f& _position, const int _droppedCoins)
 	: Living(_maxHp,_maxDammage, _path, _id,_position)
 {
 	indexPatern = 0;
 	zIndex = 2;
-	droppedCoins = _droppedCoins;
 	currentCooldown = 0;
 	cooldown = 0;
 
@@ -24,13 +23,15 @@ Enemy::Enemy(const float _maxHp, const float _maxDammage, const string& _id, con
 			GetComponent<DamageComponent>()->Attack(_entity);
 		}),
 	});
-
+	rewardAmount = _droppedCoins;
+	new LightSource(STRING_ID("lightsource"), this, 100);
 	type = ET_ENEMY;
 }
+//Tu part de la fin des coeur 
 
 void Enemy::DieEvent()
 {
-	new Pickable(droppedCoins, PT_COIN,STRING_ID("coin"), GetPosition());
+	new Pickable(rewardAmount, PT_COIN,STRING_ID("coin"), GetPosition());
 	this->Destroy();
 }
 

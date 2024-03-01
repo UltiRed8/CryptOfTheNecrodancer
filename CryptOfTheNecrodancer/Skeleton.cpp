@@ -4,7 +4,7 @@
 #include"LifeComponent.h"
 #include "RythmComponent.h"
 #include "AnimationComponent.h"
-#include "LightningComponent.h"
+#include "LightSource.h"
 #include "EntityManager.h"
 
 Skeleton::Skeleton(const float _maxHp, const float _maxDammage, const Vector2f& _position, const string& _path, const int _droppedCoins) 

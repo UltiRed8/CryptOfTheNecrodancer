@@ -1,9 +1,9 @@
 #pragma once
-#include "Entity.h"
+#include "NPC.h"
 #include "AnimationComponent.h"
 #include "RythmComponent.h"
 
-class Hephaestus : public Entity
+class Hephaestus : public NPC
 {
 	int currentSoundIndex;
 public:
