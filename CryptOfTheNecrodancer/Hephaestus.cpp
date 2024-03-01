@@ -7,8 +7,13 @@ Hephaestus::Hephaestus(const Vector2f& _position) : Entity("Hephaestus", PATH_HE
 {
 	currentSoundIndex = 0;	
 
-	//AnimationData _animation = AnimationData("ShopKeeper", Vector2f(0, 0), Vector2f(65, 68), READ_RIGHT, ANIM_DIR_NONE, true, 5, 0.1f);
-	//components.push_back(new AnimationComponent(this, PATH_HEPHAESTUS, { _animation }, ANIM_DIR_NONE));
+	components.push_back(new AnimationComponent(this, PATH_HEPHAESTUS, {
+		AnimationData("AnvilHit", Vector2f(65, 68), 0, 4, (1.f / (130 / 60.f)) / 4.0f, false),
+	}, "AnvilHit", shape));
+
+	shape->setScale(3.0f, 3.0f);
+	shape->move(Vector2f(-1.0f, -1.0f) * TILE_SIZE);
+
 	zIndex = 2; 
 	type = ET_EPHAESTUS;
 }
@@ -30,4 +35,5 @@ void Hephaestus::Update()
 	};
 
 	SoundManager::GetInstance().Play(_sounds[currentSoundIndex], DirectionalSettings(GetPosition() + TILE_SIZE / 2.0f, 175, 10.0f));
+	Entity::Update();
 }

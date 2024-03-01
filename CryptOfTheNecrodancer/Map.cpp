@@ -7,6 +7,8 @@
 #include "Hephaestus.h"
 
 #define PATH_STAIR "stairs.png"
+#define PATH_SHOP_TILE "ShopTile.png"
+#define PATH_FLOOR "Floor.png"
 
 #define C_BROWN Color(135, 79, 2, 255)
 #define C_LIGHT_BROWN Color(135, 79, 2, 200)
@@ -68,23 +70,30 @@ void Map::GenerateShopRoom()
 {
 	const vector<Vector2f>& _availablePosition = GetEmptyTilesAround(floors);
 
-	const Vector2f& _position = _availablePosition[rand() % _availablePosition.size() - 1];
+	const Vector2f& _position = _availablePosition[Random(_availablePosition.size() - 1, 0)];
 
 	shop = new Room(Vector2i(5,7), _position);
 
-	vector<Tile*> _shopkeeperTiles = shop->GetFloor();
+	vector<Tile*>& _shopkeeperTiles = shop->GetFloor();
 	const Vector2f& _shopkeeperPosition = _shopkeeperTiles[12]->GetPosition();
 	shopkeeper = new Shopkeeper(_shopkeeperPosition);
-	others.push_back(new Tile("ShopTile.png", _shopkeeperTiles[11]->GetPosition()));
-	others.push_back(new Tile("ShopTile.png", _shopkeeperTiles[13]->GetPosition()));
+	Tile* _first = _shopkeeperTiles[11];
+	Tile* _second = _shopkeeperTiles[13];
+	_first->SetTexture(PATH_SHOP_TILE);
+	_second->SetTexture(PATH_SHOP_TILE);
 	others.push_back(shopkeeper);
+	others.push_back(_first);
+	others.push_back(_second);
 
 	const vector<Tile*>& _shopFloors = shop->GetFloor();
 	floors.insert(floors.end(), _shopFloors.begin(), _shopFloors.end());
 
-	rooms.push_back(shop);
-
 	PlaceWallsAroundFloor(_shopFloors, 1, false, WT_SHOP);
+
+	EraseElement(floors, _first);
+	EraseElement(floors, _second);
+
+	rooms.push_back(shop);
 }
 
 Map::Map()
@@ -117,6 +126,7 @@ void Map::Generate(const int _roomCount, const int _amountOfEnemies)
 	GeneratePaths();
 	EraseOverlappings();
 	GenerateShopRoom();
+	MusicManager::GetInstance().PrepareMain("zone1_1", 115, true);
 	GenerateWalls();
 	EraseOverlappings();
 	SetAllFloorOriginColor();
@@ -125,7 +135,7 @@ void Map::Generate(const int _roomCount, const int _amountOfEnemies)
 	UpdateDoors();
 	SpawnEnnemy(_amountOfEnemies);
 	GenerateDiamond();
-	MusicManager::GetInstance().PlayMain("zone1_1", 115, true);
+	MusicManager::GetInstance().Play();
 }
 
 void Map::EraseOverlappings()
@@ -219,10 +229,10 @@ void Map::Load(const string _path)
 	{
 		{ '.', nullptr },
 		{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP)); }},
-		{ ' ', [this](const Vector2f& _position) { floors.push_back(new Tile("floor.png", _position)); }},
+		{ ' ', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); }},
 		{ 'S', [this](const Vector2f& _position) { others.push_back(new Stair(PATH_STAIR, _position)); }},
-		{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile("floor.png", _position)); others.push_back(new Door(_position)); }},
-		{ 'E', [this](const Vector2f& _position) {	others.push_back(new Hephaestus(_position)); }},
+		{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Door(_position)); }},
+		{ 'E', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Hephaestus(_position)); }},
 	};
 
 	string _line;
@@ -327,7 +337,6 @@ void Map::PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const b
 			{
 				_allEntities.push_back(_wall);
 			}
-			
 		}
 
 		_allPositionsAround = GetEmptyTilesAround(_allEntities);
@@ -361,11 +370,11 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 {
 	vector<function<Entity* (const Vector2f& _position)>> _enemyList =
 	{
-		//[this](const Vector2f& _position) { return new Bat(_position); },
+		[this](const Vector2f& _position) { return new Bat(_position); },
 		[this](const Vector2f& _position) { return new GreenSlime(_position); },
 		[this](const Vector2f& _position) { return new BlueSlime(_position); },
 		[this](const Vector2f& _position) { return new OrangeSlime(_position); },
-		//[this](const Vector2f& _position) { return new NormalSkeleton(_position); },
+		[this](const Vector2f& _position) { return new NormalSkeleton(_position); },
 	};
 
 	int _randIndex;
@@ -373,7 +382,7 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 
 	Vector2f _position = _positions[Random((int)_positions.size() - 1, 0)];
 	if (_positions.empty()) return;
-	for (int _index = 0; _index < 50; _index++)
+	for (int _index = 0; _index < _ennemyCount; _index++)
 	{
 		_position = _positions[Random((int)_positions.size() - 1, 0)];
 		EraseElement(_positions, _position);

@@ -88,3 +88,5 @@ static void EraseElement(vector<T>& _vector, const T& _element)
 {
 	_vector.erase(remove(_vector.begin(), _vector.end(), _element), _vector.end());
 }
+
+Vector2f operator * (const Vector2f& _vector, const Vector2f& _multiplier);

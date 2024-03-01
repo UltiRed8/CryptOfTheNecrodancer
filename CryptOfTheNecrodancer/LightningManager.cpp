@@ -33,4 +33,5 @@ void LightningManager::Update()
 	{
 		_lightning->UpdateLight(shadowTiles);
 	}
+	GarbageCollector();
 }

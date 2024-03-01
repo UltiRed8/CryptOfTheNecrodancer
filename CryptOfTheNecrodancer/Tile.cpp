@@ -44,7 +44,3 @@ void Tile::ToggleHighlight(const int _alphaValueToHighlight)
 		shape->setOutlineThickness(0.f);
 	}
 }
-
-void Tile::Update()
-{
-}

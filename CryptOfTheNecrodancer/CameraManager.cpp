@@ -18,6 +18,7 @@ CameraManager::CameraManager()
 
 void CameraManager::Update(RenderWindow* _window)
 {
+	GarbageCollector();
 	for (Camera* _camera : GetAllValues())
 	{
 		_camera->Update();

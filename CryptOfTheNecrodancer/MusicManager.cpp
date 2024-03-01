@@ -11,7 +11,7 @@
 
 MusicManager::MusicManager()
 {
-	rythmType = RT_NONE;
+	rythmType = RT_FREEMOVE;
 
 	currentMain = nullptr;
 	currentShopkeeper = nullptr;
@@ -19,7 +19,7 @@ MusicManager::MusicManager()
 	volume = new float(10.f);
 	rythmLoop = nullptr;
 	isRunning = false;
-	acceptDelay = new float(300);
+	acceptDelay = new float(10);
 	minAcceptDelay = 0.0f;
 	maxAcceptDelay = 450.0f;
 	playSpeed = 1.0f;
@@ -28,6 +28,7 @@ MusicManager::MusicManager()
 	delta = 0.0f;
 	beatDelay = 0;
 	didEvent = false;
+	needsAnimationUpdate = false;
 }
 
 MusicManager::~MusicManager()
@@ -39,6 +40,7 @@ MusicManager::~MusicManager()
 void MusicManager::Update()
 {
 	delta += TimerManager::GetInstance().GetDeltaTime();
+	GarbageCollector();
 }
 
 MusicData* MusicManager::GetMusic(const string& _path, const Vector2f& _position)
@@ -61,7 +63,7 @@ MusicData* MusicManager::GetMusic(const string& _path, const Vector2f& _position
 	return _music;
 }
 
-void MusicManager::PlayMain(const string& _path, const int _bpm, const bool _withShopkeeper, const bool _shouldLoop)
+void MusicManager::PrepareMain(const string& _path, const int _bpm, const bool _withShopkeeper, const bool _shouldLoop)
 {
 	if (_path == "") return;
 
@@ -74,11 +76,9 @@ void MusicManager::PlayMain(const string& _path, const int _bpm, const bool _wit
 		rythmLoop->SetDuration(seconds(1.f / ((currentBPM * playSpeed) / 60.f)));
 		rythmLoop->Pause();
 	}
-
 	if (currentMain = GetMusic(_path, Vector2f(0.0f, 0.0f)))
 	{
 		currentMain->setLoop(_shouldLoop);
-		currentMain->play();
 
 		if (_withShopkeeper)
 		{
@@ -86,7 +86,6 @@ void MusicManager::PlayMain(const string& _path, const int _bpm, const bool _wit
 			if (currentShopkeeper = GetMusic(currentMain->GetID() + "_shopkeeper", _shopkeeperPosition))
 			{
 				currentShopkeeper->setLoop(_shouldLoop);
-				currentShopkeeper->play();
 				currentShopkeeper->setVolume(100.0f);
 				currentShopkeeper->setMinDistance(75.0f);
 				currentShopkeeper->setAttenuation(3.0f);
@@ -96,10 +95,37 @@ void MusicManager::PlayMain(const string& _path, const int _bpm, const bool _wit
 		{
 			currentShopkeeper = nullptr;
 		}
-
-		UpdateLoop();
-		isRunning = true;
 	}
+}
+
+void MusicManager::UpdateEntitiesAnimations()
+{
+	for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
+	{
+		if (AnimationComponent* _animationComponent = _entity->GetComponent<AnimationComponent>())
+		{
+			for (Animation* _animation : _animationComponent->GetAllValues())
+			{
+				_animation->SetDuration(1.f / (currentBPM * playSpeed / 60.f));
+			}
+		}
+	}
+}
+
+void MusicManager::Play()
+{
+	UpdateEntitiesAnimations();
+
+	if (currentMain)
+	{
+		currentMain->play();
+	}
+	if (currentShopkeeper)
+	{
+		currentShopkeeper->play();
+	}
+	UpdateLoop();
+	isRunning = true;
 }
 
 void MusicManager::Toggle()
@@ -181,6 +207,7 @@ void MusicManager::SetPlaySpeed(const float _newValue)
 		currentShopkeeper->setPitch(playSpeed);
 	}
 	rythmLoop->SetDuration(seconds(1.f / ((currentBPM* playSpeed) / 60.f)));
+	UpdateEntitiesAnimations();
 }
 
 void MusicManager::IncreaseVolume()

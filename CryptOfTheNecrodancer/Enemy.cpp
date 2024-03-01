@@ -43,5 +43,4 @@ void Enemy::Update()
 		SelectDirection();
 	}
 	Entity::Update();
-
 }

@@ -25,10 +25,6 @@ Wall::Wall(const Vector2f& _position, const WallType& _type) : Placable(STRING_I
 	type = ET_WALL;
 }
 
-void Wall::Update()
-{
-}
-
 void Wall::DestroyWall(const bool _usingBomb)
 {
 	if (IsToRemove()) return;

@@ -24,8 +24,8 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 	chainMultiplier = new int(1);
 	type = ET_PLAYER;
 	components.push_back(new AnimationComponent(this, PATH_PLAYER, {
-		AnimationData("Idle", Vector2f(0, 0), Vector2f(26, 26), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f)
-	}, ANIM_DIR_NONE));
+		AnimationData("Idle", Vector2f(26, 26), 0, 3, 0.1f, false),
+	}, "Idle", shape));
 	CollisionComponent* _collisions = new CollisionComponent(this);
 	components.push_back(_collisions);
 	MovementComponent* _movement = GetComponent<MovementComponent>();
