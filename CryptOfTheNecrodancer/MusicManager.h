@@ -7,13 +7,16 @@
 
 #include <SFML/Audio.hpp>
 
+enum RythmType
+{
+	RT_NONE, RT_FREEMOVE, RT_ALL
+};
+
 class MusicManager : public IManager<string, MusicData>, public Singleton<MusicManager>
 {
 	MusicData* currentMain;
 	MusicData* currentShopkeeper;
-	bool debugMode;
-
-
+	RythmType rythmType;
 
 	float* acceptDelay;
 	float minAcceptDelay;

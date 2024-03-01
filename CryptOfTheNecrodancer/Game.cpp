@@ -26,11 +26,10 @@ Game::~Game()
 // TODO LIST :
 // animation component a refaire
 // lightning component qui n'est plus un component
-// music et sound manager :'(
+// sound manager :'(
 // finir le jeu
 // plusieurs zones (textures et musiques)
 // finir le jeu
-// shopkeeper et pnj du spawn a mettre en NPC
 // finir le jeu
 // la vie du joueur
 // les vies des livings au dessus d'eux

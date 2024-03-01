@@ -1,5 +1,6 @@
 #include "Hephaestus.h"
 #include "SoundManager.h"
+#include "Macro.h"
 #define PATH_HEPHAESTUS "HephaestusSprite.png"
 
 Hephaestus::Hephaestus(const Vector2f& _position) : Entity("Hephaestus", PATH_HEPHAESTUS, _position)
@@ -28,5 +29,5 @@ void Hephaestus::Update()
 		"Assets/Sounds/Hammer4.ogg",
 	};
 
-	SoundManager::GetInstance().Play(_sounds[currentSoundIndex]);
+	SoundManager::GetInstance().Play(_sounds[currentSoundIndex], DirectionalSettings(GetPosition() + TILE_SIZE / 2.0f, 175, 10.0f));
 }

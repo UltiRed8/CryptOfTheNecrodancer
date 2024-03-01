@@ -11,7 +11,7 @@
 
 MusicManager::MusicManager()
 {
-	debugMode = false;
+	rythmType = RT_NONE;
 
 	currentMain = nullptr;
 	currentShopkeeper = nullptr;
@@ -56,7 +56,7 @@ MusicData* MusicManager::GetMusic(const string& _path, const Vector2f& _position
 	}
 
 	_music->setVolume(*volume);
-	_music->setPosition(_position.x + TILE_SIZE.x / 2.0f, _position.y + TILE_SIZE.y / 2.0f, 0);
+	_music->setPosition(Vector3f(_position.x + TILE_SIZE.x / 2.0f, _position.y + TILE_SIZE.y / 2.0f, 0.0f));
 
 	return _music;
 }
@@ -88,6 +88,8 @@ void MusicManager::PlayMain(const string& _path, const int _bpm, const bool _wit
 				currentShopkeeper->setLoop(_shouldLoop);
 				currentShopkeeper->play();
 				currentShopkeeper->setVolume(100.0f);
+				currentShopkeeper->setMinDistance(75.0f);
+				currentShopkeeper->setAttenuation(3.0f);
 			}
 		}
 		else
@@ -235,7 +237,7 @@ void MusicManager::UpdateLoop()
 
 	beatDelay = seconds(1.f / (currentBPM / 60.f)).asMilliseconds();
 	rythmLoop = new Timer("Timer", [this]() {
-		if (debugMode) return;
+		if (rythmType == RT_NONE) return;
 		new Timer("ResetEvent", [this]() {
 			TriggerEvent();
 			didEvent = false;
@@ -246,14 +248,11 @@ void MusicManager::UpdateLoop()
 
 bool MusicManager::TriggerEvent()
 {
-	if (!debugMode)
-	{
-		if (didEvent) return false;
-	}
+	if (didEvent && (rythmType != RT_FREEMOVE && rythmType != RT_NONE)) return false;
 
 	const float _delay = *acceptDelay / 2;
 
-	if (delta - 10 <= _delay || delta >= (beatDelay - _delay))
+	if ((delta - 10 <= _delay || delta >= (beatDelay - _delay)) || rythmType <= RT_FREEMOVE)
 	{
 		didEvent = true;
 		Map::GetInstance().Update();
