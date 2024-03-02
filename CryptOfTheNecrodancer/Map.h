@@ -20,7 +20,7 @@ using namespace std;
 
 enum CurrentZone
 {
-	CL_Lobby,CL_ZONE1,CL_ZONE2
+	CL_Lobby, CL_ZONE1, CL_ZONE2
 };
 
 class Map : public Singleton<Map>
@@ -133,6 +133,7 @@ public:
 	void EraseOverlappings();
 	void NextLevel();
 	void NextMap();
+	void PrepareMusic();
 	void AddOther(Entity* _entity);
 	void DeleteAll();
 

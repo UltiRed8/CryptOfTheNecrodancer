@@ -3,7 +3,7 @@
 #include "MusicManager.h"
 
 
-#define PATH_SHOPKEEPER "ShopkeeperSprite.png"
+#define PATH_SHOPKEEPER "Entities/ShopkeeperSprite.png"
 
 class Shopkeeper : public NPC
 {

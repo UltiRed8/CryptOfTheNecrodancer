@@ -1,7 +1,9 @@
 #include "Stair.h"
 #include "Macro.h"
 
-Stair::Stair(const string& _path, const Vector2f& _position) : Entity(STRING_ID("Stair"), _path, _position)
+#define PATH_STAIR "Dungeons/Stairs.png"
+
+Stair::Stair(const Vector2f& _position) : Entity(STRING_ID("Stair"), PATH_STAIR, _position)
 {
 	type = ET_STAIR;
 	zIndex = 1;

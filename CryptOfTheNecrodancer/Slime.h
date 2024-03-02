@@ -2,9 +2,9 @@
 #include "Enemy.h"
 #include"MovementComponent.h"
 
-#define PATH_GREEN_SLIME "SlimeSprite.png"
-#define PATH_BLUE_SLIME "BlueSlimeSprite.png"
-#define PATH_ORANGE_SLIME "OrangeSlimeSprite.png"
+#define PATH_GREEN_SLIME "Entities/SlimeSprite.png"
+#define PATH_BLUE_SLIME "Entities/BlueSlimeSprite.png"
+#define PATH_ORANGE_SLIME "Entities/OrangeSlimeSprite.png"
 
 enum SlimeType
 {

@@ -1,11 +1,12 @@
 #include "Pickable.h"
 #include "EntityManager.h"
 #include "SoundManager.h"
+#include "Macro.h"
 
 #define SOUND_COIN_PICKED_UP "Assets/Sounds/sfx_pickup_gold_01.ogg"
 #define SOUND_DIAMOND_PICKED_UP "Assets/Sounds/sfx_pickup_diamond.ogg"
-#define PATH_COIN "Coins.png"
-#define PATH_DIAMOND "Diamond.png"
+#define PATH_COIN "Entities/Coins.png"
+#define PATH_DIAMOND "UI/Diamond.png"
 
 Pickable::Pickable(const int _amount, const PickableType& _type, const string& _id, const Vector2f& _pos, const string& _path) : Placable(_id,_path, _pos)
 {
@@ -16,7 +17,14 @@ Pickable::Pickable(const int _amount, const PickableType& _type, const string& _
 
 	if (_type != PT_CUSTOM)
 	{
-		SetTexture(_type == PT_COIN ? PATH_COIN :  PATH_DIAMOND);
+		if (_type == PT_COIN)
+		{
+			TextureManager::GetInstance().LoadFromTextureSheet(shape, PATH_COIN, Random(4, 0), Vector2i(24, 24));
+		}
+		else
+		{
+			SetTexture(PATH_DIAMOND);
+		}
 	}
 	type = ET_PICKABLE;
 }

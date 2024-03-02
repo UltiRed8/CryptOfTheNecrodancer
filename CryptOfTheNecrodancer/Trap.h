@@ -3,16 +3,16 @@
 #include "Timer.h"
 
 
-#define PATH_CONFUSE_TRAP "ConfuseTrap.png"
-#define PATH_CONFUSE_TRAP_PRESSED "ConfuseTrapPressed.png"
+#define PATH_CONFUSE_TRAP "Entities/ConfuseTrap.png"
+#define PATH_CONFUSE_TRAP_PRESSED "Entities/ConfuseTrapPressed.png"
 
-#define PATH_FAST_TRAP "FastTrap.png"
-#define PATH_FAST_TRAP_PRESSED "FastTrapPressed.png"
+#define PATH_FAST_TRAP "Entities/FastTrap.png"
+#define PATH_FAST_TRAP_PRESSED "Entities/FastTrapPressed.png"
 
-#define PATH_SLOW_TRAP "SlowTrap.png"
-#define PATH_SLOW_TRAP_PRESSED "SlowTrapPressed.png"
+#define PATH_SLOW_TRAP "Entities/SlowTrap.png"
+#define PATH_SLOW_TRAP_PRESSED "Entities/SlowTrapPressed.png"
 
-#define PATH_BOMB_TRAP "BombTrap.png"
+#define PATH_BOMB_TRAP "Entities/BombTrap.png"
 
 
 enum TrapType

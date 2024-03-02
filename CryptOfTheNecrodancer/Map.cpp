@@ -6,9 +6,8 @@
 #include "CameraManager.h"
 #include "Hephaestus.h"
 
-#define PATH_STAIR "stairs.png"
-#define PATH_SHOP_TILE "ShopTile.png"
-#define PATH_FLOOR "Floor.png"
+#define PATH_SHOP_TILE "Dungeons/ShopTile.png"
+#define PATH_FLOOR "Dungeons/Zone1/floor.png"
 
 #define C_BROWN Color(135, 79, 2, 255)
 #define C_LIGHT_BROWN Color(135, 79, 2, 200)
@@ -120,6 +119,40 @@ Map::~Map()
 	}
 }
 
+void Map::PrepareMusic()
+{
+	vector<string> _zones = {
+		"",
+		"zone1_",
+		"zone2_",
+	};
+	map<string, int> _bpmList = {
+		{ "zone1_1", 115 },
+		{ "zone1_2", 130 },
+		{ "zone1_3", 140 },
+
+		{ "zone2_1", 130 },
+		{ "zone2_2", 140 },
+		{ "zone2_3", 150 },
+
+		{ "zone3_1", 135 },
+		{ "zone3_2", 145 },
+		{ "zone3_3", 155 },
+
+		{ "zone4_1", 130 },
+		{ "zone4_2", 145 },
+		{ "zone4_3", 160 },
+
+		{ "zone5_1", 130 },
+		{ "zone5_2", 140 },
+		{ "zone5_3", 155 },
+	};
+
+	string _musicName = _zones[currentZone] + to_string(currentLevel);
+
+	MusicManager::GetInstance().PrepareMain(_musicName, _bpmList[_musicName], true);
+}
+
 void Map::Generate(const int _roomCount, const int _amountOfEnemies)
 {
 	MusicManager::GetInstance().StopAll();
@@ -127,7 +160,7 @@ void Map::Generate(const int _roomCount, const int _amountOfEnemies)
 	GeneratePaths();
 	EraseOverlappings();
 	GenerateShopRoom();
-	MusicManager::GetInstance().PrepareMain("zone1_1", 115, true);
+	PrepareMusic();
 	GenerateWalls();
 	EraseOverlappings();
 	SetAllFloorOriginColor();
@@ -231,7 +264,7 @@ void Map::Load(const string _path)
 		{ '.', nullptr },
 		{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP)); }},
 		{ ' ', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); }},
-		{ 'S', [this](const Vector2f& _position) { others.push_back(new Stair(PATH_STAIR, _position)); }},
+		{ 'S', [this](const Vector2f& _position) { others.push_back(new Stair(_position)); }},
 		{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Door(_position)); }},
 		{ 'E', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Hephaestus(_position)); }},
 		{ 'M', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position));
@@ -270,11 +303,14 @@ void Map::Load(const string _path)
 	SetAllFloorOriginColor();
 
 	UpdateDoors();
+
+	MusicManager::GetInstance().PrepareMain("Lobby", 130, false, true);
+	MusicManager::GetInstance().Play();
 }
 
 void Map::AddFloorAt(const Vector2f& _position)
 {
-	Tile* _floor = new Tile("floor.png", _position);
+	Tile* _floor = new Tile(PATH_FLOOR, _position);
 	floors.push_back(_floor);
 	SetFloorColor(_floor);
 }
@@ -402,7 +438,7 @@ void Map::SpawnEnnemy(const int _ennemyCount)
 	}
 	_position = _positions[Random((int)_positions.size() - 1, 0)];
 	EraseElement(_positions, _position);
-	others.push_back(new Stair(PATH_STAIR, _position));
+	others.push_back(new Stair(_position));
 	_position = _positions[Random((int)_positions.size() - 1, 0)];
 	EraseElement(_positions, _position);
 	EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position);

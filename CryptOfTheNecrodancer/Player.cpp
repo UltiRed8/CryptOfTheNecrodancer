@@ -14,7 +14,7 @@
 #include "MenuManager.h"
 #include "Heart.h"
 
-#define PATH_PLAYER "PlayerSprite.png"
+#define PATH_PLAYER "Entities/PlayerSprite.png"
 
 Player::Player(const float _maxHp, const float _maxDammage, const string _id, const Vector2f& _position) : Living(_maxHp, _maxDammage,PATH_PLAYER,_id, _position)
 {
@@ -172,7 +172,7 @@ void Player::InitLife()
 
 	for (int _index = 0; _index < _heartsCount; _index++)
 	{
-		Heart* _heart = new Heart(STRING_ID("Hearts"), Vector2f(25.0f, 25.0f) * 2.0f, Vector2f(SCREEN_WIDTH - 55 * (4.2f + _index), SCREEN_HEIGHT - 55 * 12.8), H_FULL);
+		Heart* _heart = new Heart(STRING_ID("Hearts"), Vector2f(25.0f, 25.0f) * 2.0f, Vector2f(SCREEN_WIDTH - 55 * (3.8f + _index * 1.2f), SCREEN_HEIGHT - 55 * 12.3), H_FULL);
 		_heart->SetOwner(life);
 		_heart->Register();
 	}
@@ -192,7 +192,7 @@ void Player::UpdateLife()
 
 	float _lifeCopy = *GetComponent<LifeComponent>()->GetCurrentHealth();
 
-	for (int _index = _hearts.size() - 1; _index >= 0; _index--)
+	for (int _index = (int)_hearts.size() - 1; _index >= 0; _index--)
 	{
 		Heart* _heart = _hearts[_index];
 		_lifeCopy -= 100.0f;
@@ -211,6 +211,16 @@ void Player::UpdateLife()
 
 		_heart->UpdateLife();
 	}
+}
+
+void Player::UpdateHeartAnimation()
+{
+	heartIndex --;
+	if (heartIndex < 0)
+	{
+		heartIndex = (int)(life->GetAllValues().size() - 1);
+	}
+	dynamic_cast<Heart*>(life->GetAllValues()[heartIndex])->UIHeart();
 }
 
 void Player::Update()
