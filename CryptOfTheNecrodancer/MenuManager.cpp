@@ -12,6 +12,7 @@
 #include "Heart.h"
 #include "Map.h"
 #include "LightningManager.h"
+#include "WindowManager.h"
 
 vector<Drawable*> MenuManager::GetDrawables()
 {
@@ -111,9 +112,9 @@ void MenuManager::InitInventory()
 	
 }
 
-void MenuManager::InitMenu(RenderWindow* _window)
+void MenuManager::InitMenu()
 {
-	window = _window;
+	window = WindowManager::GetInstance().GetWindow();
 	InitLeaveLobby();
 	InitMenuLatency();
 	InitHUD();

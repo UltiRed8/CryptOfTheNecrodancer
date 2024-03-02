@@ -10,23 +10,24 @@
 #include "MovementComponent.h"
 #include "UIText.h"
 #include "LightningManager.h"
+#include "WindowManager.h"
+
 Game::Game()
 {
-	window = nullptr;
 	map = nullptr;
 	player = nullptr;
 }
 
 Game::~Game()
 {
-	delete window;
 	delete map;
 }
 
 void Game::Init()
 {
-	window = new RenderWindow(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer");
-	MenuManager::GetInstance().InitMenu(window);
+	WindowManager::GetInstance().CreateWindow();
+	window = WindowManager::GetInstance().GetWindow();
+	MenuManager::GetInstance().InitMenu();
 	TimerManager::GetInstance().SetMaxFrameRate(60);
 	TimerManager::GetInstance().SetRenderCallback([this]() {
 		UpdateWindow();
@@ -41,8 +42,6 @@ void Game::Start()
 
 	// TODO temporaire
 	Map::GetInstance().Load("Assets/Saved/Lobby.txt");
-	MusicManager::GetInstance().PrepareMain("Lobby", 130, false, true);
-	MusicManager::GetInstance().Play();
 	Camera* _playerCamera = new Camera("PlayerCamera", CAMERA_PLAYER, Vector2f(0.f,0.f), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
 }
 
@@ -52,9 +51,9 @@ void Game::Update()
 	{
 		MusicManager::GetInstance().Update();
 		TimerManager::GetInstance().Update();
-		InputManager::GetInstance().Update(window);
+		InputManager::GetInstance().Update();
 		MenuManager::GetInstance().Update();
-		CameraManager::GetInstance().Update(window);
+		CameraManager::GetInstance().Update();
 	}
 	Stop();
 }

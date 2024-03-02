@@ -175,6 +175,9 @@
     <Filter Include="Source Files\Object\Entity\Living">
       <UniqueIdentifier>{0c150cc1-5a8e-4a20-9673-7268dc567feb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Manager\Window">
+      <UniqueIdentifier>{19b40a1e-06d5-450f-b09b-63631cc43080}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -309,9 +312,6 @@
     <ClCompile Include="DamageComponent.cpp">
       <Filter>Source Files\Component\Damage</Filter>
     </ClCompile>
-    <ClCompile Include="LightningComponent.cpp">
-      <Filter>Source Files\Component\Lightning</Filter>
-    </ClCompile>
     <ClCompile Include="Consommable.cpp">
       <Filter>Source Files\Able\Consommable</Filter>
     </ClCompile>
@@ -377,6 +377,18 @@
     </ClCompile>
     <ClCompile Include="Living.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bomb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LightSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NPC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowManager.cpp">
+      <Filter>Source Files\Manager\Window</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -524,9 +536,6 @@
     <ClInclude Include="DamageComponent.h">
       <Filter>Source Files\Component\Damage</Filter>
     </ClInclude>
-    <ClInclude Include="LightningComponent.h">
-      <Filter>Source Files\Component\Lightning</Filter>
-    </ClInclude>
     <ClInclude Include="Consommable.h">
       <Filter>Source Files\Able\Consommable</Filter>
     </ClInclude>
@@ -589,6 +598,18 @@
     </ClInclude>
     <ClInclude Include="Living.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bomb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LightSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowManager.h">
+      <Filter>Source Files\Manager\Window</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

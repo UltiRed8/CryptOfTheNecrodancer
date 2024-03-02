@@ -2,6 +2,7 @@
 #include "InputManager.h"
 #include "Macro.h"
 #include "EntityManager.h"
+#include "WindowManager.h"
 
 CameraManager::CameraManager()
 {
@@ -16,14 +17,14 @@ CameraManager::CameraManager()
 	});
 }
 
-void CameraManager::Update(RenderWindow* _window)
+void CameraManager::Update()
 {
 	GarbageCollector();
 	for (Camera* _camera : GetAllValues())
 	{
 		_camera->Update();
 	}
-	_window->setView(*Get("PlayerCamera"));
+	WindowManager::GetInstance().GetWindow()->setView(*Get("PlayerCamera"));
 }
 
 void CameraManager::ZoomIn()
