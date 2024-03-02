@@ -278,6 +278,7 @@
     <ClInclude Include="Wall.h" />
     <ClInclude Include="Wearable.h" />
     <ClInclude Include="WindowManager.h" />
+    <ClInclude Include="Zones.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

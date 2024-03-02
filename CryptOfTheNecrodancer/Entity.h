@@ -48,7 +48,7 @@ public:
 		}
 		return nullptr;
 	}
-	vector<Drawable*> GetDrawables()
+	virtual vector<Drawable*> GetDrawables()
 	{
 		if (AnimationComponent* _anim = GetComponent<AnimationComponent>())
 		{

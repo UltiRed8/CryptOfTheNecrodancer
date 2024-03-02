@@ -38,22 +38,12 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 			_wall->DestroyWall();
 		}),
 		CollisionReaction(ET_STAIR, [this](Entity* _entity) {
-			GetComponent<MovementComponent>()->UndoMove();
-			if (Map::GetInstance().GetCurrentZone() == CL_Lobby)
+			if (Stair* _stair = dynamic_cast<Stair*>(_entity))
 			{
-				if (*ressources->GetDiamonds() == 0)
+				if (!_stair->OpenZone())
 				{
-					Map::GetInstance().NextMap();
+					GetComponent<MovementComponent>()->UndoMove();
 				}
-				else
-				{
-					Menu* _leaveMenu = MenuManager::GetInstance().Get("LeaveLobby");
-					_leaveMenu->Open();
-				}
-			}
-			else
-			{
-				Map::GetInstance().NextMap();
 			}
 		}),
 		CollisionReaction(ET_DOOR, [this](Entity* _entity) {
@@ -155,7 +145,7 @@ void Player::InitInput()
 		  ActionData("Increase", [this]() { *chainMultiplier = 2; cout << "Set chain multiplier to: 2!" << endl; }, {Event::KeyPressed, Keyboard::Num2}),
 		  ActionData("SpeedIncrease", [this]() { MusicManager::GetInstance().SpeedUp(); }, {Event::KeyPressed, Keyboard::Num3}),
 		  ActionData("SpeedDecrease", [this]() { MusicManager::GetInstance().SpeedDown(); }, {Event::KeyPressed, Keyboard::Num4}),
-		  ActionData("temp1", [this]() { Map::GetInstance().NextMap(); }, {Event::KeyPressed, Keyboard::Num5}),
+		  ActionData("temp1", [this]() { Map::GetInstance().OpenPrepared(); }, {Event::KeyPressed, Keyboard::Num5}),
 		  ActionData("DecreaseLife", [this]() { GetComponent<LifeComponent>()->ChangeHealth(-50); UpdateLife(); }, {Event::KeyPressed, Keyboard::M}),
 		  ActionData("Increase Life", [this]() { GetComponent<LifeComponent>()->ChangeHealth(50); UpdateLife(); }, {Event::KeyPressed, Keyboard::P}),
 		});

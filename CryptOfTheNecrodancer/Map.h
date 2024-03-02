@@ -1,10 +1,12 @@
 #pragma once
+
 #include "Room.h"
 #include "Map.h"
 #include "Singleton.h"
 #include "Path.h"
 #include "Macro.h"
 #include "Stair.h"
+#include "Zones.h"
 
 #include "Bat.h"
 #include "Slime.h"
@@ -18,19 +20,19 @@
 
 using namespace std;
 
-enum CurrentZone
-{
-	CL_Lobby, CL_ZONE1, CL_ZONE2
-};
-
 class Map : public Singleton<Map>
 {
+	Zone preparedZone;
+	Zone currentZone;
+	int currentLevel;
+
 	vector<Room*> rooms;
 	vector<Path*> paths;
 
 	vector<Tile*> floors;
 	vector<Wall*> walls;
 	vector<Entity*> others;
+	vector<Stair*> stairs;
 
 	Room* shop;
 
@@ -38,12 +40,15 @@ class Map : public Singleton<Map>
 	bool chainToggle;
 	bool isPurple;
 
-	CurrentZone currentZone;
-	int currentLevel;
-
 	Shopkeeper* shopkeeper;
 
+	string zoneFileName;
+
 public:
+	string GetZoneFileName() const
+	{
+		return zoneFileName.substr(0, zoneFileName.find_first_of('_'));
+	}
 	Vector2i GetRandomRoomPosition(const int _min = 0, const int _max = 30) const
 	{
 		Vector2i _pos = Vector2i(GetRandomVector2i(_min, _max));
@@ -59,12 +64,12 @@ public:
 		return shopkeeper;
 	}
 
-	CurrentZone GetCurrentZone() const
+	Zone GetCurrentZone() const
 	{
 		return currentZone;
 	}
 
-	void SetCurrentZone(const CurrentZone _currentZone)
+	void SetCurrentZone(const Zone& _currentZone)
 	{
 		currentZone = _currentZone;
 	}
@@ -114,14 +119,44 @@ public:
 	Map();
 	~Map();
 
+private:
+	void NextFloor();
+	void LoadMap();
+	void OpenLobby();
+
 public:
+	void Prepare(const Zone& _zoneToOpen);
+	void Open(const Zone& _zoneToOpen);
+	void OpenPrepared();
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+private:
+	void PrepareMap(const Zone& _currentZone);
+	void UpdateZoneFileName();
 	void Generate(const int _roomCount = 6, const int _amountOfEnemies = 25);
 	void GenerateRooms(const int _roomCount);
-	void Load(const string _path);
-	void AddFloorAt(const Vector2f& _position);
 	void UpdateDoors();
 	void SetFloorColor(Tile* _floor, const bool _creation = false);
-	void Update();
+	
 	void UpdateTilesColor();
 	void GeneratePaths();
 	void GenerateWalls();
@@ -134,8 +169,14 @@ public:
 	void NextLevel();
 	void NextMap();
 	void PrepareMusic();
-	void AddOther(Entity* _entity);
 	void DeleteAll();
+
+public:
+	void Update();
+	void AddOther(Entity* _entity);
+	void AddFloorAt(const Vector2f& _position);
+
+
 
 	template <typename Type>
 	vector<Vector2f> GetEmptyTilesAround(const vector<Type*>& _entities)
