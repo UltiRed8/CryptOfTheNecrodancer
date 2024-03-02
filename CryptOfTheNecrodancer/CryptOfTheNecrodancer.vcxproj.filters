@@ -408,6 +408,9 @@
     <ClCompile Include="Tile.cpp">
       <Filter>Source Files\Object\Entity\Placable\Tile</Filter>
     </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EntityManager.h">
@@ -631,6 +634,9 @@
     </ClInclude>
     <ClInclude Include="Tile.h">
       <Filter>Source Files\Object\Entity\Placable\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

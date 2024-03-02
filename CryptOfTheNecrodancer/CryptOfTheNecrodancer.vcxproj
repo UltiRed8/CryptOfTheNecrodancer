@@ -201,6 +201,7 @@
     <ClCompile Include="UIText.cpp" />
     <ClCompile Include="Usable.cpp" />
     <ClCompile Include="Wall.cpp" />
+    <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="Wearable.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
@@ -276,6 +277,7 @@
     <ClInclude Include="UIText.h" />
     <ClInclude Include="Usable.h" />
     <ClInclude Include="Wall.h" />
+    <ClInclude Include="Weapon.h" />
     <ClInclude Include="Wearable.h" />
     <ClInclude Include="WindowManager.h" />
     <ClInclude Include="Zones.h" />
