@@ -7,7 +7,7 @@
 #include "Hephaestus.h"
 
 #define PATH_SHOP_TILE "Dungeons/ShopTile.png"
-#define PATH_FLOOR "Dungeons/Floor.png"
+#define PATH_FLOOR "Dungeons/Zone1/floor.png"
 
 #define C_BROWN Color(135, 79, 2, 255)
 #define C_LIGHT_BROWN Color(135, 79, 2, 200)
@@ -263,7 +263,7 @@ void Map::Load(const string _path)
 
 void Map::AddFloorAt(const Vector2f& _position)
 {
-	Tile* _floor = new Tile("floor.png", _position);
+	Tile* _floor = new Tile(PATH_FLOOR, _position);
 	floors.push_back(_floor);
 	SetFloorColor(_floor);
 }

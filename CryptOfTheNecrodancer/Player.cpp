@@ -218,7 +218,7 @@ void Player::UpdateHeartAnimation()
 	heartIndex --;
 	if (heartIndex < 0)
 	{
-		heartIndex = life->GetAllValues().size() - 1;
+		heartIndex = (int)(life->GetAllValues().size() - 1);
 	}
 	dynamic_cast<Heart*>(life->GetAllValues()[heartIndex])->UIHeart();
 }

@@ -1,5 +1,6 @@
 #include "Path.h"
 #include "Macro.h"
+#define PATH_FLOOR "Dungeons/Zone1/floor.png"
 
 Path::Path(const Vector2i& _start, const Vector2i& _end)
 {
@@ -23,10 +24,10 @@ void Path::FixX()
 	{
 		int _directionX = end.x - start.x;
 		start.x += (_directionX > 0) ? 1 : -1;
-		tiles.push_back(new Tile("floor.png", Vector2f(start.x * TILE_SIZE.x, start.y * TILE_SIZE.y)));
+		tiles.push_back(new Tile(PATH_FLOOR, Vector2f(start.x * TILE_SIZE.x, start.y * TILE_SIZE.y)));
 		for (int _index = 0; _index < width; _index++)
 		{
-			tiles.push_back(new Tile("floor.png", Vector2f(start.x * TILE_SIZE.x, (start.y + _index) * TILE_SIZE.y)));
+			tiles.push_back(new Tile(PATH_FLOOR, Vector2f(start.x * TILE_SIZE.x, (start.y + _index) * TILE_SIZE.y)));
 		}
 	}
 }
@@ -37,10 +38,10 @@ void Path::FixY()
 	{
 		int _directionY = end.y - start.y;
 		start.y += (_directionY > 0) ? 1 : -1;
-		tiles.push_back(new Tile("floor.png", Vector2f(start.x * TILE_SIZE.x, start.y * TILE_SIZE.y)));
+		tiles.push_back(new Tile(PATH_FLOOR, Vector2f(start.x * TILE_SIZE.x, start.y * TILE_SIZE.y)));
 		for (int _index = 0; _index < width; _index++)
 		{
-			tiles.push_back(new Tile("floor.png", Vector2f((start.x + _index) * TILE_SIZE.x, start.y * TILE_SIZE.y)));
+			tiles.push_back(new Tile(PATH_FLOOR, Vector2f((start.x + _index) * TILE_SIZE.x, start.y * TILE_SIZE.y)));
 		}
 	}
 }

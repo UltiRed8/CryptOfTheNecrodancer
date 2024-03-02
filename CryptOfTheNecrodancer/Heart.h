@@ -23,9 +23,9 @@ public :
 	string GetPathWithState() const
 	{
 		string _path[] = {
-			"FullHeart.png",
-			"HalfHeart.png",
-			"EmptyHeart.png",
+			"UI/FullHeart.png",
+			"UI/HalfHeart.png",
+			"UI/EmptyHeart.png",
 		};
 
 		return _path[state];

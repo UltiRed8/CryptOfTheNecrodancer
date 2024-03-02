@@ -4,7 +4,7 @@
 #include "Macro.h"
 #include "AnimationComponent.h"
 
-#define DIAMOND_IN_WALL "DiamondInWall.png"
+#define DIAMOND_IN_WALL "Dungeons/Zone1/DiamondInWall.png"
 
 
 enum WallType
@@ -39,10 +39,10 @@ public:
 	string GetPathWithType(const WallType& _type) const
 	{
 		string _path[] = {
-			"Walls.png",
-			"Bedrock.png",
-			"ShopWall.png",
-			"StoneWall.png"
+			"Dungeons/Zone1/Walls.png",
+			"Dungeons/Bedrock.png",
+			"Dungeons/ShopWall.png",
+			"Dungeons/Zone1/StoneWall.png"
 		};
 
 		return _path[_type];
