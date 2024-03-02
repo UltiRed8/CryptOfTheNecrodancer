@@ -148,9 +148,6 @@
     <Filter Include="Source Files\Object\Entity\Trap">
       <UniqueIdentifier>{badf7bb1-a86d-414c-b4cb-492c40187d77}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Object\Entity\Wall">
-      <UniqueIdentifier>{4d1668c3-65ca-4a3e-92b2-49f05bdbd9ec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Object\Entity\Placable">
       <UniqueIdentifier>{d057bd98-d6a4-49cd-9fea-9360dd118a48}</UniqueIdentifier>
     </Filter>
@@ -192,6 +189,12 @@
     </Filter>
     <Filter Include="Source Files\Object\Entity\Living\NPC\Hephaestus">
       <UniqueIdentifier>{82256eb2-40cf-418e-afbe-515ba130c6d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Placable\Wall">
+      <UniqueIdentifier>{4d1668c3-65ca-4a3e-92b2-49f05bdbd9ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Placable\Tile">
+      <UniqueIdentifier>{1e3456c3-1d09-400a-a745-608419943e52}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -366,12 +369,6 @@
     <ClCompile Include="Placable.cpp">
       <Filter>Source Files\Object\Entity\Placable</Filter>
     </ClCompile>
-    <ClCompile Include="Wall.cpp">
-      <Filter>Source Files\Object\Entity\Placable</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile.cpp">
-      <Filter>Source Files\Object\Entity\Placable</Filter>
-    </ClCompile>
     <ClCompile Include="WindowManager.cpp">
       <Filter>Source Files\Manager\Window</Filter>
     </ClCompile>
@@ -404,6 +401,12 @@
     </ClCompile>
     <ClCompile Include="Hephaestus.cpp">
       <Filter>Source Files\Object\Entity\Living\NPC\Hephaestus</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Source Files\Object\Entity\Placable\Wall</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>Source Files\Object\Entity\Placable\Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -590,12 +593,6 @@
     <ClInclude Include="Placable.h">
       <Filter>Source Files\Object\Entity\Placable</Filter>
     </ClInclude>
-    <ClInclude Include="Wall.h">
-      <Filter>Source Files\Object\Entity\Placable</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile.h">
-      <Filter>Source Files\Object\Entity\Placable</Filter>
-    </ClInclude>
     <ClInclude Include="Pickable.h">
       <Filter>Source Files\Object\Entity\Pickable</Filter>
     </ClInclude>
@@ -628,6 +625,12 @@
     </ClInclude>
     <ClInclude Include="Hephaestus.h">
       <Filter>Source Files\Object\Entity\Living\NPC\Hephaestus</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>Source Files\Object\Entity\Placable\Wall</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>Source Files\Object\Entity\Placable\Tile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
