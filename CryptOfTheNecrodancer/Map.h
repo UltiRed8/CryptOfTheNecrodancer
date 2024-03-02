@@ -12,11 +12,11 @@
 #include "Slime.h"
 #include "Skeleton.h"
 
-#include "Shopkeeper.h"
-
 #include <iostream>
 #include <functional>
 #include <fstream>
+
+#include "Generator.h"
 
 using namespace std;
 
@@ -25,43 +25,21 @@ class Map : public Singleton<Map>
 	Zone preparedZone;
 	Zone currentZone;
 	int currentLevel;
-
-	vector<Room*> rooms;
-	vector<Path*> paths;
-
-	vector<Tile*> floors;
-	vector<Wall*> walls;
-	vector<Entity*> others;
-	vector<Stair*> stairs;
-
-	Room* shop;
-
 	int tempoIndex;
 	bool chainToggle;
 	bool isPurple;
-
-	Shopkeeper* shopkeeper;
-
 	string zoneFileName;
+	Generator* generator;
 
 public:
 	string GetZoneFileName() const
 	{
 		return zoneFileName.substr(0, zoneFileName.find_first_of('_'));
 	}
-	Vector2i GetRandomRoomPosition(const int _min = 0, const int _max = 30) const
+
+	NPC* GetShopkeeper() const
 	{
-		Vector2i _pos = Vector2i(GetRandomVector2i(_min, _max));
-
-		_pos.x *= (int)TILE_SIZE.x;
-		_pos.y *= (int)TILE_SIZE.y;
-
-		return _pos;
-	}
-
-	Shopkeeper* GetShopkeeper() const
-	{
-		return shopkeeper;
+		return generator->GetShopkeeper();
 	}
 
 	Zone GetCurrentZone() const
@@ -74,38 +52,9 @@ public:
 		currentZone = _currentZone;
 	}
 
-	Vector2f GetFirstTilePosition() const
-	{
-		if (floors.empty()) return Vector2f();
-		return floors[0]->GetShape()->getPosition();
-	}
-
-	vector<Vector2f> GetSpawnPositions()
-	{
-		vector<Vector2f> _positions;
-		for (Tile* _floor : floors)
-		{
-			_positions.push_back(_floor->GetPosition());
-		}
-
-		if (shop)
-		{
-			for (Tile* _floor : shop->GetFloor())
-			{
-				EraseElement(_positions, _floor->GetPosition());
-			}
-		}
-
-		for (Wall* _wall : walls)
-		{
-			EraseElement(_positions, _wall->GetPosition());
-		}
-
-		return _positions;
-	}
 	Entity* GetEntityAt(const Vector2f& _position)
 	{
-		for (Wall* _wall : walls)
+		for (Wall* _wall : generator->GetWalls())
 		{
 			if (_wall->GetPosition() == _position)
 			{
@@ -123,6 +72,9 @@ private:
 	void NextFloor();
 	void LoadMap();
 	void OpenLobby();
+	void GenerateDungeon();
+	void ClearGenerator();
+	void UpdateLights(const int _brightness);
 
 public:
 	void Prepare(const Zone& _zoneToOpen);
@@ -150,24 +102,9 @@ public:
 
 
 private:
-	void PrepareMap(const Zone& _currentZone);
+
 	void UpdateZoneFileName();
-	void Generate(const int _roomCount = 6, const int _amountOfEnemies = 25);
-	void GenerateRooms(const int _roomCount);
-	void UpdateDoors();
-	void SetFloorColor(Tile* _floor, const bool _creation = false);
-	
-	void UpdateTilesColor();
-	void GeneratePaths();
-	void GenerateWalls();
-	void GenerateShopRoom();
-	void SetAllFloorOriginColor();
-	void PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const bool _finalDestructible, const WallType& _type);
-	void GenerateDiamond(const int _diamondOnFloor = 1, int _diamondInWall = 2);
-	void SpawnEnnemy(const int _ennemyCount = 10);
-	void EraseOverlappings();
-	void NextLevel();
-	void NextMap();
+
 	void PrepareMusic();
 	void DeleteAll();
 

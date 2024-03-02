@@ -12,7 +12,7 @@ Skeleton::Skeleton(const float _maxHp, const float _maxDammage, const Vector2f& 
 {
 	skeletonType = SK_NONE;
 	cooldown = 2;
-	components.push_back(new AnimationComponent(this, _path, {
+	components.push_back(new AnimationComponent(this, {
 		AnimationData("Idle", Vector2f(24, 26), 0, 3, 0.1f, true),
 		AnimationData("Attack", Vector2f(24, 26), 4, 3, 0.1f, true),
 	}, "Attack", shape));

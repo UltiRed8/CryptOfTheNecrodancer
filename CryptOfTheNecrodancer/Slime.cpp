@@ -10,7 +10,7 @@
 Slime::Slime(const float _maxHp, const float _maxDammage, const Vector2f& _position, const string& _path, const int _droppedCoins) : Enemy(_maxHp, _maxDammage, STRING_ID("Slime"), _path, _position, _droppedCoins)
 {
 	slimeType = S_NONE;
-	components.push_back(new AnimationComponent(this, _path, {
+	components.push_back(new AnimationComponent(this, {
 		AnimationData("Idle", Vector2f(26, 26), 0, 3, 0.1f, false),
 	}, "Idle", shape));
 }
