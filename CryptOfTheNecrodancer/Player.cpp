@@ -148,6 +148,7 @@ void Player::InitInput()
 		  ActionData("temp1", [this]() { Map::GetInstance().OpenPrepared(); }, {Event::KeyPressed, Keyboard::Num5}),
 		  ActionData("DecreaseLife", [this]() { GetComponent<LifeComponent>()->ChangeHealth(-50); UpdateLife(); }, {Event::KeyPressed, Keyboard::M}),
 		  ActionData("Increase Life", [this]() { GetComponent<LifeComponent>()->ChangeHealth(50); UpdateLife(); }, {Event::KeyPressed, Keyboard::P}),
+		  ActionData("EMOTIONNAL DAMAGE", [this]() { DieEvent(); }, {Event::KeyPressed, Keyboard::O}),
 		});
 }
 
@@ -220,5 +221,6 @@ void Player::Update()
 
 void Player::DieEvent()
 {
-
+	Menu* _died = MenuManager::GetInstance().Get("Dead");
+	_died->Open();
 }

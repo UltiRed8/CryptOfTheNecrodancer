@@ -53,5 +53,8 @@ public :
 	void InitMenuLatency();
 	void LatencyMenu();
 
+	void InitGameOver();
+	void GameOverMenu();
+
 	#pragma endregion
 };

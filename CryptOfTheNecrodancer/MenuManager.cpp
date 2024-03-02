@@ -146,6 +146,7 @@ void MenuManager::InitMenu()
 	InitMenuClose();
 	InitGraphicMenu();
 	InitDeleteSaveDataMenu();
+	InitGameOver();
 }
 
 void MenuManager::InitMenuPause()
@@ -399,4 +400,25 @@ void MenuManager::InitMenuLatency()
 void MenuManager::LatencyMenu()
 {
 	Get("LatencyMenu")->Toggle();
+}
+
+void MenuManager::InitGameOver()
+{
+	/*MusicManager::GetInstance().getcu*/
+	function<void()> _return = [this]() { GameOverMenu();  GoToLobby();  };
+	function<void()> _restart = [&]() {  }; //TODO
+
+	float _x = static_cast<float>(window->getSize().x / 2);
+	unsigned int _windowY = window->getSize().y;
+
+	new Menu("Dead", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), AREYOUSURE),
+		new UIText("GameOverTxt", Vector2f(_x, static_cast<float>(_windowY / 4)), Color::White, "GAME OVER",60,FONT),
+		new UIText("DeadTxt", Vector2f(_x, static_cast<float>(_windowY / 3)), Color::White, "You are dead !",35,FONT),
+		new UIButton("QuickRestart", Vector2f(_x, static_cast<float>(_windowY / 1.8)), Color::White, Color::Cyan, "Quick Restart", 35, FONT, SOUND_EXIT, _restart),
+		new UIButton("ReturnToLobby", Vector2f(_x, static_cast<float>(_windowY / 1.6)), Color::White, Color::Cyan, "Return to Lobby", 35, FONT, SOUND_START, _return) }, 4);
+}
+
+void MenuManager::GameOverMenu()
+{
+	Get("Dead")->Toggle();
 }
