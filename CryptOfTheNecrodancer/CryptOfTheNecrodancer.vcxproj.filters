@@ -390,6 +390,9 @@
     <ClCompile Include="WindowManager.cpp">
       <Filter>Source Files\Manager\Window</Filter>
     </ClCompile>
+    <ClCompile Include="Generator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EntityManager.h">
@@ -613,6 +616,9 @@
     </ClInclude>
     <ClInclude Include="Zones.h">
       <Filter>Source Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Generator.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

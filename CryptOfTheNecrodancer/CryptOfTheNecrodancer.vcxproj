@@ -146,6 +146,7 @@
     <ClCompile Include="Consommable.cpp" />
     <ClCompile Include="DamageComponent.cpp" />
     <ClCompile Include="Door.cpp" />
+    <ClCompile Include="Generator.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
@@ -219,6 +220,7 @@
     <ClInclude Include="DamageComponent.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Door.h" />
+    <ClInclude Include="Generator.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
