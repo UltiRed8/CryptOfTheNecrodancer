@@ -3,7 +3,7 @@
 #include "Timer.h"
 
 
-class Bomb : public Placable
+class Bomb : public Placable //TODO
 {
 	bool isActive;
 	int cooldown;
