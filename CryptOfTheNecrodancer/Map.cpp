@@ -119,6 +119,40 @@ Map::~Map()
 	}
 }
 
+void Map::PrepareMusic()
+{
+	vector<string> _zones = {
+		"",
+		"zone1_",
+		"zone2_",
+	};
+	map<string, int> _bpmList = {
+		{ "zone1_1", 115 },
+		{ "zone1_2", 130 },
+		{ "zone1_3", 140 },
+
+		{ "zone2_1", 130 },
+		{ "zone2_2", 140 },
+		{ "zone2_3", 150 },
+
+		{ "zone3_1", 135 },
+		{ "zone3_2", 145 },
+		{ "zone3_3", 155 },
+
+		{ "zone4_1", 130 },
+		{ "zone4_2", 145 },
+		{ "zone4_3", 160 },
+
+		{ "zone5_1", 130 },
+		{ "zone5_2", 140 },
+		{ "zone5_3", 155 },
+	};
+
+	string _musicName = _zones[currentZone] + to_string(currentLevel);
+
+	MusicManager::GetInstance().PrepareMain(_musicName, _bpmList[_musicName], true);
+}
+
 void Map::Generate(const int _roomCount, const int _amountOfEnemies)
 {
 	MusicManager::GetInstance().StopAll();
@@ -126,7 +160,7 @@ void Map::Generate(const int _roomCount, const int _amountOfEnemies)
 	GeneratePaths();
 	EraseOverlappings();
 	GenerateShopRoom();
-	MusicManager::GetInstance().PrepareMain("zone1_1", 115, true);
+	PrepareMusic();
 	GenerateWalls();
 	EraseOverlappings();
 	SetAllFloorOriginColor();
@@ -259,6 +293,9 @@ void Map::Load(const string _path)
 	SetAllFloorOriginColor();
 
 	UpdateDoors();
+
+	MusicManager::GetInstance().PrepareMain("Lobby", 130, false, true);
+	MusicManager::GetInstance().Play();
 }
 
 void Map::AddFloorAt(const Vector2f& _position)

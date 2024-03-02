@@ -23,7 +23,7 @@ public :
 	void ClickAction();
 	void Update();
 
-	void InitMenu(RenderWindow* _window);
+	void InitMenu();
 
 	void InitHUD();
 	void InitInventory();

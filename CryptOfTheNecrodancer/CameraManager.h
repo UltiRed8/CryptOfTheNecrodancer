@@ -20,7 +20,7 @@ public :
 	CameraManager();
 
 public:
-	void Update(RenderWindow* _window);
+	void Update();
 	void ZoomIn();
 	void ZoomOut();
 	void Reset();

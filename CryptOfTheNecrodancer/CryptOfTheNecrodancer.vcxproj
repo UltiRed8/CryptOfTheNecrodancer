@@ -202,6 +202,7 @@
     <ClCompile Include="Usable.cpp" />
     <ClCompile Include="Wall.cpp" />
     <ClCompile Include="Wearable.cpp" />
+    <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Action.h" />
@@ -276,6 +277,7 @@
     <ClInclude Include="Usable.h" />
     <ClInclude Include="Wall.h" />
     <ClInclude Include="Wearable.h" />
+    <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

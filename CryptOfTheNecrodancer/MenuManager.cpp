@@ -12,6 +12,7 @@
 #include "Heart.h"
 #include "Map.h"
 #include "LightningManager.h"
+#include "WindowManager.h"
 
 #define FONT "Assets/Font/Font.ttf"
 #define RYTHMHEART0 "UI/RythmHearts0.png"
@@ -134,9 +135,9 @@ void MenuManager::InitInventory()
 	
 }
 
-void MenuManager::InitMenu(RenderWindow* _window)
+void MenuManager::InitMenu()
 {
-	window = _window;
+	window = WindowManager::GetInstance().GetWindow();
 	InitLeaveLobby();
 	InitMenuLatency();
 	InitHUD();

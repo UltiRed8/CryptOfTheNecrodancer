@@ -1,11 +1,9 @@
 #pragma once
 #include "Map.h"
 #include <iostream>
-#include <SFML/Graphics.hpp>
 #include "Player.h"
 
 using namespace std;
-using namespace sf;
 
 class Game
 {
@@ -21,7 +19,7 @@ private:
 	void Init();
 	void Start();
 	void Update();
-	void UpdateWindow();;
+	void UpdateWindow();
 	void Stop();
 
 public:
