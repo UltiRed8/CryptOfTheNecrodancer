@@ -28,7 +28,7 @@ public:
 
 		TextureManager::GetInstance().Load(shape, DIAMOND_IN_WALL);
 
-		components.push_back(new AnimationComponent(this, GetPathWithType(wallType), {
+		components.push_back(new AnimationComponent(this, {
 			AnimationData("DiamondInWall", Vector2f(24, 24), Random(2, 0) * 3, 2, 0.1f, false),
 		}, "DiamondInWall", shape));
 	}

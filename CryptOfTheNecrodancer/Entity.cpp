@@ -44,7 +44,6 @@ void Entity::Update()
 	}
 	for (Component* _component : components)
 	{
-		
 		_component->Update();
 	}
 }

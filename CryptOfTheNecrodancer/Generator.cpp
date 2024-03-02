@@ -80,8 +80,6 @@ void Generator::Generate(const int _roomCount, const int _amountOfEnemies)
 	GenerateWalls();
 	EraseOverlappings();
 	SetAllFloorOriginColor();
-	LightningManager::GetInstance().Construct(GetAllPositions(floors));
-	LightningManager::GetInstance().Construct(GetAllPositions(walls));
 	UpdateDoors();
 	SpawnEnnemy(_amountOfEnemies);
 	GenerateDiamond();
@@ -103,17 +101,8 @@ void Generator::GenerateLobby()
 		{ '.', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); }},
 		{ 'S', [this](const Vector2f& _position) { stairs.push_back(new Stair(_position)); }},
 		{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Door(_position)); }},
-		{ 'E', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Hephaestus(_position)); }},
-		{ 'M', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position));
-		NPC* _npc = new NPC("merlin.png",STRING_ID("Marchant"),_position - Vector2f(TILE_SIZE.x / 2.5f,TILE_SIZE.y / 2.f));
-		_npc->GetShape()->setScale(1.5f,1.5f);
-		_npc->AddComponent(new AnimationComponent(_npc, "merling.png",
-			{ AnimationData("Idle", Vector2f(32, 39), 0, 4, 0.1f, true), },
-			"Idle",
-			_npc->GetShape()
-		));
-
-		others.push_back(_npc); }},
+		{ 'E', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_HEPHAESTUS, _position)); }},
+		{ 'M', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_MERLIN, _position));}},
 		{ '2', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); /* TODO spawn item here (shops)*/ }},
 		{ '1', [this](const Vector2f& _position) { others.push_back(new Tile(PATH_UPGRADE_TILE, _position)); }},
 		{ 'P', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position); }},
@@ -153,33 +142,13 @@ void Generator::GenerateLobby()
 
 void Generator::GenerateRooms(const int _roomCount)
 {
-	const vector<Vector2f>& _availablePosition = GetEmptyTilesAround(floors);
-	const Vector2f& _position = _availablePosition[Random((int)_availablePosition.size() - 1, 0)];
-
-	shop = new Room(Vector2i(5, 7), _position);
-
-	vector<Tile*>& _shopkeeperTiles = shop->GetFloor();
-	const Vector2f& _shopkeeperPosition = _shopkeeperTiles[12]->GetPosition();
-	shopkeeper = new Shopkeeper(_shopkeeperPosition);
-	Tile* _first = _shopkeeperTiles[11];
-	Tile* _second = _shopkeeperTiles[13];
-	_first->SetTexture(PATH_SHOP_TILE);
-	_second->SetTexture(PATH_SHOP_TILE);
-	others.push_back(shopkeeper);
-	others.push_back(_first);
-	others.push_back(_second);
-
-	new Pickable(5, PT_DIAMOND, STRING_ID("diamond"), _shopkeeperTiles[17]->GetPosition());
-
-	const vector<Tile*>& _shopFloors = shop->GetFloor();
-	floors.insert(floors.end(), _shopFloors.begin(), _shopFloors.end());
-
-	PlaceWallsAroundFloor(_shopFloors, 1, false, WT_SHOP);
-
-	EraseElement(floors, _first);
-	EraseElement(floors, _second);
-
-	rooms.push_back(shop);
+	for (int _index = 0; _index < _roomCount; _index++)
+	{
+		Room* _room = new Room(GetRandomVector2i(4, 6), Vector2f(GetRandomRoomPosition()));
+		rooms.push_back(_room);
+		const vector<Tile*>& _roomFloor = _room->GetFloor();
+		floors.insert(floors.end(), _roomFloor.begin(), _roomFloor.end());
+	}
 }
 
 void Generator::PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const bool _finalDestructible, const WallType& _type)
@@ -307,7 +276,7 @@ void Generator::GenerateShopRoom()
 
 	vector<Tile*>& _shopkeeperTiles = shop->GetFloor();
 	const Vector2f& _shopkeeperPosition = _shopkeeperTiles[12]->GetPosition();
-	shopkeeper = new Shopkeeper(_shopkeeperPosition);
+	shopkeeper = new NPC(NPC_SHOPKEEPER, _shopkeeperPosition);
 	Tile* _first = _shopkeeperTiles[11];
 	Tile* _second = _shopkeeperTiles[13];
 	_first->SetTexture(PATH_SHOP_TILE);
@@ -397,17 +366,17 @@ void Generator::SpawnEnnemy(const int _amountOfEnemies)
 	}
 	_position = _positions[Random((int)_positions.size() - 1, 0)];
 	EraseElement(_positions, _position);
-	stairs.push_back(new Stair(_position));
+	stairs.push_back(new Stair(_position, Map::GetInstance().GetCurrentZone()));
 	_position = _positions[Random((int)_positions.size() - 1, 0)];
 	EraseElement(_positions, _position);
 	EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position);
 }
 
-void Generator::AddFloorAt(const Vector2f& _position, const string& _zoneFileName)
+void Generator::AddFloorAt(const Vector2f& _position)
 {
-	Tile* _floor = new Tile("Dungeons / " + _zoneFileName + " / floor.png", _position);
+	Tile* _floor = new Tile(PATH_FLOOR, _position);
 	floors.push_back(_floor);
-	//SetFloorColor(_floor);
+	SetFloorColor(_floor, true);
 }
 
 void Generator::AddOther(Entity* _entity)

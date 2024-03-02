@@ -1,12 +1,25 @@
 #pragma once
 #include "Living.h"
 
+enum NPCType
+{
+	NPC_SHOPKEEPER, NPC_MERLIN, NPC_HEPHAESTUS
+};
+
 class NPC : public Living
 {
-public:
-	NPC(const float _maxHp,const float _maxDamages,const string& _id, const string& _path, const Vector2f& _position);
-	NPC(const string& _path, const string& _id, const Vector2f& _position);
+	NPCType type;
+	int currentCooldown;
 
+public:
+	NPC(const NPCType& _type, const Vector2f& _position);
+
+private:
+	void ChangeTexture();
+	void UpdateAnimation();
+
+public:
 	virtual void DieEvent() override;
+	virtual void Update() override;
 };
 

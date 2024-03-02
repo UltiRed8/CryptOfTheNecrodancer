@@ -154,7 +154,6 @@
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Heart.cpp" />
-    <ClCompile Include="Hephaestus.cpp" />
     <ClCompile Include="InputData.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Inventory.cpp" />
@@ -183,7 +182,6 @@
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="RythmComponent.cpp" />
     <ClCompile Include="Saveable.cpp" />
-    <ClCompile Include="Shopkeeper.cpp" />
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="Slime.cpp" />
     <ClCompile Include="SoundData.cpp" />
@@ -228,7 +226,6 @@
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Heart.h" />
-    <ClInclude Include="Hephaestus.h" />
     <ClInclude Include="IManagable.h" />
     <ClInclude Include="IManager.h" />
     <ClInclude Include="InputData.h" />
@@ -258,7 +255,6 @@
     <ClInclude Include="Room.h" />
     <ClInclude Include="RythmComponent.h" />
     <ClInclude Include="Saveable.h" />
-    <ClInclude Include="Shopkeeper.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="Slime.h" />

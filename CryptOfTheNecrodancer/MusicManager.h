@@ -18,6 +18,7 @@ class MusicManager : public IManager<string, MusicData>, public Singleton<MusicM
 	MusicData* currentShopkeeper;
 	RythmType rythmType;
 
+	string musicPackName;
 	float* acceptDelay;
 	float minAcceptDelay;
 	float maxAcceptDelay;

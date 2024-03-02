@@ -14,6 +14,7 @@ public:
 	void SetPlayingID(const string& _id)
 	{
 		playingID = _id;
+		Update();
 	}
 	vector<Drawable*> GetDrawables() const
 	{
@@ -43,11 +44,11 @@ public:
 	}
 
 public:
-	AnimationComponent(Entity* _owner, const string& _path, const vector<AnimationData>& _animationsData, const string& _playingID, Shape* _shape);
+	AnimationComponent(Entity* _owner, const vector<AnimationData>& _animationsData, const string& _playingID, Shape* _shape);
 	~AnimationComponent();
 
 private:
-	void InitAnimations(const string& _path, const vector<AnimationData>& _animationsData);
+	void InitAnimations(const vector<AnimationData>& _animationsData);
 
 public:
 	virtual void Update() override;
