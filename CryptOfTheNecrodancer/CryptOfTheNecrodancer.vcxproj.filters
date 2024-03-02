@@ -73,15 +73,6 @@
     <Filter Include="Source Files\Map">
       <UniqueIdentifier>{a64053eb-d87f-4ef0-9af8-3be1234a0eeb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Object\Entity\Enemy">
-      <UniqueIdentifier>{d3f52850-86a0-42f7-8060-090f9f927dea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Object\Entity\Enemy\Bat">
-      <UniqueIdentifier>{8f24dab0-f035-4845-b8dc-2aa1a7138268}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Object\Entity\Player">
-      <UniqueIdentifier>{88536bd7-de51-4ea6-b5a9-b5ed68a87419}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Able">
       <UniqueIdentifier>{fa77cff4-204e-4b56-bd62-86d26aa2823c}</UniqueIdentifier>
     </Filter>
@@ -96,9 +87,6 @@
     </Filter>
     <Filter Include="Source Files\Map\Room">
       <UniqueIdentifier>{8908e230-f6da-4126-9719-a22caa4435a9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Map\Tile">
-      <UniqueIdentifier>{b2c656ec-a312-40dd-bb0f-365740f5348f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Inventory\Item">
       <UniqueIdentifier>{34e69d28-4940-48b4-b138-1637b81b35f4}</UniqueIdentifier>
@@ -148,9 +136,6 @@
     <Filter Include="Source Files\Object\UiElement\UIText">
       <UniqueIdentifier>{1c2ba4a1-89fd-4162-9c61-842f05907667}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Object\Entity\Player\PlayerRessource">
-      <UniqueIdentifier>{427e4f6e-7c0d-492a-9953-cb652aba53cf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Object\Entity\Door">
       <UniqueIdentifier>{ca7df201-8f3d-40a1-9758-73844ab4f07d}</UniqueIdentifier>
     </Filter>
@@ -177,6 +162,36 @@
     </Filter>
     <Filter Include="Source Files\Manager\Window">
       <UniqueIdentifier>{19b40a1e-06d5-450f-b09b-63631cc43080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Inventory\Item\Bomb">
+      <UniqueIdentifier>{47d4f681-6539-4c4e-a8ed-f8466377acdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Living\Enemy">
+      <UniqueIdentifier>{d3f52850-86a0-42f7-8060-090f9f927dea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Living\Enemy\Bat">
+      <UniqueIdentifier>{8f24dab0-f035-4845-b8dc-2aa1a7138268}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Living\Enemy\Shopkeeper">
+      <UniqueIdentifier>{b2c7eb62-20cb-4cf4-89d7-b52aef81af34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Living\Enemy\Skeleton">
+      <UniqueIdentifier>{0358824a-58e1-4652-a5b0-bc839e16cae6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Living\Enemy\Slime">
+      <UniqueIdentifier>{3a61611e-7d9e-4750-823e-096927704d06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Living\Player">
+      <UniqueIdentifier>{88536bd7-de51-4ea6-b5a9-b5ed68a87419}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Living\Player\PlayerRessource">
+      <UniqueIdentifier>{427e4f6e-7c0d-492a-9953-cb652aba53cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Living\NPC">
+      <UniqueIdentifier>{12b5c430-2bca-4927-a950-f46efe366257}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Entity\Living\NPC\Hephaestus">
+      <UniqueIdentifier>{82256eb2-40cf-418e-afbe-515ba130c6d9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -265,13 +280,7 @@
       <Filter>Source Files\Map</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>Source Files\Object\Entity\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Skeleton.cpp">
-      <Filter>Source Files\Object\Entity\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Slime.cpp">
-      <Filter>Source Files\Object\Entity\Enemy</Filter>
+      <Filter>Source Files\Object\Entity\Living\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Inventory.cpp">
       <Filter>Source Files\Inventory</Filter>
@@ -286,10 +295,7 @@
       <Filter>Source Files\Manager\Light</Filter>
     </ClCompile>
     <ClCompile Include="Bat.cpp">
-      <Filter>Source Files\Object\Entity\Enemy\Bat</Filter>
-    </ClCompile>
-    <ClCompile Include="Shopkeeper.cpp">
-      <Filter>Source Files\Object\Entity\Enemy</Filter>
+      <Filter>Source Files\Object\Entity\Living\Enemy\Bat</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Source Files\Game</Filter>
@@ -343,7 +349,7 @@
       <Filter>Source Files\Object\UiElement\UIText</Filter>
     </ClCompile>
     <ClCompile Include="PlayerRessource.cpp">
-      <Filter>Source Files\Object\Entity\Player\PlayerRessource</Filter>
+      <Filter>Source Files\Object\Entity\Living\Player\PlayerRessource</Filter>
     </ClCompile>
     <ClCompile Include="Door.cpp">
       <Filter>Source Files\Object\Entity\Door</Filter>
@@ -357,9 +363,6 @@
     <ClCompile Include="Trap.cpp">
       <Filter>Source Files\Object\Entity\Trap</Filter>
     </ClCompile>
-    <ClCompile Include="Hephaestus.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Placable.cpp">
       <Filter>Source Files\Object\Entity\Placable</Filter>
     </ClCompile>
@@ -369,26 +372,38 @@
     <ClCompile Include="Tile.cpp">
       <Filter>Source Files\Object\Entity\Placable</Filter>
     </ClCompile>
-    <ClCompile Include="Pickable.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="WindowManager.cpp">
+      <Filter>Source Files\Manager\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="LightSource.cpp">
+      <Filter>Source Files\Manager\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Bomb.cpp">
+      <Filter>Source Files\Inventory\Item\Bomb</Filter>
+    </ClCompile>
+    <ClCompile Include="Slime.cpp">
+      <Filter>Source Files\Object\Entity\Living\Enemy\Slime</Filter>
+    </ClCompile>
+    <ClCompile Include="Skeleton.cpp">
+      <Filter>Source Files\Object\Entity\Living\Enemy\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Shopkeeper.cpp">
+      <Filter>Source Files\Object\Entity\Living\Enemy\Shopkeeper</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Object\Entity\Living\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Pickable.cpp">
       <Filter>Source Files\Object\Entity\Pickable</Filter>
     </ClCompile>
     <ClCompile Include="Living.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Bomb.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LightSource.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Object\Entity\Living</Filter>
     </ClCompile>
     <ClCompile Include="NPC.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Object\Entity\Living\NPC</Filter>
     </ClCompile>
-    <ClCompile Include="WindowManager.cpp">
-      <Filter>Source Files\Manager\Window</Filter>
+    <ClCompile Include="Hephaestus.cpp">
+      <Filter>Source Files\Object\Entity\Living\NPC\Hephaestus</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -486,16 +501,10 @@
       <Filter>Source Files\Map</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>Source Files\Object\Entity\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Slime.h">
-      <Filter>Source Files\Object\Entity\Enemy</Filter>
+      <Filter>Source Files\Object\Entity\Living\Player</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>Source Files\Object\Entity\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Skeleton.h">
-      <Filter>Source Files\Object\Entity\Enemy</Filter>
+      <Filter>Source Files\Object\Entity\Living\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Inventory.h">
       <Filter>Source Files\Inventory</Filter>
@@ -509,11 +518,8 @@
     <ClInclude Include="LightningManager.h">
       <Filter>Source Files\Manager\Light</Filter>
     </ClInclude>
-    <ClInclude Include="Shopkeeper.h">
-      <Filter>Source Files\Object\Entity\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="Bat.h">
-      <Filter>Source Files\Object\Entity\Enemy\Bat</Filter>
+      <Filter>Source Files\Object\Entity\Living\Enemy\Bat</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Source Files\Game</Filter>
@@ -567,7 +573,7 @@
       <Filter>Source Files\Object\UiElement\UIText</Filter>
     </ClInclude>
     <ClInclude Include="PlayerRessource.h">
-      <Filter>Source Files\Object\Entity\Player\PlayerRessource</Filter>
+      <Filter>Source Files\Object\Entity\Living\Player\PlayerRessource</Filter>
     </ClInclude>
     <ClInclude Include="Door.h">
       <Filter>Source Files\Object\Entity\Door</Filter>
@@ -581,9 +587,6 @@
     <ClInclude Include="Trap.h">
       <Filter>Source Files\Object\Entity\Trap</Filter>
     </ClInclude>
-    <ClInclude Include="Hephaestus.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Placable.h">
       <Filter>Source Files\Object\Entity\Placable</Filter>
     </ClInclude>
@@ -596,23 +599,35 @@
     <ClInclude Include="Pickable.h">
       <Filter>Source Files\Object\Entity\Pickable</Filter>
     </ClInclude>
-    <ClInclude Include="Living.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Bomb.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LightSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NPC.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="WindowManager.h">
       <Filter>Source Files\Manager\Window</Filter>
     </ClInclude>
     <ClInclude Include="Zones.h">
       <Filter>Source Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="LightSource.h">
+      <Filter>Source Files\Manager\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Bomb.h">
+      <Filter>Source Files\Inventory\Item\Bomb</Filter>
+    </ClInclude>
+    <ClInclude Include="Slime.h">
+      <Filter>Source Files\Object\Entity\Living\Enemy\Slime</Filter>
+    </ClInclude>
+    <ClInclude Include="Skeleton.h">
+      <Filter>Source Files\Object\Entity\Living\Enemy\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Shopkeeper.h">
+      <Filter>Source Files\Object\Entity\Living\Enemy\Shopkeeper</Filter>
+    </ClInclude>
+    <ClInclude Include="Living.h">
+      <Filter>Source Files\Object\Entity\Living</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC.h">
+      <Filter>Source Files\Object\Entity\Living\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="Hephaestus.h">
+      <Filter>Source Files\Object\Entity\Living\NPC\Hephaestus</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
