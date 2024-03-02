@@ -8,11 +8,11 @@
 #include "Stair.h"
 #include "Zones.h"
 
+#include "NPC.h"
+
 #include "Bat.h"
 #include "Slime.h"
 #include "Skeleton.h"
-
-#include "Shopkeeper.h"
 
 #include <iostream>
 #include <functional>
@@ -40,7 +40,7 @@ class Map : public Singleton<Map>
 	bool chainToggle;
 	bool isPurple;
 
-	Shopkeeper* shopkeeper;
+	NPC* shopkeeper;
 
 	string zoneFileName;
 
@@ -59,7 +59,7 @@ public:
 		return _pos;
 	}
 
-	Shopkeeper* GetShopkeeper() const
+	NPC* GetShopkeeper() const
 	{
 		return shopkeeper;
 	}

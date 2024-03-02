@@ -1,9 +1,9 @@
 #include "AnimationComponent.h"
 
-AnimationComponent::AnimationComponent(Entity* _owner, const string& _path, const vector<AnimationData>& _animationsData, const string& _playingID, Shape* _shape) : Component(_owner)
+AnimationComponent::AnimationComponent(Entity* _owner, const vector<AnimationData>& _animationsData, const string& _playingID, Shape* _shape) : Component(_owner)
 {
 	shape = _shape;
-	InitAnimations(_path, _animationsData);
+	InitAnimations(_animationsData);
 	currentIndex = -1;
 	playingID = _playingID;
 	Update();
@@ -18,7 +18,7 @@ AnimationComponent::~AnimationComponent()
 	}
 }
 
-void AnimationComponent::InitAnimations(const string& _path, const vector<AnimationData>& _animationsData)
+void AnimationComponent::InitAnimations(const vector<AnimationData>& _animationsData)
 {
 	for (const AnimationData& _data : _animationsData)
 	{
@@ -40,6 +40,6 @@ void AnimationComponent::Update()
 	}
 
 	Animation* _animation = GetAllValues()[_newIndex];
-	_animation->Start();
+	_animation->Replay();
 	currentIndex = _newIndex;
 }

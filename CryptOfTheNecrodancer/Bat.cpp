@@ -19,7 +19,7 @@ Bat::Bat(const Vector2f& _position) :Enemy(100.f,50.f,STRING_ID("Bat"), PATH_BAT
 		Vector2i(0,-1),
 	};
 
-	components.push_back(new AnimationComponent(this, PATH_BAT, {
+	components.push_back(new AnimationComponent(this, {
 		AnimationData("Idle", Vector2f(24, 24), 0, 3, 0.1f, true),
 	}, "Idle", shape));
 

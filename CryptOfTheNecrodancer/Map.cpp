@@ -3,12 +3,13 @@
 #include "Player.h"
 #include "Door.h"
 #include "LightningManager.h"
+#include "MusicManager.h"
 #include "CameraManager.h"
-#include "Hephaestus.h"
 
 #define PATH_SHOP_TILE "Dungeons/ShopTile.png"
 #define PATH_UPGRADE_TILE "Dungeons/UpgradeTile.png"
 #define PATH_FLOOR "Dungeons/" + GetZoneFileName() + "/floor.png"
+#define PATH_MERLIN "Entities/Merlin.png"
 
 #define C_BROWN Color(135, 79, 2, 255)
 #define C_LIGHT_BROWN Color(135, 79, 2, 200)
@@ -75,7 +76,7 @@ void Map::GenerateShopRoom()
 
 	vector<Tile*>& _shopkeeperTiles = shop->GetFloor();
 	const Vector2f& _shopkeeperPosition = _shopkeeperTiles[12]->GetPosition();
-	shopkeeper = new Shopkeeper(_shopkeeperPosition);
+	shopkeeper = new NPC(NPC_SHOPKEEPER, _shopkeeperPosition);
 	Tile* _first = _shopkeeperTiles[11];
 	Tile* _second = _shopkeeperTiles[13];
 	_first->SetTexture(PATH_SHOP_TILE);
@@ -342,17 +343,8 @@ void Map::OpenLobby()
 		{ '.', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); }},
 		{ 'S', [this](const Vector2f& _position) { stairs.push_back(new Stair(_position)); }},
 		{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Door(_position)); }},
-		{ 'E', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Hephaestus(_position)); }},
-		{ 'M', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position));
-		NPC* _npc = new NPC("merlin.png",STRING_ID("Marchant"),_position - Vector2f(TILE_SIZE.x / 2.5f,TILE_SIZE.y / 2.f));
-		_npc->GetShape()->setScale(1.5f,1.5f);
-		_npc->AddComponent(new AnimationComponent(_npc, "merling.png",
-			{ AnimationData("Idle", Vector2f(32, 39), 0, 4, 0.1f, true), },
-			"Idle",
-			_npc->GetShape()
-		));
-
-		others.push_back(_npc); }},
+		{ 'E', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_HEPHAESTUS, _position)); }},
+		{ 'M', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_MERLIN, _position));}},
 		{ '2', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); /* TODO spawn item here (shops)*/ }},
 		{ '1', [this](const Vector2f& _position) { others.push_back(new Tile(PATH_UPGRADE_TILE, _position)); }},
 		{ 'P', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position); }},
