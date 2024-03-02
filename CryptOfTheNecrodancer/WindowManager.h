@@ -21,8 +21,10 @@ public:
 		return window;
 	}
 
-public:
+private:
 	void CreateWindow();
+
+public:
 	void Rename(const string& _newWindowName);
 	void Shake(const int _strength);
 };

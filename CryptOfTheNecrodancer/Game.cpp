@@ -25,7 +25,6 @@ Game::~Game()
 
 void Game::Init()
 {
-	WindowManager::GetInstance().CreateWindow();
 	window = WindowManager::GetInstance().GetWindow();
 	MenuManager::GetInstance().InitMenu();
 	TimerManager::GetInstance().SetMaxFrameRate(60);
