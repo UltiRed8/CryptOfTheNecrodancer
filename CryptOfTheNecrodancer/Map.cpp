@@ -4,14 +4,7 @@
 #include "Door.h"
 #include "LightningManager.h"
 #include "CameraManager.h"
-#include "Hephaestus.h"
-
-#define PATH_SHOP_TILE "Dungeons/ShopTile.png"
-#define PATH_UPGRADE_TILE "Dungeons/UpgradeTile.png"
-#define PATH_FLOOR "Dungeons/" + GetZoneFileName() + "/floor.png"
-
-#define C_BROWN Color(135, 79, 2, 255)
-#define C_LIGHT_BROWN Color(135, 79, 2, 200)
+#include "MusicManager.h"
 
 Map::Map()
 {
@@ -47,13 +40,14 @@ void Map::OpenPrepared()
 	{
 		if (currentZone != Z_LOBBY)
 		{
+			currentZone = preparedZone;
 			NextFloor();
 		}
 	}
 	else
 	{
-		LoadMap();
 		currentZone = preparedZone;
+		LoadMap();
 	}
 }
 
@@ -73,10 +67,7 @@ void Map::NextFloor()
 	}
 	else
 	{
-		// Regenerate with dungeon class
-		cout << "next floor" << endl;
-		ClearGenerator();
-		generator->Generate(6, 25);
+		GenerateDungeon();
 	}
 }
 
@@ -89,12 +80,27 @@ void Map::LoadMap()
 	}
 	else
 	{
+		dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetRessources()->SetDiamonds(0);
 		currentLevel = 1;
-		// Generate with dungeon class
-		cout << "open dungeon" << endl;
-		ClearGenerator();
-		generator->Generate(6, 25);
+		GenerateDungeon();
 	}
+}
+
+void Map::GenerateDungeon()
+{
+	ClearGenerator();
+	generator->Generate(6, 25);
+	UpdateLights(2);
+
+	PrepareMusic();
+	MusicManager::GetInstance().Play();
+}
+
+void Map::UpdateLights(const int _brightness)
+{
+	LightningManager& _light = LightningManager::GetInstance();
+	_light.ClearAll();
+	_light.Construct(generator->GetAllWallsAndFloorPositions(), _brightness);
 }
 
 void Map::UpdateZoneFileName()
@@ -105,7 +111,7 @@ void Map::UpdateZoneFileName()
 		"zone2_",
 	};
 
-	zoneFileName = _zones[preparedZone] + to_string(preparedZone);
+	zoneFileName = _zones[preparedZone] + to_string(currentLevel + 1);
 }
 
 void Map::PrepareMusic()
@@ -135,20 +141,20 @@ void Map::PrepareMusic()
 	MusicManager::GetInstance().PrepareMain(zoneFileName, _bpmList[zoneFileName], true);
 }
 
-//TODO mettre les methode pour changer les musique en fonction de la zone
-
 void Map::OpenLobby()
 {
+	dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetRessources()->SetMoney(0);
 	UpdateZoneFileName();
 	ClearGenerator();
 	generator->GenerateLobby();
+	UpdateLights(50);
 	MusicManager::GetInstance().PrepareMain("Lobby", 130, false, true);
 	MusicManager::GetInstance().Play();
 }
 
 void Map::AddFloorAt(const Vector2f& _position)
 {
-	generator->AddFloorAt(_position,GetZoneFileName());
+	generator->AddFloorAt(_position);
 }
 
 void Map::Update()

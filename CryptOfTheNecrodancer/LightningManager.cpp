@@ -1,12 +1,13 @@
 #include "LightningManager.h"
 
-void LightningManager::Construct(const vector<Vector2f>& _allEntitiesPos)
+void LightningManager::Construct(const vector<Vector2f>& _allEntitiesPos, const int _brightness)
 {
 	const int _size = static_cast<int>(_allEntitiesPos.size());
 	for (int _index = 0; _index < _size; _index++)
 	{
-		shadowTiles.push_back(new Tile("",_allEntitiesPos[_index],ET_SHADOW));
+		shadowTiles.push_back(new Tile("",_allEntitiesPos[_index], ET_SHADOW));
 	}
+	brightness = _brightness;
 }
 
 void LightningManager::ClearAll()
@@ -25,7 +26,7 @@ void LightningManager::Update()
 		Shape* _shape = _tile->GetShape();
 
 		Color _color = _shape->getFillColor();
-		_color.a = 250;
+		_color.a = 255 * ((100.0f - (float)brightness) / 100.0f);
 		_shape->setFillColor(_color);
 	}
 

@@ -12,8 +12,6 @@
 #include "Slime.h"
 #include "Skeleton.h"
 
-#include "Shopkeeper.h"
-
 #include <iostream>
 #include <functional>
 #include <fstream>
@@ -38,17 +36,8 @@ public:
 	{
 		return zoneFileName.substr(0, zoneFileName.find_first_of('_'));
 	}
-	Vector2i GetRandomRoomPosition(const int _min = 0, const int _max = 30) const
-	{
-		Vector2i _pos = Vector2i(GetRandomVector2i(_min, _max));
 
-		_pos.x *= (int)TILE_SIZE.x;
-		_pos.y *= (int)TILE_SIZE.y;
-
-		return _pos;
-	}
-
-	Shopkeeper* GetShopkeeper() const
+	NPC* GetShopkeeper() const
 	{
 		return generator->GetShopkeeper();
 	}
@@ -74,40 +63,6 @@ public:
 		}
 		return nullptr;
 	}
-	/*vector<Vector2f> GetSpawnPositions()
-	{
-		vector<Vector2f> _positions;
-		for (Tile* _floor : floors)
-		{
-			_positions.push_back(_floor->GetPosition());
-		}
-
-		if (shop)
-		{
-			for (Tile* _floor : shop->GetFloor())
-			{
-				EraseElement(_positions, _floor->GetPosition());
-			}
-		}
-
-		for (Wall* _wall : walls)
-		{
-			EraseElement(_positions, _wall->GetPosition());
-		}
-
-		return _positions;
-	}
-	Entity* GetEntityAt(const Vector2f& _position)
-	{
-		for (Wall* _wall : walls)
-		{
-			if (_wall->GetPosition() == _position)
-			{
-				return _wall;
-			}
-		}
-		return nullptr;
-	}*/
 
 public:
 	Map();
@@ -117,12 +72,14 @@ private:
 	void NextFloor();
 	void LoadMap();
 	void OpenLobby();
+	void GenerateDungeon();
+	void ClearGenerator();
+	void UpdateLights(const int _brightness);
 
 public:
 	void Prepare(const Zone& _zoneToOpen);
 	void Open(const Zone& _zoneToOpen);
 	void OpenPrepared();
-	void ClearGenerator();
 	
 
 

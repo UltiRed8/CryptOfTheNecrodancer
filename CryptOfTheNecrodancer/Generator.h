@@ -1,18 +1,19 @@
 #pragma once
+
 #include "Wall.h"
 #include "Tile.h"
 #include "Zones.h"
-#include "Shopkeeper.h"
 #include "Room.h"
 #include "Pickable.h"
 #include "Path.h"
 #include "EntityManager.h"
 #include "Door.h"
+#include "NPC.h"
 #include "Stair.h"
 #include "Slime.h"
 #include "Skeleton.h"
 #include "Bat.h"
-#include "Hephaestus.h"
+
 #include <fstream>
 
 #define C_BROWN Color(135, 79, 2, 255)
@@ -37,12 +38,30 @@ class Generator
 	bool chainToggle;
 	bool isPurple;
 
-	Shopkeeper* shopkeeper;
+	NPC* shopkeeper;
 
 	string zoneFileName;
 
 
 public:
+	vector<Vector2f> GetAllWallsAndFloorPositions() const
+	{
+		vector<Vector2f> _positions = GetAllPositions(floors);
+
+		vector<Vector2f> _temp = GetAllPositions(walls);
+		_positions.insert(_positions.end(), _temp.begin(), _temp.end());
+
+		return _positions;
+	}
+	Vector2i GetRandomRoomPosition(const int _min = 0, const int _max = 30) const
+	{
+		Vector2i _pos = Vector2i(GetRandomVector2i(_min, _max));
+
+		_pos.x *= (int)TILE_SIZE.x;
+		_pos.y *= (int)TILE_SIZE.y;
+
+		return _pos;
+	}
 	void SetFloorColor(Tile* _floor, const bool _creation)
 	{
 		const Vector2f& _position = _floor->GetPosition();
@@ -95,7 +114,7 @@ public:
 		return _positions;
 	}
 
-	Shopkeeper* GetShopkeeper() 
+	NPC* GetShopkeeper() 
 	{
 		return shopkeeper;
 	}
@@ -124,7 +143,7 @@ private:
 public:
 	void Generate(const int _roomCount, const int _amountOfEnemies);
 	void GenerateLobby();
-	void AddFloorAt(const Vector2f& _position, const string& _zoneFileName);
+	void AddFloorAt(const Vector2f& _position);
 	void AddOther(Entity* _entity);
 	void Update();
 	
@@ -159,8 +178,6 @@ public:
 				}
 			}
 		}
-
 		return _availablePositions;
 	}
 };
-
