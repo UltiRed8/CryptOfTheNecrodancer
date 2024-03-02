@@ -8,6 +8,7 @@
 #include "RythmComponent.h"
 #include "MenuManager.h"
 #include "LightningManager.h"
+#include "Heart.h"
 
 MusicManager::MusicManager()
 {
@@ -266,7 +267,7 @@ void MusicManager::UpdateLoop()
 		new Timer("ResetEvent", [this]() {
 			TriggerEvent();
 			didEvent = false;
-		}, milliseconds(*acceptDelay / (Int32)2), 1, true);
+		}, milliseconds((Int32)(*acceptDelay / 2)), 1, true);
 		delta = 0;
 	}, seconds(1.f / (currentBPM / 60.f)), -1);
 }
@@ -283,6 +284,7 @@ bool MusicManager::TriggerEvent()
 		Map::GetInstance().Update();
 		EntityManager::GetInstance().Update();
 		LightningManager::GetInstance().Update();
+		dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->UpdateHeartAnimation();
 		return true;
 	}
 	else
