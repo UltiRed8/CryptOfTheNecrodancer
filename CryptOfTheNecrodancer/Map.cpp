@@ -234,6 +234,16 @@ void Map::Load(const string _path)
 		{ 'S', [this](const Vector2f& _position) { others.push_back(new Stair(PATH_STAIR, _position)); }},
 		{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Door(_position)); }},
 		{ 'E', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Hephaestus(_position)); }},
+		{ 'M', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position));
+		NPC* _npc = new NPC("merlin.png",STRING_ID("Marchant"),_position - Vector2f(TILE_SIZE.x / 2.5f,TILE_SIZE.y / 2.f));
+		_npc->GetShape()->setScale(1.5f,1.5f);
+		_npc->AddComponent(new AnimationComponent(_npc, "merling.png",
+			{ AnimationData("Idle", Vector2f(32, 39), 0, 4, 0.1f, true), },
+			"Idle",
+			_npc->GetShape()
+		));
+
+		others.push_back(_npc); }},
 	};
 
 	string _line;

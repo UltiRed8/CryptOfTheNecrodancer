@@ -59,6 +59,11 @@ public:
 		return _drawables;
 	}
 
+	void AddComponent(Component* _component)
+	{
+		components.push_back(_component);
+	}
+
 	Vector2f GetPosition()const 
 	{
 		return shape->getPosition();
