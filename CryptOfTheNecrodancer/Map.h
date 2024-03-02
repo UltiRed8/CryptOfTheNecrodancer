@@ -18,6 +18,8 @@
 #include <functional>
 #include <fstream>
 
+#include "Generator.h"
+
 using namespace std;
 
 class Map : public Singleton<Map>
@@ -25,24 +27,11 @@ class Map : public Singleton<Map>
 	Zone preparedZone;
 	Zone currentZone;
 	int currentLevel;
-
-	vector<Room*> rooms;
-	vector<Path*> paths;
-
-	vector<Tile*> floors;
-	vector<Wall*> walls;
-	vector<Entity*> others;
-	vector<Stair*> stairs;
-
-	Room* shop;
-
 	int tempoIndex;
 	bool chainToggle;
 	bool isPurple;
-
-	Shopkeeper* shopkeeper;
-
 	string zoneFileName;
+	Generator* generator;
 
 public:
 	string GetZoneFileName() const
@@ -61,7 +50,7 @@ public:
 
 	Shopkeeper* GetShopkeeper() const
 	{
-		return shopkeeper;
+		return generator->GetShopkeeper();
 	}
 
 	Zone GetCurrentZone() const
@@ -74,13 +63,18 @@ public:
 		currentZone = _currentZone;
 	}
 
-	Vector2f GetFirstTilePosition() const
+	Entity* GetEntityAt(const Vector2f& _position)
 	{
-		if (floors.empty()) return Vector2f();
-		return floors[0]->GetShape()->getPosition();
+		for (Wall* _wall : generator->GetWalls())
+		{
+			if (_wall->GetPosition() == _position)
+			{
+				return _wall;
+			}
+		}
+		return nullptr;
 	}
-
-	vector<Vector2f> GetSpawnPositions()
+	/*vector<Vector2f> GetSpawnPositions()
 	{
 		vector<Vector2f> _positions;
 		for (Tile* _floor : floors)
@@ -113,7 +107,7 @@ public:
 			}
 		}
 		return nullptr;
-	}
+	}*/
 
 public:
 	Map();
@@ -128,6 +122,7 @@ public:
 	void Prepare(const Zone& _zoneToOpen);
 	void Open(const Zone& _zoneToOpen);
 	void OpenPrepared();
+	void ClearGenerator();
 	
 
 
@@ -150,24 +145,9 @@ public:
 
 
 private:
-	void PrepareMap(const Zone& _currentZone);
+
 	void UpdateZoneFileName();
-	void Generate(const int _roomCount = 6, const int _amountOfEnemies = 25);
-	void GenerateRooms(const int _roomCount);
-	void UpdateDoors();
-	void SetFloorColor(Tile* _floor, const bool _creation = false);
-	
-	void UpdateTilesColor();
-	void GeneratePaths();
-	void GenerateWalls();
-	void GenerateShopRoom();
-	void SetAllFloorOriginColor();
-	void PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const bool _finalDestructible, const WallType& _type);
-	void GenerateDiamond(const int _diamondOnFloor = 1, int _diamondInWall = 2);
-	void SpawnEnnemy(const int _ennemyCount = 10);
-	void EraseOverlappings();
-	void NextLevel();
-	void NextMap();
+
 	void PrepareMusic();
 	void DeleteAll();
 
