@@ -21,7 +21,6 @@
 class Generator
 {
 	Zone zone;
-	int currentLevel;
 
 	vector<Room*> rooms;
 	vector<Path*> paths;
