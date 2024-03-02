@@ -19,7 +19,7 @@ Pickable::Pickable(const int _amount, const PickableType& _type, const string& _
 	{
 		if (_type == PT_COIN)
 		{
-			TextureManager::GetInstance().LoadFromTextureSheet(shape, PATH_COIN, Random(4, 0), Vector2i(24, 24));
+			TextureManager::GetInstance().LoadFromTextureSheet(shape, PATH_COIN, Random(3, 0), Vector2i(24, 24));
 		}
 		else
 		{
