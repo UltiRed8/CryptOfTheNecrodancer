@@ -7,7 +7,8 @@
 #include "Hephaestus.h"
 
 #define PATH_SHOP_TILE "Dungeons/ShopTile.png"
-#define PATH_FLOOR "Dungeons/Zone1/floor.png"
+#define PATH_UPGRADE_TILE "Dungeons/UpgradeTile.png"
+#define PATH_FLOOR "Dungeons/" + GetZoneFileName() + "/floor.png"
 
 #define C_BROWN Color(135, 79, 2, 255)
 #define C_LIGHT_BROWN Color(135, 79, 2, 200)
@@ -98,7 +99,8 @@ void Map::GenerateShopRoom()
 
 Map::Map()
 {
-	currentZone = CL_Lobby;
+	zoneFileName = "";
+	currentZone = Z_ZONE1;
 	currentLevel = 0;
 	tempoIndex = 1;
 	chainToggle = true;
@@ -119,13 +121,84 @@ Map::~Map()
 	}
 }
 
-void Map::PrepareMusic()
+void Map::Prepare(const Zone& _zoneToOpen)
+{
+	preparedZone = _zoneToOpen;
+}
+
+void Map::Open(const Zone& _zoneToOpen)
+{
+	Prepare(_zoneToOpen);
+	OpenPrepared();
+}
+
+void Map::OpenPrepared()
+{
+	UpdateZoneFileName();
+	if (preparedZone == currentZone)
+	{
+		if (currentZone != Z_LOBBY)
+		{
+			NextFloor();
+		}
+	}
+	else
+	{
+		LoadMap();
+		currentZone = preparedZone;
+	}
+}
+
+void Map::NextFloor()
+{
+	currentLevel++;
+	if (currentLevel > 3)
+	{
+		Open(Z_LOBBY);
+		return;
+	}
+	else
+	{
+		// Regenerate with dungeon class
+		cout << "next floor" << endl;
+		// TODO
+	}
+}
+
+void Map::LoadMap()
+{
+	if (preparedZone == Z_LOBBY)
+	{
+		currentLevel = 0;
+		OpenLobby();
+	}
+	else
+	{
+		currentLevel = 1;
+		// Generate with dungeon class
+		cout << "open dungeon" << endl;
+		// TODO
+	}
+}
+
+void Map::PrepareMap(const Zone& _zone)
+{
+	preparedZone = _zone;
+}
+
+void Map::UpdateZoneFileName()
 {
 	vector<string> _zones = {
-		"",
+		"zone1_", // Lobby has the same textures as Zone 1
 		"zone1_",
 		"zone2_",
 	};
+
+	zoneFileName = _zones[preparedZone] + to_string(preparedZone);
+}
+
+void Map::PrepareMusic()
+{
 	map<string, int> _bpmList = {
 		{ "zone1_1", 115 },
 		{ "zone1_2", 130 },
@@ -148,13 +221,12 @@ void Map::PrepareMusic()
 		{ "zone5_3", 155 },
 	};
 
-	string _musicName = _zones[currentZone] + to_string(currentLevel);
-
-	MusicManager::GetInstance().PrepareMain(_musicName, _bpmList[_musicName], true);
+	MusicManager::GetInstance().PrepareMain(zoneFileName, _bpmList[zoneFileName], true);
 }
 
 void Map::Generate(const int _roomCount, const int _amountOfEnemies)
 {
+	UpdateZoneFileName();
 	MusicManager::GetInstance().StopAll();
 	GenerateRooms(_roomCount);
 	GeneratePaths();
@@ -250,21 +322,25 @@ void Map::UpdateDoors()
 	}
 }
 
-void Map::Load(const string _path)
+void Map::OpenLobby()
 {
-	ifstream _in = ifstream(_path);
+	DeleteAll();
+
+	UpdateZoneFileName();
+
+	ifstream _in = ifstream("Assets/Saved/Lobby.txt");
 	if (!_in)
 	{
-		cerr << "Erreur de chargement de " << _path << " !" << endl;
+		cerr << "Erreur de chargement du lobby !" << endl;
 		return;
 	}
 
 	map<char, function<void(const Vector2f& _position)>> _elements =
 	{
-		{ '.', nullptr },
+		{ ' ', nullptr },
 		{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP)); }},
-		{ ' ', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); }},
-		{ 'S', [this](const Vector2f& _position) { others.push_back(new Stair(_position)); }},
+		{ '.', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); }},
+		{ 'S', [this](const Vector2f& _position) { stairs.push_back(new Stair(_position)); }},
 		{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Door(_position)); }},
 		{ 'E', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Hephaestus(_position)); }},
 		{ 'M', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position));
@@ -277,6 +353,9 @@ void Map::Load(const string _path)
 		));
 
 		others.push_back(_npc); }},
+		{ '2', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); /* TODO spawn item here (shops)*/ }},
+		{ '1', [this](const Vector2f& _position) { others.push_back(new Tile(PATH_UPGRADE_TILE, _position)); }},
+		{ 'P', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position); }},
 	};
 
 	string _line;
@@ -299,7 +378,13 @@ void Map::Load(const string _path)
 		_tilePosition.y += 1;
 	}
 
-	EntityManager::GetInstance().Get("Player")->GetShape()->setPosition({9 * TILE_SIZE.x,10 * TILE_SIZE.y});
+	stairs[0]->SetText("Zone 1");
+	stairs[0]->SetZoneToLoad(Z_ZONE1);
+	stairs[1]->SetText("Zone 2");
+	stairs[1]->SetZoneToLoad(Z_ZONE2);
+	stairs[2]->SetText("Soon(TM)");
+	stairs[2]->SetLocked(LT_FORCE);
+	
 	SetAllFloorOriginColor();
 
 	UpdateDoors();
@@ -459,26 +544,35 @@ void Map::NextLevel()
 void Map::NextMap()
 {
 	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
-	if (currentZone == CL_Lobby)
+
+	if (preparedZone != currentZone)
 	{
-		currentZone = CL_ZONE1;
-		_player->GetRessources()->SetDiamonds(0);
-		NextLevel();
+		if (preparedZone != Z_LOBBY)
+		{
+			_player->GetRessources()->SetDiamonds(0);
+		}
+		currentZone = preparedZone;
 	}
-	else if (currentLevel >= 3)
+
+	if (currentZone == Z_LOBBY)
+	{
+		OpenLobby();
+		return;
+	}
+
+	if (currentLevel >= 3)
 	{
 		_player->GetRessources()->SetDiamonds(*_player->GetRessources()->GetDiamonds());
 		_player->GetRessources()->SetMoney(0);
-		currentZone = CL_Lobby;
+		preparedZone = currentZone = Z_LOBBY;
 		currentLevel = 0;
-		Map::GetInstance().DeleteAll();
+		DeleteAll();
 		LightningManager::GetInstance().ClearAll();
-		Map::GetInstance().Load("Assets/Saved/Lobby.txt");
+		OpenLobby();
+		return;
 	}
-	else
-	{
-		NextLevel();
-	}
+
+	NextLevel();
 }
 
 void Map::AddOther(Entity* _entity)
@@ -505,6 +599,12 @@ void Map::DeleteAll()
 		_entity->Destroy();
 	}
 	others.clear();
+
+	for (Stair* _stair : stairs)
+	{
+		_stair->Destroy();
+	}
+	stairs.clear();
 
 	for (Room* _room : rooms)
 	{

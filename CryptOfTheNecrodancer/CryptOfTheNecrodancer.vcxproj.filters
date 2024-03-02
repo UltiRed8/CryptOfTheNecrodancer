@@ -611,5 +611,8 @@
     <ClInclude Include="WindowManager.h">
       <Filter>Source Files\Manager\Window</Filter>
     </ClInclude>
+    <ClInclude Include="Zones.h">
+      <Filter>Source Files\Map</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

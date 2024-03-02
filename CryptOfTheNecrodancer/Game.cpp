@@ -40,8 +40,8 @@ void Game::Start()
 	Init();
 
 	// TODO temporaire
-	Map::GetInstance().Load("Assets/Saved/Lobby.txt");
-	Camera* _playerCamera = new Camera("PlayerCamera", CAMERA_PLAYER, Vector2f(0.f,0.f), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
+	Map::GetInstance().Open(Z_LOBBY);
+	new Camera("PlayerCamera", CAMERA_PLAYER, Vector2f(0.f,0.f), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
 }
 
 void Game::Update()

@@ -184,10 +184,10 @@ void MenuManager::InitMenuPause()
 				}
 			}
 		}
-	}; //TODO Fix
+	};
 	function<void()> _callbackRestart = [this]() {}; //TODO
 	function<void()> _callbackOptions = [this]() { Get("GamePause")->Toggle(); OptionsMenu(); };
-	function<void()> _callbackLobby = [this]() {Get("GamePause")->Toggle(); GoToLobby(); MusicManager::GetInstance().PrepareMain("Lobby", 130, false, true); };
+	function<void()> _callbackLobby = [this]() {Get("GamePause")->Toggle(); GoToLobby(); MusicManager::GetInstance().Unpause(); };
 	function<void()> _callbackDelete = [this]() { DeleteSaveDataMenu(); };
 	function<void()> _callbackCalibration = [this]() { Get("GamePause")->Toggle(); LatencyMenu(); };
 	function<void()> _callbackEchap = [this]() { Get("GamePause")->Toggle(); CloseMenu(); };
@@ -236,12 +236,7 @@ void MenuManager::Delete()
 
 void MenuManager::GoToLobby()
 {
-	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
-	_player->GetRessources()->SetMoney(0);
-	Map::GetInstance().DeleteAll();
-	LightningManager::GetInstance().ClearAll();
-	Map::GetInstance().SetCurrentZone(CL_Lobby);
-	Map::GetInstance().Load(LOBBY);
+	Map::GetInstance().Open(Z_LOBBY);
 }
 
 void MenuManager::InitMenuOptions()
@@ -365,7 +360,7 @@ void MenuManager::InitLeaveLobby()
 	float _x = static_cast<float>(window->getSize().x / 2);
 	unsigned int _windowY = window->getSize().y;
 
-	function<void()> _nextLevel = [&]() { LeaveLobby(); Map::GetInstance().NextMap(); };
+	function<void()> _nextLevel = [&]() { LeaveLobby(); Map::GetInstance().OpenPrepared(); };
 	function<void()> _return = [this]() { LeaveLobby(); };
 
 	new Menu("LeaveLobby", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), AREYOUSURE),
