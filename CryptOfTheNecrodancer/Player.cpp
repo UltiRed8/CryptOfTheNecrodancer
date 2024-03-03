@@ -82,7 +82,7 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 		}),
 	});
 
-	//new LightSource("PlayerLight", this, 350);
+	new LightSource("PlayerLight", this, 350);
 
 	InitInput();
 	InitLife();

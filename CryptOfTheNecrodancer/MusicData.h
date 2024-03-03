@@ -13,7 +13,6 @@ class MusicData : public Music, public IManagable<string>
 public:
 	MusicData(const string& _id);
 
-	void Play(const string& _path);
-	// Hérité via IManagable
+private:
 	void Register() override;
 };

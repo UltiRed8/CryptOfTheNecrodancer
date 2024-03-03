@@ -2,7 +2,6 @@
 
 void LightningManager::Construct(const vector<Vector2f>& _allEntitiesPos, const int _brightness)
 {
-	return;
 	const int _size = static_cast<int>(_allEntitiesPos.size());
 	for (int _index = 0; _index < _size; _index++)
 	{
@@ -13,7 +12,6 @@ void LightningManager::Construct(const vector<Vector2f>& _allEntitiesPos, const 
 
 void LightningManager::ClearAll()
 {
-	return;
 	for (Tile* _tile : shadowTiles)
 	{
 		_tile->Destroy();
@@ -23,8 +21,7 @@ void LightningManager::ClearAll()
 
 void LightningManager::Update()
 {
-	return;
-	GarbageCollector();	
+	GarbageCollector();
 	for (Tile* _tile : shadowTiles)
 	{
 		Shape* _shape = _tile->GetShape();

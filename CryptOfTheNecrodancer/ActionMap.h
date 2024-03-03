@@ -11,6 +11,7 @@ class ActionMap : public IManager<string, Action>, public IManagable<string>
 
 public:
 	ActionMap(const string& _name, const vector<ActionData>& _actions = vector<ActionData>());
+	~ActionMap();
 
 private:
 	virtual void Register() override;

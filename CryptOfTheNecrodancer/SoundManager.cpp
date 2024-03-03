@@ -4,6 +4,7 @@ SoundManager::SoundManager()
 {
 	volume = new float(20.f);
 	isMuted = false;
+	tempVolume = 0;
 }
 
 SoundManager::~SoundManager()
@@ -32,38 +33,24 @@ void SoundManager::Play(const string& _path, const DirectionalSettings& _setting
 
 void SoundManager::IncreaseVolume()
 {
-	if (*volume >= 0.f && *volume < 100.f)
+	if (*volume <= 99.0f)
 	{
+		*volume += 1.0f;
 		for (SoundData* _sound : GetAllValues())
 		{
-			_sound->setVolume(*volume += 1.f);
-		}
-	}
-
-	else if (*volume >= 100)
-	{
-		for (SoundData* _sound : GetAllValues())
-		{
-			_sound->setVolume(100);
+			_sound->setVolume(*volume);
 		}
 	}
 }
 
 void SoundManager::DecreaseVolume()
 {
-	if (*volume > 0.f && *volume <= 100.f)
+	if (*volume >= 1.0f)
 	{
+		*volume -= 1.0f;
 		for (SoundData* _sound : GetAllValues())
 		{
-			_sound->setVolume(*volume -= 1.f);
-		}
-	}
-
-	else if (*volume <= 0)
-	{
-		for (SoundData* _sound : GetAllValues())
-		{
-			_sound->setVolume(0);
+			_sound->setVolume(*volume);
 		}
 	}
 }
@@ -73,6 +60,8 @@ void SoundManager::ToggleVolume()
 	isMuted = !isMuted;
 	if (isMuted)
 	{
+		tempVolume = *volume;
+		*volume = 0;
 		for (SoundData* _sound : GetAllValues())
 		{
 			_sound->setVolume(0);
@@ -80,6 +69,7 @@ void SoundManager::ToggleVolume()
 	}
 	else
 	{
+		*volume = tempVolume;
 		for (SoundData* _sound : GetAllValues())
 		{
 			_sound->setVolume(*volume);

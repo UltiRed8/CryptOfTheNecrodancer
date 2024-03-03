@@ -131,6 +131,7 @@ public:
 public:
 	Generator();
 	~Generator();
+
 private:
 	void GenerateRooms(const int _roomCount);
 	vector<Wall*> PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const bool _finalDestructible, const WallType& _type);
@@ -144,6 +145,7 @@ private:
 	void SpawnEnnemy(const int _amountOfEnemies);
 	void UpdateTilesColor();
 	void PlaceShopDoor();
+	void PlaceTorches();
 
 public:
 	void Generate(const int _roomCount, const int _amountOfEnemies);

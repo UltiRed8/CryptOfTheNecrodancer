@@ -7,7 +7,7 @@
 #define SOUND_DIG_DIRT "Assets/Sounds/mov_dig_dirt.ogg"
 #define SOUND_DIG_FAIL "Assets/Sounds/mov_dig_fail.ogg"
 
-Wall::Wall(const Vector2f& _position, const WallType& _type, const string& _zoneName) : Placeable(STRING_ID("Wall"), "", _position)
+Wall::Wall(const Vector2f& _position, const WallType& _type, const string& _zoneName, const bool _canSpawnWithTorch) : Placeable(STRING_ID("Wall"), "", _position)
 {
 	zoneName = _zoneName;
 
@@ -25,6 +25,8 @@ Wall::Wall(const Vector2f& _position, const WallType& _type, const string& _zone
 
 	TextureManager::GetInstance().LoadFromTextureSheet(shape, GetPathWithType(wallType), _randomValue, Vector2i(24, 24));
 	type = ET_WALL;
+	torch = nullptr;
+	canSpawnWithTorch = _canSpawnWithTorch;
 }
 
 void Wall::DestroyWall(const bool _usingBomb)
@@ -44,6 +46,10 @@ void Wall::DestroyWall(const bool _usingBomb)
 	if (hasDiamond)
 	{
 		Map::GetInstance().AddOther(new Pickable(1, PT_DIAMOND, STRING_ID("Diamond"), GetPosition()));
+	}
+	if (torch)
+	{
+		torch->Destroy();
 	}
 	Destroy();
 }
@@ -83,4 +89,24 @@ bool Wall::CouldBeDoor()
 	if (_validityH == 2) return true;
 	if (_validityV == 2) return true;
 	return false;
+}
+
+void Wall::SpawnTorch()
+{
+	if (!canSpawnWithTorch) return;
+
+	if (wallType == WT_DIRT)
+	{
+		if (!Random(60, 0))
+		{
+			torch = new Torch(GetPosition());
+		}
+	}
+	else if (wallType == WT_SHOP)
+	{
+		if (!Random(5, 0))
+		{
+			torch = new Torch(GetPosition());
+		}
+	}
 }

@@ -6,7 +6,6 @@ LightSource::LightSource(const string& _id, Entity* _owner, int _range) : IManag
 	Register();
 	range = _range;
 	owner = _owner;
-	//SetToRemove();
 }
 
 void LightSource::Register()
@@ -17,6 +16,9 @@ void LightSource::Register()
 void LightSource::UpdateLight(const vector<Tile*> _shadowTiles)
 {
 	const float _smoothness = 50;
+
+	vector<Tile*> _affectedShadowTiles;
+
 	for (int _index = 0; _index < _smoothness; _index++)
 	{
 		const float _gap =	(float)range / _smoothness;
@@ -26,17 +28,21 @@ void LightSource::UpdateLight(const vector<Tile*> _shadowTiles)
 		const Vector2f _halfSize = owner->GetShape()->getGlobalBounds().getSize() / 2.f;
 		const Vector2f _startPos = Vector2f(_x + _halfSize.x, _y + _halfSize.y);
 
-
 		const float _sizeX = _range * 2;
 		const float _sizeY = _range * 2;
 		const Vector2f _size = Vector2f(_sizeX, _sizeY);
 		FloatRect _rect = FloatRect(_startPos, _size);
 
-		for (Tile* _shadowTile : _shadowTiles)
+
+		for (Tile* _shadowTile : _index != 0 ? _affectedShadowTiles : _shadowTiles)
 		{
 			Shape* _shape = _shadowTile->GetShape();
 			if (_rect.intersects(_shape->getGlobalBounds()))
 			{
+				if (_index == 0)
+				{
+					_affectedShadowTiles.push_back(_shadowTile);
+				}
 
 				Color _color = _shape->getFillColor();
 				int _alpha = (int)_color.a - (int)(255 / _smoothness);

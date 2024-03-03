@@ -81,7 +81,7 @@ public:
 
 public:
 	Entity(const string& _id,const string& _path, const Vector2f& _position);
-	~Entity();
+	virtual ~Entity();
 
 	void Register() override;
 	virtual void Update();

@@ -12,6 +12,7 @@ enum SkeletonType
 
 class Skeleton : public Enemy
 {
+
 protected:
 	SkeletonType skeletonType;
 public:

@@ -85,6 +85,7 @@ void Generator::Generate(const int _roomCount, const int _amountOfEnemies)
 	GenerateDiamond();
 	PlaceShopDoor();
 	UpdateDoors();
+	PlaceTorches();
 }
 
 void Generator::GenerateLobby()
@@ -99,7 +100,7 @@ void Generator::GenerateLobby()
 	map<char, function<void(const Vector2f& _position)>> _elements =
 	{
 		{ ' ', nullptr },
-		{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP, zoneFileName)); }},
+		{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP, zoneFileName, false)); }},
 		{ '.', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); }},
 		{ 'S', [this](const Vector2f& _position) { stairs.push_back(new Stair(_position)); }},
 		{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Door(_position)); }},
@@ -222,6 +223,11 @@ void Generator::EraseOverlappings()
 {
 	vector<Vector2f> _allPositions = GetAllPositions(walls);
 
+	for (const Vector2f& _position : GetAllPositions(floors))
+	{
+		_allPositions.push_back(_position);
+	}
+
 	vector<Entity*> _entities;
 	for (Wall* _wall : walls)
 	{
@@ -230,11 +236,6 @@ void Generator::EraseOverlappings()
 	for (Tile* _floor : floors)
 	{
 		_entities.push_back(_floor);
-	}
-
-	for (const Vector2f& _position : GetAllPositions(floors))
-	{
-		_allPositions.push_back(_position);
 	}
 
 	vector<Entity*> _validEntities;
@@ -260,6 +261,7 @@ void Generator::EraseOverlappings()
 		}
 	}
 	EraseElements(walls, _wallsToRemove);
+	EraseElements(shopWalls, _wallsToRemove);
 
 	vector<Tile*> _floorsToRemove;
 	for (Tile* _floor : floors)
@@ -297,7 +299,6 @@ void Generator::GenerateShopRoom()
 	const vector<Tile*>& _shopFloors = shop->GetFloor();
 	floors.insert(floors.end(), _shopFloors.begin(), _shopFloors.end());
 
-
 	shopWalls = PlaceWallsAroundFloor(_shopFloors, 1, false, WT_SHOP);
 
 	EraseElement(floors, _first);
@@ -309,6 +310,7 @@ void Generator::GenerateShopRoom()
 void Generator::PlaceShopDoor()
 {
 	vector<Wall*> _availableWalls;
+
 	for (Wall* _wall : shopWalls)
 	{
 		if (_wall->CouldBeDoor())
@@ -321,8 +323,16 @@ void Generator::PlaceShopDoor()
 
 	others.push_back(new Door(_selectedWall->GetPosition()));
 	AddFloorAt(_selectedWall->GetPosition());
-	_selectedWall->Destroy();
 	EraseElement(walls, _selectedWall);
+	_selectedWall->Destroy();
+}
+
+void Generator::PlaceTorches()
+{
+	for (Wall* _wall : walls)
+	{
+		_wall->SpawnTorch();
+	}
 }
 
 void Generator::GenerateWalls()

@@ -23,6 +23,7 @@ public:
 class SoundManager : public Singleton<SoundManager>, public IManager<string, SoundData>
 {
 	float* volume;
+	float tempVolume;
 	bool isMuted;
 
 public:
