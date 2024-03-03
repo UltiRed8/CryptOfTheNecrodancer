@@ -319,7 +319,7 @@ bool MusicManager::TriggerEvent()
 	{
 		Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
 		TextureManager::GetInstance().Load(_shape, PATH_HEART2);
-		new Timer("HeartIndicatorReset", [this]() {S
+		new Timer("HeartIndicatorReset", [this]() {
 			Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
 			TextureManager::GetInstance().Load(_shape, PATH_HEART1);
 		}, seconds(0.1f), 1, true);
