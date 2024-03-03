@@ -15,7 +15,6 @@
 #define PATH_SLOW_TRAP_PRESSED "Entities/SlowTrapPressed.png"
 #define PATH_BOMB_TRAP "Entities/BombTrap.png"
 
-
 Trap::Trap(const Vector2f& _position, const TrapType& _trapType) : Placeable(STRING_ID("Trap"), "", _position)
 {
 	type = ET_TRAP;
@@ -23,17 +22,34 @@ Trap::Trap(const Vector2f& _position, const TrapType& _trapType) : Placeable(STR
 	callback = nullptr;
 	pressedPath = "";
 	normalPath = "";
+	cooldown = 0;
+	Init();
+	TextureManager::GetInstance().Load(shape, normalPath);
+	shape->setScale(0.5f, 0.5f);
+}
+
+Trap::Trap(const Vector2f& _position) : Placeable(STRING_ID("Trap"), "", _position)
+{
+	type = ET_TRAP;
+	trapType = (TrapType)(Random(3, 0));
+	callback = nullptr;
+	pressedPath = "";
+	normalPath = "";
+	cooldown = 0;
+	Init();
+	TextureManager::GetInstance().Load(shape, normalPath);
+	shape->setScale(0.5f, 0.5f);
 }
 
 void Trap::Init()
 {
 	InitAllPaths();
 	InitCallback();
+	shape->move(Vector2f(0.25f, 0.25f) * TILE_SIZE);
 }
 
 void Trap::InitAllPaths()
 {
-	//TR_CONFUSION, TR_FAST, TR_SLOW, TR_BOMB, TR_DIRECTION
 	string _normalPaths[] = {
 		PATH_CONFUSE_TRAP,
 		PATH_FAST_TRAP,
@@ -55,26 +71,36 @@ void Trap::InitAllPaths()
 void Trap::InitCallback()
 {
 	vector<function<void()>> _callbacks = {
-		[&]() {dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->SetIsConfuse(true); },
-		[&]() {MusicManager::GetInstance().SpeedUp(); },
-		[&]() {MusicManager::GetInstance().SpeedDown(); },
-		[&]() { new Bomb(GetPosition()); },
+		[&]() { dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->SetIsConfuse(true); cooldown = 5; },
+		[&]() { MusicManager::GetInstance().SpeedUp(); cooldown = 5; },
+		[&]() { MusicManager::GetInstance().SpeedDown(); cooldown = 5; },
+		[&]() { new Bomb(GetPosition() + Vector2f(-0.25f, -0.25f) * TILE_SIZE); cooldown = -1; },
 	};
 
 	callback = _callbacks[trapType];
 }
 
-void Trap::ExecuteTrap()
+void Trap::Trigger()
 {
+	if (cooldown != 0) return;
+
+	TextureManager::GetInstance().Load(shape, pressedPath);
+
 	if (callback)
 	{
 		callback();
 	}
 }
 
-void Trap::Update(const float& _deltaTime)
+void Trap::Update()
 {
-
+	if (cooldown > 0)
+	{
+		cooldown--;
+		if (cooldown == 0)
+		{
+			TextureManager::GetInstance().Load(shape, normalPath);
+		}
+	}
+	Entity::Update();
 }
-
-

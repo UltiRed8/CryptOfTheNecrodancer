@@ -4,12 +4,7 @@
 
 enum TrapType
 {
-	TR_CONFUSION, TR_FAST, TR_SLOW, TR_BOMB, TR_DIRECTION
-};
-
-enum DirectionTrap
-{
-	TR_DIR_NONE, TR_DIR_UP, TR_DIR_DOWN, TR_DIR_LEFT, TR_DIR_RIGHT
+	TR_CONFUSION, TR_FAST, TR_SLOW, TR_BOMB
 };
 
 class Trap : public Placeable
@@ -22,14 +17,8 @@ class Trap : public Placeable
 	int cooldown;
 
 public:
-
-	string GetPathWithType(const TrapType& _trapType) const 
-	{
-	
-	}
-
-public:
 	Trap(const Vector2f& _position, const TrapType& _trapType);
+	Trap(const Vector2f& _position);
 
 private:
 	void Init();
@@ -37,7 +26,6 @@ private:
 	void InitCallback();
 
 public:
-	void ExecuteTrap();
-	virtual void Update(const float& _deltaTime);
+	void Trigger();
+	virtual void Update() override;
 };
-

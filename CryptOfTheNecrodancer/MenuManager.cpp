@@ -13,6 +13,7 @@
 #include "Map.h"
 #include "LightningManager.h"
 #include "WindowManager.h"
+#include "RythmIndicator.h"
 
 #define FONT "Assets/Font/Font.ttf"
 #define WHITE_COLOR Color::White
@@ -169,6 +170,13 @@ void MenuManager::InitMenuPause()
 						}
 					}
 				}
+				for (UIElement* _element : Get("HUD")->GetAllValues())
+				{
+					if (RythmIndicator* _indicator = dynamic_cast<RythmIndicator*>(_element))
+					{
+						_indicator->Pause();
+					}
+				}
 			},
 			{Event::KeyPressed, Keyboard::Escape}),
 		ActionData("Select", [this]()
@@ -186,6 +194,13 @@ void MenuManager::InitMenuPause()
 				{
 					_animation->GetTimer()->Resume();
 				}
+			}
+		}
+		for (UIElement* _element : Get("HUD")->GetAllValues())
+		{
+			if (RythmIndicator* _indicator = dynamic_cast<RythmIndicator*>(_element))
+			{
+				_indicator->Resume();
 			}
 		}
 	};

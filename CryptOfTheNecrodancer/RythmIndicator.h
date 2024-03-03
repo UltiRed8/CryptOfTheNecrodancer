@@ -13,6 +13,7 @@ class RythmIndicator : public UIImage
 	Vector2f direction;
 	Vector2f speed;
 	float opacity;
+	bool isRunning;
 
 public:
 	Vector2f GetPositionWithDirection(const RythmIndicatorDirection& _direction) const
@@ -36,5 +37,7 @@ public:
 
 public:
 	virtual void Update(const Vector2i& _mousePosition) override;
+	void Resume();
+	void Pause();
 };
 

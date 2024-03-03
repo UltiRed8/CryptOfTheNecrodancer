@@ -4,6 +4,7 @@
 #include "Macro.h"
 #include "Torch.h"
 #include "Map.h"
+#include "Trap.h"
 
 #define PATH_SHOP_TILE "Dungeons/ShopTile.png"
 #define PATH_UPGRADE_TILE "Dungeons/UpgradeTile.png"
@@ -80,9 +81,10 @@ void Generator::Generate(const int _roomCount, const int _amountOfEnemies)
 	GenerateWalls();
 	EraseOverlappings();
 	SetAllFloorOriginColor();
-	UpdateDoors();
 	SpawnEnnemy(_amountOfEnemies);
 	GenerateDiamond();
+	PlaceShopDoor();
+	UpdateDoors();
 }
 
 void Generator::GenerateLobby()
@@ -152,8 +154,9 @@ void Generator::GenerateRooms(const int _roomCount)
 	}
 }
 
-void Generator::PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const bool _finalDestructible, const WallType& _type)
+vector<Wall*> Generator::PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const bool _finalDestructible, const WallType& _type)
 {
+	vector<Wall*> _wallsOfRoom;
 	for (int _index = 0; _index < _width; _index++)
 	{
 		vector<Vector2f> _allPositionsAround;
@@ -179,9 +182,12 @@ void Generator::PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, c
 
 		for (const Vector2f& _position : _allPositionsAround)
 		{
-			walls.push_back(new Wall(_position, (_index == _width - 1 && _finalDestructible) ? WT_INVULNERABLE : _type, zoneFileName));
+			Wall* _wall = new Wall(_position, (_index == _width - 1 && _finalDestructible) ? WT_INVULNERABLE : _type, zoneFileName);
+			walls.push_back(_wall);
+			_wallsOfRoom.push_back(_wall);
 		}
 	}
+	return _wallsOfRoom;
 }
 
 void Generator::GeneratePaths()
@@ -291,12 +297,32 @@ void Generator::GenerateShopRoom()
 	const vector<Tile*>& _shopFloors = shop->GetFloor();
 	floors.insert(floors.end(), _shopFloors.begin(), _shopFloors.end());
 
-	PlaceWallsAroundFloor(_shopFloors, 1, false, WT_SHOP);
+
+	shopWalls = PlaceWallsAroundFloor(_shopFloors, 1, false, WT_SHOP);
 
 	EraseElement(floors, _first);
 	EraseElement(floors, _second);
 
 	rooms.push_back(shop);
+}
+
+void Generator::PlaceShopDoor()
+{
+	vector<Wall*> _availableWalls;
+	for (Wall* _wall : shopWalls)
+	{
+		if (_wall->CouldBeDoor())
+		{
+			_availableWalls.push_back(_wall);
+		}
+	}
+
+	Wall* _selectedWall = _availableWalls[Random((int)_availableWalls.size() - 1, 0)];
+
+	others.push_back(new Door(_selectedWall->GetPosition()));
+	AddFloorAt(_selectedWall->GetPosition());
+	_selectedWall->Destroy();
+	EraseElement(walls, _selectedWall);
 }
 
 void Generator::GenerateWalls()
@@ -371,6 +397,14 @@ void Generator::SpawnEnnemy(const int _amountOfEnemies)
 	_position = _positions[Random((int)_positions.size() - 1, 0)];
 	EraseElement(_positions, _position);
 	EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position);
+
+	// TRAPS
+	for (int _index = 0; _index < 10; _index++)
+	{
+		_position = _positions[Random((int)_positions.size() - 1, 0)];
+		EraseElement(_positions, _position);
+		others.push_back(new Trap(_position));
+	}
 }
 
 void Generator::AddFloorAt(const Vector2f& _position)
