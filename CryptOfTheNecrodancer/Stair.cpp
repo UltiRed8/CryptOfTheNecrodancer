@@ -1,6 +1,7 @@
 #include "Stair.h"
 #include "SoundManager.h"
 #include "Map.h"
+#include "WindowManager.h"
 
 #define PATH_STAIR "Dungeons/Stairs.png"
 #define PATH_STAIR_LOCKED "Dungeons/StairsLocked.png"
@@ -46,6 +47,7 @@ bool Stair::OpenZone()
 	if (IsLocked())
 	{
 		SoundManager::GetInstance().Play(SOUND_LOCKED_STAIRS);
+		WindowManager::GetInstance().Shake(300);
 		return false;
 	}
 	Map::GetInstance().Prepare(zoneToLoad);
