@@ -112,7 +112,7 @@ void Player::InitInput()
 {
 	new ActionMap("Mouvements",
 		{ ActionData("Haut", [this]() {
-		if (!alreadyMoved)
+		if (!alreadyMoved && !MenuManager::GetInstance().BlockPlayer())
 			{
 				GetComponent<MovementComponent>()->SetDirection(Vector2i(0,-1) * GetConfusionEffect());
 				if (!MusicManager::GetInstance().TriggerEvent())
@@ -126,7 +126,7 @@ void Player::InitInput()
 
 
 
-		  ActionData("Bas", [this]() { if (!alreadyMoved)
+		  ActionData("Bas", [this]() { if (!alreadyMoved && !MenuManager::GetInstance().BlockPlayer())
 			{
 				 GetComponent<MovementComponent>()->SetDirection(Vector2i(0,1) * GetConfusionEffect());
 				 if (!MusicManager::GetInstance().TriggerEvent())
@@ -140,7 +140,7 @@ void Player::InitInput()
 
 
 
-		  ActionData("Droite", [this]() { if (!alreadyMoved)
+		  ActionData("Droite", [this]() { if (!alreadyMoved && !MenuManager::GetInstance().BlockPlayer())
 			{
 				 GetComponent<MovementComponent>()->SetDirection(Vector2i(1,0) * GetConfusionEffect());
 				 if (!MusicManager::GetInstance().TriggerEvent())
@@ -153,7 +153,7 @@ void Player::InitInput()
 		  ActionData("DroiteR", [this]() { alreadyMoved = false; }, {Event::KeyReleased, Keyboard::Right}),
 
 
-		  ActionData("Gauche", [this]() { if (!alreadyMoved)
+		  ActionData("Gauche", [this]() { if (!alreadyMoved && !MenuManager::GetInstance().BlockPlayer())
 			{
 				 GetComponent<MovementComponent>()->SetDirection(Vector2i(-1,0) * GetConfusionEffect());
 				 if (!MusicManager::GetInstance().TriggerEvent())

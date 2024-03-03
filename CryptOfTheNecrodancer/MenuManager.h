@@ -22,11 +22,11 @@ public :
 public :
 	void ClickAction();
 	void Update();
+	bool BlockPlayer();
 
 	void InitMenu();
 
 	void InitHUD();
-	void InitInventory();
 
 	#pragma region MenuPause
 

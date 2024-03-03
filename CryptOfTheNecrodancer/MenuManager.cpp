@@ -117,6 +117,18 @@ void MenuManager::Update()
 	}
 }
 
+bool MenuManager::BlockPlayer()
+{
+	for (Menu* _menu : GetAllValues())
+	{
+		if (_menu->IsOpened())
+		{
+			if (_menu->GetID() != "HUD" && _menu->GetID() != "PlayerLife") return true;
+		}
+	}
+	return false;
+}
+
 void MenuManager::InitHUD()
 {
 	Menu* _hud = new Menu("HUD", {
@@ -137,15 +149,10 @@ void MenuManager::InitHUD()
 		new UIImage("Shovel", Vector2f(10, 10), Vector2f(90, 99), PATH_SHOVEL),
 		new UIImage("Sword", Vector2f(120, 10), Vector2f(90, 99), PATH_SWORD),
 
-	
+
 		});
 
 	_hud->Open();
-}
-
-void MenuManager::InitInventory()
-{
-	
 }
 
 void MenuManager::InitMenu()
@@ -169,6 +176,7 @@ void MenuManager::InitMenuPause()
 	new ActionMap("GamePaused",
 		{ ActionData("Escape", [this]()
 			{
+				if (BlockPlayer()) return;
 				MenuManager::GetInstance().Get("GamePause")->Open();
 				MusicManager::GetInstance().Pause();
 				for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
@@ -214,7 +222,7 @@ void MenuManager::InitMenuPause()
 				_indicator->Resume();
 			}
 		}
-	};
+		};
 	function<void()> _callbackRestart = [this]() { Get("GamePause")->Toggle(); Restart(); };
 	function<void()> _callbackOptions = [this]() { Get("GamePause")->Toggle(); OptionsMenu(); };
 	function<void()> _callbackLobby = [this]() {Get("GamePause")->Toggle(); GoToLobby(); MusicManager::GetInstance().Unpause(); };
@@ -223,7 +231,7 @@ void MenuManager::InitMenuPause()
 	function<void()> _more = [this]() { MusicManager::GetInstance().IncreaseMusicPackName(); };
 	function<void()> _less = [this]() { MusicManager::GetInstance().DecreaseMusicPackName(); };
 	function<void()> _callbackEchap = [this]() { Get("GamePause")->Toggle(); CloseMenu(); };
-	
+
 	float _x = static_cast<float>(window->getSize().x / 2);
 	unsigned int _windowY = window->getSize().y;
 
@@ -242,7 +250,7 @@ void MenuManager::InitMenuPause()
 		new UIText("MusicText", Vector2f(_x, static_cast<float>(_windowY / 1.28)), Color(161, 6,6), "For changing the Music Pack, you need to change zone",20,FONT, false),
 
 		new UIButton("Exit", Vector2f(_x, static_cast<float>(_windowY / 1.16)), WHITE_COLOR, CYAN_COLOR, "Exit Game", 50, FONT, SOUND_EXIT, _callbackEchap),
-		new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), PAUSE_MENU),}, 1);
+		new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), PAUSE_MENU), }, 1);
 }
 
 void MenuManager::InitDeleteSaveDataMenu()
@@ -295,12 +303,12 @@ void MenuManager::InitMenuOptions()
 	float _x = static_cast<float>(window->getSize().x / 2);
 	unsigned int _windowY = window->getSize().y;
 
-	function<void()> _activateSound = [this]() { SoundManager::GetInstance().ToggleVolume(); }; 
-	function<void()> _activateMusic = [this]() { MusicManager::GetInstance().ToggleVolume(); }; 
+	function<void()> _activateSound = [this]() { SoundManager::GetInstance().ToggleVolume(); };
+	function<void()> _activateMusic = [this]() { MusicManager::GetInstance().ToggleVolume(); };
 	function<void()> _volumeUpM = [this]() { MusicManager::GetInstance().IncreaseVolume(); };
-	function<void()> _volumeUpS = [this]() { SoundManager::GetInstance().IncreaseVolume(); }; 
+	function<void()> _volumeUpS = [this]() { SoundManager::GetInstance().IncreaseVolume(); };
 	function<void()> _volumeDownM = [this]() { MusicManager::GetInstance().DecreaseVolume(); };
-	function<void()> _volumeDownS = [this]() { SoundManager::GetInstance().DecreaseVolume(); }; 
+	function<void()> _volumeDownS = [this]() { SoundManager::GetInstance().DecreaseVolume(); };
 	function<void()> _close = [this]() { OptionsMenu(); Get("GamePause")->Toggle(); };
 	function<void()> _graphics = [this]() { GraphicMenu();  Get("Options")->Toggle(); };
 
@@ -393,7 +401,7 @@ void MenuManager::InitGraphicMenu()
 		new ProgressBar("ViewBar", PT_LEFT, Vector2f(static_cast<float>(window->getSize().x / 2.9), static_cast<float>(_windowY / 2.72)), Vector2f(400.0f, 30.0f), EMPTYBAR, FULLBAR, CameraManager::GetInstance().GetZoomIndex(), 1.5f),
 		new UIButton("ViewMore", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 2.79)), WHITE_COLOR, CYAN_COLOR, ">", 50, FONT, SOUND_UP, _up),
 		new UIButton("ViewLess", Vector2f(static_cast<float>(window->getSize().x / 3.2), static_cast<float>(_windowY / 2.79)), WHITE_COLOR, CYAN_COLOR, "<", 50, FONT, SOUND_DOWN, _down),
-		
+
 		// Activer/Désactiver le zoom
 		new UIText("ToggleZText", Vector2f(_x, static_cast<float>(_windowY / 2)), Color(172, 172,173), "Zoom per default",40,FONT, true),
 		new UIButton("CheckBoxZ", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 2)), WHITE_COLOR, Color(0,139,139), {
