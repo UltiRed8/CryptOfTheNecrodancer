@@ -5,6 +5,7 @@
 #include "LifeComponent.h"
 #include <SFML/Audio.hpp>
 #include "MovementComponent.h"
+#include "CameraManager.h"
 using namespace sf;
 
 class Player : public Living
@@ -29,6 +30,7 @@ public:
 		{
 			new Timer("ResetConfuse", [this]() {
 				isConfuse = false;
+				CameraManager::GetInstance().Get("PlayerCamera")->SetRotation(0.0f);
 			}, seconds(5.0f), 1, true);
 		}
 	}

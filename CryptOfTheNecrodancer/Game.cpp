@@ -55,6 +55,8 @@ void Game::Update()
 		InputManager::GetInstance().Update();
 		MenuManager::GetInstance().Update();
 		CameraManager::GetInstance().Update();
+		WindowManager::GetInstance().Update();
+		Map::GetInstance().GetGenerator()->GenUpdate();
 	}
 	Stop();
 }

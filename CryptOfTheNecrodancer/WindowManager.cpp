@@ -14,6 +14,7 @@ WindowManager::~WindowManager()
 void WindowManager::CreateWindow()
 {
 	window = new RenderWindow(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer", Style::Close);
+	baseWindowPosition = window->getPosition();
 }
 
 void WindowManager::Rename(const string& _newWindowName)
@@ -24,5 +25,17 @@ void WindowManager::Rename(const string& _newWindowName)
 
 void WindowManager::Shake(const int _strength)
 {
+	currentValue = _strength;
 	// TODO implement this
+}
+
+void WindowManager::Update()
+{
+	if (currentValue > 0)
+	{
+		const int _dirX = Random(2, 0) - 1;
+		const int _dirY = Random(2, 0) - 1;
+		window->setPosition(baseWindowPosition + (Vector2i(_dirX, _dirY) * currentValue));
+		currentValue--;
+	}
 }

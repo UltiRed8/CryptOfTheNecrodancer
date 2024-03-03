@@ -152,6 +152,7 @@ private:
 	void PlaceTorches();
 
 public:
+	void GenUpdate();
 	void Generate();
 	void GenerateLobby();
 	void AddFloorAt(const Vector2f& _position);

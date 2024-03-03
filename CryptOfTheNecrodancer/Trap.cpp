@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "MusicManager.h"
 #include "Bomb.h"
+#include "CameraManager.h"
 
 #define PATH_CONFUSE_TRAP "Entities/ConfuseTrap.png"
 #define PATH_CONFUSE_TRAP_PRESSED "Entities/ConfuseTrapPressed.png"
@@ -71,7 +72,11 @@ void Trap::InitAllPaths()
 void Trap::InitCallback()
 {
 	vector<function<void()>> _callbacks = {
-		[&]() { dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->SetIsConfuse(true); cooldown = 5; },
+		[&]() {
+			dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->SetIsConfuse(true);
+			CameraManager::GetInstance().Get("PlayerCamera")->SetRotation(Random(360, 0) - 180);
+			cooldown = 5;
+		},
 		[&]() { MusicManager::GetInstance().SpeedUp(); cooldown = 5; },
 		[&]() { MusicManager::GetInstance().SpeedDown(); cooldown = 5; },
 		[&]() { new Bomb(GetPosition() + Vector2f(-0.25f, -0.25f) * TILE_SIZE); cooldown = -1; },

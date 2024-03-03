@@ -10,6 +10,8 @@ using namespace sf;
 class WindowManager : public Singleton<WindowManager>
 {
 	RenderWindow* window;
+	int currentValue;
+	Vector2i baseWindowPosition;
 
 public:
 	WindowManager();
@@ -27,4 +29,5 @@ private:
 public:
 	void Rename(const string& _newWindowName);
 	void Shake(const int _strength);
+	void Update();
 };

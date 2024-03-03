@@ -90,6 +90,7 @@ void Map::LoadMap()
 
 void Map::GenerateDungeon()
 {
+	MusicManager::GetInstance().StopAll();
 	ClearGenerator();
 	generator->Generate();
 }
