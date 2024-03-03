@@ -283,6 +283,13 @@ void MenuManager::Delete()
 
 void MenuManager::GoToLobby()
 {
+	for (UIElement* _element : Get("HUD")->GetAllValues())
+	{
+		if (RythmIndicator* _indicator = dynamic_cast<RythmIndicator*>(_element))
+		{
+			_indicator->Resume();
+		}
+	}
 	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
 	_player->ResetLife();
 	Map::GetInstance().Open(Z_LOBBY);
