@@ -92,12 +92,12 @@ void Map::GenerateDungeon()
 {
 	ClearGenerator();
 	generator->Generate(6, 25);
-	new Timer(STRING_ID("Dungeon"), [this]() {
+	/*new Timer(STRING_ID("Dungeon"), [this]() {
 		UpdateLights(2);
 
 		PrepareMusic();
 		MusicManager::GetInstance().Play();
-	} , seconds(1.0f), 1, true);
+	} , seconds(1.0f), 1, true);*/
 
 }
 

@@ -9,6 +9,7 @@
 #define PATH_SHOP_TILE "Dungeons/ShopTile.png"
 #define PATH_UPGRADE_TILE "Dungeons/UpgradeTile.png"
 #define PATH_FLOOR "Dungeons/" + Map::GetInstance().GetZoneFileName() + "/floor.png"
+#define FONT "Assets/Font/Font.ttf"
 
 Generator::Generator(bool* _discoModeEnabled)
 {
@@ -31,6 +32,9 @@ Generator::Generator(bool* _discoModeEnabled)
 	discoModeEnabled = _discoModeEnabled;
 
 	zoneFileName = Map::GetInstance().GetZoneFileName();
+
+	loadingText = new UIText(STRING_ID(""), Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 60 / 100), Color::Magenta, "Generation", 50, FONT);
+	generationIndex = -1;
 }
 
 Generator::~Generator()
@@ -76,30 +80,19 @@ Generator::~Generator()
 void Generator::Generate(const int _roomCount, const int _amountOfEnemies)
 {
 	MenuManager::GetInstance().ToggleLoading();
-	new Timer(STRING_ID("Generator"), [this]() 
-		{
-		GenerateRooms(6);
-		GeneratePaths();
-		EraseOverlappings();
-		GenerateShopRoom();
-		GenerateWalls();
-		EraseOverlappings();
-		SetAllFloorOriginColor();
-		SpawnEnnemy(15);
-		GenerateDiamond();
-		PlaceShopDoor();
-		UpdateDoors();
-		PlaceTorches();
-		MenuManager::GetInstance().ToggleLoading();
-	}, seconds(0.1f), 1, true);
+	generationIndex = 0;
 }
 
 void Generator::GenerateLobby()
 {
+	Menu* _loadingMenu = MenuManager::GetInstance().Get("Loading");
+	loadingText->SetOwner(_loadingMenu);
+	loadingText->Register();
 	MenuManager::GetInstance().ToggleLoading();
 	new Timer(STRING_ID("Lobby"), [this]() {
 		ifstream _in = ifstream("Assets/Saved/Lobby.txt");
 		if (!_in)
+		{
 			cerr << "Erreur de chargement du lobby !" << endl;
 			return;
 		}
@@ -112,7 +105,7 @@ void Generator::GenerateLobby()
 			{ 'S', [this](const Vector2f& _position) { stairs.push_back(new Stair(_position)); }},
 			{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Door(_position)); }},
 			{ 'E', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_HEPHAESTUS, _position)); }},
-			{ 'M', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_MERLIN, _position));}},
+			{ 'M', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_MERLIN, _position)); }},
 			{ '2', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); /* TODO spawn item here (shops)*/ }},
 			{ '1', [this](const Vector2f& _position) { others.push_back(new Tile(PATH_UPGRADE_TILE, _position)); }},
 			{ 'P', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position); }},
@@ -124,26 +117,6 @@ void Generator::GenerateLobby()
 
 		while (getline(_in, _line))
 		{
-			for (const char _char : _line)
-			{
-				cerr << "Erreur de chargement du lobby !" << endl;
-				return;
-			}
-
-			map<char, function<void(const Vector2f& _position)>> _elements =
-			{
-				{ ' ', nullptr },
-				{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP, zoneFileName)); }},
-				{ '.', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); }},
-				{ 'S', [this](const Vector2f& _position) { stairs.push_back(new Stair(_position)); }},
-				{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Door(_position)); }},
-				{ 'E', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_HEPHAESTUS, _position)); }},
-				{ 'M', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_MERLIN, _position)); }},
-				{ '2', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); /* TODO spawn item here (shops)*/ }},
-				{ '1', [this](const Vector2f& _position) { others.push_back(new Tile(PATH_UPGRADE_TILE, _position)); }},
-				{ 'P', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position); }},
-				{ 'T', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP, zoneFileName)); others.push_back(new Torch(_position)); }},
-			};
 
 			string _line;
 			Vector2i _tilePosition = Vector2i(0, 0);
@@ -176,11 +149,13 @@ void Generator::GenerateLobby()
 
 			UpdateDoors();
 			MenuManager::GetInstance().ToggleLoading();
+		}
 		}, seconds(2.0f), 1, true);
 }
 
 void Generator::GenerateRooms(const int _roomCount)
 {
+	loadingText->GetText()->setString("Generating rooms");
 	for (int _index = 0; _index < _roomCount; _index++)
 	{
 		Room* _room = new Room(GetRandomVector2i(4, 6), Vector2f(GetRandomRoomPosition()));
@@ -228,6 +203,7 @@ vector<Wall*> Generator::PlaceWallsAroundFloor(vector<Tile*> _floors, const int 
 
 void Generator::GeneratePaths()
 {
+	loadingText->GetText()->setString("Generating paths");
 	const int _roomCount = (const int)rooms.size() - 1;
 	for (int _index = 0; _index < _roomCount; _index++)
 	{
@@ -256,6 +232,7 @@ void Generator::GeneratePaths()
 
 void Generator::EraseOverlappings()
 {
+	loadingText->GetText()->setString("Erasing overlappings");
 	vector<Vector2f> _allPositions = GetAllPositions(walls);
 
 	for (const Vector2f& _position : GetAllPositions(floors))
@@ -313,6 +290,7 @@ void Generator::EraseOverlappings()
 
 void Generator::GenerateShopRoom()
 {
+	loadingText->GetText()->setString("Generating shop room");
 	const vector<Vector2f>& _availablePosition = GetEmptyTilesAround(floors);
 	const Vector2f& _position = _availablePosition[Random((int)_availablePosition.size() - 1, 0)];
 
@@ -344,6 +322,7 @@ void Generator::GenerateShopRoom()
 
 void Generator::PlaceShopDoor()
 {
+	loadingText->GetText()->setString("Placing shop door");
 	vector<Wall*> _availableWalls;
 
 	for (Wall* _wall : shopWalls)
@@ -364,6 +343,7 @@ void Generator::PlaceShopDoor()
 
 void Generator::PlaceTorches()
 {
+	loadingText->GetText()->setString("Placing torches");
 	for (Wall* _wall : walls)
 	{
 		_wall->SpawnTorch();
@@ -372,11 +352,13 @@ void Generator::PlaceTorches()
 
 void Generator::GenerateWalls()
 {
+	loadingText->GetText()->setString("Generating walls");
 	PlaceWallsAroundFloor(floors, 4, true, WT_DIRT);
 }
 
 void Generator::SetAllFloorOriginColor()
 {
+	loadingText->GetText()->setString("Setting floors colors");
 	const int _size = (const int)floors.size();
 	for (int _index = 0; _index < _size; _index++)
 	{
@@ -386,6 +368,7 @@ void Generator::SetAllFloorOriginColor()
 
 void Generator::UpdateDoors()
 {
+	loadingText->GetText()->setString("Updating doors");
 	for (Entity* _entity : others)
 	{
 		if (Door* _door = dynamic_cast<Door*>(_entity))
@@ -395,8 +378,9 @@ void Generator::UpdateDoors()
 	}
 }
 
-void Generator::GenerateDiamond(const int _diamondOnFloor , int _diamondInWall )
+void Generator::GenerateDiamond(const int _diamondOnFloor, int _diamondInWall)
 {
+	loadingText->GetText()->setString("Generating diamonds");
 	for (int _i = 0; _i < _diamondOnFloor; _i++)
 	{
 		others.push_back(new Pickable(1, PT_DIAMOND, STRING_ID("Diamond"), GetRandomElementInVector(floors)->GetPosition()));
@@ -415,6 +399,7 @@ void Generator::GenerateDiamond(const int _diamondOnFloor , int _diamondInWall )
 
 void Generator::SpawnEnnemy(const int _amountOfEnemies)
 {
+	loadingText->GetText()->setString("Spawning enemies");
 	vector<function<Entity* (const Vector2f& _position)>> _enemyList =
 	{
 		[this](const Vector2f& _position) { return new Bat(_position); },
@@ -486,6 +471,40 @@ void Generator::UpdateTilesColor()
 
 void Generator::Update()
 {
+	if (generationIndex >= 0)
+	{
+
+		vector<function<void()>> _functionList = {
+			[&]() {	GenerateRooms(6); },
+			[&]() { GeneratePaths(); },
+			[&]() { EraseOverlappings(); },
+			[&]() { GenerateShopRoom(); },
+			[&]() { GenerateWalls(); },
+			[&]() { 
+				EraseOverlappings(); 
+			},
+			[&]() { SetAllFloorOriginColor(); },
+			[&]() { SpawnEnnemy(15); },
+			[&]() { GenerateDiamond(); },
+			[&]() { PlaceShopDoor(); },
+			[&]() { UpdateDoors(); },
+			[&]() { PlaceTorches(); },
+		};
+
+		_functionList[generationIndex]();
+
+		string _str = loadingText->GetText()->getString();
+
+		cout <<	_str  << endl;
+
+		generationIndex++;
+		if (generationIndex == _functionList.size())
+		{
+			MenuManager::GetInstance().ToggleLoading();
+			generationIndex = -1;
+		}
+	}
+
 	if (!*discoModeEnabled)
 	{
 		return;
