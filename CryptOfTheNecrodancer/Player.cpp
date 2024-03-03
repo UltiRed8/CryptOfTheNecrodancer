@@ -55,7 +55,7 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 			GetComponent<MovementComponent>()->UndoMove();
 			Door* _door = dynamic_cast<Door*>(_entity);
 			_door->OpenDoor();
-			WindowManager::GetInstance().Shake(5);
+			WindowManager::GetInstance().Shake(25);
 		}),
 
 		CollisionReaction(ET_PICKABLE, [this](Entity* _entity) {
@@ -67,7 +67,7 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 			GetComponent<MovementComponent>()->UndoMove();
 			if (GetComponent<DamageComponent>()->Attack(_entity))
 			{
-				WindowManager::GetInstance().Shake(5);
+				WindowManager::GetInstance().Shake(25);
 				if (*chainMultiplier <= 3)
 				{
 					*chainMultiplier += 1;

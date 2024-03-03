@@ -99,9 +99,9 @@ private:
 	void LoadMap();
 	void OpenLobby();
 	void GenerateDungeon();
-	void UpdateLights(const int _brightness);
 
 public:
+	void UpdateLights(const int _brightness);
 	void EndDungeonGeneration();
 	void ClearGenerator();
 	void Prepare(const Zone& _zoneToOpen);

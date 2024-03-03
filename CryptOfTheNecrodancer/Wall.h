@@ -19,6 +19,8 @@ class Wall:public Placeable
 	string zoneName;
 	Torch* torch;
 	bool canSpawnWithTorch;
+	bool isIn3D;
+	int textureIndex;
 
 public:
 	WallType GetWallType() const
@@ -58,4 +60,5 @@ public:
 	void DestroyWall(const bool _usingBomb = false);
 	bool CouldBeDoor();
 	void SpawnTorch();
+	void Enable3D();
 };

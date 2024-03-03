@@ -22,9 +22,9 @@ Wall::Wall(const Vector2f& _position, const WallType& _type, const string& _zone
 		}
 	}
 	
-	const int _randomValue = Random(15, 0);
+	textureIndex = Random(15, 0);
 
-	TextureManager::GetInstance().LoadFromTextureSheet(shape, GetPathWithType(wallType), _randomValue, Vector2i(24, 24));
+	TextureManager::GetInstance().LoadFromTextureSheet(shape, GetPathWithType(wallType), textureIndex, Vector2i(24, 24));
 	type = ET_WALL;
 	torch = nullptr;
 	canSpawnWithTorch = _canSpawnWithTorch;
@@ -42,7 +42,10 @@ void Wall::DestroyWall(const bool _usingBomb)
 		SoundManager::GetInstance().Play(SOUND_DIG_FAIL);
 		return;
 	}
-	Map::GetInstance().AddFloorAt(GetPosition());
+	if (!isIn3D)
+	{
+		Map::GetInstance().AddFloorAt(GetPosition());
+	}
 	SoundManager::GetInstance().Play(SOUND_DIG_DIRT);
 	if (hasDiamond)
 	{
@@ -53,7 +56,22 @@ void Wall::DestroyWall(const bool _usingBomb)
 		torch->Destroy();
 	}
 
-	WindowManager::GetInstance().Shake(5);
+	WindowManager::GetInstance().Shake(25);
+
+
+	// TODO 3d part 2
+	/*Entity* _entity = Map::GetInstance().GetEntityAt(GetPosition() + (Vector2f(0.0f, -1.0f) * TILE_SIZE));
+	if (_entity)
+	{
+		if (_entity->GetType() == ET_WALL)
+		{
+			if (Wall* _wall = dynamic_cast<Wall*>(_entity))
+			{
+				_wall->Enable3D();
+			}
+		}
+	}*/
+
 	Destroy();
 }
 
@@ -114,4 +132,11 @@ void Wall::SpawnTorch()
 			Map::GetInstance().AddOther(torch);
 		}
 	}
+}
+
+void Wall::Enable3D()
+{
+	TextureManager::GetInstance().LoadFromTextureSheet(shape, "Dungeons/zone1/3d.png", textureIndex, Vector2i(24, 24));
+	Map::GetInstance().AddFloorAt(GetPosition());
+	isIn3D = true;
 }

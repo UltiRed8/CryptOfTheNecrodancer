@@ -131,6 +131,27 @@ public:
 	{
 		return floors;
 	}
+	Entity* GetEntityAt(const Vector2f& _position)
+	{
+		vector<Entity*> _entities;
+		for (Wall* _wall : walls)
+		{
+			_entities.push_back(_wall);
+		}
+		for (Tile* _floor : floors)
+		{
+			_entities.push_back(_floor);
+		}
+
+		for (Entity* _entity : _entities)
+		{
+			if (_entity->GetPosition() == _position)
+			{
+				return _entity;
+			}
+		}
+		return nullptr;
+	}
 
 public:
 	Generator(bool* _discoModeEnabled);
@@ -150,6 +171,7 @@ private:
 	void UpdateTilesColor();
 	void PlaceShopDoor();
 	void PlaceTorches();
+	void Temp();
 
 public:
 	void GenUpdate();

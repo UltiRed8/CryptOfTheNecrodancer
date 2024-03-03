@@ -144,7 +144,24 @@ void Generator::GenerateLobby()
 		SetAllFloorOriginColor();
 		UpdateDoors();
 		MenuManager::GetInstance().ToggleLoading();
+		Map::GetInstance().UpdateLights(50);
+		CameraManager::GetInstance().Get("PlayerCamera")->SetCameraToPlayer();
 	}, seconds(2.0f), 1, true);
+}
+
+void Generator::Temp()
+{
+	for (Wall* _wall : walls)
+	{
+		Entity* _entity = GetEntityAt(_wall->GetPosition() - Vector2f(0, -1) * TILE_SIZE);
+		if (_entity)
+		{
+			if (_entity->GetType() == ET_FLOOR)
+			{
+				_wall->Enable3D();
+			}
+		}
+	}
 }
 
 void Generator::GenerateRooms(const int _roomCount)
@@ -484,7 +501,9 @@ void Generator::GenUpdate()
 			[&]() { PlaceShopDoor(); },
 			[&]() { UpdateDoors(); },
 			[&]() { PlaceTorches(); },
+			//[&]() { Temp(); }, // TODO 3d effect
 			[&]() { Map::GetInstance().EndDungeonGeneration(); },
+			
 		};
 		_functionList[generationIndex]();
 		sleep(seconds(0.5f));
