@@ -4,8 +4,7 @@
 #include "Macro.h"
 #include "AnimationComponent.h"
 
-#define DIAMOND_IN_WALL "Dungeons/Zone1/DiamondInWall.png"
-
+#define DIAMOND_IN_WALL "DiamondInWall.png"
 
 enum WallType
 {
@@ -16,6 +15,7 @@ class Wall:public Placeable
 {
 	WallType wallType;
 	bool hasDiamond;
+	string zoneName;
 
 public:
 	WallType GetWallType() const
@@ -26,7 +26,7 @@ public:
 	{
 		hasDiamond = _hasDiamond;
 
-		TextureManager::GetInstance().Load(shape, DIAMOND_IN_WALL);
+		TextureManager::GetInstance().Load(shape, "Dungeons/" + zoneName + "/" DIAMOND_IN_WALL);
 
 		components.push_back(new AnimationComponent(this, {
 			AnimationData("DiamondInWall", Vector2f(24, 24), Random(2, 0) * 3, 2, 0.1f, false),
@@ -39,19 +39,18 @@ public:
 	string GetPathWithType(const WallType& _type) const
 	{
 		string _path[] = {
-			"Dungeons/Zone1/Walls.png",
+			"Dungeons/" + zoneName + "/Walls.png",
 			"Dungeons/Bedrock.png",
 			"Dungeons/ShopWall.png",
-			"Dungeons/Zone1/StoneWall.png"
+			"Dungeons/" + zoneName + "/StoneWall.png"
 		};
 
 		return _path[_type];
 	}
 
 public:
-	Wall(const Vector2f& _position,const WallType& _type);
+	Wall(const Vector2f& _position,const WallType& _type, const string& _zoneName);
 
 public:
 	void DestroyWall(const bool _usingBomb = false);
 };
-

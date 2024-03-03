@@ -1,6 +1,8 @@
 #include "Path.h"
 #include "Macro.h"
-#define PATH_FLOOR "Dungeons/Zone1/floor.png"
+#include "Map.h"
+
+#define PATH_FLOOR "Dungeons/" + Map::GetInstance().GetZoneFileName() + "/floor.png"
 
 Path::Path(const Vector2i& _start, const Vector2i& _end)
 {

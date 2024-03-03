@@ -43,5 +43,5 @@ private:
 
 public:
 	virtual void Update() override;
-	void ChangeHealth(const float _byAmount);
+	bool ChangeHealth(const float _byAmount);
 };
