@@ -8,7 +8,7 @@ enum NPCType
 
 class NPC : public Living
 {
-	NPCType type;
+	NPCType npcType;
 	int currentCooldown;
 
 public:

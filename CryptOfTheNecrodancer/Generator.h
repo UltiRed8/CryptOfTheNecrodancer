@@ -28,6 +28,7 @@ class Generator
 
 	vector<Tile*> floors;
 	vector<Wall*> walls;
+	vector<Wall*> shopWalls;
 	vector<Entity*> others;
 	vector<Stair*> stairs;
 
@@ -122,13 +123,17 @@ public:
 	{
 		return walls;
 	}
+	vector<Tile*> GetFloors() const
+	{
+		return floors;
+	}
 
 public:
 	Generator();
 	~Generator();
 private:
 	void GenerateRooms(const int _roomCount);
-	void PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const bool _finalDestructible, const WallType& _type);
+	vector<Wall*> PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const bool _finalDestructible, const WallType& _type);
 	void GeneratePaths();
 	void EraseOverlappings();
 	void GenerateShopRoom();
@@ -138,6 +143,7 @@ private:
 	void GenerateDiamond(const int _diamondOnFloor = 1, int _diamondInWall = 2);
 	void SpawnEnnemy(const int _amountOfEnemies);
 	void UpdateTilesColor();
+	void PlaceShopDoor();
 
 public:
 	void Generate(const int _roomCount, const int _amountOfEnemies);

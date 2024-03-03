@@ -56,3 +56,8 @@ Vector2f operator * (const Vector2f& _vector, const Vector2f& _multiplier)
 {
 	return Vector2f(_vector.x * _multiplier.x, _vector.y * _multiplier.y);
 }
+
+Vector2i operator * (const Vector2i& _vector, const Vector2i& _multiplier)
+{
+	return Vector2i(_vector.x * _multiplier.x, _vector.y * _multiplier.y);
+}

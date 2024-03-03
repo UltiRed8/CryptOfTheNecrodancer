@@ -167,6 +167,14 @@ void MusicManager::Pause()
 
 void MusicManager::StopAll()
 {
+	for (UIElement* _element : MenuManager::GetInstance().Get("HUD")->GetAllValues())
+	{
+		if (RythmIndicator* _indicator = dynamic_cast<RythmIndicator*>(_element))
+		{
+			_indicator->Destroy();
+		}
+	}
+
 	for (MusicData* _music : GetAllValues())
 	{
 		_music->stop();

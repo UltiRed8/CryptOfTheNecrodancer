@@ -151,7 +151,10 @@ void Map::PrepareMusic()
 
 void Map::OpenLobby()
 {
-	dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetRessources()->SetMoney(0);
+	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
+	_player->GetRessources()->SetMoney(0);
+	_player->SetIsConfuse(false);
+	_player->ResetChainMultiplier();
 	UpdateZoneFileName();
 	ClearGenerator();
 	generator->GenerateLobby();

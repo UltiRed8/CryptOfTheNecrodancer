@@ -8,9 +8,10 @@
 
 NPC::NPC(const NPCType& _type, const Vector2f& _position) : Living(900, 1000, "", STRING_ID("NPC"), _position)
 {
+	type = ET_NPC;
 	zIndex = 1;
 	currentCooldown = 0;
-	type = _type;
+	npcType = _type;
 	ChangeTexture();
 	UpdateAnimation();
 }
@@ -23,12 +24,12 @@ void NPC::ChangeTexture()
 		PATH_HEPHAESTUS,
 	};
 
-	TextureManager::GetInstance().Load(shape, _paths[type]);
+	TextureManager::GetInstance().Load(shape, _paths[npcType]);
 }
 
 void NPC::UpdateAnimation()
 {
-	if (type == NPC_MERLIN)
+	if (npcType == NPC_MERLIN)
 	{
 		components.push_back(new AnimationComponent(this, {
 			AnimationData("Left", Vector2f(32, 39), 0, 2, 0.1f, false),
@@ -37,7 +38,7 @@ void NPC::UpdateAnimation()
 		shape->setScale(1.5f, 1.5f);
 		shape->move(Vector2f(-TILE_SIZE.x / 2.5f, -TILE_SIZE.y / 2.0f));
 	}
-	else if (type == NPC_SHOPKEEPER)
+	else if (npcType == NPC_SHOPKEEPER)
 	{
 		components.push_back(new AnimationComponent(this, {
 			AnimationData("ShopKeeper", Vector2f(47, 47), 4, 3, 0.1f, false),
@@ -62,7 +63,7 @@ void NPC::DieEvent()
 void NPC::Update()
 {
 
-	if (type == NPC_MERLIN)
+	if (npcType == NPC_MERLIN)
 	{
 		currentCooldown++;
 		if (currentCooldown >= 2)
@@ -79,7 +80,7 @@ void NPC::Update()
 		}
 		return;
 	}
-	else if (type == NPC_HEPHAESTUS)
+	else if (npcType == NPC_HEPHAESTUS)
 	{
 		currentCooldown++;
 		if (currentCooldown > 3)

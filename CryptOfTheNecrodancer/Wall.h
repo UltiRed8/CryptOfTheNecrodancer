@@ -53,4 +53,5 @@ public:
 
 public:
 	void DestroyWall(const bool _usingBomb = false);
+	bool CouldBeDoor();
 };

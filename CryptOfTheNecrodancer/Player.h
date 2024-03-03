@@ -25,6 +25,12 @@ public:
 	void SetIsConfuse(const bool _isConfuse)
 	{
 		isConfuse = _isConfuse;
+		if (isConfuse)
+		{
+			new Timer("ResetConfuse", [this]() {
+				isConfuse = false;
+			}, seconds(5.0f), 1, true);
+		}
 	}
 	int GetConfusionEffect()
 	{
