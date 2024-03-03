@@ -80,6 +80,7 @@ public:
 	void Prepare(const Zone& _zoneToOpen);
 	void Open(const Zone& _zoneToOpen);
 	void OpenPrepared();
+	void QuickRestart();
 	
 
 

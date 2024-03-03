@@ -96,6 +96,14 @@ void Map::GenerateDungeon()
 	MusicManager::GetInstance().Play();
 }
 
+void Map::QuickRestart()
+{
+	UpdateZoneFileName();
+	dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetRessources()->SetDiamonds(0);
+	currentLevel = 1;
+	GenerateDungeon();
+}
+
 void Map::UpdateLights(const int _brightness)
 {
 	LightningManager& _light = LightningManager::GetInstance();

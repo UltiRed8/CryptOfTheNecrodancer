@@ -5,10 +5,7 @@ DamageComponent::DamageComponent(Entity* _owner, const float _damagesAmount, con
 {
 	damagesAmount = _damagesAmount;
 	canAttack = _canAttack;
-	
 }
-
-
 
 void DamageComponent::Attack(Entity* _target)
 {
@@ -18,4 +15,5 @@ void DamageComponent::Attack(Entity* _target)
 
 void DamageComponent::Update()
 {
+
 }

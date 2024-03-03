@@ -193,6 +193,9 @@
     <Filter Include="Source Files\Object\Entity\Placable\Tile">
       <UniqueIdentifier>{1e3456c3-1d09-400a-a745-608419943e52}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Object\Entity\Placable\Torch">
+      <UniqueIdentifier>{ed0acae3-ed40-4137-94b2-5464f7232d2f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -360,7 +363,7 @@
     <ClCompile Include="Trap.cpp">
       <Filter>Source Files\Object\Entity\Trap</Filter>
     </ClCompile>
-    <ClCompile Include="Placable.cpp">
+    <ClCompile Include="Placeable.cpp">
       <Filter>Source Files\Object\Entity\Placable</Filter>
     </ClCompile>
     <ClCompile Include="WindowManager.cpp">
@@ -401,6 +404,8 @@
     </ClCompile>
     <ClCompile Include="RythmIndicator.cpp">
       <Filter>Source Files</Filter>
+    <ClCompile Include="Torch.cpp">
+      <Filter>Source Files\Object\Entity\Placable\Torch</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -581,7 +586,7 @@
     <ClInclude Include="Trap.h">
       <Filter>Source Files\Object\Entity\Trap</Filter>
     </ClInclude>
-    <ClInclude Include="Placable.h">
+    <ClInclude Include="Placeable.h">
       <Filter>Source Files\Object\Entity\Placable</Filter>
     </ClInclude>
     <ClInclude Include="Pickable.h">
@@ -622,6 +627,8 @@
     </ClInclude>
     <ClInclude Include="RythmIndicator.h">
       <Filter>Header Files</Filter>
+    <ClInclude Include="Torch.h">
+      <Filter>Source Files\Object\Entity\Placable\Torch</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

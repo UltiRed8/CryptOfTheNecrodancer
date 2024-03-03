@@ -298,6 +298,12 @@ bool MusicManager::TriggerEvent()
 
 	if ((delta - 10 <= _delay || delta >= (beatDelay - _delay)) || rythmType <= RT_FREEMOVE)
 	{
+		Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
+		TextureManager::GetInstance().Load(_shape, PATH_HEART2);
+		new Timer("HeartIndicatorReset", [this]() {
+			Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
+			TextureManager::GetInstance().Load(_shape, PATH_HEART1);
+		}, seconds(0.1f), 1, true);
 		didEvent = true;
 		Menu* _hud = MenuManager::GetInstance().Get("HUD");
 		new RythmIndicator(RID_RIGHT,_hud, _path);

@@ -2,6 +2,7 @@
 #include "MusicManager.h"
 #include "LightningManager.h"
 #include "Macro.h"
+#include "Torch.h"
 #include "Map.h"
 
 #define PATH_SHOP_TILE "Dungeons/ShopTile.png"
@@ -106,6 +107,7 @@ void Generator::GenerateLobby()
 		{ '2', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); /* TODO spawn item here (shops)*/ }},
 		{ '1', [this](const Vector2f& _position) { others.push_back(new Tile(PATH_UPGRADE_TILE, _position)); }},
 		{ 'P', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position); }},
+		{ 'T', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP)); others.push_back(new Torch(_position)); }},
 	};
 
 	string _line;

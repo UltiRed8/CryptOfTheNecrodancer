@@ -1,8 +1,12 @@
 #pragma once
+
 #include"Component.h"
-#include<functional>
 #include"TimerManager.h"
+
+#include<functional>
+
 using namespace std;
+
 class LifeComponent:public Component
 {
 	bool invulnerable;
@@ -36,8 +40,8 @@ public:
 
 private:
 	void Death();
+
 public:
 	virtual void Update() override;
 	void ChangeHealth(const float _byAmount);
 };
-

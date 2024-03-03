@@ -47,5 +47,8 @@ void Skeleton::Update()
 		currentCooldown = cooldown;
 		SelectDirection();
 	}
-	Entity::Update();
+	for (Component* _component : components)
+	{
+		_component->Update();
+	}
 }

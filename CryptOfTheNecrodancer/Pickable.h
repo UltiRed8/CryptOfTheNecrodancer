@@ -1,5 +1,5 @@
 #pragma once
-#include "Placable.h"
+#include "Placeable.h"
 #include "Player.h"
 
 enum PickableType
@@ -7,7 +7,7 @@ enum PickableType
 	PT_COIN,PT_DIAMOND,PT_CUSTOM
 };
 
-class Pickable : public Placable
+class Pickable : public Placeable
 {
 	PickableType pickableType;
 	int amount;

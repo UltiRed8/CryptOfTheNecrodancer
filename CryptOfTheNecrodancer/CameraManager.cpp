@@ -6,7 +6,7 @@
 
 CameraManager::CameraManager()
 {
-	zoomIndex = new float(0.9f);
+	zoomIndex = new float(1.2f);
 	minimumZoomIndex = new float(0.1f);
 	maximumZoomIndex = new float(1.5f);
 
