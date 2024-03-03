@@ -7,8 +7,10 @@
 #define SOUND_DIG_DIRT "Assets/Sounds/mov_dig_dirt.ogg"
 #define SOUND_DIG_FAIL "Assets/Sounds/mov_dig_fail.ogg"
 
-Wall::Wall(const Vector2f& _position, const WallType& _type) : Placeable(STRING_ID("Wall"), "", _position)
+Wall::Wall(const Vector2f& _position, const WallType& _type, const string& _zoneName) : Placeable(STRING_ID("Wall"), "", _position)
 {
+	zoneName = _zoneName;
+
 	wallType = _type;
 
 	if (wallType == WT_DIRT)

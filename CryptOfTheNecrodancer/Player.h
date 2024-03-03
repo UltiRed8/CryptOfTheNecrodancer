@@ -51,6 +51,7 @@ public:
 	~Player();
 
 public :
+	void ResetChainMultiplier();
 	void InitInput();
 	void InitLife();
 

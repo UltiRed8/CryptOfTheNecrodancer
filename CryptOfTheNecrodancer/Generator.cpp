@@ -9,7 +9,6 @@
 #define PATH_UPGRADE_TILE "Dungeons/UpgradeTile.png"
 #define PATH_FLOOR "Dungeons/" + Map::GetInstance().GetZoneFileName() + "/floor.png"
 
-
 Generator::Generator()
 {
 	zone = Z_ZONE1;
@@ -29,7 +28,7 @@ Generator::Generator()
 
 	shopkeeper = nullptr;
 
-	zoneFileName = string();
+	zoneFileName = Map::GetInstance().GetZoneFileName();
 }
 
 Generator::~Generator()
@@ -98,7 +97,7 @@ void Generator::GenerateLobby()
 	map<char, function<void(const Vector2f& _position)>> _elements =
 	{
 		{ ' ', nullptr },
-		{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP)); }},
+		{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP, zoneFileName)); }},
 		{ '.', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); }},
 		{ 'S', [this](const Vector2f& _position) { stairs.push_back(new Stair(_position)); }},
 		{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Door(_position)); }},
@@ -107,7 +106,7 @@ void Generator::GenerateLobby()
 		{ '2', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); /* TODO spawn item here (shops)*/ }},
 		{ '1', [this](const Vector2f& _position) { others.push_back(new Tile(PATH_UPGRADE_TILE, _position)); }},
 		{ 'P', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position); }},
-		{ 'T', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP)); others.push_back(new Torch(_position)); }},
+		{ 'T', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP, zoneFileName)); others.push_back(new Torch(_position)); }},
 	};
 
 	string _line;
@@ -180,7 +179,7 @@ void Generator::PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, c
 
 		for (const Vector2f& _position : _allPositionsAround)
 		{
-			walls.push_back(new Wall(_position, (_index == _width - 1 && _finalDestructible) ? WT_INVULNERABLE : _type));
+			walls.push_back(new Wall(_position, (_index == _width - 1 && _finalDestructible) ? WT_INVULNERABLE : _type, zoneFileName));
 		}
 	}
 }

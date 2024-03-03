@@ -15,6 +15,9 @@
 
 #define PATH_PLAYER "Entities/PlayerSprite.png"
 
+#define SOUND_CHAIN_START "Assets/Sounds/sfx_chain_groove_ST.ogg"
+#define SOUND_CHAIN_FAIL "Assets/Sounds/sfx_chain_break_ST.ogg"
+
 Player::Player(const float _maxHp, const float _maxDammage, const string _id, const Vector2f& _position) : Living(_maxHp, _maxDammage,PATH_PLAYER,_id, _position)
 {
 	isConfuse = false;
@@ -58,7 +61,17 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 
 		CollisionReaction(ET_ENEMY, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
-			GetComponent<DamageComponent>()->Attack(_entity);
+			if (GetComponent<DamageComponent>()->Attack(_entity))
+			{
+				if (*chainMultiplier <= 3)
+				{
+					*chainMultiplier += 1;
+					if (*chainMultiplier == 2)
+					{
+						SoundManager::GetInstance().Play(SOUND_CHAIN_START);
+					}
+				}
+			}
 		}),
 
 		CollisionReaction(ET_EPHAESTUS, [this](Entity* _entity) {
@@ -72,11 +85,23 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 	InitLife();
 }
 
+// TODO bug : le menu game over ne désactive pas les mouvements du joueur
+// TODO ne pas oublier : si game over, ne pas envoyer le joueur au niveau suivant a la fin de la musique
+
 Player::~Player()
 {
 	delete inventory;
 	delete chainMultiplier;
 	delete ressources;
+}
+
+void Player::ResetChainMultiplier()
+{
+	if (*chainMultiplier >= 2)
+	{
+		*chainMultiplier = 1;
+		SoundManager::GetInstance().Play(SOUND_CHAIN_FAIL);
+	}
 }
 
 void Player::InitInput()

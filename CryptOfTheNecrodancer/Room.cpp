@@ -1,6 +1,8 @@
 #include "Room.h"
 #include "Macro.h"
-#define PATH_FLOOR "Dungeons/Zone1/floor.png"
+#include "Map.h"
+
+#define PATH_FLOOR "Dungeons/" + Map::GetInstance().GetZoneFileName() + "/floor.png"
 
 Room::Room(const Vector2i& _size, const Vector2f& _startPosition)
 {

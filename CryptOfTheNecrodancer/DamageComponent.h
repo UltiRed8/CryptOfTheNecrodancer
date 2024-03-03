@@ -18,7 +18,7 @@ public:
 	
 
 public:
-	void Attack(Entity* _target);
+	bool Attack(Entity* _target);
 	virtual void Update() override;
 };
 

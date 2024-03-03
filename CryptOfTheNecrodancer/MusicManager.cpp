@@ -10,11 +10,14 @@
 #include "LightningManager.h"
 #include "Heart.h"
 #include "RythmIndicator.h"
+#include "SoundManager.h"
 
-#define RYTHM_INDICATOR_BLUE_Path "UI/BeatMarkerBlue.png"
-#define RYTHM_INDICATOR_RED_Path "UI/BeatMarkerRed.png"
+#define PATH_RYTHM_INDICATOR_BLUE "UI/BeatMarkerBlue.png"
+#define PATH_RYTHM_INDICATOR_RED "UI/BeatMarkerRed.png"
 #define PATH_HEART1 "UI/RythmHearts0.png"
 #define PATH_HEART2 "UI/RythmHearts1.png"
+
+#define SOUND_RYTHM_FAILED "Assets/Sounds/sfx_missedbeat.ogg"
 
 MusicManager::MusicManager()
 {
@@ -23,7 +26,7 @@ MusicManager::MusicManager()
 	currentMain = nullptr;
 	currentShopkeeper = nullptr;
 
-	musicPackName = new int(6);
+	musicPackName = new int(2);
 	volume = new float(10.f);
 	rythmLoop = nullptr;
 	isRunning = false;
@@ -59,7 +62,7 @@ MusicData* MusicManager::GetMusic(const string& _path, const Vector2f& _position
 	if (!_music)
 	{
 		_music = new MusicData(_path);
-		if (!_music->openFromFile("Assets/Music/" + to_string(*musicPackName) + "/" + _path + ".ogg"))
+		if (!_music->openFromFile("Assets/Music/" + _path + ".ogg"))
 		{
 			cerr << "La musique n'a pas �t� correctement charg�e ! (" << _path << ".ogg)" << endl;
 			return nullptr;
@@ -85,7 +88,7 @@ void MusicManager::PrepareMain(const string& _path, const int _bpm, const bool _
 		rythmLoop->SetDuration(seconds(1.f / ((currentBPM * playSpeed) / 60.f)));
 		rythmLoop->Pause();
 	}
-	if (currentMain = GetMusic(_path, Vector2f(0.0f, 0.0f)))
+	if (currentMain = GetMusic(to_string(*musicPackName) + "/" + _path, Vector2f(0.0f, 0.0f)))
 	{
 		currentMain->setLoop(_shouldLoop);
 
@@ -297,11 +300,11 @@ bool MusicManager::TriggerEvent()
 	}
 	if (currentMain->getLoop())
 	{
-		_path = RYTHM_INDICATOR_BLUE_Path;
+		_path = PATH_RYTHM_INDICATOR_BLUE;
 	}
 	else
 	{
-		_path = _curentDuration.asMilliseconds() > _max ? RYTHM_INDICATOR_RED_Path : RYTHM_INDICATOR_BLUE_Path;
+		_path = _curentDuration.asMilliseconds() > _max ? PATH_RYTHM_INDICATOR_RED : PATH_RYTHM_INDICATOR_BLUE;
 	}
 
 	if ((delta - 10 <= _delay || delta >= (beatDelay - _delay)) || rythmType <= RT_FREEMOVE)
@@ -325,7 +328,8 @@ bool MusicManager::TriggerEvent()
 	}
 	else
 	{
-		cout << "bad timing!" << endl;
+		SoundManager::GetInstance().Play(SOUND_RYTHM_FAILED);
+		dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->ResetChainMultiplier();
 		return false;
 	}
 }

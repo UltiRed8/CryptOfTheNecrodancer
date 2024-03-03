@@ -29,15 +29,15 @@ void LifeComponent::Update()
 {
 }
 
-void LifeComponent::ChangeHealth(const float _byAmount)
+bool LifeComponent::ChangeHealth(const float _byAmount)
 {
-	if (invulnerable) return;
+	if (invulnerable) return false;
 	*currentHealth += _byAmount;
 	if (*currentHealth <= 0.0f)
 	{
 		*currentHealth = 0.0f;
-
 		Death();
+		return true;
 	}
 	else if (*currentHealth > maxHealth)
 	{
@@ -48,5 +48,5 @@ void LifeComponent::ChangeHealth(const float _byAmount)
 	{
 		_player->UpdateLife();
 	}
-	
+	return false;
 }
