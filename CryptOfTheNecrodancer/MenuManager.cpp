@@ -28,6 +28,8 @@
 #define OPTIONS_MENU "UI/OptionsMenu.png"
 #define GRAPHICS_MENU "UI/GraphicsMenu.png"
 #define LATENCY_MENU "UI/LatencyMenu.png"
+#define LOADING_MENU "UI/Loading.png"
+#define WARNING_MENU "UI/SeizureWarningMenu.png"
 
 #define EMPTYCHECKBOX "UI/EmptyCheckbox.png"
 #define EMPTYBAR "UI/EmptyBar.png"
@@ -151,6 +153,8 @@ void MenuManager::InitMenu()
 	InitGraphicMenu();
 	InitDeleteSaveDataMenu();
 	InitGameOver();
+	Loading();
+	WarningSeizure();
 }
 
 void MenuManager::InitMenuPause()
@@ -204,7 +208,7 @@ void MenuManager::InitMenuPause()
 			}
 		}
 	};
-	function<void()> _callbackRestart = [this]() { Restart(); };
+	function<void()> _callbackRestart = [this]() { Get("GamePause")->Toggle(); Restart(); };
 	function<void()> _callbackOptions = [this]() { Get("GamePause")->Toggle(); OptionsMenu(); };
 	function<void()> _callbackLobby = [this]() {Get("GamePause")->Toggle(); GoToLobby(); MusicManager::GetInstance().Unpause(); };
 	function<void()> _callbackDelete = [this]() { DeleteSaveDataMenu(); };
@@ -273,8 +277,10 @@ void MenuManager::Restart()
 {
 	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
 	_player->ResetLife();
+	_player->GetRessources()->SetDiamonds(0);
+	_player->GetRessources()->SetMoney(0);
 
-	//TODO
+	Map::GetInstance().QuickRestart();
 }
 
 void MenuManager::InitMenuOptions()
@@ -355,6 +361,8 @@ void MenuManager::InitGraphicMenu()
 	unsigned int _windowY = window->getSize().y;
 
 	Vector2f _index;
+	function<void()> _toggleDiscoMode = [this]() { Map::GetInstance().ToggleDiscoModeEnabled(); };
+
 	function<void()> _up = [this]() { CameraManager::GetInstance().ZoomOut(); };
 	function<void()> _down = [this]() { CameraManager::GetInstance().ZoomIn(); };
 
@@ -366,6 +374,13 @@ void MenuManager::InitGraphicMenu()
 	function<void()> _close = [this]() { OptionsMenu(); Get("Graphics")->Toggle(); };
 
 	new Menu("Graphics", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), GRAPHICS_MENU),
+		// Activer/Désactiver le DiscoMode
+		new UIText("ToggleDMText", Vector2f(_x, static_cast<float>(_windowY / 4.6)), Color(172, 172,173), "Toggle Disco Mode",40,FONT, true),
+		new UIButton("CheckBoxDM", Vector2f(static_cast<float>(window->getSize().x / 3.45), static_cast<float>(_windowY / 4.6)), WHITE_COLOR, Color(0,139,139), {
+			new UIImage("CheckBoxImageDM", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 4.6)), Vector2f(30.0f, 30.0f), EMPTYCHECKBOX),
+			new UIText("CheckBoxTextDM", Vector2f(static_cast<float>(window->getSize().x / 1.425), static_cast<float>(_windowY / 4.6)), Color(0,139,139), "X", 40, FONT, false)
+		}, SOUND_TOGGLE, _toggleDiscoMode, FloatRect(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 4.6), 30.0f, 30.0f)),
+
 		//View Multiplier
 		new UIText("ViewText", Vector2f(_x, static_cast<float>(_windowY / 3.2)), Color(172, 172,173), "View Multiplier",40,FONT, true),
 		new ProgressBar("ViewBar", PT_LEFT, Vector2f(static_cast<float>(window->getSize().x / 2.9), static_cast<float>(_windowY / 2.72)), Vector2f(400.0f, 30.0f), EMPTYBAR, FULLBAR, CameraManager::GetInstance().GetZoomIndex(), 1.5f),
@@ -442,7 +457,7 @@ void MenuManager::LatencyMenu()
 void MenuManager::InitGameOver()
 {
 	function<void()> _return = [this]() { GameOverMenu();  GoToLobby();  };
-	function<void()> _restart = [&]() { Restart(); }; 
+	function<void()> _restart = [&]() { GameOverMenu();  Restart(); };
 
 	float _x = static_cast<float>(window->getSize().x / 2);
 	unsigned int _windowY = window->getSize().y;
@@ -457,4 +472,33 @@ void MenuManager::InitGameOver()
 void MenuManager::GameOverMenu()
 {
 	Get("Dead")->Toggle();
+}
+
+void MenuManager::Loading()
+{
+	unsigned int _windowY = window->getSize().y;
+
+	new Menu("Loading", {new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), LOADING_MENU),}, 4);
+}
+
+void MenuManager::ToggleLoading()
+{
+	Get("Loading")->Toggle();
+}
+
+void MenuManager::WarningSeizure()
+{
+	unsigned int _windowY = window->getSize().y;
+
+	function<void()> _skip = [&]() { ToggleWarningSeizure(); };
+	const Vector2f& _sizeWindow = Vector2f((float)(SCREEN_WIDTH), (float)(SCREEN_HEIGHT));
+
+	//const string& _id, const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const string& _path, const Vector2f& _imageSize, const string& _soundPath, const function<void()>& _callback)
+	new Menu("WarningSeizure", { new UIButton("Warning", Vector2f(0.0f, 0.0f), Color::White, Color::White, WARNING_MENU, _sizeWindow, "", _skip),
+		}, 4);
+}
+
+void MenuManager::ToggleWarningSeizure()
+{
+	Get("WarningSeizure")->Toggle();
 }

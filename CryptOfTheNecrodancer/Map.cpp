@@ -14,12 +14,14 @@ Map::Map()
 	tempoIndex = 1;
 	chainToggle = true;
 	isPurple = false;
-	generator = new Generator();
+	discoModeEnabled = new bool(true);
+	generator = new Generator(discoModeEnabled);
 }
 
 Map::~Map()
 {
 	delete generator;
+	delete discoModeEnabled;
 }
 
 void Map::Prepare(const Zone& _zoneToOpen)
@@ -54,7 +56,7 @@ void Map::OpenPrepared()
 void Map::ClearGenerator()
 {
 	delete generator;
-	generator = new Generator();
+	generator = new Generator(discoModeEnabled);
 }
 
 void Map::NextFloor()
@@ -90,10 +92,13 @@ void Map::GenerateDungeon()
 {
 	ClearGenerator();
 	generator->Generate(6, 25);
-	UpdateLights(2);
+	new Timer(STRING_ID("Dungeon"), [this]() {
+		UpdateLights(2);
 
-	PrepareMusic();
-	MusicManager::GetInstance().Play();
+		PrepareMusic();
+		MusicManager::GetInstance().Play();
+	} , seconds(1.0f), 1, true);
+
 }
 
 void Map::QuickRestart()

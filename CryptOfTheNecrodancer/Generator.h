@@ -41,7 +41,7 @@ class Generator
 	NPC* shopkeeper;
 
 	string zoneFileName;
-
+	bool* discoModeEnabled;
 
 public:
 	vector<Vector2f> GetAllWallsAndFloorPositions() const
@@ -129,7 +129,7 @@ public:
 	}
 
 public:
-	Generator();
+	Generator(bool* _discoModeEnabled);
 	~Generator();
 private:
 	void GenerateRooms(const int _roomCount);

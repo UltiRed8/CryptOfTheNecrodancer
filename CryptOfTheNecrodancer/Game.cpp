@@ -40,7 +40,9 @@ void Game::Start()
 	Init();
 
 	// TODO temporaire
+	MenuManager::GetInstance().ToggleWarningSeizure();	//Warning Seizure
 	Map::GetInstance().Open(Z_LOBBY);
+
 	new Camera("PlayerCamera", CAMERA_PLAYER, Vector2f(0.f,0.f), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
 }
 

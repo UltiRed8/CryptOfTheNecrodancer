@@ -57,5 +57,11 @@ public :
 	void InitGameOver();
 	void GameOverMenu();
 
+	void Loading();
+	void ToggleLoading();
+
+	void WarningSeizure();
+	void ToggleWarningSeizure();
+
 	#pragma endregion
 };

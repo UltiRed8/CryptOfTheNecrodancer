@@ -30,8 +30,19 @@ class Map : public Singleton<Map>
 	bool isPurple;
 	string zoneFileName;
 	Generator* generator;
+	bool* discoModeEnabled;
 
 public:
+	bool* GetDiscoModeEnabled() const
+	{
+		return discoModeEnabled;
+	}
+
+	void ToggleDiscoModeEnabled()
+	{
+		*discoModeEnabled = !*discoModeEnabled;
+	}
+
 	string GetZoneFileName() const
 	{
 		return zoneFileName.substr(0, zoneFileName.find_first_of('_'));
