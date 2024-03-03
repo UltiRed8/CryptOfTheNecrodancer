@@ -8,6 +8,7 @@
 #include "SoundManager.h"
 #include "LightningManager.h"
 #include "Stair.h"
+#include "Trap.h"
 #include "Door.h"
 #include "Map.h"
 #include "MenuManager.h"
@@ -73,9 +74,11 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 				}
 			}
 		}),
-
-		CollisionReaction(ET_EPHAESTUS, [this](Entity* _entity) {
+		CollisionReaction(ET_NPC, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
+		}),
+		CollisionReaction(ET_TRAP, [this](Entity* _entity) {
+			dynamic_cast<Trap*>(_entity)->Trigger();
 		}),
 	});
 

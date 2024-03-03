@@ -11,10 +11,14 @@ RythmIndicator::RythmIndicator(const RythmIndicatorDirection& _direction,Menu* _
 	shape->setFillColor({ 255,255,255,0 });
 	opacity = 0;
 	speed = { 0.5f,0.5f };
+
+	isRunning = true;
 }
 
 void RythmIndicator::Update(const Vector2i& _mousePosition)
 {
+	if (!isRunning) return;
+
 	const float _deltaTime = TimerManager::GetInstance().GetDeltaTime();
 	const Vector2f& _currentPosition = shape->getPosition();
 	if (opacity != 255.f)
@@ -34,4 +38,14 @@ void RythmIndicator::Update(const Vector2i& _mousePosition)
 	}
 
 	shape->move({ speed * direction * _deltaTime});
+}
+
+void RythmIndicator::Resume()
+{
+	isRunning = true;
+}
+
+void RythmIndicator::Pause()
+{
+	isRunning = false;
 }

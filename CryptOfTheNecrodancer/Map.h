@@ -54,11 +54,22 @@ public:
 
 	Entity* GetEntityAt(const Vector2f& _position)
 	{
+		vector<Entity*> _entities;
 		for (Wall* _wall : generator->GetWalls())
 		{
-			if (_wall->GetPosition() == _position)
+			_entities.push_back(_wall);
+		}
+		for (Tile* _floor : generator->GetFloors())
+		{
+			_entities.push_back(_floor);
+		}
+
+
+		for (Entity* _entity : _entities)
+		{
+			if (_entity->GetPosition() == _position)
 			{
-				return _wall;
+				return _entity;
 			}
 		}
 		return nullptr;
@@ -149,5 +160,25 @@ public:
 		}
 
 		return _availablePositions;
+	}
+
+	vector<Entity*> GetAllAround(const Vector2f& _position, const int _distance)
+	{
+		vector<Entity*> _entitiesFound;
+
+		for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
+		{
+			if (_entity)
+			{
+				const Vector2f& _entityPosition = _entity->GetPosition();
+
+				if (Distance(_entityPosition, _position) < _distance)
+				{
+					_entitiesFound.push_back(_entity);
+				}
+			}
+		}
+
+		return _entitiesFound;
 	}
 };

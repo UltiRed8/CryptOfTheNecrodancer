@@ -167,6 +167,14 @@ void MusicManager::Pause()
 
 void MusicManager::StopAll()
 {
+	for (UIElement* _element : MenuManager::GetInstance().Get("HUD")->GetAllValues())
+	{
+		if (RythmIndicator* _indicator = dynamic_cast<RythmIndicator*>(_element))
+		{
+			_indicator->Destroy();
+		}
+	}
+
 	for (MusicData* _music : GetAllValues())
 	{
 		_music->stop();
@@ -299,12 +307,13 @@ bool MusicManager::TriggerEvent()
 	string _path ;
 	if (currentMain->getStatus() == SoundSource::Stopped)
 	{
-		Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
-		_player->SetCanMove(false);
-		Entity* _stair = new Entity(STRING_ID("Stair"), PATH_STAIR, _player->GetPosition());
-		_stair->SetZIndex(1);
-		new Timer("StairTimer", [&]() {Map::GetInstance().OpenPrepared(); /*_stair->Destroy()*/; }, seconds(2.0f), 1, true);
-		_player->SetCanMove(true);
+		//Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player")); // TODO
+		//_player->SetCanMove(false);
+		//Entity* _stair = new Entity(STRING_ID("Stair"), PATH_STAIR, _player->GetPosition());
+		//_stair->SetZIndex(1);
+		//new Timer("StairTimer", [&]() {Map::GetInstance().OpenPrepared(); /*_stair->Destroy()*/; }, seconds(2.0f), 1, true);
+		//_player->SetCanMove(true);
+		Map::GetInstance().OpenPrepared();
 	}
 	if (currentMain->getLoop())
 	{
@@ -319,7 +328,7 @@ bool MusicManager::TriggerEvent()
 	{
 		Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
 		TextureManager::GetInstance().Load(_shape, PATH_HEART2);
-		new Timer("HeartIndicatorReset", [this]() {S
+		new Timer("HeartIndicatorReset", [this]() {
 			Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
 			TextureManager::GetInstance().Load(_shape, PATH_HEART1);
 		}, seconds(0.1f), 1, true);
