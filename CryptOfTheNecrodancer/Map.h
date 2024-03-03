@@ -33,6 +33,10 @@ class Map : public Singleton<Map>
 	bool* discoModeEnabled;
 
 public:
+	Generator* GetGenerator() const
+	{
+		return generator;
+	}
 	bool* GetDiscoModeEnabled() const
 	{
 		return discoModeEnabled;

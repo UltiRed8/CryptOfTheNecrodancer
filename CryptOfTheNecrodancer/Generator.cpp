@@ -144,7 +144,6 @@ void Generator::GenerateLobby()
 		SetAllFloorOriginColor();
 		UpdateDoors();
 		MenuManager::GetInstance().ToggleLoading();
-
 	}, seconds(2.0f), 1, true);
 }
 
@@ -428,7 +427,7 @@ void Generator::SpawnEnnemy(const int _amountOfEnemies)
 	EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position);
 
 	// TRAPS
-	for (int _index = 0; _index < 10; _index++)
+	for (int _index = 0; _index < 50; _index++)
 	{
 		_position = _positions[Random((int)_positions.size() - 1, 0)];
 		EraseElement(_positions, _position);
@@ -468,11 +467,10 @@ void Generator::UpdateTilesColor()
 	}
 }
 
-void Generator::Update()
+void Generator::GenUpdate()
 {
 	if (generationIndex >= 0)
 	{
-
 		vector<function<void()>> _functionList = {
 			[&]() {	GenerateRooms(6); },
 			[&]() { GeneratePaths(); },
@@ -487,10 +485,9 @@ void Generator::Update()
 			[&]() { UpdateDoors(); },
 			[&]() { PlaceTorches(); },
 			[&]() { Map::GetInstance().EndDungeonGeneration(); },
-
 		};
-
 		_functionList[generationIndex]();
+		sleep(seconds(0.5f));
 
 		generationIndex++;
 		if (generationIndex == _functionList.size())
@@ -499,7 +496,10 @@ void Generator::Update()
 			generationIndex = -1;
 		}
 	}
+}
 
+void Generator::Update()
+{
 	if (!*discoModeEnabled)
 	{
 		return;
