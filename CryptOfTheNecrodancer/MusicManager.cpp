@@ -291,7 +291,7 @@ bool MusicManager::TriggerEvent()
 	Time _curentDuration = currentMain->getPlayingOffset();
 
 	string _path ;
-	if (_curentDuration >= _duration)
+	if (currentMain->getStatus() == SoundSource::Stopped)
 	{
 		Map::GetInstance().OpenPrepared();
 	}
