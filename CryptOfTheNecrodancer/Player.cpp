@@ -21,7 +21,7 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 	inventory = new Inventory();
 	ressources = new PlayerRessource();
 	alreadyMoved = false;
-	zIndex = 1;
+	zIndex = 2;
 	chainMultiplier = new int(1);
 	type = ET_PLAYER;
 	components.push_back(new AnimationComponent(this, {

@@ -32,6 +32,11 @@ public:
 		return shape;
 	}
 
+	void SetZIndex(int _zIndex)
+	{
+		zIndex = _zIndex;
+	}
+
 	int GetZIndex() const
 	{
 		return zIndex;

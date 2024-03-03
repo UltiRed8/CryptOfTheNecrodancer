@@ -4,7 +4,7 @@
 #include "Living.h"
 #include "LifeComponent.h"
 #include <SFML/Audio.hpp>
-
+#include "MovementComponent.h"
 using namespace sf;
 
 class Player : public Living
@@ -38,6 +38,11 @@ public:
 	PlayerRessource* GetRessources() const
 	{
 		return ressources;
+	}
+
+	void SetCanMove(const bool _canMove)
+	{
+		GetComponent<MovementComponent>()->SetCanMove(_canMove);
 	}
 
 	void ResetLife()

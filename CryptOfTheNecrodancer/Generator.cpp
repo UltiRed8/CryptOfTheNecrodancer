@@ -280,14 +280,14 @@ void Generator::GenerateShopRoom()
 	const Vector2f& _shopkeeperPosition = _shopkeeperTiles[12]->GetPosition();
 	shopkeeper = new NPC(NPC_SHOPKEEPER, _shopkeeperPosition);
 	Tile* _first = _shopkeeperTiles[11];
+	_first->SetZIndex(2);
 	Tile* _second = _shopkeeperTiles[13];
+	_second->SetZIndex(2);
 	_first->SetTexture(PATH_SHOP_TILE);
 	_second->SetTexture(PATH_SHOP_TILE);
 	others.push_back(shopkeeper);
 	others.push_back(_first);
 	others.push_back(_second);
-
-	new Pickable(5, PT_DIAMOND, STRING_ID("diamond"), _shopkeeperTiles[17]->GetPosition());
 
 	const vector<Tile*>& _shopFloors = shop->GetFloor();
 	floors.insert(floors.end(), _shopFloors.begin(), _shopFloors.end());
@@ -329,7 +329,7 @@ void Generator::GenerateDiamond(const int _diamondOnFloor , int _diamondInWall )
 {
 	for (int _i = 0; _i < _diamondOnFloor; _i++)
 	{
-		new Pickable(1, PT_DIAMOND, STRING_ID("Diamond"), GetRandomElementInVector(floors)->GetPosition());
+		others.push_back(new Pickable(1, PT_DIAMOND, STRING_ID("Diamond"), GetRandomElementInVector(floors)->GetPosition()));
 	}
 
 	while (_diamondInWall >= 1)

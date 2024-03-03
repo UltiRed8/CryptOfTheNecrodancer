@@ -15,6 +15,7 @@
 #define RYTHM_INDICATOR_RED_Path "UI/BeatMarkerRed.png"
 #define PATH_HEART1 "UI/RythmHearts0.png"
 #define PATH_HEART2 "UI/RythmHearts1.png"
+#define PATH_STAIR "Dungeons/Stairs.png"
 
 MusicManager::MusicManager()
 {
@@ -37,6 +38,8 @@ MusicManager::MusicManager()
 	beatDelay = 0;
 	didEvent = false;
 	needsAnimationUpdate = false;
+	currentTime = 0;
+	maxTime = 0;
 }
 
 MusicManager::~MusicManager()
@@ -293,7 +296,12 @@ bool MusicManager::TriggerEvent()
 	string _path ;
 	if (currentMain->getStatus() == SoundSource::Stopped)
 	{
-		Map::GetInstance().OpenPrepared();
+		Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
+		_player->SetCanMove(false);
+		Entity* _stair = new Entity(STRING_ID("Stair"), PATH_STAIR, _player->GetPosition());
+		_stair->SetZIndex(1);
+		new Timer("StairTimer", [&]() {Map::GetInstance().OpenPrepared(); /*_stair->Destroy()*/; }, seconds(2.0f), 1, true);
+		_player->SetCanMove(true);
 	}
 	if (currentMain->getLoop())
 	{
@@ -308,14 +316,17 @@ bool MusicManager::TriggerEvent()
 	{
 		Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
 		TextureManager::GetInstance().Load(_shape, PATH_HEART2);
-		new Timer("HeartIndicatorReset", [this]() {
+		new Timer("HeartIndicatorReset", [this]() {S
 			Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
 			TextureManager::GetInstance().Load(_shape, PATH_HEART1);
 		}, seconds(0.1f), 1, true);
 		didEvent = true;
 		Menu* _hud = MenuManager::GetInstance().Get("HUD");
-		new RythmIndicator(RID_RIGHT,_hud, _path);
-		new RythmIndicator(RID_LEFT,_hud, _path);
+		if (currentMain->getStatus() == SoundSource::Playing)
+		{
+			new RythmIndicator(RID_RIGHT,_hud, _path);
+			new RythmIndicator(RID_LEFT,_hud, _path);
+		}
 		
 		Map::GetInstance().Update();
 		EntityManager::GetInstance().Update();
