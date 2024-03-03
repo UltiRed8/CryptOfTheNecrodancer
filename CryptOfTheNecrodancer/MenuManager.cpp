@@ -223,7 +223,7 @@ void MenuManager::InitMenuPause()
 			}
 		}
 		};
-	function<void()> _callbackRestart = [this]() { Restart(); };
+	function<void()> _callbackRestart = [this]() { Get("GamePause")->Toggle(); Restart(); };
 	function<void()> _callbackOptions = [this]() { Get("GamePause")->Toggle(); OptionsMenu(); };
 	function<void()> _callbackLobby = [this]() {Get("GamePause")->Toggle(); GoToLobby(); MusicManager::GetInstance().Unpause(); };
 	function<void()> _callbackDelete = [this]() { DeleteSaveDataMenu(); };
@@ -298,35 +298,11 @@ void MenuManager::GoToLobby()
 
 void MenuManager::Restart()
 {
-	if (Map::GetInstance().GetCurrentZone() == Z_LOBBY)
-	{
-		Get("GamePause")->Toggle();
-		MusicManager::GetInstance().Unpause();
-		for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
-		{
-			if (AnimationComponent* _animationComponent = _entity->GetComponent<AnimationComponent>())
-			{
-				for (Animation* _animation : _animationComponent->GetAllValues())
-				{
-					_animation->GetTimer()->Resume();
-				}
-			}
-		}
-		for (UIElement* _element : Get("HUD")->GetAllValues())
-		{
-			if (RythmIndicator* _indicator = dynamic_cast<RythmIndicator*>(_element))
-			{
-				_indicator->Resume();
-			}
-		}
-		return;
-	}
 	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
 	_player->ResetLife();
 	_player->GetRessources()->SetDiamonds(0);
 	_player->GetRessources()->SetMoney(0);
 
-	Get("GamePause")->Toggle();
 	Map::GetInstance().QuickRestart();
 }
 
