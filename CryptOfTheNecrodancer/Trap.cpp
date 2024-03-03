@@ -11,7 +11,7 @@ Trap::Trap(const string& _path, const Vector2f& _position, const TrapType& _trap
 {
 	type = ET_TRAP;
 	trapType = _trapType;
-	beatBeforeEndOfEffect = INFINITY;
+	beatBeforeEndOfEffect = INFINITY; //TODO
 	TextureManager::GetInstance().Load(shape, _path);
 }
 

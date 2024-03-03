@@ -1,3 +1,4 @@
+
 #include "MusicManager.h"
 #include "EntityManager.h"
 #include "TimerManager.h"
@@ -20,7 +21,7 @@ MusicManager::MusicManager()
 	currentMain = nullptr;
 	currentShopkeeper = nullptr;
 
-	musicPackName = "6";
+	musicPackName = new int(6);
 	volume = new float(10.f);
 	rythmLoop = nullptr;
 	isRunning = false;
@@ -39,6 +40,7 @@ MusicManager::MusicManager()
 MusicManager::~MusicManager()
 {
 	delete volume;
+	delete musicPackName;
 	delete acceptDelay;
 }
 
@@ -55,9 +57,9 @@ MusicData* MusicManager::GetMusic(const string& _path, const Vector2f& _position
 	if (!_music)
 	{
 		_music = new MusicData(_path);
-		if (!_music->openFromFile("Assets/Music/" + musicPackName + "/" + _path + ".ogg"))
+		if (!_music->openFromFile("Assets/Music/" + to_string(*musicPackName) + "/" + _path + ".ogg"))
 		{
-			cerr << "La musique n'a pas été correctement chargée ! (" << _path << ".ogg)" << endl;
+			cerr << "La musique n'a pas ï¿½tï¿½ correctement chargï¿½e ! (" << _path << ".ogg)" << endl;
 			return nullptr;
 		}
 	}
@@ -307,7 +309,8 @@ bool MusicManager::TriggerEvent()
 		didEvent = true;
 		Menu* _hud = MenuManager::GetInstance().Get("HUD");
 		new RythmIndicator(RID_RIGHT,_hud, _path);
-		new RythmIndicator(RID_LEFT,_hud, _path);		
+		new RythmIndicator(RID_LEFT,_hud, _path);
+		
 		Map::GetInstance().Update();
 		EntityManager::GetInstance().Update();
 		LightningManager::GetInstance().Update();

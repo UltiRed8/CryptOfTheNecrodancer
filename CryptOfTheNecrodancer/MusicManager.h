@@ -18,7 +18,7 @@ class MusicManager : public IManager<string, MusicData>, public Singleton<MusicM
 	MusicData* currentShopkeeper;
 	RythmType rythmType;
 
-	string musicPackName;
+	int* musicPackName;
 	float* acceptDelay;
 	float minAcceptDelay;
 	float maxAcceptDelay;
@@ -74,6 +74,30 @@ public:
 	void SetCurrentBPM(const int _bpm)
 	{
 		currentBPM = _bpm;
+	}
+
+	int* GetMusicPackName() const
+	{
+		return musicPackName;
+	}
+
+	void IncreaseMusicPackName() const
+	{
+		*musicPackName += 1;
+
+		if (*musicPackName >= 7)
+		{
+			*musicPackName = 7;
+		}
+	}
+	void DecreaseMusicPackName() const
+	{
+		*musicPackName -= 1;
+
+		if (*musicPackName <= 1)
+		{
+			*musicPackName = 1;
+		}
 	}
 
 public:

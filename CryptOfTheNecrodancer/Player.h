@@ -2,6 +2,7 @@
 #include "Inventory.h"
 #include "PlayerRessource.h"
 #include "Living.h"
+#include "LifeComponent.h"
 #include <SFML/Audio.hpp>
 
 using namespace sf;
@@ -39,8 +40,13 @@ public:
 		return ressources;
 	}
 
+	void ResetLife()
+	{
+		GetComponent<LifeComponent>()->ResetHealth();
+		UpdateLife();
+	}
+
 public:
-	//const float _maxHp, const float _maxDammage, const string& _path, const string& _id, const Vector2f& _pos
 	Player(const float _maxHp,const float _maxDamages,const string _id, const Vector2f& _position);
 	~Player();
 

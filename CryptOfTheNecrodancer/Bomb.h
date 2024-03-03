@@ -2,7 +2,6 @@
 #include "Placeable.h"
 #include "Timer.h"
 
-
 class Bomb : public Placeable
 {
 	bool isActive;

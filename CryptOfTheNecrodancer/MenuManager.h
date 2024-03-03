@@ -37,6 +37,7 @@ public :
 	void Delete();
 
 	void GoToLobby();
+	void Restart();
 
 	void InitMenuOptions();
 	void OptionsMenu();
@@ -52,6 +53,9 @@ public :
 
 	void InitMenuLatency();
 	void LatencyMenu();
+
+	void InitGameOver();
+	void GameOverMenu();
 
 	#pragma endregion
 };
