@@ -101,7 +101,7 @@ void MusicManager::PrepareMain(const string& _path, const int _bpm, const bool _
 			if (currentShopkeeper = GetMusic(currentMain->GetID() + "_shopkeeper", _shopkeeperPosition))
 			{
 				currentShopkeeper->setLoop(_shouldLoop);
-				currentShopkeeper->setVolume(100.0f);
+				currentShopkeeper->setVolume(*volume == 0.0f ? 0.0f : *volume + 50.0f);
 				currentShopkeeper->setMinDistance(75.0f);
 				currentShopkeeper->setAttenuation(3.0f);
 			}
@@ -238,7 +238,11 @@ void MusicManager::IncreaseVolume()
 		*volume += 1.0f;
 		for (MusicData* _music : GetAllValues())
 		{
-			_music->setVolume(*volume);
+				_music->setVolume(*volume);
+		}
+		if (currentShopkeeper)
+		{
+			currentShopkeeper->setVolume(*volume == 0.0f ? 0.0f : *volume + 50.0f);
 		}
 	}
 }
@@ -252,6 +256,10 @@ void MusicManager::DecreaseVolume()
 		{
 			_music->setVolume(*volume);
 		}
+		if (currentShopkeeper)
+		{
+			currentShopkeeper->setVolume(*volume == 0.0f ? 0.0f : *volume + 50.0f);
+		}
 	}
 }
 
@@ -259,14 +267,24 @@ void MusicManager::ToggleVolume()
 {
 	if (GetCurrent()->getVolume() > 0)
 	{
-		GetCurrent()->setVolume(0);
+		for (MusicData* _music : GetAllValues())
+		{
+			_music->setVolume(0);
+		}
 		tempVolume = *volume;
 		*volume = 0;
 	}
 	else
 	{
 		*volume = tempVolume;
-		GetCurrent()->setVolume(*volume);
+		for (MusicData* _music : GetAllValues())
+		{
+			_music->setVolume(*volume);
+		}
+		if (currentShopkeeper)
+		{
+			currentShopkeeper->setVolume(*volume == 0.0f ? 0.0f : *volume + 50.0f);
+		}
 	}
 }
 
