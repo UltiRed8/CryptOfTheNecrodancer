@@ -1,19 +1,6 @@
 #pragma once
-#include "Entity.h"
 #include "Timer.h"
-
-
-#define PATH_CONFUSE_TRAP "Entities/ConfuseTrap.png"
-#define PATH_CONFUSE_TRAP_PRESSED "Entities/ConfuseTrapPressed.png"
-
-#define PATH_FAST_TRAP "Entities/FastTrap.png"
-#define PATH_FAST_TRAP_PRESSED "Entities/FastTrapPressed.png"
-
-#define PATH_SLOW_TRAP "Entities/SlowTrap.png"
-#define PATH_SLOW_TRAP_PRESSED "Entities/SlowTrapPressed.png"
-
-#define PATH_BOMB_TRAP "Entities/BombTrap.png"
-
+#include "Placeable.h"
 
 enum TrapType
 {
@@ -25,16 +12,32 @@ enum DirectionTrap
 	TR_DIR_NONE, TR_DIR_UP, TR_DIR_DOWN, TR_DIR_LEFT, TR_DIR_RIGHT
 };
 
-class Trap : public Entity
+class Trap : public Placeable
 {
-
-	int beatBeforeEndOfEffect; 
 	TrapType trapType;
-public:
-	Trap(const string& _path, const Vector2f& _position, const TrapType& _trapType);
+	string pressedPath;
+	string normalPath;
+	function<void()> callback;
+	bool isPressed;
+	int cooldown;
 
 public:
-	void ExecuteTrap(Entity* _entity);
+
+	string GetPathWithType(const TrapType& _trapType) const 
+	{
+	
+	}
+
+public:
+	Trap(const Vector2f& _position, const TrapType& _trapType);
+
+private:
+	void Init();
+	void InitAllPaths();
+	void InitCallback();
+
+public:
+	void ExecuteTrap();
 	virtual void Update(const float& _deltaTime);
 };
 
