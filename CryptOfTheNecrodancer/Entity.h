@@ -87,3 +87,4 @@ public:
 	virtual void Update();
 };
 
+// TODO bug : on peux spawn dans le shop

@@ -91,14 +91,14 @@ void Map::LoadMap()
 void Map::GenerateDungeon()
 {
 	ClearGenerator();
-	generator->Generate(6, 25);
-	/*new Timer(STRING_ID("Dungeon"), [this]() {
-		UpdateLights(2);
+	generator->Generate();
+}
 
-		PrepareMusic();
-		MusicManager::GetInstance().Play();
-	} , seconds(1.0f), 1, true);*/
-
+void Map::EndDungeonGeneration()
+{
+	UpdateLights(2);
+	PrepareMusic();
+	MusicManager::GetInstance().Play();
 }
 
 void Map::QuickRestart()

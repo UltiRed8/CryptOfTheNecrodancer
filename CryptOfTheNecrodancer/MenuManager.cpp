@@ -485,7 +485,10 @@ void MenuManager::Loading()
 {
 	unsigned int _windowY = window->getSize().y;
 
-	new Menu("Loading", {new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), LOADING_MENU),}, 4);
+	new Menu("Loading", {
+		new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), LOADING_MENU),
+		new UIText("LoadingText", Vector2f(SCREEN_WIDTH - 350, SCREEN_HEIGHT - 37), Color(92, 51, 18), "Opening lobby", 30, FONT),
+	}, 4);
 }
 
 void MenuManager::ToggleLoading()
@@ -501,8 +504,7 @@ void MenuManager::WarningSeizure()
 	const Vector2f& _sizeWindow = Vector2f((float)(SCREEN_WIDTH), (float)(SCREEN_HEIGHT));
 
 	//const string& _id, const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const string& _path, const Vector2f& _imageSize, const string& _soundPath, const function<void()>& _callback)
-	new Menu("WarningSeizure", { new UIButton("Warning", Vector2f(0.0f, 0.0f), Color::White, Color::White, WARNING_MENU, _sizeWindow, "", _skip),
-		}, 4);
+	new Menu("WarningSeizure", { new UIButton("Warning", Vector2f(0.0f, 0.0f), Color::White, Color::White, WARNING_MENU, _sizeWindow, "", _skip), }, 4);
 }
 
 void MenuManager::ToggleWarningSeizure()

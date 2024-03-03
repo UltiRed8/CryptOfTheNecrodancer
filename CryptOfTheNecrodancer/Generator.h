@@ -152,7 +152,7 @@ private:
 	void PlaceTorches();
 
 public:
-	void Generate(const int _roomCount, const int _amountOfEnemies);
+	void Generate();
 	void GenerateLobby();
 	void AddFloorAt(const Vector2f& _position);
 	void AddOther(Entity* _entity);

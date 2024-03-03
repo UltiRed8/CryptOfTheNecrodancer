@@ -33,7 +33,6 @@ Generator::Generator(bool* _discoModeEnabled)
 
 	zoneFileName = Map::GetInstance().GetZoneFileName();
 
-	loadingText = new UIText(STRING_ID(""), Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 60 / 100), Color::Magenta, "Generation", 50, FONT);
 	generationIndex = -1;
 }
 
@@ -77,17 +76,19 @@ Generator::~Generator()
 	paths.clear();
 }
 
-void Generator::Generate(const int _roomCount, const int _amountOfEnemies)
+void Generator::Generate()
 {
+	loadingText = dynamic_cast<UIText*>(MenuManager::GetInstance().Get("Loading")->Get("LoadingText"));
+
 	MenuManager::GetInstance().ToggleLoading();
 	generationIndex = 0;
 }
 
 void Generator::GenerateLobby()
 {
-	Menu* _loadingMenu = MenuManager::GetInstance().Get("Loading");
-	loadingText->SetOwner(_loadingMenu);
-	loadingText->Register();
+	loadingText = dynamic_cast<UIText*>(MenuManager::GetInstance().Get("Loading")->Get("LoadingText"));
+	loadingText->GetText()->setString("Opening lobby");
+
 	MenuManager::GetInstance().ToggleLoading();
 	new Timer(STRING_ID("Lobby"), [this]() {
 		ifstream _in = ifstream("Assets/Saved/Lobby.txt");
@@ -286,6 +287,10 @@ void Generator::EraseOverlappings()
 		}
 	}
 	EraseElements(floors, _floorsToRemove);
+	if (shop)
+	{
+		EraseElements(shop->GetFloor(), _floorsToRemove);
+	}
 }
 
 void Generator::GenerateShopRoom()
@@ -480,22 +485,18 @@ void Generator::Update()
 			[&]() { EraseOverlappings(); },
 			[&]() { GenerateShopRoom(); },
 			[&]() { GenerateWalls(); },
-			[&]() { 
-				EraseOverlappings(); 
-			},
+			[&]() { EraseOverlappings(); },
 			[&]() { SetAllFloorOriginColor(); },
 			[&]() { SpawnEnnemy(15); },
 			[&]() { GenerateDiamond(); },
 			[&]() { PlaceShopDoor(); },
 			[&]() { UpdateDoors(); },
 			[&]() { PlaceTorches(); },
+			[&]() { Map::GetInstance().EndDungeonGeneration(); },
+
 		};
 
 		_functionList[generationIndex]();
-
-		string _str = loadingText->GetText()->getString();
-
-		cout <<	_str  << endl;
 
 		generationIndex++;
 		if (generationIndex == _functionList.size())

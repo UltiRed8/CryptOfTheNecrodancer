@@ -22,16 +22,16 @@
 
 MusicManager::MusicManager()
 {
-	rythmType = RT_FREEMOVE;
+	rythmType = RT_ALL;
 
 	currentMain = nullptr;
 	currentShopkeeper = nullptr;
 
-	musicPackName = new int(2);
+	musicPackName = new int(4);
 	volume = new float(10.f);
 	rythmLoop = nullptr;
 	isRunning = false;
-	acceptDelay = new float(10);
+	acceptDelay = new float(400);
 	minAcceptDelay = 0.0f;
 	maxAcceptDelay = 450.0f;
 	playSpeed = 1.0f;
