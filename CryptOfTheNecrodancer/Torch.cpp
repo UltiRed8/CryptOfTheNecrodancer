@@ -11,10 +11,10 @@ Torch::Torch(const Vector2f& _position) : Placeable(STRING_ID("Torch"), PATH_TOR
 		AnimationData("Torch", Vector2f(26, 26), 0, 3, 0.1f, false)
 	}, "Torch", shape));
 
-	lightSource = new LightSource(STRING_ID("TorchLightSource"), this, 50);
+	//lightSource = new LightSource(STRING_ID("TorchLightSource"), this, 50);
 }
 
 Torch::~Torch()
 {
-	lightSource->Destroy();
+	//lightSource->Destroy();
 }

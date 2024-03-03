@@ -13,6 +13,8 @@
 
 #define RYTHM_INDICATOR_BLUE_Path "UI/BeatMarkerBlue.png"
 #define RYTHM_INDICATOR_RED_Path "UI/BeatMarkerRed.png"
+#define PATH_HEART1 "UI/RythmHearts0.png"
+#define PATH_HEART2 "UI/RythmHearts1.png"
 
 MusicManager::MusicManager()
 {
@@ -285,10 +287,14 @@ bool MusicManager::TriggerEvent()
 	const float _delay = *acceptDelay / 2;
 
 	Time _duration = currentMain->getDuration();
-	const int _max = _duration.asMilliseconds() * 10 / 100;
+	const int _max = _duration.asMilliseconds() * 80 / 100;
 	Time _curentDuration = currentMain->getPlayingOffset();
 
 	string _path ;
+	if (_curentDuration >= _duration)
+	{
+		Map::GetInstance().OpenPrepared();
+	}
 	if (currentMain->getLoop())
 	{
 		_path = RYTHM_INDICATOR_BLUE_Path;
