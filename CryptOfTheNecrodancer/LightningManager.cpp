@@ -27,7 +27,7 @@ void LightningManager::Update()
 		Shape* _shape = _tile->GetShape();
 
 		Color _color = _shape->getFillColor();
-		_color.a = 255 * ((100.0f - (float)brightness) / 100.0f);
+		_color.a = (Uint8)(255 * ((100.0f - (float)brightness) / 100.0f));
 		_shape->setFillColor(_color);
 	}
 

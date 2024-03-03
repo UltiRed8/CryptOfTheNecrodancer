@@ -74,7 +74,7 @@ void Trap::InitCallback()
 	vector<function<void()>> _callbacks = {
 		[&]() {
 			dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->SetIsConfuse(true);
-			CameraManager::GetInstance().Get("PlayerCamera")->SetRotation(Random(360, 0) - 180);
+			CameraManager::GetInstance().Get("PlayerCamera")->SetRotation((const float)(Random(360, 0) - 180));
 			cooldown = 5;
 		},
 		[&]() { MusicManager::GetInstance().SpeedUp(); cooldown = 5; },
