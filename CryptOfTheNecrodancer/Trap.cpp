@@ -27,6 +27,9 @@ void Trap::ExecuteTrap(Entity* _entity)
 			Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
 			_player->SetIsConfuse(true);
 		}
+
+		dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->SetIsConfuse(true);;
+
 		// TODO TEMPS DE CONFUSION
 		// 8 beats
 
