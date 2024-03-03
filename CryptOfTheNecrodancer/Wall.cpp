@@ -100,6 +100,7 @@ void Wall::SpawnTorch()
 		if (!Random(60, 0))
 		{
 			torch = new Torch(GetPosition());
+			Map::GetInstance().AddOther(torch);
 		}
 	}
 	else if (wallType == WT_SHOP)
@@ -107,6 +108,7 @@ void Wall::SpawnTorch()
 		if (!Random(5, 0))
 		{
 			torch = new Torch(GetPosition());
+			Map::GetInstance().AddOther(torch);
 		}
 	}
 }
