@@ -10,6 +10,9 @@
 #include "LightningManager.h"
 #include "Heart.h"
 
+#define PATH_HEART1 "UI/RythmHearts0.png"
+#define PATH_HEART2 "UI/RythmHearts1.png"
+
 MusicManager::MusicManager()
 {
 	rythmType = RT_FREEMOVE;
@@ -17,7 +20,7 @@ MusicManager::MusicManager()
 	currentMain = nullptr;
 	currentShopkeeper = nullptr;
 
-	musicPackName = "6";
+	musicPackName = "4";
 	volume = new float(10.f);
 	rythmLoop = nullptr;
 	isRunning = false;
@@ -281,6 +284,12 @@ bool MusicManager::TriggerEvent()
 
 	if ((delta - 10 <= _delay || delta >= (beatDelay - _delay)) || rythmType <= RT_FREEMOVE)
 	{
+		Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
+		TextureManager::GetInstance().Load(_shape, PATH_HEART2);
+		new Timer("HeartIndicatorReset", [this]() {
+			Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
+			TextureManager::GetInstance().Load(_shape, PATH_HEART1);
+		}, seconds(0.1f), 1, true);
 		didEvent = true;
 		Map::GetInstance().Update();
 		EntityManager::GetInstance().Update();

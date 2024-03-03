@@ -41,5 +41,4 @@ void LifeComponent::ChangeHealth(const float _byAmount)
 	{
 		*currentHealth = maxHealth;
 	}
-	
 }

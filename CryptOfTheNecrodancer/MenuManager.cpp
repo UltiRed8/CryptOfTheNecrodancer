@@ -73,15 +73,9 @@ vector<Drawable*> MenuManager::GetDrawables()
 	return _drawables;
 }
 
-float* MenuManager::GetIndex()
-{
-	return index;
-}
-
 MenuManager::MenuManager()
 {
 	window = new RenderWindow();
-	index = new float(10.0f);
 }
 
 void MenuManager::ClickAction()
@@ -316,7 +310,6 @@ void MenuManager::InitGraphicMenu()
 	float _x = static_cast<float>(window->getSize().x / 2);
 	unsigned int _windowY = window->getSize().y;
 
-	Vector2f _index;
 	function<void()> _up = [this]() { CameraManager::GetInstance().ZoomOut(); };
 	function<void()> _down = [this]() { CameraManager::GetInstance().ZoomIn(); };
 

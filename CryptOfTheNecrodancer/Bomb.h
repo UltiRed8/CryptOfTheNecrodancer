@@ -1,9 +1,9 @@
 #pragma once
-#include "Placable.h"
+#include "Placeable.h"
 #include "Timer.h"
 
 
-class Bomb : public Placable
+class Bomb : public Placeable
 {
 	bool isActive;
 	int cooldown;

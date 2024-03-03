@@ -1,5 +1,5 @@
 #pragma once
-#include "Placable.h"
+#include "Placeable.h"
 #include "TextureManager.h"
 #include "Macro.h"
 #include "AnimationComponent.h"
@@ -12,7 +12,7 @@ enum WallType
 	WT_DIRT, WT_INVULNERABLE, WT_SHOP, WT_STONE
 };
 
-class Wall:public Placable
+class Wall:public Placeable
 {
 	WallType wallType;
 	bool hasDiamond;

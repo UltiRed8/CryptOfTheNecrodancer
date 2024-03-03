@@ -196,6 +196,9 @@
     <Filter Include="Source Files\Object\Entity\Placable\Tile">
       <UniqueIdentifier>{1e3456c3-1d09-400a-a745-608419943e52}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Object\Entity\Placable\Torch">
+      <UniqueIdentifier>{ed0acae3-ed40-4137-94b2-5464f7232d2f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -366,7 +369,7 @@
     <ClCompile Include="Trap.cpp">
       <Filter>Source Files\Object\Entity\Trap</Filter>
     </ClCompile>
-    <ClCompile Include="Placable.cpp">
+    <ClCompile Include="Placeable.cpp">
       <Filter>Source Files\Object\Entity\Placable</Filter>
     </ClCompile>
     <ClCompile Include="WindowManager.cpp">
@@ -384,9 +387,6 @@
     <ClCompile Include="Skeleton.cpp">
       <Filter>Source Files\Object\Entity\Living\Enemy\Skeleton</Filter>
     </ClCompile>
-    <ClCompile Include="Shopkeeper.cpp">
-      <Filter>Source Files\Object\Entity\Living\Enemy\Shopkeeper</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Object\Entity\Living\Player</Filter>
     </ClCompile>
@@ -399,14 +399,17 @@
     <ClCompile Include="NPC.cpp">
       <Filter>Source Files\Object\Entity\Living\NPC</Filter>
     </ClCompile>
-    <ClCompile Include="Hephaestus.cpp">
-      <Filter>Source Files\Object\Entity\Living\NPC\Hephaestus</Filter>
-    </ClCompile>
     <ClCompile Include="Wall.cpp">
       <Filter>Source Files\Object\Entity\Placable\Wall</Filter>
     </ClCompile>
     <ClCompile Include="Tile.cpp">
       <Filter>Source Files\Object\Entity\Placable\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="Generator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Torch.cpp">
+      <Filter>Source Files\Object\Entity\Placable\Torch</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -590,7 +593,7 @@
     <ClInclude Include="Trap.h">
       <Filter>Source Files\Object\Entity\Trap</Filter>
     </ClInclude>
-    <ClInclude Include="Placable.h">
+    <ClInclude Include="Placeable.h">
       <Filter>Source Files\Object\Entity\Placable</Filter>
     </ClInclude>
     <ClInclude Include="Pickable.h">
@@ -614,23 +617,23 @@
     <ClInclude Include="Skeleton.h">
       <Filter>Source Files\Object\Entity\Living\Enemy\Skeleton</Filter>
     </ClInclude>
-    <ClInclude Include="Shopkeeper.h">
-      <Filter>Source Files\Object\Entity\Living\Enemy\Shopkeeper</Filter>
-    </ClInclude>
     <ClInclude Include="Living.h">
       <Filter>Source Files\Object\Entity\Living</Filter>
     </ClInclude>
     <ClInclude Include="NPC.h">
       <Filter>Source Files\Object\Entity\Living\NPC</Filter>
     </ClInclude>
-    <ClInclude Include="Hephaestus.h">
-      <Filter>Source Files\Object\Entity\Living\NPC\Hephaestus</Filter>
-    </ClInclude>
     <ClInclude Include="Wall.h">
       <Filter>Source Files\Object\Entity\Placable\Wall</Filter>
     </ClInclude>
     <ClInclude Include="Tile.h">
       <Filter>Source Files\Object\Entity\Placable\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="Generator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Torch.h">
+      <Filter>Source Files\Object\Entity\Placable\Torch</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

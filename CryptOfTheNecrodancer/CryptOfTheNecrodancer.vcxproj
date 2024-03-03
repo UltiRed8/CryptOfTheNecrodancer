@@ -175,7 +175,7 @@
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Path.cpp" />
     <ClCompile Include="Pickable.cpp" />
-    <ClCompile Include="Placable.cpp" />
+    <ClCompile Include="Placeable.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerRessource.cpp" />
     <ClCompile Include="ProgressBar.cpp" />
@@ -193,6 +193,7 @@
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TimerManager.cpp" />
+    <ClCompile Include="Torch.cpp" />
     <ClCompile Include="Trap.cpp" />
     <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="UIElement.cpp" />
@@ -248,7 +249,7 @@
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="Pickable.h" />
-    <ClInclude Include="Placable.h" />
+    <ClInclude Include="Placeable.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerRessource.h" />
     <ClInclude Include="ProgressBar.h" />
@@ -267,6 +268,7 @@
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TimerManager.h" />
+    <ClInclude Include="Torch.h" />
     <ClInclude Include="Trap.h" />
     <ClInclude Include="UIButton.h" />
     <ClInclude Include="UIElement.h" />

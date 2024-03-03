@@ -6,7 +6,7 @@
 
 #define BOMB_PATH "Entities/Bomb.png"
 
-Bomb::Bomb(const Vector2f& pos, const bool _isActive) : Placable(STRING_ID("Bomb"), BOMB_PATH, pos)
+Bomb::Bomb(const Vector2f& pos, const bool _isActive) : Placeable(STRING_ID("Bomb"), BOMB_PATH, pos)
 {
 	isActive = _isActive;
 	cooldown = 4;
