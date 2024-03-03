@@ -9,7 +9,7 @@
 NPC::NPC(const NPCType& _type, const Vector2f& _position) : Living(900, 1000, "", STRING_ID("NPC"), _position)
 {
 	type = ET_NPC;
-	zIndex = 1;
+	zIndex = 3;
 	currentCooldown = 0;
 	npcType = _type;
 	ChangeTexture();
@@ -44,7 +44,7 @@ void NPC::UpdateAnimation()
 			AnimationData("ShopKeeper", Vector2f(47, 47), 4, 3, 0.1f, false),
 		}, "ShopKeeper", shape));
 		shape->setScale(2.0f, 2.0f);
-		shape->move(Vector2f(-0.5f, -1.5f) * TILE_SIZE);
+		shape->move(Vector2f(-0.5f, -1.0f) * TILE_SIZE);
 	}
 	else
 	{

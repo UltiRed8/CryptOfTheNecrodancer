@@ -16,12 +16,12 @@ Slime::Slime(const float _maxHp, const float _maxDammage, const Vector2f& _posit
 
 void Slime::SetNextDirection()
 {
-	GetComponent<MovementComponent>()->SetDirection(directionsPatern[indexPatern]);
-	indexPatern++;
-	if (indexPatern >= directionsPatern.size())
+	if (indexPatern >= directionsPatern.size() || indexPatern < 0)
 	{
 		indexPatern = 0;
 	}
+	GetComponent<MovementComponent>()->SetDirection(directionsPatern[indexPatern]);
+	indexPatern++;
 }
 
 void Slime::SelectDirection()

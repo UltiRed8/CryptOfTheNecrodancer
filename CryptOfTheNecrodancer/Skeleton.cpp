@@ -15,6 +15,8 @@ Skeleton::Skeleton(const float _maxHp, const float _maxDammage, const Vector2f& 
 		AnimationData("Idle", Vector2f(24, 26), 0, 3, 0.1f, true),
 		AnimationData("Attack", Vector2f(24, 26), 4, 3, 0.1f, true),
 	}, "Attack", shape));
+
+	currentCooldown = Random(2,0);
 }
 
 void Skeleton::SelectDirection()
@@ -42,6 +44,7 @@ void Skeleton::Update()
 	currentCooldown--;
 	if (currentCooldown == 1) GetComponent<AnimationComponent>()->SetPlayingID("Attack");
 	else GetComponent<AnimationComponent>()->SetPlayingID("Idle");
+
 	if (currentCooldown <= 0)
 	{
 		currentCooldown = cooldown;

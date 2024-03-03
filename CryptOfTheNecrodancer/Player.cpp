@@ -19,6 +19,7 @@
 #define SOUND_CHAIN_START "Assets/Sounds/sfx_chain_groove_ST.ogg"
 #define SOUND_CHAIN_FAIL "Assets/Sounds/sfx_chain_break_ST.ogg"
 
+
 Player::Player(const float _maxHp, const float _maxDammage, const string _id, const Vector2f& _position) : Living(_maxHp, _maxDammage,PATH_PLAYER,_id, _position)
 {
 	isConfuse = false;
