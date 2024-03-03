@@ -7,7 +7,7 @@ class Bomb : public Placeable
 	bool isActive;
 	int cooldown;
 public:
-	Bomb(const Vector2f& pos, const bool _isActive);
+	Bomb(const Vector2f& pos);
 
 public:
 	void Explode();
