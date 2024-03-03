@@ -233,25 +233,25 @@ void MusicManager::SetPlaySpeed(const float _newValue)
 
 void MusicManager::IncreaseVolume()
 {
-	if (*volume >= 0.f && *volume < 100.f)
+	if (*volume <= 99.0f)
 	{
-		GetCurrent()->setVolume(*volume += 1.f);
-	}
-	else if (*volume >= 100)
-	{
-		GetCurrent()->setVolume(100);
+		*volume += 1.0f;
+		for (MusicData* _music : GetAllValues())
+		{
+			_music->setVolume(*volume);
+		}
 	}
 }
 
 void MusicManager::DecreaseVolume()
 {
-	if (*volume > 0.f && *volume <= 100.f)
+	if (*volume >= 1.0f)
 	{
-		GetCurrent()->setVolume(*volume -= 1.f);
-	}
-	else if (*volume <= 0)
-	{
-		GetCurrent()->setVolume(0);
+		*volume -= 1.0f;
+		for (MusicData* _music : GetAllValues())
+		{
+			_music->setVolume(*volume);
+		}
 	}
 }
 

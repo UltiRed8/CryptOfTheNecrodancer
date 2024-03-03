@@ -11,6 +11,14 @@ ActionMap::ActionMap(const string& _name, const vector<ActionData>& _actions) : 
 	}
 }
 
+ActionMap::~ActionMap()
+{
+	for (Action* _action : GetAllValues())
+	{
+		_action->Destroy();
+	}
+}
+
 void ActionMap::Register()
 {
 	InputManager::GetInstance().Add(id, this);

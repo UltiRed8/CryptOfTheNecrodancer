@@ -14,6 +14,7 @@ class LightSource : public IManagable<string>
 public:
 	LightSource(const string& _id,Entity* _owner, int _range);
 
+private:
 	void Register() override;
 
 public:

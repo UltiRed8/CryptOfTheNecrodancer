@@ -31,6 +31,7 @@ vector<Drawable*> EntityManager::GetDrawables() const
 		_shouldContinue = false;
 		for (Entity* _entity : GetAllValues())
 		{
+			if (_entity->IsToRemove()) continue;
 			int _zIndex = _entity->GetZIndex();
 			if (_zIndex == _currentZIndex)
 			{

@@ -89,8 +89,9 @@ void Generator::Generate(const int _roomCount, const int _amountOfEnemies)
 		GenerateDiamond();
 		PlaceShopDoor();
 		UpdateDoors();
+		PlaceTorches();
 		MenuManager::GetInstance().ToggleLoading();
-		}, seconds(0.1f), 1, true);
+	}, seconds(0.1f), 1, true);
 }
 
 void Generator::GenerateLobby()
@@ -99,7 +100,6 @@ void Generator::GenerateLobby()
 	new Timer(STRING_ID("Lobby"), [this]() {
 		ifstream _in = ifstream("Assets/Saved/Lobby.txt");
 		if (!_in)
-		{
 			cerr << "Erreur de chargement du lobby !" << endl;
 			return;
 		}
@@ -107,12 +107,12 @@ void Generator::GenerateLobby()
 		map<char, function<void(const Vector2f& _position)>> _elements =
 		{
 			{ ' ', nullptr },
-			{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP, zoneFileName)); }},
+			{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP, zoneFileName, false)); }},
 			{ '.', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); }},
 			{ 'S', [this](const Vector2f& _position) { stairs.push_back(new Stair(_position)); }},
 			{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Door(_position)); }},
 			{ 'E', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_HEPHAESTUS, _position)); }},
-			{ 'M', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_MERLIN, _position)); }},
+			{ 'M', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_MERLIN, _position));}},
 			{ '2', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); /* TODO spawn item here (shops)*/ }},
 			{ '1', [this](const Vector2f& _position) { others.push_back(new Tile(PATH_UPGRADE_TILE, _position)); }},
 			{ 'P', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position); }},
@@ -126,30 +126,56 @@ void Generator::GenerateLobby()
 		{
 			for (const char _char : _line)
 			{
-				function<void(const Vector2f& _position)> _callback = _elements[_char];
-				if (_callback)
-				{
-					const float _positionX = (float)_tilePosition.x * TILE_SIZE.x;
-					const float _positionY = (float)_tilePosition.y * TILE_SIZE.y;
-					_callback(Vector2f(_positionX, _positionY));
-				}
-				_tilePosition.x += 1;
+				cerr << "Erreur de chargement du lobby !" << endl;
+				return;
 			}
-			_tilePosition.x = 0;
-			_tilePosition.y += 1;
-		}
 
-		stairs[0]->SetText("Zone 1");
-		stairs[0]->SetZoneToLoad(Z_ZONE1);
-		stairs[1]->SetText("Zone 2");
-		stairs[1]->SetZoneToLoad(Z_ZONE2);
-		stairs[2]->SetText("Soon(TM)");
-		stairs[2]->SetLocked(LT_FORCE);
+			map<char, function<void(const Vector2f& _position)>> _elements =
+			{
+				{ ' ', nullptr },
+				{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP, zoneFileName)); }},
+				{ '.', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); }},
+				{ 'S', [this](const Vector2f& _position) { stairs.push_back(new Stair(_position)); }},
+				{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Door(_position)); }},
+				{ 'E', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_HEPHAESTUS, _position)); }},
+				{ 'M', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_MERLIN, _position)); }},
+				{ '2', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); /* TODO spawn item here (shops)*/ }},
+				{ '1', [this](const Vector2f& _position) { others.push_back(new Tile(PATH_UPGRADE_TILE, _position)); }},
+				{ 'P', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position); }},
+				{ 'T', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP, zoneFileName)); others.push_back(new Torch(_position)); }},
+			};
 
-		SetAllFloorOriginColor();
+			string _line;
+			Vector2i _tilePosition = Vector2i(0, 0);
 
-		UpdateDoors();
-		MenuManager::GetInstance().ToggleLoading();
+			while (getline(_in, _line))
+			{
+				for (const char _char : _line)
+				{
+					function<void(const Vector2f& _position)> _callback = _elements[_char];
+					if (_callback)
+					{
+						const float _positionX = (float)_tilePosition.x * TILE_SIZE.x;
+						const float _positionY = (float)_tilePosition.y * TILE_SIZE.y;
+						_callback(Vector2f(_positionX, _positionY));
+					}
+					_tilePosition.x += 1;
+				}
+				_tilePosition.x = 0;
+				_tilePosition.y += 1;
+			}
+
+			stairs[0]->SetText("Zone 1");
+			stairs[0]->SetZoneToLoad(Z_ZONE1);
+			stairs[1]->SetText("Zone 2");
+			stairs[1]->SetZoneToLoad(Z_ZONE2);
+			stairs[2]->SetText("Soon(TM)");
+			stairs[2]->SetLocked(LT_FORCE);
+
+			SetAllFloorOriginColor();
+
+			UpdateDoors();
+			MenuManager::GetInstance().ToggleLoading();
 		}, seconds(2.0f), 1, true);
 }
 
@@ -232,6 +258,11 @@ void Generator::EraseOverlappings()
 {
 	vector<Vector2f> _allPositions = GetAllPositions(walls);
 
+	for (const Vector2f& _position : GetAllPositions(floors))
+	{
+		_allPositions.push_back(_position);
+	}
+
 	vector<Entity*> _entities;
 	for (Wall* _wall : walls)
 	{
@@ -240,11 +271,6 @@ void Generator::EraseOverlappings()
 	for (Tile* _floor : floors)
 	{
 		_entities.push_back(_floor);
-	}
-
-	for (const Vector2f& _position : GetAllPositions(floors))
-	{
-		_allPositions.push_back(_position);
 	}
 
 	vector<Entity*> _validEntities;
@@ -270,6 +296,7 @@ void Generator::EraseOverlappings()
 		}
 	}
 	EraseElements(walls, _wallsToRemove);
+	EraseElements(shopWalls, _wallsToRemove);
 
 	vector<Tile*> _floorsToRemove;
 	for (Tile* _floor : floors)
@@ -307,7 +334,6 @@ void Generator::GenerateShopRoom()
 	const vector<Tile*>& _shopFloors = shop->GetFloor();
 	floors.insert(floors.end(), _shopFloors.begin(), _shopFloors.end());
 
-
 	shopWalls = PlaceWallsAroundFloor(_shopFloors, 1, false, WT_SHOP);
 
 	EraseElement(floors, _first);
@@ -319,6 +345,7 @@ void Generator::GenerateShopRoom()
 void Generator::PlaceShopDoor()
 {
 	vector<Wall*> _availableWalls;
+
 	for (Wall* _wall : shopWalls)
 	{
 		if (_wall->CouldBeDoor())
@@ -331,8 +358,16 @@ void Generator::PlaceShopDoor()
 
 	others.push_back(new Door(_selectedWall->GetPosition()));
 	AddFloorAt(_selectedWall->GetPosition());
-	_selectedWall->Destroy();
 	EraseElement(walls, _selectedWall);
+	_selectedWall->Destroy();
+}
+
+void Generator::PlaceTorches()
+{
+	for (Wall* _wall : walls)
+	{
+		_wall->SpawnTorch();
+	}
 }
 
 void Generator::GenerateWalls()

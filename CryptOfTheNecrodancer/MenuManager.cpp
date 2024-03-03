@@ -78,7 +78,6 @@ vector<Drawable*> MenuManager::GetDrawables()
 		_currentZIndex++;
 	} while (_shouldContinue);
 
-
 	return _drawables;
 }
 
@@ -395,7 +394,7 @@ void MenuManager::InitGraphicMenu()
 		new UIButton("ViewMore", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 2.79)), WHITE_COLOR, CYAN_COLOR, ">", 50, FONT, SOUND_UP, _up),
 		new UIButton("ViewLess", Vector2f(static_cast<float>(window->getSize().x / 3.2), static_cast<float>(_windowY / 2.79)), WHITE_COLOR, CYAN_COLOR, "<", 50, FONT, SOUND_DOWN, _down),
 		
-		// Activer/Désactiver le Sound
+		// Activer/Désactiver le zoom
 		new UIText("ToggleZText", Vector2f(_x, static_cast<float>(_windowY / 2)), Color(172, 172,173), "Zoom per default",40,FONT, true),
 		new UIButton("CheckBoxZ", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 2)), WHITE_COLOR, Color(0,139,139), {
 			new UIImage("CheckBoxImageZ", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 2)), Vector2f(30.0f, 30.0f), EMPTYCHECKBOX),

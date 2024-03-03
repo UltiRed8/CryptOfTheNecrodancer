@@ -2,6 +2,7 @@
 #include "Placeable.h"
 #include "TextureManager.h"
 #include "Macro.h"
+#include "Torch.h"
 #include "AnimationComponent.h"
 
 #define DIAMOND_IN_WALL "DiamondInWall.png"
@@ -16,6 +17,8 @@ class Wall:public Placeable
 	WallType wallType;
 	bool hasDiamond;
 	string zoneName;
+	Torch* torch;
+	bool canSpawnWithTorch;
 
 public:
 	WallType GetWallType() const
@@ -49,9 +52,10 @@ public:
 	}
 
 public:
-	Wall(const Vector2f& _position,const WallType& _type, const string& _zoneName);
+	Wall(const Vector2f& _position,const WallType& _type, const string& _zoneName, const bool _canSpawnWithTorch = true);
 
 public:
 	void DestroyWall(const bool _usingBomb = false);
 	bool CouldBeDoor();
+	void SpawnTorch();
 };

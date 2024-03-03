@@ -54,7 +54,7 @@ void CameraManager::Reset()
 	Camera* _player = Get("PlayerCamera");
 	const Vector2f& _cameraPosition = _player->getCenter();
 	_player->reset(FloatRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT));
-	*zoomIndex = 0.9f;
+	*zoomIndex = 0.6f;
 	_player->zoom(*zoomIndex);
 	_player->setCenter(EntityManager::GetInstance().Get("Player")->GetPosition());
 }
