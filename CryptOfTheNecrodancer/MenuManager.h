@@ -23,45 +23,31 @@ public :
 	void ClickAction();
 	void Update();
 	bool BlockPlayer();
-
 	void InitMenu();
-
-	void InitHUD();
-
-	#pragma region MenuPause
-
-	void InitMenuPause();
-
-	void InitDeleteSaveDataMenu();
 	void DeleteSaveDataMenu();
 	void Delete();
-
 	void GoToLobby();
 	void Restart();
-
-	void InitMenuOptions();
 	void OptionsMenu();
-
-	void InitMenuClose();
 	void CloseMenu();
-
-	void InitGraphicMenu();
 	void GraphicMenu();
-
-	void InitLeaveLobby();
 	void LeaveLobby();
-
-	void InitMenuLatency();
 	void LatencyMenu();
-
-	void InitGameOver();
 	void GameOverMenu();
-
-	void Loading();
 	void ToggleLoading();
-
-	void WarningSeizure();
 	void ToggleWarningSeizure();
 
-	#pragma endregion
+private :
+	void InitMenuPause();
+	void InitHUD();
+	void InitDeleteSaveDataMenu();
+	void InitMenuOptions();
+	void InitMenuClose();
+	void InitGraphicMenu();
+	void InitLeaveLobby();
+	void InitMenuLatency();
+	void InitGameOver();
+	void Loading();
+	void WarningSeizure();
+
 };

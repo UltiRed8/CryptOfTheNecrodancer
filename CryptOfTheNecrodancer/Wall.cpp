@@ -3,6 +3,7 @@
 #include "TextureManager.h"
 #include "SoundManager.h"
 #include "Map.h"
+#include "WindowManager.h"
 
 #define SOUND_DIG_DIRT "Assets/Sounds/mov_dig_dirt.ogg"
 #define SOUND_DIG_FAIL "Assets/Sounds/mov_dig_fail.ogg"
@@ -51,6 +52,8 @@ void Wall::DestroyWall(const bool _usingBomb)
 	{
 		torch->Destroy();
 	}
+
+	WindowManager::GetInstance().Shake(5);
 	Destroy();
 }
 

@@ -144,7 +144,7 @@ void Generator::GenerateLobby()
 		SetAllFloorOriginColor();
 		UpdateDoors();
 		MenuManager::GetInstance().ToggleLoading();
-	}
+
 	}, seconds(2.0f), 1, true);
 }
 
