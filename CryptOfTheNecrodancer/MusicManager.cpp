@@ -331,6 +331,7 @@ bool MusicManager::TriggerEvent()
 		//_stair->SetZIndex(1);
 		//new Timer("StairTimer", [&]() {Map::GetInstance().OpenPrepared(); /*_stair->Destroy()*/; }, seconds(2.0f), 1, true);
 		//_player->SetCanMove(true);
+		if (MenuManager::GetInstance().BlockPlayer()) return false;
 		Map::GetInstance().OpenPrepared();
 	}
 	if (currentMain->getLoop())
