@@ -89,3 +89,4 @@ static void EraseElement(vector<T>& _vector, const T& _element)
 }
 
 Vector2f operator * (const Vector2f& _vector, const Vector2f& _multiplier);
+Vector2i operator * (const Vector2i& _vector, const Vector2i& _multiplier);

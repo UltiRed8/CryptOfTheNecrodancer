@@ -47,3 +47,40 @@ void Wall::DestroyWall(const bool _usingBomb)
 	}
 	Destroy();
 }
+
+bool Wall::CouldBeDoor()
+{
+	vector<Vector2i> _directionsToCheck = {
+		Vector2i(0, 1),
+		Vector2i(0, -1),
+		Vector2i(1, 0),
+		Vector2i(-1, 0),
+	};
+
+	int _validityH = 0;
+	int _validityV = 0;
+
+	for (const Vector2i& _checking : _directionsToCheck)
+	{
+		Vector2f _position = GetPosition();
+		_position.x += _checking.x * TILE_SIZE.x;
+		_position.y += _checking.y * TILE_SIZE.y;
+		Entity* _entity = Map::GetInstance().GetEntityAt(_position);
+		if (!_entity) continue;
+		if (_entity->GetType() == ET_FLOOR)
+		{
+			if (_checking.x != 0)
+			{
+				_validityV++;
+			}
+			else
+			{
+				_validityH++;
+			}
+		}
+	}
+
+	if (_validityH == 2) return true;
+	if (_validityV == 2) return true;
+	return false;
+}

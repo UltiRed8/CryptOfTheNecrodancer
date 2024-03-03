@@ -4,13 +4,12 @@
 
 class Bomb : public Placeable
 {
-	bool isActive;
 	int cooldown;
-public:
-	Bomb(const Vector2f& pos, const bool _isActive);
 
 public:
+	Bomb(const Vector2f& _position);
+
+private:
 	void Explode();
 	virtual void Update() override;
 };
-
