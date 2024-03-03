@@ -37,6 +37,7 @@ public :
 	void Delete();
 
 	void GoToLobby();
+	void Restart();
 
 	void InitMenuOptions();
 	void OptionsMenu();

@@ -73,10 +73,10 @@ private:
 	void LoadMap();
 	void OpenLobby();
 	void GenerateDungeon();
-	void ClearGenerator();
 	void UpdateLights(const int _brightness);
 
 public:
+	void ClearGenerator();
 	void Prepare(const Zone& _zoneToOpen);
 	void Open(const Zone& _zoneToOpen);
 	void OpenPrepared();

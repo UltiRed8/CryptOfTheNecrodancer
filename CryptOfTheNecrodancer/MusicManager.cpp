@@ -17,7 +17,7 @@ MusicManager::MusicManager()
 	currentMain = nullptr;
 	currentShopkeeper = nullptr;
 
-	musicPackName = "6";
+	musicPackName = new int(6);
 	volume = new float(10.f);
 	rythmLoop = nullptr;
 	isRunning = false;
@@ -52,7 +52,7 @@ MusicData* MusicManager::GetMusic(const string& _path, const Vector2f& _position
 	if (!_music)
 	{
 		_music = new MusicData(_path);
-		if (!_music->openFromFile("Assets/Music/" + musicPackName + "/" + _path + ".ogg"))
+		if (!_music->openFromFile("Assets/Music/" + to_string(*musicPackName) + "/" + _path + ".ogg"))
 		{
 			cerr << "La musique n'a pas été correctement chargée ! (" << _path << ".ogg)" << endl;
 			return nullptr;

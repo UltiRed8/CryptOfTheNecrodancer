@@ -221,6 +221,7 @@ void Player::Update()
 
 void Player::DieEvent()
 {
+	Map::GetInstance().ClearGenerator();
 	Menu* _died = MenuManager::GetInstance().Get("Dead");
 	_died->Open();
 }
