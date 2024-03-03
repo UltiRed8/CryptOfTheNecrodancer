@@ -5,10 +5,13 @@
 #include "Player.h"
 #include "UIImage.h"
 #include "MovementComponent.h"
-#include "RythmComponent.h"
 #include "MenuManager.h"
 #include "LightningManager.h"
 #include "Heart.h"
+#include "RythmIndicator.h"
+
+#define RYTHM_INDICATOR_BLUE_Path "UI/BeatMarkerBlue.png"
+#define RYTHM_INDICATOR_RED_Path "UI/BeatMarkerRed.png"
 
 MusicManager::MusicManager()
 {
@@ -279,9 +282,26 @@ bool MusicManager::TriggerEvent()
 
 	const float _delay = *acceptDelay / 2;
 
+	Time _duration = currentMain->getDuration();
+	const int _max = _duration.asMilliseconds() * 10 / 100;
+	Time _curentDuration = currentMain->getPlayingOffset();
+
+	string _path ;
+	if (currentMain->getLoop())
+	{
+		_path = RYTHM_INDICATOR_BLUE_Path;
+	}
+	else
+	{
+		_path = _curentDuration.asMilliseconds() > _max ? RYTHM_INDICATOR_RED_Path : RYTHM_INDICATOR_BLUE_Path;
+	}
+
 	if ((delta - 10 <= _delay || delta >= (beatDelay - _delay)) || rythmType <= RT_FREEMOVE)
 	{
 		didEvent = true;
+		Menu* _hud = MenuManager::GetInstance().Get("HUD");
+		new RythmIndicator(RID_RIGHT,_hud, _path);
+		new RythmIndicator(RID_LEFT,_hud, _path);		
 		Map::GetInstance().Update();
 		EntityManager::GetInstance().Update();
 		LightningManager::GetInstance().Update();

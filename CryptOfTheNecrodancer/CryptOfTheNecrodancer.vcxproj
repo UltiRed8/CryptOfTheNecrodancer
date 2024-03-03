@@ -180,7 +180,7 @@
     <ClCompile Include="PlayerRessource.cpp" />
     <ClCompile Include="ProgressBar.cpp" />
     <ClCompile Include="Room.cpp" />
-    <ClCompile Include="RythmComponent.cpp" />
+    <ClCompile Include="RythmIndicator.cpp" />
     <ClCompile Include="Saveable.cpp" />
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="Slime.cpp" />
@@ -253,7 +253,7 @@
     <ClInclude Include="PlayerRessource.h" />
     <ClInclude Include="ProgressBar.h" />
     <ClInclude Include="Room.h" />
-    <ClInclude Include="RythmComponent.h" />
+    <ClInclude Include="RythmIndicator.h" />
     <ClInclude Include="Saveable.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Skeleton.h" />

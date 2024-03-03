@@ -4,7 +4,6 @@
 #include "MovementComponent.h"
 #include "MusicManager.h"
 #include "AnimationComponent.h"
-#include "RythmComponent.h"
 #include "Wall.h"
 #include "SoundManager.h"
 #include "LightningManager.h"

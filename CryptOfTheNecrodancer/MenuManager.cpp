@@ -107,6 +107,7 @@ void MenuManager::Update()
 			_menu->Update(window);
 		}
 	}
+	GarbageCollector();
 }
 
 void MenuManager::InitHUD()
@@ -400,3 +401,4 @@ void MenuManager::LatencyMenu()
 {
 	Get("LatencyMenu")->Toggle();
 }
+

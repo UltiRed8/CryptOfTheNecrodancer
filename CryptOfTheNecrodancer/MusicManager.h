@@ -27,6 +27,8 @@ class MusicManager : public IManager<string, MusicData>, public Singleton<MusicM
 	float playSpeed;
 	float tempVolume;
 	float* volume;
+	float currentTime;
+	float maxTime;
 	Timer* rythmLoop;
 	float delta;
 	int beatDelay;

@@ -3,7 +3,6 @@
 
 #include"DamageComponent.h"
 #include"LifeComponent.h"
-#include "RythmComponent.h"
 #include "AnimationComponent.h"
 
 

@@ -61,6 +61,7 @@ void Menu::Update(RenderWindow* _window)
 	{
 		_element->Update(_mousePosition);
 	}
+	GarbageCollector();
 }
 
 vector<Drawable*> Menu::GetDrawables()

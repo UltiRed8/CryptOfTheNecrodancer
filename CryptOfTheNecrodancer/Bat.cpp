@@ -4,7 +4,6 @@
 #include"DamageComponent.h"
 #include"LifeComponent.h"
 #include"Macro.h"
-#include "RythmComponent.h"
 #include "AnimationComponent.h"
 
 #define PATH_BAT "Entities/BatSprite.png"

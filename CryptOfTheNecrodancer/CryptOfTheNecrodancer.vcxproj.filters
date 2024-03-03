@@ -67,9 +67,6 @@
     <Filter Include="Source Files\Component\Animation">
       <UniqueIdentifier>{f3eb255c-b345-4f4a-bceb-703fceddbdb9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Component\Rythm">
-      <UniqueIdentifier>{86b2fb8d-15f1-49de-b16c-221b7ae1a651}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Map">
       <UniqueIdentifier>{a64053eb-d87f-4ef0-9af8-3be1234a0eeb}</UniqueIdentifier>
     </Filter>
@@ -276,9 +273,6 @@
     <ClCompile Include="AnimationComponent.cpp">
       <Filter>Source Files\Component\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="RythmComponent.cpp">
-      <Filter>Source Files\Component\Rythm</Filter>
-    </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
@@ -384,9 +378,6 @@
     <ClCompile Include="Skeleton.cpp">
       <Filter>Source Files\Object\Entity\Living\Enemy\Skeleton</Filter>
     </ClCompile>
-    <ClCompile Include="Shopkeeper.cpp">
-      <Filter>Source Files\Object\Entity\Living\Enemy\Shopkeeper</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Object\Entity\Living\Player</Filter>
     </ClCompile>
@@ -399,14 +390,17 @@
     <ClCompile Include="NPC.cpp">
       <Filter>Source Files\Object\Entity\Living\NPC</Filter>
     </ClCompile>
-    <ClCompile Include="Hephaestus.cpp">
-      <Filter>Source Files\Object\Entity\Living\NPC\Hephaestus</Filter>
-    </ClCompile>
     <ClCompile Include="Wall.cpp">
       <Filter>Source Files\Object\Entity\Placable\Wall</Filter>
     </ClCompile>
     <ClCompile Include="Tile.cpp">
       <Filter>Source Files\Object\Entity\Placable\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="Generator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RythmIndicator.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -496,9 +490,6 @@
     </ClInclude>
     <ClInclude Include="AnimationComponent.h">
       <Filter>Source Files\Component\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="RythmComponent.h">
-      <Filter>Source Files\Component\Rythm</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>Source Files\Map</Filter>
@@ -614,23 +605,23 @@
     <ClInclude Include="Skeleton.h">
       <Filter>Source Files\Object\Entity\Living\Enemy\Skeleton</Filter>
     </ClInclude>
-    <ClInclude Include="Shopkeeper.h">
-      <Filter>Source Files\Object\Entity\Living\Enemy\Shopkeeper</Filter>
-    </ClInclude>
     <ClInclude Include="Living.h">
       <Filter>Source Files\Object\Entity\Living</Filter>
     </ClInclude>
     <ClInclude Include="NPC.h">
       <Filter>Source Files\Object\Entity\Living\NPC</Filter>
     </ClInclude>
-    <ClInclude Include="Hephaestus.h">
-      <Filter>Source Files\Object\Entity\Living\NPC\Hephaestus</Filter>
-    </ClInclude>
     <ClInclude Include="Wall.h">
       <Filter>Source Files\Object\Entity\Placable\Wall</Filter>
     </ClInclude>
     <ClInclude Include="Tile.h">
       <Filter>Source Files\Object\Entity\Placable\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="Generator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RythmIndicator.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
