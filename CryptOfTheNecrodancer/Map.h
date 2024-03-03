@@ -98,6 +98,7 @@ private:
 	void UpdateLights(const int _brightness);
 
 public:
+	void EndDungeonGeneration();
 	void ClearGenerator();
 	void Prepare(const Zone& _zoneToOpen);
 	void Open(const Zone& _zoneToOpen);

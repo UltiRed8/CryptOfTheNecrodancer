@@ -13,7 +13,8 @@
 #include "Slime.h"
 #include "Skeleton.h"
 #include "Bat.h"
-
+#include "UIText.h"
+#include <string>
 #include <fstream>
 
 #define C_BROWN Color(135, 79, 2, 255)
@@ -31,6 +32,9 @@ class Generator
 	vector<Wall*> shopWalls;
 	vector<Entity*> others;
 	vector<Stair*> stairs;
+
+	int generationIndex;
+	UIText* loadingText;
 
 	Room* shop;
 
@@ -148,7 +152,7 @@ private:
 	void PlaceTorches();
 
 public:
-	void Generate(const int _roomCount, const int _amountOfEnemies);
+	void Generate();
 	void GenerateLobby();
 	void AddFloorAt(const Vector2f& _position);
 	void AddOther(Entity* _entity);
