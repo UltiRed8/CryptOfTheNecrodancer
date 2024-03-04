@@ -31,6 +31,7 @@ class MusicManager : public IManager<string, MusicData>, public Singleton<MusicM
 	float maxTime;
 	Timer* rythmLoop;
 	float delta;
+	float latency;
 	int beatDelay;
 	bool didEvent;
 	bool needsAnimationUpdate;
@@ -98,6 +99,11 @@ public:
 		{
 			*musicPackName = 1;
 		}
+	}
+
+	void SetLatency(const float _latency)
+	{
+		latency = _latency;
 	}
 
 public:
