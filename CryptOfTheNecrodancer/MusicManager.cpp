@@ -22,7 +22,7 @@
 
 MusicManager::MusicManager()
 {
-	rythmType = RT_ALL;
+	rythmType = RT_FREEMOVE;
 
 	currentMain = nullptr;
 	currentShopkeeper = nullptr;
@@ -31,7 +31,11 @@ MusicManager::MusicManager()
 	volume = new float(10.f);
 	rythmLoop = nullptr;
 	isRunning = false;
+<<<<<<< Updated upstream
 	acceptDelay = new float(400);
+=======
+	acceptDelay = new float(80);
+>>>>>>> Stashed changes
 	minAcceptDelay = 0.0f;
 	maxAcceptDelay = 450.0f;
 	playSpeed = 1.0f;

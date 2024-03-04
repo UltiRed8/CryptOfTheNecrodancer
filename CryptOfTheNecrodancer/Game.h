@@ -10,6 +10,11 @@ class Game
 	RenderWindow* window;
 	Player* player;
 	Map* map;
+<<<<<<< Updated upstream
+=======
+	Calibration* calibration;
+	Shader* shader;
+>>>>>>> Stashed changes
 
 public:
 	Game();

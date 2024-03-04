@@ -482,7 +482,7 @@ void Generator::SpawnTraps(const int _amount)
 {
 	loadingText->GetText()->setString("Spawning traps");
 
-	for (int _index = 0; _index < 50; _index++)
+	for (int _index = 0; _index < _amount; _index++)
 	{
 		if (spawnablePositions.empty()) return;
 
