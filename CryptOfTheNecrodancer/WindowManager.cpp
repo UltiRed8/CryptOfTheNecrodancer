@@ -3,6 +3,7 @@
 
 WindowManager::WindowManager()
 {
+	isShakable = new bool(true);
 	CreateWindow();
 }
 
@@ -25,12 +26,15 @@ void WindowManager::Rename(const string& _newWindowName)
 
 void WindowManager::Shake(const int _strength)
 {
+	if (!*isShakable) return;
 	currentValue = _strength;
 	// TODO implement this
 }
 
 void WindowManager::Update()
 {
+	if (!*isShakable) return;
+
 	if (currentValue > 0)
 	{
 		const int _dirX = Random(2, 0) - 1;

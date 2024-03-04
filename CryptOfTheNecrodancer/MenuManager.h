@@ -25,9 +25,6 @@ public :
 	bool BlockPlayer();
 	void InitMenu();
 	void DeleteSaveDataMenu();
-	void Delete();
-	void GoToLobby();
-	void Restart();
 	void OptionsMenu();
 	void CloseMenu();
 	void GraphicMenu();
@@ -36,6 +33,7 @@ public :
 	void GameOverMenu();
 	void ToggleLoading();
 	void ToggleWarningSeizure();
+	void ToggleEpilepsyMenu();
 
 private :
 	void InitMenuPause();
@@ -49,5 +47,9 @@ private :
 	void InitGameOver();
 	void Loading();
 	void WarningSeizure();
+	void InitEpilepsyMenu();
 
+	void Delete();
+	void GoToLobby();
+	void Restart();
 };

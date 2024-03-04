@@ -6,6 +6,7 @@
 
 Camera::Camera(const string& _id, const CameraType& _type, const Vector2f& _from, const Vector2f& _to) : IManagable(_id), View(_from, _to)
 {
+	canRotating = new bool(true);
 	type = _type;
 	Register();
 	Init();
@@ -36,8 +37,6 @@ void Camera::InitPosition()
 	const Vector2f& _cameraSize = Vector2f(1.0f, 1.0f);
 
 	setViewport(FloatRect(_cameraPosition, _cameraSize));
-
-
 }
 
 void Camera::SetCameraToPlayer()
@@ -51,18 +50,21 @@ void Camera::Update()
 {
 	float _deltaTime = TimerManager::GetInstance().GetDeltaTime();
 
-	if (abs(currentRotation - targetRotation) > 0.08)
+	if (*canRotating)
 	{
-		float _direction = currentRotation > targetRotation ? -0.08f : 0.08f;
-		_direction *= _deltaTime;
-		rotate(_direction);
-		currentRotation += _direction;
-	}
-	else if (currentRotation != targetRotation)
-	{
-		currentRotation = targetRotation;
-		setRotation(targetRotation);
-	}
+		if (abs(currentRotation - targetRotation) > 0.08)
+		{
+			float _direction = currentRotation > targetRotation ? -0.08f : 0.08f;
+			_direction *= _deltaTime;
+			rotate(_direction);
+			currentRotation += _direction;
+		}
+		else if (currentRotation != targetRotation)
+		{
+			currentRotation = targetRotation;
+			setRotation(targetRotation);
+		}
+	};
 
 	if (type == CAMERA_PLAYER)
 	{
