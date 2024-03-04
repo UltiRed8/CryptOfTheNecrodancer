@@ -16,11 +16,13 @@ Game::Game()
 {
 	map = nullptr;
 	player = nullptr;
+	calibration = nullptr;
 }
 
 Game::~Game()
 {
 	delete map;
+	delete calibration;
 }
 
 void Game::Init()
@@ -39,17 +41,16 @@ void Game::Start()
 
 	Init();
 
-	// TODO temporaire
-	MenuManager::GetInstance().ToggleWarningSeizure();	//Warning Seizure
-	Map::GetInstance().Open(Z_LOBBY);
-
-	new Camera("PlayerCamera", CAMERA_PLAYER, Vector2f(0.f,0.f), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
+	calibration = new Calibration([&]() {EndCalibration(); });
+	calibration->Start();
+	new Camera("PlayerCamera", CAMERA_PLAYER, Vector2f(0.f, 0.f), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
 }
 
 void Game::Update()
 {
 	while (window->isOpen())
 	{
+		calibration->Update();
 		MusicManager::GetInstance().Update();
 		TimerManager::GetInstance().Update();
 		InputManager::GetInstance().Update();
@@ -80,6 +81,12 @@ void Game::UpdateWindow()
 void Game::Stop()
 {
 	cout << "Fin!" << endl;
+}
+
+void Game::EndCalibration()
+{
+	MenuManager::GetInstance().ToggleWarningSeizure();	//Warning Seizure
+	Map::GetInstance().Open(Z_LOBBY);
 }
 
 void Game::Launch()

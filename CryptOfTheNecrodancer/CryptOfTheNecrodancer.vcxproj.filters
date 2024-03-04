@@ -417,6 +417,9 @@
     <ClCompile Include="Torch.cpp">
       <Filter>Source Files\Object\Entity\Placeable\Wall\Torch</Filter>
     </ClCompile>
+    <ClCompile Include="Calibration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EntityManager.h">
@@ -643,6 +646,9 @@
     </ClInclude>
     <ClInclude Include="Torch.h">
       <Filter>Source Files\Object\Entity\Placeable\Wall\Torch</Filter>
+    </ClInclude>
+    <ClInclude Include="Calibration.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
