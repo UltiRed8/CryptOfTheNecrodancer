@@ -26,9 +26,8 @@ MusicManager::MusicManager()
 
 	currentMain = nullptr;
 	currentShopkeeper = nullptr;
-	musicPackName = new int(1);
 	latency = 0.0f;
-	musicPackName = new int(4);
+	musicPackName = new int(1);
 	volume = new float(10.f);
 	rythmLoop = nullptr;
 	isRunning = false;

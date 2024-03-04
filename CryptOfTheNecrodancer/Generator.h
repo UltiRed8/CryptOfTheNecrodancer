@@ -33,6 +33,9 @@ class Generator
 	vector<Entity*> others;
 	vector<Stair*> stairs;
 
+	vector<Vector2f> usedPositions;
+	vector<Vector2f> spawnablePositions;
+
 	int generationIndex;
 	UIText* loadingText;
 
@@ -162,6 +165,7 @@ private:
 	vector<Wall*> PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const bool _finalDestructible, const WallType& _type);
 	void GeneratePaths();
 	void EraseOverlappings();
+	void GetSpawnablePositions();
 	void GenerateShopRoom();
 	void GenerateWalls();
 	void SetAllFloorOriginColor();
@@ -171,6 +175,9 @@ private:
 	void UpdateTilesColor();
 	void PlaceShopDoor();
 	void PlaceTorches();
+	void SpawnPlayer();
+	void SpawnStairs();
+	void SpawnTraps(const int _amount);
 	void Temp();
 
 public:

@@ -123,7 +123,7 @@ void Wall::SpawnTorch()
 
 	if (wallType == WT_DIRT)
 	{
-		if (!Random(60, 0))
+		if (!Random(30, 0))
 		{
 			torch = new Torch(GetPosition());
 			Map::GetInstance().AddOther(torch);

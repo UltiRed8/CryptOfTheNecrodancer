@@ -10,15 +10,17 @@ class Room
 	vector<Tile*> floor;
 
 public:
-	Room(const Vector2i& _size,const Vector2f& _startPosition);
-
-public:
 	vector<Tile*>& GetFloor()
 	{
 		return floor;
 	}
 
 public:
-	void Generate();
-};
+	Room(const Vector2i& _size = Vector2i(-1, -1));
 
+private:
+	void PlaceFloor(vector<Vector2f>& _usedPositions);
+
+public:
+	bool Generate(vector<Vector2f>& _usedPositions);
+};

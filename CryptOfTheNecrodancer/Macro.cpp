@@ -40,6 +40,19 @@ float Distance(const Vector2f& _first, const Vector2f& _second)
 	return sqrtf(pow(_second.x - _first.x, 2.0f) + pow(_second.y - _first.y, 2.0f));
 }
 
+bool Contains(const FloatRect& _rect, const vector<Vector2f>& _vector)
+{
+	for (const Vector2f& _position : _vector)
+	{
+		if (_rect.contains(_position))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool IsNearlyEqual(Vector2f _first, Vector2f _second)
 {
 	return Vector2i(_first) == Vector2i(_second);
