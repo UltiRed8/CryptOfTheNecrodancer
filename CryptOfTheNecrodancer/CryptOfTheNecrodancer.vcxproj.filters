@@ -202,6 +202,9 @@
     <Filter Include="Source Files\Object\Entity\Placeable\Wall\Torch">
       <UniqueIdentifier>{870be7e5-08f0-4e28-a9eb-3fcbaeed3952}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Object\UiElement\UIAnimation">
+      <UniqueIdentifier>{f7ae8b73-a64f-40f5-a905-d62f63a8c25c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -417,8 +420,8 @@
     <ClCompile Include="Torch.cpp">
       <Filter>Source Files\Object\Entity\Placeable\Wall\Torch</Filter>
     </ClCompile>
-    <ClCompile Include="Calibration.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="UIAnimation.cpp">
+      <Filter>Source Files\Object\UiElement\UIAnimation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -647,8 +650,8 @@
     <ClInclude Include="Torch.h">
       <Filter>Source Files\Object\Entity\Placeable\Wall\Torch</Filter>
     </ClInclude>
-    <ClInclude Include="Calibration.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="UIAnimation.h">
+      <Filter>Source Files\Object\UiElement\UIAnimation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

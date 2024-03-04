@@ -14,7 +14,9 @@
 #include "LightningManager.h"
 #include "WindowManager.h"
 #include "RythmIndicator.h"
+#include "UIAnimation.h"
 
+#define FONT "Assets/Font/Font.ttf"
 #define FONT "Assets/Font/Font.ttf"
 #define WHITE_COLOR Color::White
 #define CYAN_COLOR Color::Cyan
@@ -35,6 +37,7 @@
 #define EMPTYCHECKBOX "UI/EmptyCheckbox.png"
 #define EMPTYBAR "UI/EmptyBar.png"
 #define FULLBAR "UI/FullBar.png"
+#define UNICORN "UI/Unicorn.png"
 
 #define SOUND_START "Assets/Sounds/sfx_ui_start.ogg"
 #define SOUND_EXIT "Assets/Sounds/sfx_ui_back.ogg"
@@ -480,17 +483,21 @@ void MenuManager::InitMenuLatency()
 	function<void()> _calibrationUp = [this]() { MusicManager::GetInstance().SetAcceptDelay(10.0f); dynamic_cast<UIText*>(Get("LatencyMenu")->Get("CalibTextUpdate"))->GetText()->setString(to_string(*MusicManager::GetInstance().GetAcceptDelay()).substr(0, to_string(*MusicManager::GetInstance().GetAcceptDelay()).find_first_of('.'))); }; //TODO
 	function<void()> _calibrationDown = [this]() { MusicManager::GetInstance().SetAcceptDelay(-10.0f); dynamic_cast<UIText*>(Get("LatencyMenu")->Get("CalibTextUpdate"))->GetText()->setString(to_string(*MusicManager::GetInstance().GetAcceptDelay()).substr(0, to_string(*MusicManager::GetInstance().GetAcceptDelay()).find_first_of('.'))); }; //TODO
 	function<void()> _close = [this]() { LatencyMenu(); Get("GamePause")->Toggle(); };
-
+	
 	new Menu("LatencyMenu", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), LATENCY_MENU),
 		new UIText("CalibText", Vector2f(_x, static_cast<float>(_windowY / 4)), WHITE_COLOR, "Video/Audio Latency : ",35,FONT),
 		new ProgressBar("CalibBar", PT_LEFT, Vector2f(static_cast<float>(window->getSize().x / 2.9), static_cast<float>(_windowY / 2.72)), Vector2f(400.0f, 30.0f), EMPTYBAR, FULLBAR, MusicManager::GetInstance().GetAcceptDelay(), 450.0f),
 		new UIButton("CalibUp", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 2.79)), WHITE_COLOR, CYAN_COLOR, ">", 50, FONT, SOUND_UP, _calibrationUp),
 		new UIButton("CalibDown", Vector2f(static_cast<float>(window->getSize().x / 3.2), static_cast<float>(_windowY / 2.79)), WHITE_COLOR, CYAN_COLOR, "<", 50, FONT, SOUND_DOWN, _calibrationDown),
 		new UIText("CalibTextUpdate", Vector2f(_x, static_cast<float>(_windowY / 2)), Color(172, 172,173), "300",40,FONT, true),
+		
+		new UIAnimation("Unicorn", Vector2f(static_cast<float>(window->getSize().x / 2.3), static_cast<float>(_windowY / 1.7)), Vector2f(180.0f, 130.0f), UNICORN),
 
 		// Retour menu précédent
 		new UIButton("ReturnOptions", Vector2f(_x, static_cast<float>(_windowY / 1.2)), WHITE_COLOR, CYAN_COLOR, "Done", 40, FONT, SOUND_EXIT, _close)
 		}, 5);
+
+
 }
 
 void MenuManager::LatencyMenu()
