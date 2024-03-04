@@ -1,9 +1,9 @@
 #pragma once
 #include "Enemy.h"
 
-#define PATH_SKELETON "SkeletonSprite.png"
-#define PATH_YELLOW_SKELETON "empty"
-#define PATH_BLACK_SKELETON "empty"
+#define PATH_SKELETON "Entities/SkeletonSprite.png"
+#define PATH_YELLOW_SKELETON "Entities/empty"
+#define PATH_BLACK_SKELETON "Entities/empty"
 
 enum SkeletonType
 {
@@ -12,6 +12,7 @@ enum SkeletonType
 
 class Skeleton : public Enemy
 {
+
 protected:
 	SkeletonType skeletonType;
 public:
@@ -19,7 +20,7 @@ public:
 
 public:
 	void SelectDirection();
-	void UpdateRythm();
+	virtual void Update() override;
 };
 
 struct NormalSkeleton : public Skeleton

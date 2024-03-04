@@ -3,13 +3,14 @@
 #include "Component.h"
 #include <SFML/Graphics.hpp>
 #include "TextureManager.h"
+#include "AnimationComponent.h"
 
 using namespace std;
 using namespace sf;
 
 enum EntityType
 {
-	ET_NONE, ET_FLOOR, ET_WALL, ET_ENEMY, ET_PLAYER, ET_ITEM, ET_STAIR, ET_TRAP,ET_SHADOW, ET_DOOR,ET_PICKABLE,ET_EPHAESTUS
+	ET_NONE, ET_FLOOR, ET_WALL, ET_ENEMY, ET_PLAYER, ET_ITEM, ET_STAIR, ET_TRAP, ET_SHADOW, ET_DOOR, ET_PICKABLE, ET_NPC
 };
 
 
@@ -31,17 +32,15 @@ public:
 		return shape;
 	}
 
+	void SetZIndex(int _zIndex)
+	{
+		zIndex = _zIndex;
+	}
+
 	int GetZIndex() const
 	{
 		return zIndex;
 	}
-
-	Drawable* GetDrawable() const
-	{
-		return shape;
-	}
-
-
 	template <typename Type>
 	Type* GetComponent()
 	{
@@ -54,6 +53,22 @@ public:
 		}
 		return nullptr;
 	}
+	virtual vector<Drawable*> GetDrawables()
+	{
+		if (AnimationComponent* _anim = GetComponent<AnimationComponent>())
+		{
+			return _anim->GetDrawables();
+		}
+		vector<Drawable*> _drawables;
+		_drawables.push_back(shape);
+		return _drawables;
+	}
+
+	void AddComponent(Component* _component)
+	{
+		components.push_back(_component);
+	}
+
 	Vector2f GetPosition()const 
 	{
 		return shape->getPosition();
@@ -66,10 +81,10 @@ public:
 
 public:
 	Entity(const string& _id,const string& _path, const Vector2f& _position);
-	~Entity();
+	virtual ~Entity();
 
-	// H�rit� via IManagable
 	void Register() override;
 	virtual void Update();
 };
 
+// TODO bug : on peux spawn dans le shop

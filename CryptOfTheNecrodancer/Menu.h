@@ -32,7 +32,7 @@ public:
 	}
 
 public:
-	Menu(const string& _id, const vector<UIElement*>& _elements, const int& _zIndex = 0);
+	Menu(const string& _id, const vector<UIElement*>& _elements, const int& _zIndex = 0, const bool& _isRelativeToCamera = false);
 
 private:
 	virtual void Register() override;

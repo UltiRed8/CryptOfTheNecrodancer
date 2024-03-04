@@ -22,36 +22,32 @@ public :
 public :
 	void ClickAction();
 	void Update();
-
-	void InitMenu(RenderWindow* _window);
-
-	void InitHUD();
-	void InitInventory();
-
-	#pragma region MenuPause
-
-	void InitMenuPause();
-
-	void InitDeleteSaveDataMenu();
+	bool BlockPlayer();
+	void InitMenu();
 	void DeleteSaveDataMenu();
 	void Delete();
-
 	void GoToLobby();
-
-	void InitMenuOptions();
+	void Restart();
 	void OptionsMenu();
-
-	void InitMenuClose();
 	void CloseMenu();
-
-	void InitGraphicMenu();
 	void GraphicMenu();
-
-	void InitLeaveLobby();
 	void LeaveLobby();
-
-	void InitMenuLatency();
 	void LatencyMenu();
+	void GameOverMenu();
+	void ToggleLoading();
+	void ToggleWarningSeizure();
 
-	#pragma endregion
+private :
+	void InitMenuPause();
+	void InitHUD();
+	void InitDeleteSaveDataMenu();
+	void InitMenuOptions();
+	void InitMenuClose();
+	void InitGraphicMenu();
+	void InitLeaveLobby();
+	void InitMenuLatency();
+	void InitGameOver();
+	void Loading();
+	void WarningSeizure();
+
 };

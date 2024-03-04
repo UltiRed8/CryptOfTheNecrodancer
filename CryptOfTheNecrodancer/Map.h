@@ -1,110 +1,90 @@
 #pragma once
+
 #include "Room.h"
 #include "Map.h"
 #include "Singleton.h"
 #include "Path.h"
 #include "Macro.h"
 #include "Stair.h"
+#include "Zones.h"
 
 #include "Bat.h"
 #include "Slime.h"
 #include "Skeleton.h"
 
-#include "Shopkeeper.h"
-
 #include <iostream>
 #include <functional>
 #include <fstream>
 
-using namespace std;
+#include "Generator.h"
 
-enum CurrentZone
-{
-	CL_Lobby,CL_ZONE1,CL_ZONE2
-};
+using namespace std;
 
 class Map : public Singleton<Map>
 {
-	vector<Room*> rooms;
-	vector<Path*> paths;
-
-	vector<Tile*> floors;
-	vector<Wall*> walls;
-	vector<Entity*> others;
-
-	Room* shop;
-
+	Zone preparedZone;
+	Zone currentZone;
+	int currentLevel;
 	int tempoIndex;
 	bool chainToggle;
 	bool isPurple;
-
-	CurrentZone currentZone;
-	int currentLevel;
-
-	Shopkeeper* shopkeeper;
+	string zoneFileName;
+	Generator* generator;
+	bool* discoModeEnabled;
 
 public:
-	Vector2i GetRandomRoomPosition(const int _min = 0, const int _max = 30) const
+	Generator* GetGenerator() const
 	{
-		Vector2i _pos = Vector2i(GetRandomVector2i(_min, _max));
-
-		_pos.x *= (int)TILE_SIZE.x;
-		_pos.y *= (int)TILE_SIZE.y;
-
-		return _pos;
+		return generator;
+	}
+	bool* GetDiscoModeEnabled() const
+	{
+		return discoModeEnabled;
 	}
 
-	Shopkeeper* GetShopkeeper() const
+	void ToggleDiscoModeEnabled()
 	{
-		return shopkeeper;
+		*discoModeEnabled = !*discoModeEnabled;
 	}
 
-	CurrentZone GetCurrentZone() const
+	string GetZoneFileName() const
+	{
+		return zoneFileName.substr(0, zoneFileName.find_first_of('_'));
+	}
+
+	NPC* GetShopkeeper() const
+	{
+		return generator->GetShopkeeper();
+	}
+
+	Zone GetCurrentZone() const
 	{
 		return currentZone;
 	}
 
-	void SetCurrentZone(const CurrentZone _currentZone)
+	void SetCurrentZone(const Zone& _currentZone)
 	{
 		currentZone = _currentZone;
 	}
 
-	Vector2f GetFirstTilePosition() const
-	{
-		if (floors.empty()) return Vector2f();
-		return floors[0]->GetShape()->getPosition();
-	}
-
-	vector<Vector2f> GetSpawnPositions()
-	{
-		vector<Vector2f> _positions;
-		for (Tile* _floor : floors)
-		{
-			_positions.push_back(_floor->GetPosition());
-		}
-
-		if (shop)
-		{
-			for (Tile* _floor : shop->GetFloor())
-			{
-				EraseElement(_positions, _floor->GetPosition());
-			}
-		}
-
-		for (Wall* _wall : walls)
-		{
-			EraseElement(_positions, _wall->GetPosition());
-		}
-
-		return _positions;
-	}
 	Entity* GetEntityAt(const Vector2f& _position)
 	{
-		for (Wall* _wall : walls)
+		vector<Entity*> _entities;
+		for (Wall* _wall : generator->GetWalls())
 		{
-			if (_wall->GetPosition() == _position)
+			_entities.push_back(_wall);
+		}
+		for (Tile* _floor : generator->GetFloors())
+		{
+			_entities.push_back(_floor);
+		}
+
+
+		for (Entity* _entity : _entities)
+		{
+			if (_entity->GetPosition() == _position)
 			{
-				return _wall;
+				return _entity;
 			}
 		}
 		return nullptr;
@@ -114,26 +94,54 @@ public:
 	Map();
 	~Map();
 
+private:
+	void NextFloor();
+	void LoadMap();
+	void OpenLobby();
+	void GenerateDungeon();
+
 public:
-	void Generate(const int _roomCount = 6, const int _amountOfEnemies = 25);
-	void GenerateRooms(const int _roomCount);
-	void Load(const string _path);
-	void AddFloorAt(const Vector2f& _position);
-	void UpdateDoors();
-	void SetFloorColor(Tile* _floor, const bool _creation = false);
-	void Update();
-	void UpdateTilesColor();
-	void GeneratePaths();
-	void GenerateWalls();
-	void GenerateShopRoom();
-	void SetAllFloorOriginColor();
-	void PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const bool _finalDestructible, const WallType& _type);
-	void GenerateDiamond(const int _diamondOnFloor = 1, int _diamondInWall = 2);
-	void SpawnEnnemy(const int _ennemyCount = 10);
-	void EraseOverlappings();
-	void NextLevel();
-	void NextMap();
+	void UpdateLights(const int _brightness);
+	void EndDungeonGeneration();
+	void ClearGenerator();
+	void Prepare(const Zone& _zoneToOpen);
+	void Open(const Zone& _zoneToOpen);
+	void OpenPrepared();
+	void QuickRestart();
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+private:
+
+	void UpdateZoneFileName();
+
+	void PrepareMusic();
 	void DeleteAll();
+
+public:
+	void Update();
+	void AddOther(Entity* _entity);
+	void AddFloorAt(const Vector2f& _position);
+
+
 
 	template <typename Type>
 	vector<Vector2f> GetEmptyTilesAround(const vector<Type*>& _entities)
@@ -168,5 +176,25 @@ public:
 		}
 
 		return _availablePositions;
+	}
+
+	vector<Entity*> GetAllAround(const Vector2f& _position, const int _distance)
+	{
+		vector<Entity*> _entitiesFound;
+
+		for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
+		{
+			if (_entity)
+			{
+				const Vector2f& _entityPosition = _entity->GetPosition();
+
+				if (Distance(_entityPosition, _position) < _distance)
+				{
+					_entitiesFound.push_back(_entity);
+				}
+			}
+		}
+
+		return _entitiesFound;
 	}
 };

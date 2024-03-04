@@ -1,5 +1,7 @@
 #include "LifeComponent.h"
 #include"Entity.h"
+#include"Player.h"
+
 LifeComponent::LifeComponent(Entity* _owner, const function<void()> _deathCallback, const bool _invulnerable, const float _maxHealth):Component(_owner)
 {
 	invulnerable = _invulnerable;
@@ -27,21 +29,24 @@ void LifeComponent::Update()
 {
 }
 
-void LifeComponent::ChangeHealth(const float _byAmount)
+bool LifeComponent::ChangeHealth(const float _byAmount)
 {
-	if (invulnerable) return;
-	cout << *currentHealth << endl;
+	if (invulnerable) return false;
 	*currentHealth += _byAmount;
-	cout << *currentHealth << endl;
 	if (*currentHealth <= 0.0f)
 	{
 		*currentHealth = 0.0f;
-
 		Death();
+		return true;
 	}
 	else if (*currentHealth > maxHealth)
 	{
 		*currentHealth = maxHealth;
 	}
 	
+	if (Player* _player = dynamic_cast<Player*>(owner))
+	{
+		_player->UpdateLife();
+	}
+	return false;
 }

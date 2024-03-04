@@ -18,6 +18,14 @@ enum CameraType
 class Camera : public IManagable<string>, public View
 {
 	CameraType type;
+	float targetRotation;
+	float currentRotation;
+
+public:
+	void SetRotation(const float _targetRotation)
+	{
+		targetRotation = _targetRotation;
+	}
 
 public:
 	Camera(const string& _id, const CameraType& _type, const Vector2f& _from, const Vector2f& _to);

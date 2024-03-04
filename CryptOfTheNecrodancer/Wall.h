@@ -1,21 +1,26 @@
 #pragma once
-#include "Placable.h"
+#include "Placeable.h"
 #include "TextureManager.h"
 #include "Macro.h"
+#include "Torch.h"
 #include "AnimationComponent.h"
 
 #define DIAMOND_IN_WALL "DiamondInWall.png"
-
 
 enum WallType
 {
 	WT_DIRT, WT_INVULNERABLE, WT_SHOP, WT_STONE
 };
 
-class Wall:public Placable
+class Wall:public Placeable
 {
 	WallType wallType;
 	bool hasDiamond;
+	string zoneName;
+	Torch* torch;
+	bool canSpawnWithTorch;
+	bool isIn3D;
+	int textureIndex;
 
 public:
 	WallType GetWallType() const
@@ -25,9 +30,12 @@ public:
 	void SetHasDiamond(const bool _hasDiamond)
 	{
 		hasDiamond = _hasDiamond;
-		//AnimationData _animation = AnimationData("DiamondInWall", Vector2f(0, 0), Vector2f(24, 24), READ_RIGHT, ANIM_DIR_NONE, true, 3, 0.1f);
-		//components.push_back(new AnimationComponent(this, GetPathWithType(wallType), { _animation }, ANIM_DIR_NONE));
-		TextureManager::GetInstance().Load(shape, DIAMOND_IN_WALL);
+
+		TextureManager::GetInstance().Load(shape, "Dungeons/" + zoneName + "/" DIAMOND_IN_WALL);
+
+		components.push_back(new AnimationComponent(this, {
+			AnimationData("DiamondInWall", Vector2f(24, 24), Random(2, 0) * 3, 2, 0.1f, false),
+		}, "DiamondInWall", shape));
 	}
 	bool GetHasDiamond()
 	{
@@ -36,20 +44,21 @@ public:
 	string GetPathWithType(const WallType& _type) const
 	{
 		string _path[] = {
-			"Walls.png",
-			"Bedrock.png",
-			"ShopWall.png",
-			"StoneWall.png"
+			"Dungeons/" + zoneName + "/Walls.png",
+			"Dungeons/Bedrock.png",
+			"Dungeons/ShopWall.png",
+			"Dungeons/" + zoneName + "/StoneWall.png"
 		};
 
 		return _path[_type];
 	}
 
 public:
-	Wall(const Vector2f& _position,const WallType& _type);
+	Wall(const Vector2f& _position,const WallType& _type, const string& _zoneName, const bool _canSpawnWithTorch = true);
 
 public:
 	void DestroyWall(const bool _usingBomb = false);
-	void Update() override;
+	bool CouldBeDoor();
+	void SpawnTorch();
+	void Enable3D();
 };
-

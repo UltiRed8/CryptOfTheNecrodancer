@@ -5,17 +5,15 @@ DamageComponent::DamageComponent(Entity* _owner, const float _damagesAmount, con
 {
 	damagesAmount = _damagesAmount;
 	canAttack = _canAttack;
-	
 }
 
-
-
-void DamageComponent::Attack(Entity* _target)
+bool DamageComponent::Attack(Entity* _target)
 {
 	LifeComponent* _component = _target->GetComponent<LifeComponent>();
-	_component->ChangeHealth(-damagesAmount);
+	return _component->ChangeHealth(-damagesAmount);
 }
 
 void DamageComponent::Update()
 {
+
 }

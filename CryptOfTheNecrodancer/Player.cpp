@@ -4,16 +4,22 @@
 #include "MovementComponent.h"
 #include "MusicManager.h"
 #include "AnimationComponent.h"
-#include "RythmComponent.h"
 #include "Wall.h"
 #include "SoundManager.h"
 #include "LightningManager.h"
 #include "Stair.h"
+#include "Trap.h"
 #include "Door.h"
 #include "Map.h"
 #include "MenuManager.h"
+#include "Heart.h"
+#include "WindowManager.h"
 
-#define PATH_PLAYER "PlayerSprite.png"
+#define PATH_PLAYER "Entities/PlayerSprite.png"
+
+#define SOUND_CHAIN_START "Assets/Sounds/sfx_chain_groove_ST.ogg"
+#define SOUND_CHAIN_FAIL "Assets/Sounds/sfx_chain_break_ST.ogg"
+
 
 Player::Player(const float _maxHp, const float _maxDammage, const string _id, const Vector2f& _position) : Living(_maxHp, _maxDammage,PATH_PLAYER,_id, _position)
 {
@@ -21,12 +27,12 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 	inventory = new Inventory();
 	ressources = new PlayerRessource();
 	alreadyMoved = false;
-	zIndex = 1;
+	zIndex = 2;
 	chainMultiplier = new int(1);
 	type = ET_PLAYER;
-	components.push_back(new AnimationComponent(this, PATH_PLAYER, {
-		AnimationData("Idle", Vector2f(0, 0), Vector2f(26, 26), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f)
-	}, ANIM_DIR_NONE));
+	components.push_back(new AnimationComponent(this, {
+		AnimationData("Idle", Vector2f(26, 26), 0, 3, 0.1f, false),
+	}, "Idle", shape));
 	CollisionComponent* _collisions = new CollisionComponent(this);
 	components.push_back(_collisions);
 	MovementComponent* _movement = GetComponent<MovementComponent>();
@@ -37,28 +43,19 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 			_wall->DestroyWall();
 		}),
 		CollisionReaction(ET_STAIR, [this](Entity* _entity) {
-			GetComponent<MovementComponent>()->UndoMove();
-			if (Map::GetInstance().GetCurrentZone() == CL_Lobby)
+			if (Stair* _stair = dynamic_cast<Stair*>(_entity))
 			{
-				if (*ressources->GetDiamonds() == 0)
+				if (!_stair->OpenZone())
 				{
-					Map::GetInstance().NextMap();
+					GetComponent<MovementComponent>()->UndoMove();
 				}
-				else
-				{
-					Menu* _leaveMenu = MenuManager::GetInstance().Get("LeaveLobby");
-					_leaveMenu->Open();
-				}
-			}
-			else
-			{
-				Map::GetInstance().NextMap();
 			}
 		}),
 		CollisionReaction(ET_DOOR, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
 			Door* _door = dynamic_cast<Door*>(_entity);
 			_door->OpenDoor();
+			WindowManager::GetInstance().Shake(25);
 		}),
 
 		CollisionReaction(ET_PICKABLE, [this](Entity* _entity) {
@@ -68,18 +65,35 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 
 		CollisionReaction(ET_ENEMY, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
-			GetComponent<DamageComponent>()->Attack(_entity);
-			cout << _entity->GetID() << " was killed!" << endl;
+			if (GetComponent<DamageComponent>()->Attack(_entity))
+			{
+				WindowManager::GetInstance().Shake(25);
+				if (*chainMultiplier <= 3)
+				{
+					*chainMultiplier += 1;
+					if (*chainMultiplier == 2)
+					{
+						SoundManager::GetInstance().Play(SOUND_CHAIN_START);
+					}
+				}
+			}
 		}),
-
-		CollisionReaction(ET_EPHAESTUS, [this](Entity* _entity) {
+		CollisionReaction(ET_NPC, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
 		}),
+		CollisionReaction(ET_TRAP, [this](Entity* _entity) {
+			dynamic_cast<Trap*>(_entity)->Trigger();
+		}),
 	});
-	new LightningComponent("PlayerLight", this, 350);
+
+	new LightSource("PlayerLight", this, 350);
 
 	InitInput();
+	InitLife();
 }
+
+// TODO bug : le menu game over ne désactive pas les mouvements du joueur
+// TODO ne pas oublier : si game over, ne pas envoyer le joueur au niveau suivant a la fin de la musique
 
 Player::~Player()
 {
@@ -88,11 +102,20 @@ Player::~Player()
 	delete ressources;
 }
 
+void Player::ResetChainMultiplier()
+{
+	if (*chainMultiplier >= 2)
+	{
+		*chainMultiplier = 1;
+		SoundManager::GetInstance().Play(SOUND_CHAIN_FAIL);
+	}
+}
+
 void Player::InitInput()
 {
 	new ActionMap("Mouvements",
 		{ ActionData("Haut", [this]() {
-		if (!alreadyMoved)
+		if (!alreadyMoved && !MenuManager::GetInstance().BlockPlayer())
 			{
 				GetComponent<MovementComponent>()->SetDirection(Vector2i(0,-1) * GetConfusionEffect());
 				if (!MusicManager::GetInstance().TriggerEvent())
@@ -106,7 +129,7 @@ void Player::InitInput()
 
 
 
-		  ActionData("Bas", [this]() { if (!alreadyMoved)
+		  ActionData("Bas", [this]() { if (!alreadyMoved && !MenuManager::GetInstance().BlockPlayer())
 			{
 				 GetComponent<MovementComponent>()->SetDirection(Vector2i(0,1) * GetConfusionEffect());
 				 if (!MusicManager::GetInstance().TriggerEvent())
@@ -120,7 +143,7 @@ void Player::InitInput()
 
 
 
-		  ActionData("Droite", [this]() { if (!alreadyMoved)
+		  ActionData("Droite", [this]() { if (!alreadyMoved && !MenuManager::GetInstance().BlockPlayer())
 			{
 				 GetComponent<MovementComponent>()->SetDirection(Vector2i(1,0) * GetConfusionEffect());
 				 if (!MusicManager::GetInstance().TriggerEvent())
@@ -133,7 +156,7 @@ void Player::InitInput()
 		  ActionData("DroiteR", [this]() { alreadyMoved = false; }, {Event::KeyReleased, Keyboard::Right}),
 
 
-		  ActionData("Gauche", [this]() { if (!alreadyMoved)
+		  ActionData("Gauche", [this]() { if (!alreadyMoved && !MenuManager::GetInstance().BlockPlayer())
 			{
 				 GetComponent<MovementComponent>()->SetDirection(Vector2i(-1,0) * GetConfusionEffect());
 				 if (!MusicManager::GetInstance().TriggerEvent())
@@ -153,13 +176,83 @@ void Player::InitInput()
 		  ActionData("Increase", [this]() { *chainMultiplier = 2; cout << "Set chain multiplier to: 2!" << endl; }, {Event::KeyPressed, Keyboard::Num2}),
 		  ActionData("SpeedIncrease", [this]() { MusicManager::GetInstance().SpeedUp(); }, {Event::KeyPressed, Keyboard::Num3}),
 		  ActionData("SpeedDecrease", [this]() { MusicManager::GetInstance().SpeedDown(); }, {Event::KeyPressed, Keyboard::Num4}),
-		  ActionData("temp1", [this]() { Map::GetInstance().NextMap(); }, {Event::KeyPressed, Keyboard::Num5}),
+		  ActionData("temp1", [this]() { Map::GetInstance().OpenPrepared(); }, {Event::KeyPressed, Keyboard::Num5}),
+		  ActionData("DecreaseLife", [this]() { GetComponent<LifeComponent>()->ChangeHealth(-50); UpdateLife(); }, {Event::KeyPressed, Keyboard::M}),
+		  ActionData("Increase Life", [this]() { GetComponent<LifeComponent>()->ChangeHealth(50); UpdateLife(); }, {Event::KeyPressed, Keyboard::P}),
+		  ActionData("EMOTIONNAL DAMAGE", [this]() { DieEvent(); }, {Event::KeyPressed, Keyboard::O}),
 		});
 }
 
+void Player::InitLife()
+{
+	life = new Menu("PlayerLife", {});
 
+	LifeComponent* _lifeComp = GetComponent<LifeComponent>();
+
+	const float _life = _lifeComp->GetMaxHealth();
+	const int _heartsCount = (int)(_life / 100.0f);
+
+	for (int _index = 0; _index < _heartsCount; _index++)
+	{
+		Heart* _heart = new Heart(STRING_ID("Hearts"), Vector2f(25.0f, 25.0f) * 2.0f, Vector2f(SCREEN_WIDTH - 55 * (3.8f + _index * 1.2f), SCREEN_HEIGHT - 55 * 12.3), H_FULL);
+		_heart->SetOwner(life);
+		_heart->Register();
+	}
+
+	life->Open();
+}
+
+void Player::UpdateLife()
+{
+	vector<Heart*> _hearts; /*= life->GetAllValues();*/
+
+	for (UIElement* _element : life->GetAllValues())
+	{
+		Heart* _heart = dynamic_cast<Heart*>(_element);
+		_hearts.push_back(_heart);
+	}
+
+	float _lifeCopy = *GetComponent<LifeComponent>()->GetCurrentHealth();
+
+	for (int _index = (int)_hearts.size() - 1; _index >= 0; _index--)
+	{
+		Heart* _heart = _hearts[_index];
+		_lifeCopy -= 100.0f;
+		if (_lifeCopy <= -100.0f)
+		{
+			_heart->SetState(H_EMPTY);
+		}
+		else if (_lifeCopy <= -50.0f)
+		{
+			_heart->SetState(H_HALF);
+		}
+		else
+		{
+			_heart->SetState(H_FULL);
+		}
+
+		_heart->UpdateLife();
+	}
+}
+
+void Player::UpdateHeartAnimation()
+{
+	heartIndex --;
+	if (heartIndex < 0)
+	{
+		heartIndex = (int)(life->GetAllValues().size() - 1);
+	}
+	dynamic_cast<Heart*>(life->GetAllValues()[heartIndex])->UIHeart();
+}
 
 void Player::Update()
 {
 	Entity::Update();
+}
+
+void Player::DieEvent()
+{
+	Map::GetInstance().ClearGenerator();
+	Menu* _died = MenuManager::GetInstance().Get("Dead");
+	_died->Open();
 }

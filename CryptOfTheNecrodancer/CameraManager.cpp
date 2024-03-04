@@ -2,11 +2,12 @@
 #include "InputManager.h"
 #include "Macro.h"
 #include "EntityManager.h"
+#include "WindowManager.h"
 
 CameraManager::CameraManager()
 {
-	zoomIndex = new float(0.9f);
-	minimumZoomIndex = new float(0.1f);
+	zoomIndex = new float(0.6f);
+	minimumZoomIndex = new float(0.2f);
 	maximumZoomIndex = new float(1.5f);
 
 	// TODO temp innpus, to remove!!
@@ -16,13 +17,14 @@ CameraManager::CameraManager()
 	});
 }
 
-void CameraManager::Update(RenderWindow* _window)
+void CameraManager::Update()
 {
+	GarbageCollector();
 	for (Camera* _camera : GetAllValues())
 	{
 		_camera->Update();
 	}
-	_window->setView(*Get("PlayerCamera"));
+	WindowManager::GetInstance().GetWindow()->setView(*Get("PlayerCamera"));
 }
 
 void CameraManager::ZoomIn()
@@ -52,7 +54,7 @@ void CameraManager::Reset()
 	Camera* _player = Get("PlayerCamera");
 	const Vector2f& _cameraPosition = _player->getCenter();
 	_player->reset(FloatRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT));
-	*zoomIndex = 0.9f;
+	*zoomIndex = 0.6f;
 	_player->zoom(*zoomIndex);
 	_player->setCenter(EntityManager::GetInstance().Get("Player")->GetPosition());
 }

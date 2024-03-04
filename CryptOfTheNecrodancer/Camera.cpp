@@ -11,9 +11,11 @@ Camera::Camera(const string& _id, const CameraType& _type, const Vector2f& _from
 	Init();
 	if (_type == CAMERA_PLAYER)
 	{
-		zoom(0.9f);
+		zoom(0.6f);
 	}
 	SetCameraToPlayer();
+	targetRotation = 0.0f;
+	currentRotation = 0.0f;
 }
 
 void Camera::Register()
@@ -47,15 +49,27 @@ void Camera::SetCameraToPlayer()
 
 void Camera::Update()
 {
+	float _deltaTime = TimerManager::GetInstance().GetDeltaTime();
+
+	if (abs(currentRotation - targetRotation) > 0.08)
+	{
+		float _direction = currentRotation > targetRotation ? -0.08f : 0.08f;
+		_direction *= _deltaTime;
+		rotate(_direction);
+		currentRotation += _direction;
+	}
+	else if (currentRotation != targetRotation)
+	{
+		currentRotation = targetRotation;
+		setRotation(targetRotation);
+	}
+
 	if (type == CAMERA_PLAYER)
 	{
-		Vector2f _camPos = getCenter();
-
-		Listener::setPosition(_camPos.x, _camPos.y, 0);
-		Listener::setDirection(0, -1, 0);
 		Entity* _player = EntityManager::GetInstance().Get("Player");
 		const Vector2f& _currentPosition = getCenter();
 		const Vector2f& _target = _player->GetPosition() + (TILE_SIZE / 2.0f);
+		Listener::setPosition(Vector3f(_target.x, _target.y, 0.0f));
 
 		Vector2f _offset = Vector2f(0.0f, 0.0f);
 
@@ -68,7 +82,6 @@ void Camera::Update()
 			_offset.y = _currentPosition.y > _target.y ? -0.3f : 0.3f;
 		}
 
-		float _deltaTime = TimerManager::GetInstance().GetDeltaTime();
 		_offset *= _deltaTime;
 
 		move(_offset);

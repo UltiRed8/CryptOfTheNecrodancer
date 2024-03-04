@@ -2,26 +2,41 @@
 #include "UIImage.h"
 #include "TextureManager.h"
 #include "ActionMap.h"
+#include "Timer.h"
+#include "Macro.h"
 
-#define PATH_HEART "FullHeart.png"
-#define PATH_EMPTY_HEART "EmptyHeart.png"
-#define PATH_HALFHEART "HalfHeart.png"
+#define PATH_HEART "UI/FullHeart.png"
+#define PATH_EMPTY_HEART "UI/EmptyHeart.png"
+#define PATH_HALFHEART "UI/HalfHeart.png"
 
-Heart::Heart(const string& _id, const Vector2f& _size, const Vector2f& _position) : UIImage(_id, _position, _size, "FullHeart.png")
+Heart::Heart(const string& _id, const Vector2f& _size, const Vector2f& _position, const State& _state, const float& _maxLife) : UIImage(_id, _position, _size, "")
 {
+	SetOriginCentered(shape);
+	currentLife = _maxLife;
+	maxLife = _maxLife;
+	state = _state;
 	path = "FullHeart.png";
+	UpdateLife();
 }
 
 void Heart::UpdateLife() //Change la vie
 {
-	// TODO temp innpus, to remove!!
-	new ActionMap("life", {
-		ActionData("Vide", [this]() { TextureManager::GetInstance().Load(shape, PATH_EMPTY_HEART); }, {Event::KeyPressed, Keyboard::A}),
-		ActionData("moitie", [this]() { TextureManager::GetInstance().Load(shape, PATH_HALFHEART); }, {Event::KeyPressed, Keyboard::D}),
-		});
+	TextureManager::GetInstance().Load(shape, GetPathWithState());
 }
 
 void Heart::UIHeart() //Change taille imageAnimation
 {
-	
+	if (state == H_EMPTY)
+	{
+		return;
+	}
+
+	UIImage::GetShape()->setScale(Vector2f(1.2f, 1.2f));
+	function<void()> _heartBeat = [this]() { UIImage::GetShape()->setScale(Vector2f(1.0f, 1.0f)); };
+	new Timer(STRING_ID("ResetUiHeart"), _heartBeat, seconds(0.1f), 1, true);
+}
+
+void Heart::Update(const Vector2i& _mousePosition)
+{
+	UpdateLife();
 }

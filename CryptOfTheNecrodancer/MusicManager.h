@@ -7,8 +7,18 @@
 
 #include <SFML/Audio.hpp>
 
+enum RythmType
+{
+	RT_NONE, RT_FREEMOVE, RT_ALL
+};
+
 class MusicManager : public IManager<string, MusicData>, public Singleton<MusicManager>
 {
+	MusicData* currentMain;
+	MusicData* currentShopkeeper;
+	RythmType rythmType;
+
+	int* musicPackName;
 	float* acceptDelay;
 	float minAcceptDelay;
 	float maxAcceptDelay;
@@ -17,10 +27,13 @@ class MusicManager : public IManager<string, MusicData>, public Singleton<MusicM
 	float playSpeed;
 	float tempVolume;
 	float* volume;
+	float currentTime;
+	float maxTime;
 	Timer* rythmLoop;
 	float delta;
 	int beatDelay;
 	bool didEvent;
+	bool needsAnimationUpdate;
 
 public:
 	float* GetAcceptDelay() const
@@ -63,19 +76,44 @@ public:
 		currentBPM = _bpm;
 	}
 
+	int* GetMusicPackName() const
+	{
+		return musicPackName;
+	}
+
+	void IncreaseMusicPackName() const
+	{
+		*musicPackName += 1;
+
+		if (*musicPackName >= 7)
+		{
+			*musicPackName = 7;
+		}
+	}
+	void DecreaseMusicPackName() const
+	{
+		*musicPackName -= 1;
+
+		if (*musicPackName <= 1)
+		{
+			*musicPackName = 1;
+		}
+	}
+
 public:
 	MusicManager();
 	~MusicManager();
 
 public:
 	MusicData* GetMusic(const string& _path, const Vector2f& _position);
-	void Play(const string& _path, const Vector2f& _position, const bool _shouldLoop = false);
-	void PlayMain(const string& _path, const int _bpm, const bool _withShopkeeper = false, const bool _shouldLoop = false);
+	void PrepareMain(const string& _path, const int _bpm, const bool _withShopkeeper = false, const bool _shouldLoop = false);
 	void StopAll();
+	void UpdateEntitiesAnimations();
 	void Update();
 	void Toggle();
 	void Pause();
 	void Unpause();
+	void Play();
 	void SpeedUp();
 	void SpeedDown();
 	void SetPlaySpeed(const float _newValue);
@@ -85,5 +123,5 @@ public:
 	bool TriggerEvent();
 
 private:
-	void UpdateLoop(const int _bpm);
+	void UpdateLoop();
 };

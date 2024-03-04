@@ -24,8 +24,7 @@ public:
 	}
 
 public:
-	bool Update(RenderWindow* _window);
-	void ClickOnEntities();
+	bool Update();
 
 private:
 	void UpdateInputs(const Event& _event);

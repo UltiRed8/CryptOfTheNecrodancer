@@ -4,11 +4,27 @@
 #include "SoundData.h"
 #include "Singleton.h"
 
+struct DirectionalSettings
+{
+	float minDistance;
+	float attenuationSpeed;
+	Vector2f position;
+
+public:
+	DirectionalSettings() = default;
+	DirectionalSettings(const Vector2f& _position, const float _minDistance, const float _attenuationSpeed)
+	{
+		position = _position;
+		minDistance = _minDistance;
+		attenuationSpeed = _attenuationSpeed;
+	}
+};
+
 class SoundManager : public Singleton<SoundManager>, public IManager<string, SoundData>
 {
-	Sound sound;
 	float* volume;
 	float tempVolume;
+	bool isMuted;
 
 public:
 	SoundManager();
@@ -20,11 +36,8 @@ public :
 		return volume;
 	}
 
-private:
-	void Load(const string& _path);
-
 public:
-	void Play(const string& _path, const bool _isRelative = true);
+	void Play(const string& _path, const DirectionalSettings& _settings = DirectionalSettings());
 	void IncreaseVolume();
 	void DecreaseVolume();
 	void ToggleVolume();

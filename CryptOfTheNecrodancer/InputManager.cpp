@@ -2,9 +2,11 @@
 #include "EntityManager.h"
 #include "InputData.h"
 #include "ActionMap.h"
+#include "WindowManager.h"
 
-bool InputManager::Update(RenderWindow* _window)
+bool InputManager::Update()
 {
+	RenderWindow* _window = WindowManager::GetInstance().GetWindow();
 	Event _event;
 	while (_window->pollEvent(_event))
 	{
@@ -24,19 +26,5 @@ void InputManager::UpdateInputs(const Event& _event)
 	for (ActionMap* _map : GetAllValues())
 	{
 		_map->Update(_event);
-	}
-}
-
-void InputManager::ClickOnEntities()
-{
-	for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
-	{
-	/*	if (Clickable* _clickable = dynamic_cast<Clickable*>(_entity))
-		{
-			if (_clickable->GetGlobalBounds().contains(mousePosition))
-			{
-				_clickable->ClickAction();
-			}
-		}*/
 	}
 }

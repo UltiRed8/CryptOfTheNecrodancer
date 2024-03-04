@@ -1,16 +1,15 @@
 #pragma once
-#include "Placable.h"
+#include "Placeable.h"
 #include "Timer.h"
 
-
-class Bomb : public Placable
+class Bomb : public Placeable
 {
 	int cooldown;
-public:
-	Bomb(const Vector2f& pos);
 
 public:
+	Bomb(const Vector2f& _position);
+
+private:
 	void Explode();
 	virtual void Update() override;
 };
-

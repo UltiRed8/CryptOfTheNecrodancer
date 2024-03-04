@@ -17,6 +17,14 @@ Entity::~Entity()
 {
 	for (Component* _component : components)
 	{
+		if (AnimationComponent* _animationComponent = dynamic_cast<AnimationComponent*>(_component))
+		{
+			for (Animation* _animation : _animationComponent->GetAllValues())
+			{
+				_animation->Stop();
+				_animation->Destroy();
+			}
+		}
 		delete _component;
 	}
 	components.clear();	
@@ -30,18 +38,10 @@ void Entity::Register()
 
 void Entity::Update()
 {
-	if (IsToRemove())
+	if (AnimationComponent* _animationComponent = GetComponent<AnimationComponent>())
 	{
-		if (AnimationComponent* _comp = GetComponent<AnimationComponent>())
-		{
-			for (Animation* _animation : _comp->GetAllValues())
-			{
-				_animation->Stop();
-			}
-		}
-		return;
+		_animationComponent->GetCurrent()->Replay();
 	}
-
 	for (Component* _component : components)
 	{
 		_component->Update();

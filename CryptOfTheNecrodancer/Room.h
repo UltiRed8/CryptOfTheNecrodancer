@@ -13,7 +13,7 @@ public:
 	Room(const Vector2i& _size,const Vector2f& _startPosition);
 
 public:
-	vector<Tile*> GetFloor() const
+	vector<Tile*>& GetFloor()
 	{
 		return floor;
 	}

@@ -1,45 +1,35 @@
 #include "AnimationComponent.h"
-#include <iostream>
-#include "TextureManager.h"
-#include "EntityManager.h"
-#include"Macro.h"
-AnimationComponent::AnimationComponent(Entity* _owner, const string& _path, const vector<AnimationData>& _animationsData,
-	const AnimationDirection& _direction) : Component(_owner)
+
+AnimationComponent::AnimationComponent(Entity* _owner, const vector<AnimationData>& _animationsData, const string& _playingID, Shape* _shape) : Component(_owner)
 {
-	InitAnimations(_path, _animationsData);
+	shape = _shape;
+	InitAnimations(_animationsData);
 	currentIndex = -1;
-	direction = _direction;
+	playingID = _playingID;
+	Update();
 }
 
-
-void AnimationComponent::InitAnimations(const string& _path, const vector<AnimationData>& _animationsData)
+AnimationComponent::~AnimationComponent()
 {
-	Sprite* _sprite = new Sprite();
-	_sprite->setPosition(Vector2f(owner->GetPosition()));
-	TextureManager::GetInstance().LoadSprite(_sprite, _path);
-
-	for (const AnimationData& _data : _animationsData)
+	for (Animation* _animation : GetAllValues())
 	{
-		
-		new Animation(_data.name, this, _sprite, _data);
+		_animation->Stop();
+		delete _animation;
 	}
 }
 
+void AnimationComponent::InitAnimations(const vector<AnimationData>& _animationsData)
+{
+	for (const AnimationData& _data : _animationsData)
+	{
+		new Animation(_data.name, this, shape, _data);
+	}
+}
 
 void AnimationComponent::Update()
 {
-	if (currentIndex < 0)
-	{
-		cout << owner->GetID();
-	}
-	for (Animation* _animation:GetAllValues())
-	{
-		_animation->Update();
-	}
-
-	const int _newIndex = GetNextIndex(direction);
+	const int _newIndex = GetNextIndex(playingID);
 	if (currentIndex == _newIndex) return;
-
 
 	if (currentIndex != -1)
 	{
@@ -50,6 +40,6 @@ void AnimationComponent::Update()
 	}
 
 	Animation* _animation = GetAllValues()[_newIndex];
-	_animation->Start();
+	_animation->Replay();
 	currentIndex = _newIndex;
 }

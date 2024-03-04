@@ -4,7 +4,7 @@
 #include "Action.h"
 #include "Macro.h"
 
-Menu::Menu(const string& _id, const vector<UIElement*>& _elements, const int& _zIndex) : IManagable(_id)
+Menu::Menu(const string& _id, const vector<UIElement*>& _elements, const int& _zIndex, const bool& _isRelativeToCamera) : IManagable(_id)
 {
 	wantsToCloseMenu = false;
 	for (UIElement* _element : _elements)
@@ -61,6 +61,7 @@ void Menu::Update(RenderWindow* _window)
 	{
 		_element->Update(_mousePosition);
 	}
+	GarbageCollector();
 }
 
 vector<Drawable*> Menu::GetDrawables()

@@ -1,22 +1,25 @@
 #include "Animation.h"
 #include "AnimationComponent.h"
-#include "Timer.h"
-#include"EntityManager.h"
-#include"Macro.h"
+#include "Macro.h"
 
-Animation::Animation(const string& _name, AnimationComponent* _owner, Sprite* _sprite, const AnimationData& _data) : IManagable(STRING_ID(_name))
+Animation::Animation(const string& _name, AnimationComponent* _owner, Shape* _shape, const AnimationData& _data) : IManagable(STRING_ID(_name))
 {
 	owner = _owner;
-	sprite = _sprite;
+	shape = _shape;
 	data = _data;
 	Register();
-	const Vector2i& _position = Vector2i(static_cast<const int>(data.start.x), static_cast<const int>(data.start.y));
+
+	const int _spritesPerLine = (const int)shape->getTexture()->getSize().x / (int)data.size.x;
+
+	int _posX = (data.start % _spritesPerLine) * (int)data.size.x;
+	int _posY = (int)(floor(data.start / _spritesPerLine) * (int)data.size.y);
+
+	data.startPosition = Vector2i(_posX, _posY);
+
 	const Vector2i& _size = Vector2i(static_cast<const int>(data.size.x), static_cast<const int>(data.size.y));
-	const IntRect& _rect = IntRect(_position, _size);
-	sprite->setTextureRect(_rect);
-
+	const IntRect& _rect = IntRect(data.startPosition, _size);
+	shape->setTextureRect(_rect);
 }
-
 
 void Animation::Register()
 {
@@ -27,7 +30,7 @@ void Animation::SetNext()
 {
 	if (!CanNext())
 	{
-		if (!data.canLoop)
+		if (!data.shouldLoop)
 		{
 			Stop();
 			return;
@@ -42,28 +45,15 @@ void Animation::SetNext()
 	const int _sizeX = static_cast<int>(data.size.x);
 	const int _sizeY = static_cast<int>(data.size.y);
 	const IntRect& _rect = IntRect(_start.x, _start.y, _sizeX, _sizeY);
-	sprite->setTextureRect(_rect);
-	Update();
+	shape->setTextureRect(_rect);
 }
 
 Vector2i Animation::GetNewStart()
 {
-	int _x = static_cast<int>(data.start.x);
-	int _y = static_cast<int>(data.start.y);
+	int _x = static_cast<int>(data.startPosition.x);
+	const int _y = static_cast<int>(data.startPosition.y);
 
-	switch (data.readDirection)
-	{
-	case READ_DOWN:
-		_y += static_cast<int>(currentIndex * data.size.y);
-		break;
-
-	case READ_RIGHT:
-		_x += static_cast<int>(currentIndex * data.size.x);
-		break;
-
-	default:
-		break;
-	}
+	_x += static_cast<int>(currentIndex * data.size.x);
 
 	return Vector2i(_x, _y);
 }
@@ -72,8 +62,7 @@ void Animation::Start()
 {
 	if (!timer)
 	{
-
-	timer = new Timer("Animation" + data.name, this, &Animation::SetNext, seconds(data.timeBetween), -1,false);
+		timer = new Timer(STRING_ID("Animation" + data.name), this, &Animation::SetNext, seconds(data.timeBetween), -1,false);
 	}
 	else
 	{
@@ -86,17 +75,14 @@ void Animation::Reset()
 	currentIndex = -1;
 }
 
+void Animation::Replay()
+{
+	Reset();
+	Start();
+}
+
 void Animation::Stop()
 {
 	if (!timer) return;
 	timer->Pause();
-}
-
-void Animation::Update()
-{
-	Vector2f _spriteSize = sprite->getLocalBounds().getSize();
-	Vector2f _shapeSize = owner->GetOwner()->GetShape()->getLocalBounds().getSize();
-	Vector2f _scale = Vector2f(_shapeSize.x / _spriteSize.x, _shapeSize.y / _spriteSize.y);
-	sprite->setScale(_scale);
-	sprite->setPosition(owner->GetOwner() ->GetPosition() + Vector2f(_shapeSize.x* _scale.x, _shapeSize.y/_scale.y));
 }

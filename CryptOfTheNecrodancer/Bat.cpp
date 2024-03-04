@@ -4,10 +4,9 @@
 #include"DamageComponent.h"
 #include"LifeComponent.h"
 #include"Macro.h"
-#include "RythmComponent.h"
 #include "AnimationComponent.h"
 
-#define PATH_BAT "BatSprite.png"
+#define PATH_BAT "Entities/BatSprite.png"
 
 
 Bat::Bat(const Vector2f& _position) :Enemy(100.f,50.f,STRING_ID("Bat"), PATH_BAT, _position, 2)
@@ -19,27 +18,15 @@ Bat::Bat(const Vector2f& _position) :Enemy(100.f,50.f,STRING_ID("Bat"), PATH_BAT
 		Vector2i(0,-1),
 	};
 
-	//AnimationData _animation = AnimationData(STRING_ID("Bat"), Vector2f(0, 0), Vector2f(24, 24), READ_RIGHT, ANIM_DIR_NONE, true, 4, 0.1f);
-	//components.push_back(new AnimationComponent(this, PATH_BAT, { _animation }, ANIM_DIR_NONE));
+	components.push_back(new AnimationComponent(this, {
+		AnimationData("Idle", Vector2f(24, 24), 0, 3, 0.1f, true),
+	}, "Idle", shape));
+
 	cooldown = 2;
 }
 
 void Bat::SelectDirection()
 {
-	int _direction=Random((int)directionsPatern.size() - 1);
-	GetComponent< MovementComponent>()->SetDirection(directionsPatern[_direction]);
-
-}
-
-void Bat::UpdateRythm()
-{
-	currentCooldown--;
-	if (currentCooldown <= 0)
-	{
-		currentCooldown = cooldown;
-		if (GetComponent< MovementComponent>()->GetCanMove())
-		{
-			SelectDirection();
-		}
-	}
+	int _direction = Random((int)directionsPatern.size() - 1);
+	GetComponent<MovementComponent>()->SetDirection(directionsPatern[_direction]);
 }

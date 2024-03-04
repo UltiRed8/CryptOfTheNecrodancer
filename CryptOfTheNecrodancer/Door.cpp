@@ -4,8 +4,8 @@
 #include "SoundManager.h"
 #include "Map.h"
 
-#define PATH_DOOR_V "door_side.png"
-#define PATH_DOOR_H "door_front.png"
+#define PATH_DOOR_V "Dungeons/door_side.png"
+#define PATH_DOOR_H "Dungeons/door_front.png"
 #define SOUND_DOOR_OPEN "Assets/Sounds/obj_door_open.ogg"
 
 Door::Door(const Vector2f& _position, const int _direction) : Entity(STRING_ID("Door"), "", _position)
