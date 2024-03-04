@@ -7,6 +7,7 @@
 
 #define SOUND_DIG_DIRT "Assets/Sounds/mov_dig_dirt.ogg"
 #define SOUND_DIG_FAIL "Assets/Sounds/mov_dig_fail.ogg"
+#define COIN "UI/Coin.png"
 
 Wall::Wall(const Vector2f& _position, const WallType& _type, const string& _zoneName, const bool _canSpawnWithTorch) : Placeable(STRING_ID("Wall"), "", _position)
 {
@@ -47,6 +48,10 @@ void Wall::DestroyWall(const bool _usingBomb)
 		Map::GetInstance().AddFloorAt(GetPosition());
 	}
 	SoundManager::GetInstance().Play(SOUND_DIG_DIRT);
+	if (wallType  == WT_SHOP)
+	{
+		new Pickable(25, PT_COIN, STRING_ID("Coin"), GetPosition(), COIN);
+	}
 	if (hasDiamond)
 	{
 		Map::GetInstance().AddOther(new Pickable(1, PT_DIAMOND, STRING_ID("Diamond"), GetPosition()));

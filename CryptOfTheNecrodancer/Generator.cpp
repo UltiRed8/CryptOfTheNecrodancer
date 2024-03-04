@@ -426,6 +426,16 @@ void Generator::SpawnEnnemy(const int _amountOfEnemies)
 
 	int _randIndex;
 	vector<Vector2f> _positions = GetSpawnPositions();
+	vector<Tile*> _shopFloors = shop->GetFloor();
+
+	vector<Vector2f> _shopFloorsPositions;
+
+	for (Tile* _tile : _shopFloors)
+	{
+		_shopFloorsPositions.push_back(_tile->GetPosition());
+	}
+
+	EraseElements(_positions, _shopFloorsPositions);
 
 	Vector2f _position = _positions[Random((int)_positions.size() - 1, 0)];
 	if (_positions.empty()) return;
