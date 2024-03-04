@@ -33,6 +33,7 @@
 #define LOADING_MENU "UI/Loading.png"
 #define WARNING_MENU "UI/SeizureWarningMenu.png"
 #define EPILEPSY_MENU "UI/EpilepsyMenu.png"
+#define REBIND "UI/Rebind.png"
 
 #define EMPTYCHECKBOX "UI/EmptyCheckbox.png"
 #define EMPTYBAR "UI/EmptyBar.png"
@@ -342,6 +343,7 @@ void MenuManager::InitMenuOptions()
 	unsigned int _windowY = window->getSize().y;
 
 	function<void()> _activateSound = [this]() { SoundManager::GetInstance().ToggleVolume(); };
+	function<void()> _rebind = [this]() {  }; //TODO
 	function<void()> _activateMusic = [this]() { MusicManager::GetInstance().ToggleVolume(); };
 	function<void()> _volumeUpM = [this]() { MusicManager::GetInstance().IncreaseVolume(); };
 	function<void()> _volumeUpS = [this]() { SoundManager::GetInstance().IncreaseVolume(); };
@@ -353,6 +355,10 @@ void MenuManager::InitMenuOptions()
 	new Menu("Options", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), OPTIONS_MENU),
 		//Menu Graphique
 		new UIButton("GraphicalOptionsButton", Vector2f(_x, static_cast<float>(_windowY / 4.2)), WHITE_COLOR, CYAN_COLOR, "Graphical Options", 40, FONT, SOUND_START, _graphics),
+
+		new UIButton("CheckBoxS", Vector2f(static_cast<float>(window->getSize().x / 10), static_cast<float>(_windowY / 3)), WHITE_COLOR, Color(0,139,139), {
+			new UIImage("CheckBoxImageS", Vector2f(static_cast<float>(window->getSize().x / 10), static_cast<float>(_windowY / 3)), Vector2f(200.0f, 200.0f), REBIND),
+		}, SOUND_TOGGLE, _rebind, FloatRect(static_cast<float>(window->getSize().x / 10), static_cast<float>(_windowY / 3), 200.0f, 200.0f)),
 
 		// Activer/Désactiver le Sound
 		new UIText("ToggleSText", Vector2f(_x, static_cast<float>(_windowY / 3)), Color(172, 172,173), "Toggle Sound",40,FONT, true),
