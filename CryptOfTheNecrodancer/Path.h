@@ -16,13 +16,13 @@ public:
 	}
 
 private:
-	void FixX();
-	void FixY();
+	void FixX(vector<Vector2f>& _usedPosition);
+	void FixY(vector<Vector2f>& _usedPosition);
 
 public:
-	Path(const Vector2i& _start, const Vector2i& _end);
+	Path(const Vector2i& _start, const Vector2i& _end, vector<Vector2f>& _usedPosition);
 
 public:
-	void Generate();
+	void Generate(vector<Vector2f>& _usedPosition);
 };
 

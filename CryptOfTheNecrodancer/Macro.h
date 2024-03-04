@@ -63,6 +63,9 @@ bool Contains(T _valueToFind, const vector<T>& _vector)
 
 	return false;
 }
+
+bool Contains(const FloatRect& _rect, const vector<Vector2f>& _vector);
+
 bool IsNearlyEqual(Vector2f _first, Vector2f _second);
 
 Vector2i GetDirectionByPositions(Vector2f _entityPos, Vector2f _destination);
@@ -76,6 +79,7 @@ static void SetOriginCentered(Type* _element)
 template <typename Class, typename Type>
 static void EraseElements(vector<Class>& _vector, vector<Type> _element)
 {
+	cout << "Removing Elements: " << _element.size() << endl;
 	for (Type _value : _element)
 	{
 		_vector.erase(remove(_vector.begin(), _vector.end(), _value), _vector.end());
@@ -90,3 +94,15 @@ static void EraseElement(vector<T>& _vector, const T& _element)
 
 Vector2f operator * (const Vector2f& _vector, const Vector2f& _multiplier);
 Vector2i operator * (const Vector2i& _vector, const Vector2i& _multiplier);
+
+template <typename Type>
+Type operator /= (Type& _vector, const Type& _divisor)
+{
+	return Type(_vector.x / _divisor.x, _vector.y / _divisor.y);
+}
+
+template <typename Type>
+Type operator / (const Type& _vector, const Type& _divisor)
+{
+	return Type(_vector.x / _divisor.x, _vector.y / _divisor.y);
+}

@@ -169,10 +169,17 @@ void Generator::GenerateRooms(const int _roomCount)
 	loadingText->GetText()->setString("Generating rooms");
 	for (int _index = 0; _index < _roomCount; _index++)
 	{
-		Room* _room = new Room(GetRandomVector2i(4, 6), Vector2f(GetRandomRoomPosition()));
-		rooms.push_back(_room);
-		const vector<Tile*>& _roomFloor = _room->GetFloor();
-		floors.insert(floors.end(), _roomFloor.begin(), _roomFloor.end());
+		Room* _room = new Room();
+		if (_room->Generate(usedPositions))
+		{
+			rooms.push_back(_room);
+			const vector<Tile*>& _roomFloor = _room->GetFloor();
+			floors.insert(floors.end(), _roomFloor.begin(), _roomFloor.end());
+		}
+		else
+		{
+			delete _room;
+		}
 	}
 }
 
@@ -204,9 +211,13 @@ vector<Wall*> Generator::PlaceWallsAroundFloor(vector<Tile*> _floors, const int 
 
 		for (const Vector2f& _position : _allPositionsAround)
 		{
-			Wall* _wall = new Wall(_position, (_index == _width - 1 && _finalDestructible) ? WT_INVULNERABLE : _type, zoneFileName);
-			walls.push_back(_wall);
-			_wallsOfRoom.push_back(_wall);
+			if (!Contains(_position, usedPositions))
+			{
+				Wall* _wall = new Wall(_position, (_index == _width - 1 && _finalDestructible) ? WT_INVULNERABLE : _type, zoneFileName);
+				walls.push_back(_wall);
+				_wallsOfRoom.push_back(_wall);
+				usedPositions.push_back(_position);
+			}
 		}
 	}
 	return _wallsOfRoom;
@@ -215,28 +226,20 @@ vector<Wall*> Generator::PlaceWallsAroundFloor(vector<Tile*> _floors, const int 
 void Generator::GeneratePaths()
 {
 	loadingText->GetText()->setString("Generating paths");
-	const int _roomCount = (const int)rooms.size() - 1;
+
+	const int _roomCount = (const int) rooms.size() - 1;
 	for (int _index = 0; _index < _roomCount; _index++)
 	{
-		Tile* _startTile = GetRandomElementInVector(rooms[_index]->GetFloor());
-		Tile* _endTile = GetRandomElementInVector(rooms[_index + 1]->GetFloor());
+		Vector2f _startPosition = GetRandomElementInVector(rooms[_index]->GetFloor())->GetPosition() / TILE_SIZE;
+		Vector2f _endPosition = GetRandomElementInVector(rooms[_index + 1]->GetFloor())->GetPosition() / TILE_SIZE;
 
-		Shape* _startShape = _startTile->GetShape();
-		Shape* _endShape = _endTile->GetShape();
+		_startPosition /= TILE_SIZE;
+		_endPosition /= TILE_SIZE;
 
-		const float _startPositionX = _startShape->getPosition().x / TILE_SIZE.x;
-		const float _startPositionY = _startShape->getPosition().y / TILE_SIZE.y;
-
-		const float _endPositionX = _endShape->getPosition().x / TILE_SIZE.x;
-		const float _endPositionY = _endShape->getPosition().y / TILE_SIZE.y;
-
-		const Vector2i& _startPosition = Vector2i((int)_startPositionX, (int)_startPositionY);
-		const Vector2i& _endPosition = Vector2i((int)_endPositionX, (int)_endPositionY);
-
-		Path* _path = new Path(_startPosition, _endPosition);
-
-		vector<Tile*> _pathFloor = _path->GetFloor();
+		Path* _path = new Path(Vector2i(_startPosition), Vector2i(_endPosition), usedPositions);
 		paths.push_back(_path);
+
+		const vector<Tile*>& _pathFloor = _path->GetFloor();
 		floors.insert(floors.end(), _pathFloor.begin(), _pathFloor.end());
 	}
 }
@@ -244,6 +247,7 @@ void Generator::GeneratePaths()
 void Generator::EraseOverlappings()
 {
 	loadingText->GetText()->setString("Erasing overlappings");
+
 	vector<Vector2f> _allPositions = GetAllPositions(walls);
 
 	for (const Vector2f& _position : GetAllPositions(floors))
@@ -306,33 +310,28 @@ void Generator::EraseOverlappings()
 void Generator::GenerateShopRoom()
 {
 	loadingText->GetText()->setString("Generating shop room");
-	const vector<Vector2f>& _availablePosition = GetEmptyTilesAround(floors);
-	const Vector2f& _position = _availablePosition[Random((int)_availablePosition.size() - 1, 0)];
 
-	shop = new Room(Vector2i(5, 7), _position);
+	shop = new Room(Vector2i(5, 7));
+	shop->Generate(usedPositions);
+	rooms.push_back(shop);
 
-	vector<Tile*>& _shopkeeperTiles = shop->GetFloor();
-	const Vector2f& _shopkeeperPosition = _shopkeeperTiles[12]->GetPosition();
+	const Vector2f& _shopkeeperPosition = usedPositions[12];
 	shopkeeper = new NPC(NPC_SHOPKEEPER, _shopkeeperPosition);
-	Tile* _first = _shopkeeperTiles[11];
-	_first->SetZIndex(2);
-	Tile* _second = _shopkeeperTiles[13];
-	_second->SetZIndex(2);
-	_first->SetTexture(PATH_SHOP_TILE);
-	_second->SetTexture(PATH_SHOP_TILE);
 	others.push_back(shopkeeper);
-	others.push_back(_first);
-	others.push_back(_second);
 
-	const vector<Tile*>& _shopFloors = shop->GetFloor();
+	vector<Tile*>& _shopFloors = shop->GetFloor();
+	for (int _index = 0; _index < 2; _index++)
+	{
+		Entity* _entity = _shopFloors[11 + _index];
+		_entity->SetZIndex(2);
+		_entity->SetTexture(PATH_SHOP_TILE);
+		EraseElement(_shopFloors, (Tile*)_entity);
+		others.push_back(_entity);
+	}
+
 	floors.insert(floors.end(), _shopFloors.begin(), _shopFloors.end());
 
 	shopWalls = PlaceWallsAroundFloor(_shopFloors, 1, false, WT_SHOP);
-
-	EraseElement(floors, _first);
-	EraseElement(floors, _second);
-
-	rooms.push_back(shop);
 }
 
 void Generator::PlaceShopDoor()
@@ -359,22 +358,43 @@ void Generator::PlaceShopDoor()
 void Generator::PlaceTorches()
 {
 	loadingText->GetText()->setString("Placing torches");
+
 	for (Wall* _wall : walls)
 	{
 		_wall->SpawnTorch();
 	}
 }
 
+void Generator::SpawnPlayer()
+{
+	loadingText->GetText()->setString("Placing player");
+
+	const Vector2f& _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
+	EraseElement(spawnablePositions, _position);
+	EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position);
+}
+
+void Generator::SpawnStairs()
+{
+	loadingText->GetText()->setString("Placing stairs");
+
+	const Vector2f& _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
+	EraseElement(spawnablePositions, _position);
+	stairs.push_back(new Stair(_position, Map::GetInstance().GetCurrentZone()));
+}
+
 void Generator::GenerateWalls()
 {
 	loadingText->GetText()->setString("Generating walls");
+
 	PlaceWallsAroundFloor(floors, 4, true, WT_DIRT);
 }
 
 void Generator::SetAllFloorOriginColor()
 {
 	loadingText->GetText()->setString("Setting floors colors");
-	const int _size = (const int)floors.size();
+
+	const int _size = (const int) floors.size();
 	for (int _index = 0; _index < _size; _index++)
 	{
 		SetFloorColor(floors[_index], true);
@@ -384,6 +404,7 @@ void Generator::SetAllFloorOriginColor()
 void Generator::UpdateDoors()
 {
 	loadingText->GetText()->setString("Updating doors");
+
 	for (Entity* _entity : others)
 	{
 		if (Door* _door = dynamic_cast<Door*>(_entity))
@@ -393,12 +414,35 @@ void Generator::UpdateDoors()
 	}
 }
 
+void Generator::GetSpawnablePositions()
+{
+	spawnablePositions.clear();
+
+	loadingText->GetText()->setString("Getting spawnable positions");
+
+	for (Tile* _floor : floors)
+	{
+		spawnablePositions.push_back(_floor->GetPosition());
+	}
+
+	if (shop)
+	{
+		for (Tile* _floor : shop->GetFloor())
+		{
+			EraseElement(spawnablePositions, _floor->GetPosition());
+		}
+	}
+}
+
 void Generator::GenerateDiamond(const int _diamondOnFloor, int _diamondInWall)
 {
 	loadingText->GetText()->setString("Generating diamonds");
+
 	for (int _i = 0; _i < _diamondOnFloor; _i++)
 	{
-		others.push_back(new Pickable(1, PT_DIAMOND, STRING_ID("Diamond"), GetRandomElementInVector(floors)->GetPosition()));
+		const Vector2f& _position = GetRandomElementInVector(spawnablePositions);
+		others.push_back(new Pickable(1, PT_DIAMOND, STRING_ID("Diamond"), _position));
+		EraseElement(spawnablePositions, _position);
 	}
 
 	while (_diamondInWall >= 1)
@@ -415,6 +459,7 @@ void Generator::GenerateDiamond(const int _diamondOnFloor, int _diamondInWall)
 void Generator::SpawnEnnemy(const int _amountOfEnemies)
 {
 	loadingText->GetText()->setString("Spawning enemies");
+
 	vector<function<Entity* (const Vector2f& _position)>> _enemyList =
 	{
 		[this](const Vector2f& _position) { return new Bat(_position); },
@@ -424,40 +469,25 @@ void Generator::SpawnEnnemy(const int _amountOfEnemies)
 		[this](const Vector2f& _position) { return new NormalSkeleton(_position); },
 	};
 
-	int _randIndex;
-	vector<Vector2f> _positions = GetSpawnPositions();
-	vector<Tile*> _shopFloors = shop->GetFloor();
-
-	vector<Vector2f> _shopFloorsPositions;
-
-	for (Tile* _tile : _shopFloors)
-	{
-		_shopFloorsPositions.push_back(_tile->GetPosition());
-	}
-
-	EraseElements(_positions, _shopFloorsPositions);
-
-	Vector2f _position = _positions[Random((int)_positions.size() - 1, 0)];
-	if (_positions.empty()) return;
 	for (int _index = 0; _index < _amountOfEnemies; _index++)
 	{
-		_position = _positions[Random((int)_positions.size() - 1, 0)];
-		EraseElement(_positions, _position);
-		_randIndex = Random(static_cast<int>(_enemyList.size() - 1), 0);
-		others.push_back(_enemyList[_randIndex](_position));
+		if (spawnablePositions.empty()) return;
+		Vector2f _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
+		EraseElement(spawnablePositions, _position);
+		others.push_back(_enemyList[Random(static_cast<int>(_enemyList.size() - 1), 0)](_position));
 	}
-	_position = _positions[Random((int)_positions.size() - 1, 0)];
-	EraseElement(_positions, _position);
-	stairs.push_back(new Stair(_position, Map::GetInstance().GetCurrentZone()));
-	_position = _positions[Random((int)_positions.size() - 1, 0)];
-	EraseElement(_positions, _position);
-	EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position);
+}
 
-	// TRAPS
+void Generator::SpawnTraps(const int _amount)
+{
+	loadingText->GetText()->setString("Spawning traps");
+
 	for (int _index = 0; _index < 50; _index++)
 	{
-		_position = _positions[Random((int)_positions.size() - 1, 0)];
-		EraseElement(_positions, _position);
+		if (spawnablePositions.empty()) return;
+
+		const Vector2f& _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
+		EraseElement(spawnablePositions, _position);
 		others.push_back(new Trap(_position));
 	}
 }
@@ -499,24 +529,43 @@ void Generator::GenUpdate()
 	if (generationIndex >= 0)
 	{
 		vector<function<void()>> _functionList = {
-			[&]() {	GenerateRooms(6); },
-			[&]() { GeneratePaths(); },
-			[&]() { EraseOverlappings(); },
+			// 1- place shop room
 			[&]() { GenerateShopRoom(); },
-			[&]() { GenerateWalls(); },
-			[&]() { EraseOverlappings(); },
+			// 2- generate rooms
+			[&]() {	GenerateRooms(6); },
+			// 3- generate paths
+			[&]() { GeneratePaths(); },
+			// 4- floor colors
 			[&]() { SetAllFloorOriginColor(); },
-			[&]() { SpawnEnnemy(15); },
+			// 5- generate walls
+			[&]() { GenerateWalls(); },
+			// 6- get spawnable positions
+			[&]() { GetSpawnablePositions(); },
+			// 7- generate diamonds
 			[&]() { GenerateDiamond(); },
+			// 8- spawn player
+			[&]() { SpawnPlayer(); },
+			// 9- spawn stairs
+			[&]() { SpawnStairs(); },
+			// 10- spawn enemies
+			[&]() { SpawnEnnemy(10); },
+			// 11- place shop door
 			[&]() { PlaceShopDoor(); },
-			[&]() { UpdateDoors(); },
+			// 12- place traps
+			[&]() { SpawnTraps(8); },
+			// 13- place torches
 			[&]() { PlaceTorches(); },
-			//[&]() { Temp(); }, // TODO 3d effect
+			// 14- update doors
+			[&]() { UpdateDoors(); },
+			// 15- erase overlappings
+			[&]() { EraseOverlappings(); },
+			// end dungeon generation
 			[&]() { Map::GetInstance().EndDungeonGeneration(); },
+			//[&]() { Temp(); }, // TODO 3d effect
 			
 		};
 		_functionList[generationIndex]();
-		sleep(seconds(0.5f));
+		sleep(seconds(0.2f));
 
 		generationIndex++;
 		if (generationIndex == _functionList.size())

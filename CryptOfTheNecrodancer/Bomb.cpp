@@ -66,7 +66,7 @@ void Bomb::Update()
 	{
 		cooldown--;
 		TextureManager::GetInstance().LoadFromTextureSheet(shape, PATH_BOMB, 4 - cooldown, Vector2i(74, 74));
-		if (cooldown == -1)
+		if (cooldown == 0)
 		{
 			Explode();
 		}
