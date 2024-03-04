@@ -20,6 +20,9 @@
 #define SOUND_CHAIN_START "Assets/Sounds/sfx_chain_groove_ST.ogg"
 #define SOUND_CHAIN_FAIL "Assets/Sounds/sfx_chain_break_ST.ogg"
 
+#define PATH_FLOOR "Dungeons/" + Map::GetInstance().GetZoneFileName() + "/floor.png"
+
+
 
 Player::Player(const float _maxHp, const float _maxDammage, const string _id, const Vector2f& _position) : Living(_maxHp, _maxDammage,PATH_PLAYER,_id, _position)
 {
@@ -61,6 +64,13 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 		CollisionReaction(ET_PICKABLE, [this](Entity* _entity) {
 			Pickable* _pickable = dynamic_cast<Pickable*>(_entity);
 			_pickable->PickUp();
+		}),
+
+		CollisionReaction(ET_WATER, [this](Entity* _entity) {
+			Tile* _water = dynamic_cast<Tile*>(_entity);
+			_water->Destroy();
+			WindowManager::GetInstance().Shake(300);
+			Map::GetInstance().AddFloorAt(_water->GetPosition());
 		}),
 
 		CollisionReaction(ET_ENEMY, [this](Entity* _entity) {
