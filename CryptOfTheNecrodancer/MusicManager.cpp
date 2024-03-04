@@ -203,7 +203,7 @@ void MusicManager::SpeedUp()
 	SetPlaySpeed(1.125f);
 	new Timer("ResetPlaySpeed", [this]() {
 		SetPlaySpeed(1.0f);
-	}, seconds(5.0f), 1, true);
+	}, seconds(6.5f), 1, true);
 }
 
 void MusicManager::SpeedDown()
@@ -212,7 +212,7 @@ void MusicManager::SpeedDown()
 	SetPlaySpeed(0.875f);
 	new Timer("ResetPlaySpeed", [this]() {
 		SetPlaySpeed(1.0f);
-	}, seconds(5.0f), 1, true);
+	}, seconds(6.5f), 1, true);
 }
 
 void MusicManager::SetPlaySpeed(const float _newValue)
