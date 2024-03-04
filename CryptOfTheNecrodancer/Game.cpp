@@ -41,8 +41,9 @@ void Game::Start()
 
 	Init();
 
-	calibration = new Calibration([&]() {EndCalibration(); });
-	calibration->Start();
+	/*calibration = new Calibration([&]() {EndCalibration(); });
+	calibration->Start();*/
+	EndCalibration();
 	new Camera("PlayerCamera", CAMERA_PLAYER, Vector2f(0.f, 0.f), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
 }
 
@@ -50,7 +51,7 @@ void Game::Update()
 {
 	while (window->isOpen())
 	{
-		calibration->Update();
+		//calibration->Update();
 		MusicManager::GetInstance().Update();
 		TimerManager::GetInstance().Update();
 		InputManager::GetInstance().Update();
