@@ -162,6 +162,7 @@ public:
 
 private:
 	void GenerateRooms(const int _roomCount);
+	void GenerateWater();
 	vector<Wall*> PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const bool _finalDestructible, const WallType& _type);
 	void GeneratePaths();
 	void EraseOverlappings();

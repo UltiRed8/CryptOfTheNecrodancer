@@ -12,7 +12,6 @@ class Game
 	Player* player;
 	Map* map;
 	Calibration* calibration;
-
 public:
 	Game();
 	~Game();

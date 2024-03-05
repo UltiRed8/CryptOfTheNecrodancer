@@ -7,6 +7,7 @@
 #define SOUND_DIAMOND_PICKED_UP "Assets/Sounds/sfx_pickup_diamond.ogg"
 #define PATH_COIN "Entities/Coins.png"
 #define PATH_DIAMOND "UI/Diamond.png"
+#define PATH_WATER "Dungeons/Water.png"
 
 Pickable::Pickable(const int _amount, const PickableType& _type, const string& _id, const Vector2f& _pos, const string& _path) : Placeable(_id,_path, _pos)
 {
@@ -14,17 +15,20 @@ Pickable::Pickable(const int _amount, const PickableType& _type, const string& _
 	pickableType = _type;
 
 	zIndex = 1;
-
 	if (_type != PT_CUSTOM)
 	{
 		if (_type == PT_COIN)
 		{
 			TextureManager::GetInstance().LoadFromTextureSheet(shape, PATH_COIN, Random(3, 0), Vector2i(24, 24));
 		}
-		else
+		else if (_type == PT_DIAMOND)
 		{
 			SetTexture(PATH_DIAMOND);
 		}
+	}
+	else
+	{
+		TextureManager::GetInstance().LoadFromTextureSheet(shape, PATH_WATER, Random(2, 0), Vector2i(26, 26));
 	}
 	type = ET_PICKABLE;
 }

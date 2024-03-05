@@ -5,10 +5,12 @@
 #include "Torch.h"
 #include "Map.h"
 #include "Trap.h"
+#include "Water.h"
 
 #define PATH_SHOP_TILE "Dungeons/ShopTile.png"
 #define PATH_UPGRADE_TILE "Dungeons/UpgradeTile.png"
 #define PATH_FLOOR "Dungeons/" + Map::GetInstance().GetZoneFileName() + "/floor.png"
+#define PATH_WATER "Dungeons/Water.png"
 #define FONT "Assets/Font/Font.ttf"
 
 Generator::Generator(bool* _discoModeEnabled)
@@ -148,7 +150,7 @@ void Generator::GenerateLobby()
 		MenuManager::GetInstance().ToggleLoading();
 		Map::GetInstance().UpdateLights(50);
 		CameraManager::GetInstance().Get("PlayerCamera")->SetCameraToPlayer();
-	}, seconds(2.0f), 1, true);
+		}, seconds(2.0f), 1, true);
 }
 
 void Generator::Temp()
@@ -181,6 +183,31 @@ void Generator::GenerateRooms(const int _roomCount)
 		else
 		{
 			delete _room;
+		}
+	}
+}
+
+void Generator::GenerateWater()
+{
+	int _randomTileIndex;
+	int _waterTileNumberPerRoom = Random(10, 0);
+
+	for (Room* _room : rooms)
+	{
+		if (_room != shop)
+		{
+			for (int _i = 0; _i < _waterTileNumberPerRoom; _i++)
+			{
+				vector<Tile*> _tiles = _room->GetFloor();
+				_randomTileIndex = Random((int)(_tiles.size() - 1), 0);
+				if (_room->GetFloor()[_randomTileIndex]->GetType() == ET_FLOOR)
+				{
+					_room->GetFloor()[_randomTileIndex]->Destroy();
+					others.push_back(new Water(_room->GetFloor()[_randomTileIndex]->GetPosition()));
+					EraseElement(floors, _room->GetFloor()[_randomTileIndex]);
+					EraseElement(_room->GetFloor(), _room->GetFloor()[_randomTileIndex]);
+				}
+			}
 		}
 	}
 }
@@ -229,7 +256,7 @@ void Generator::GeneratePaths()
 {
 	loadingText->GetText()->setString("Generating paths");
 
-	const int _roomCount = (const int) rooms.size() - 1;
+	const int _roomCount = (const int)rooms.size() - 1;
 	for (int _index = 0; _index < _roomCount; _index++)
 	{
 		Vector2f _startPosition = GetRandomElementInVector(rooms[_index]->GetFloor())->GetPosition() / TILE_SIZE;
@@ -396,7 +423,7 @@ void Generator::SetAllFloorOriginColor()
 {
 	loadingText->GetText()->setString("Setting floors colors");
 
-	const int _size = (const int) floors.size();
+	const int _size = (const int)floors.size();
 	for (int _index = 0; _index < _size; _index++)
 	{
 		SetFloorColor(floors[_index], true);
@@ -509,11 +536,16 @@ void Generator::AddOther(Entity* _entity)
 void Generator::UpdateTilesColor()
 {
 	const bool _hasChain = *dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetChainMultiplier() > 1.0f;
+	
 
 	if (!_hasChain)
 	{
 		for (Tile* _floor : floors)
 		{
+			if (_floor->GetType() == ET_WATER)
+			{
+				break;
+			}
 			_floor->InvertAlpha(isPurple);
 		}
 	}
@@ -561,10 +593,12 @@ void Generator::GenUpdate()
 			[&]() { UpdateDoors(); },
 			// 15- erase overlappings
 			[&]() { EraseOverlappings(); },
+			// 16- Water generation TEST
+			[&]() { GenerateWater(); },
 			// end dungeon generation
 			[&]() { Map::GetInstance().EndDungeonGeneration(); },
 			//[&]() { Temp(); }, // TODO 3d effect
-			
+
 		};
 		_functionList[generationIndex]();
 		sleep(seconds(0.2f));

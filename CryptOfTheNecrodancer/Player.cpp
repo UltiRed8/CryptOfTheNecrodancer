@@ -14,6 +14,7 @@
 #include "MenuManager.h"
 #include "Heart.h"
 #include "WindowManager.h"
+#include "Water.h"
 
 #define PATH_PLAYER "Entities/PlayerSprite.png"
 
@@ -67,10 +68,10 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 		}),
 
 		CollisionReaction(ET_WATER, [this](Entity* _entity) {
-			Tile* _water = dynamic_cast<Tile*>(_entity);
+			Water* _water = dynamic_cast<Water*>(_entity);
 			_water->Destroy();
-			WindowManager::GetInstance().Shake(300);
-			Map::GetInstance().AddFloorAt(_water->GetPosition());
+			WindowManager::GetInstance().Shake(25);
+			Map::GetInstance().AddFloorAt(GetPosition());
 		}),
 
 		CollisionReaction(ET_ENEMY, [this](Entity* _entity) {
