@@ -9,6 +9,7 @@ Entity::Entity(const string& _id, const string& _path, const Vector2f& _position
 	Register();
 	shape = new RectangleShape(TILE_SIZE);
 	shape->setPosition(_position);
+
 	SetTexture(_path);
 	type = ET_NONE;
 }

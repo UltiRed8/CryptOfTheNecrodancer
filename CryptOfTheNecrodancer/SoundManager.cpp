@@ -2,7 +2,7 @@
 
 SoundManager::SoundManager()
 {
-	volume = new float(60.f);
+	volume = new float(40.0f);
 	isMuted = false;
 	tempVolume = 0;
 }

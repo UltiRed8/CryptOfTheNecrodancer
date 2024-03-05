@@ -22,6 +22,8 @@ Generator::Generator(bool* _discoModeEnabled)
 	others = vector<Entity*>();
 	stairs = vector<Stair*>();
 
+	loadingText = nullptr;
+
 	shop = nullptr;
 
 	tempoIndex = 1;

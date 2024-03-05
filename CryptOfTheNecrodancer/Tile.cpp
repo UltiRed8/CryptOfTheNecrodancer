@@ -13,6 +13,10 @@ Tile::Tile(const string& _tilePath, const Vector2f& _position, const EntityType&
 		shape->setFillColor(Color::Black);
 		zIndex = 2;
 	}
+	if (_type == ET_WATER)
+	{
+		zIndex = 2;
+	}
 }
 
 void Tile::InvertAlpha(const bool _reset)

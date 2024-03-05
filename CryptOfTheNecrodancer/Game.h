@@ -2,6 +2,7 @@
 #include "Map.h"
 #include <iostream>
 #include "Player.h"
+#include "Calibration.h"
 
 using namespace std;
 
@@ -10,11 +11,8 @@ class Game
 	RenderWindow* window;
 	Player* player;
 	Map* map;
-<<<<<<< Updated upstream
-=======
 	Calibration* calibration;
 	Shader* shader;
->>>>>>> Stashed changes
 
 public:
 	Game();
@@ -26,6 +24,7 @@ private:
 	void Update();
 	void UpdateWindow();
 	void Stop();
+	void EndCalibration();
 
 public:
 	void Launch();

@@ -12,6 +12,7 @@ class WindowManager : public Singleton<WindowManager>
 	RenderWindow* window;
 	int currentValue;
 	Vector2i baseWindowPosition;
+	bool* isShakable;
 
 public:
 	WindowManager();
@@ -21,6 +22,10 @@ public:
 	RenderWindow* GetWindow() const 
 	{
 		return window;
+	}
+	void ToggleShakable() const
+	{
+		*isShakable = !*isShakable;
 	}
 
 private:

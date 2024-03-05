@@ -20,11 +20,17 @@ class Camera : public IManagable<string>, public View
 	CameraType type;
 	float targetRotation;
 	float currentRotation;
+	bool* canRotating;
 
 public:
 	void SetRotation(const float _targetRotation)
 	{
+		if (!*canRotating) return;
 		targetRotation = _targetRotation;
+	}
+	void ToggleRotating() const
+	{
+		*canRotating = !*canRotating;
 	}
 
 public:

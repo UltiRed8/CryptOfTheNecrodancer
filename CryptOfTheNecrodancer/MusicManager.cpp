@@ -26,16 +26,12 @@ MusicManager::MusicManager()
 
 	currentMain = nullptr;
 	currentShopkeeper = nullptr;
-
+	latency = 0.0f;
 	musicPackName = new int(1);
 	volume = new float(10.f);
 	rythmLoop = nullptr;
 	isRunning = false;
-<<<<<<< Updated upstream
-	acceptDelay = new float(400);
-=======
-	acceptDelay = new float(80);
->>>>>>> Stashed changes
+	acceptDelay = new float(50);
 	minAcceptDelay = 0.0f;
 	maxAcceptDelay = 450.0f;
 	playSpeed = 1.0f;
@@ -207,7 +203,7 @@ void MusicManager::SpeedUp()
 	SetPlaySpeed(1.125f);
 	new Timer("ResetPlaySpeed", [this]() {
 		SetPlaySpeed(1.0f);
-	}, seconds(5.0f), 1, true);
+	}, seconds(6.5f), 1, true);
 }
 
 void MusicManager::SpeedDown()
@@ -216,7 +212,7 @@ void MusicManager::SpeedDown()
 	SetPlaySpeed(0.875f);
 	new Timer("ResetPlaySpeed", [this]() {
 		SetPlaySpeed(1.0f);
-	}, seconds(5.0f), 1, true);
+	}, seconds(6.5f), 1, true);
 }
 
 void MusicManager::SetPlaySpeed(const float _newValue)
@@ -347,9 +343,9 @@ bool MusicManager::TriggerEvent()
 		_path = _curentDuration.asMilliseconds() > _max ? PATH_RYTHM_INDICATOR_RED : PATH_RYTHM_INDICATOR_BLUE;
 	}
 
-	if ((delta - 10 <= _delay || delta >= (beatDelay - _delay)) || rythmType <= RT_FREEMOVE)
+	if ((delta <= _delay + latency || delta >= (/*beatDelay -*/ _delay - latency)) || rythmType <= RT_FREEMOVE)
 	{
-		Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
+   		Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
 		TextureManager::GetInstance().Load(_shape, PATH_HEART2);
 		new Timer("HeartIndicatorReset", [this]() {
 			Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();

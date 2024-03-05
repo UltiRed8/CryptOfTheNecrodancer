@@ -14,7 +14,9 @@
 #include "LightningManager.h"
 #include "WindowManager.h"
 #include "RythmIndicator.h"
+#include "UIAnimation.h"
 
+#define FONT "Assets/Font/Font.ttf"
 #define FONT "Assets/Font/Font.ttf"
 #define WHITE_COLOR Color::White
 #define CYAN_COLOR Color::Cyan
@@ -30,10 +32,12 @@
 #define LATENCY_MENU "UI/LatencyMenu.png"
 #define LOADING_MENU "UI/Loading.png"
 #define WARNING_MENU "UI/SeizureWarningMenu.png"
+#define EPILEPSY_MENU "UI/EpilepsyMenu.png"
 
 #define EMPTYCHECKBOX "UI/EmptyCheckbox.png"
 #define EMPTYBAR "UI/EmptyBar.png"
 #define FULLBAR "UI/FullBar.png"
+#define UNICORN "UI/Unicorn.png"
 
 #define SOUND_START "Assets/Sounds/sfx_ui_start.ogg"
 #define SOUND_EXIT "Assets/Sounds/sfx_ui_back.ogg"
@@ -168,7 +172,8 @@ void MenuManager::InitMenu()
 	InitDeleteSaveDataMenu();
 	InitGameOver();
 	Loading();
-	WarningSeizure();
+	WarningSeizure(); 
+	InitEpilepsyMenu();
 }
 
 void MenuManager::InitMenuPause()
@@ -408,9 +413,6 @@ void MenuManager::InitGraphicMenu()
 	float _x = static_cast<float>(window->getSize().x / 2);
 	unsigned int _windowY = window->getSize().y;
 
-	Vector2f _index;
-	function<void()> _toggleDiscoMode = [this]() { Map::GetInstance().ToggleDiscoModeEnabled(); };
-
 	function<void()> _up = [this]() { CameraManager::GetInstance().ZoomOut(); };
 	function<void()> _down = [this]() { CameraManager::GetInstance().ZoomIn(); };
 
@@ -419,15 +421,12 @@ void MenuManager::InitGraphicMenu()
 
 	function<void()> _resetZoom = [this]() { CameraManager::GetInstance().Reset(); };
 
-	function<void()> _close = [this]() { OptionsMenu(); Get("Graphics")->Toggle(); };
+	function<void()> _epilepsy = [this]() { ToggleEpilepsyMenu(); GraphicMenu(); };
+	function<void()> _close = [this]() { OptionsMenu(); GraphicMenu(); };
 
 	new Menu("Graphics", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), GRAPHICS_MENU),
-		// Activer/Désactiver le DiscoMode
-		new UIText("ToggleDMText", Vector2f(_x, static_cast<float>(_windowY / 4.6)), Color(172, 172,173), "Toggle Disco Mode",40,FONT, true),
-		new UIButton("CheckBoxDM", Vector2f(static_cast<float>(window->getSize().x / 3.45), static_cast<float>(_windowY / 4.6)), WHITE_COLOR, Color(0,139,139), {
-			new UIImage("CheckBoxImageDM", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 4.6)), Vector2f(30.0f, 30.0f), EMPTYCHECKBOX),
-			new UIText("CheckBoxTextDM", Vector2f(static_cast<float>(window->getSize().x / 1.425), static_cast<float>(_windowY / 4.6)), Color(0,139,139), "X", 40, FONT, false)
-		}, SOUND_TOGGLE, _toggleDiscoMode, FloatRect(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 4.6), 30.0f, 30.0f)),
+		// Menu Special Epilepsy
+		new UIButton("Epilepsy", Vector2f(_x, static_cast<float>(_windowY / 4.6)), WHITE_COLOR, CYAN_COLOR, "Epilepsy Options", 40, FONT, SOUND_EXIT, _epilepsy), 
 
 		//View Multiplier
 		new UIText("ViewText", Vector2f(_x, static_cast<float>(_windowY / 3.2)), Color(172, 172,173), "View Multiplier",40,FONT, true),
@@ -484,17 +483,21 @@ void MenuManager::InitMenuLatency()
 	function<void()> _calibrationUp = [this]() { MusicManager::GetInstance().SetAcceptDelay(10.0f); dynamic_cast<UIText*>(Get("LatencyMenu")->Get("CalibTextUpdate"))->GetText()->setString(to_string(*MusicManager::GetInstance().GetAcceptDelay()).substr(0, to_string(*MusicManager::GetInstance().GetAcceptDelay()).find_first_of('.'))); }; //TODO
 	function<void()> _calibrationDown = [this]() { MusicManager::GetInstance().SetAcceptDelay(-10.0f); dynamic_cast<UIText*>(Get("LatencyMenu")->Get("CalibTextUpdate"))->GetText()->setString(to_string(*MusicManager::GetInstance().GetAcceptDelay()).substr(0, to_string(*MusicManager::GetInstance().GetAcceptDelay()).find_first_of('.'))); }; //TODO
 	function<void()> _close = [this]() { LatencyMenu(); Get("GamePause")->Toggle(); };
-
+	
 	new Menu("LatencyMenu", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), LATENCY_MENU),
 		new UIText("CalibText", Vector2f(_x, static_cast<float>(_windowY / 4)), WHITE_COLOR, "Video/Audio Latency : ",35,FONT),
 		new ProgressBar("CalibBar", PT_LEFT, Vector2f(static_cast<float>(window->getSize().x / 2.9), static_cast<float>(_windowY / 2.72)), Vector2f(400.0f, 30.0f), EMPTYBAR, FULLBAR, MusicManager::GetInstance().GetAcceptDelay(), 450.0f),
 		new UIButton("CalibUp", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 2.79)), WHITE_COLOR, CYAN_COLOR, ">", 50, FONT, SOUND_UP, _calibrationUp),
 		new UIButton("CalibDown", Vector2f(static_cast<float>(window->getSize().x / 3.2), static_cast<float>(_windowY / 2.79)), WHITE_COLOR, CYAN_COLOR, "<", 50, FONT, SOUND_DOWN, _calibrationDown),
 		new UIText("CalibTextUpdate", Vector2f(_x, static_cast<float>(_windowY / 2)), Color(172, 172,173), "300",40,FONT, true),
+		
+		new UIAnimation("Unicorn", Vector2f(static_cast<float>(window->getSize().x / 2.3), static_cast<float>(_windowY / 1.7)), Vector2f(180.0f, 130.0f), UNICORN),
 
 		// Retour menu précédent
 		new UIButton("ReturnOptions", Vector2f(_x, static_cast<float>(_windowY / 1.2)), WHITE_COLOR, CYAN_COLOR, "Done", 40, FONT, SOUND_EXIT, _close)
 		}, 5);
+
+
 }
 
 void MenuManager::LatencyMenu()
@@ -548,7 +551,49 @@ void MenuManager::WarningSeizure()
 	new Menu("WarningSeizure", { new UIButton("Warning", Vector2f(0.0f, 0.0f), Color::White, Color::White, WARNING_MENU, _sizeWindow, "", _skip), }, 4);
 }
 
+void MenuManager::InitEpilepsyMenu()
+{
+	float _x = static_cast<float>(window->getSize().x / 2);
+	unsigned int _windowY = window->getSize().y;
+
+	function<void()> _toggleDiscoMode = [this]() { Map::GetInstance().ToggleDiscoModeEnabled(); };
+	function<void()> _toggleVibration = [this]() { WindowManager::GetInstance().ToggleShakable(); };
+	function<void()> _toggleRotation = [this]() { CameraManager::GetInstance().Get("PlayerCamera")->ToggleRotating(); };
+	function<void()> _close = [this]() { ToggleEpilepsyMenu(); GraphicMenu(); };
+
+	new Menu("Epilepsy", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), EPILEPSY_MENU),
+		//DiscoMode
+		new UIText("ToggleDMText", Vector2f(_x, static_cast<float>(_windowY / 3)), Color(172, 172, 173), "Toggle Disco Mode", 40, FONT, true),
+			new UIButton("CheckBoxDM", Vector2f(static_cast<float>(window->getSize().x / 3.45), static_cast<float>(_windowY / 3)), WHITE_COLOR, Color(0, 139, 139), {
+			new UIImage("CheckBoxImageDM", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 3)), Vector2f(30.0f, 30.0f), EMPTYCHECKBOX),
+			new UIText("CheckBoxTextDM", Vector2f(static_cast<float>(window->getSize().x / 1.425), static_cast<float>(_windowY / 3)), Color(0,139,139), "X", 40, FONT, false)
+		}, SOUND_TOGGLE, _toggleDiscoMode, FloatRect(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 3), 30.0f, 30.0f)),
+
+		// Activer/Désactiver la Vibration
+		new UIText("ToggleVText", Vector2f(_x, static_cast<float>(_windowY / 2.1)), Color(172, 172,173), "Toggle Vibration",40,FONT, true),
+		new UIButton("CheckBoxV", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 2.1)), WHITE_COLOR, Color(0,139,139), {
+			new UIImage("CheckBoxImageV", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 2.1)), Vector2f(30.0f, 30.0f), EMPTYCHECKBOX),
+			new UIText("CheckBoxTextV", Vector2f(static_cast<float>(window->getSize().x / 1.425), static_cast<float>(_windowY / 2.1)), Color(0,139,139), "X", 40, FONT, false)
+		}, SOUND_TOGGLE, _toggleVibration, FloatRect(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 2.1), 30.0f, 30.0f)),
+
+		// Activer/Désactiver la Vibration
+		new UIText("ToggleRText", Vector2f(_x, static_cast<float>(_windowY / 1.6)), Color(172, 172,173), "Toggle Rotation",40,FONT, true),
+		new UIButton("CheckBoxR", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 1.6)), WHITE_COLOR, Color(0,139,139), {
+			new UIImage("CheckBoxImageR", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 1.6)), Vector2f(30.0f, 30.0f), EMPTYCHECKBOX),
+			new UIText("CheckBoxImageR", Vector2f(static_cast<float>(window->getSize().x / 1.425), static_cast<float>(_windowY / 1.6)), Color(0,139,139), "X", 40, FONT, false)
+		}, SOUND_TOGGLE, _toggleRotation, FloatRect(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 1.6), 30.0f, 30.0f)),
+
+		// Retour menu précédent
+		new UIButton("Return", Vector2f(_x, static_cast<float>(_windowY / 1.2)), WHITE_COLOR, CYAN_COLOR, "Done", 40, FONT, SOUND_EXIT, _close),
+	}, 3);
+}
+
 void MenuManager::ToggleWarningSeizure()
 {
 	Get("WarningSeizure")->Toggle();
+}
+
+void MenuManager::ToggleEpilepsyMenu()
+{
+	Get("Epilepsy")->Toggle();
 }
