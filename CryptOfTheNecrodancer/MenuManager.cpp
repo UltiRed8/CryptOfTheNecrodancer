@@ -34,18 +34,22 @@
 #define WARNING_MENU "UI/SeizureWarningMenu.png"
 #define EPILEPSY_MENU "UI/EpilepsyMenu.png"
 #define REBIND_MENU "UI/RebindMenu.png"
+#define CREDIT_BUTTON "UI/CreditsButton.png"
 
 #define EMPTYCHECKBOX "UI/EmptyCheckbox.png"
 #define EMPTYBAR "UI/EmptyBar.png"
 #define FULLBAR "UI/FullBar.png"
 #define UNICORN "UI/Unicorn.png"
-#define REBIND "UI/Rebind.png"
+#define CREDITS "UI/Credits.png"
+#define REBIND "UI/Keybind.png"
+#define WTF "UI/Thomas.png"
 
 #define SOUND_START "Assets/Sounds/sfx_ui_start.ogg"
 #define SOUND_EXIT "Assets/Sounds/sfx_ui_back.ogg"
 #define SOUND_UP "Assets/Sounds/sfx_ui_select_up.ogg"
 #define SOUND_DOWN "Assets/Sounds/sfx_ui_select_down.ogg"
 #define SOUND_TOGGLE "Assets/Sounds/sfx_ui_toggle.ogg"
+#define SOUND_CREDIT "Assets/Sounds/Credits.ogg"
 
 #define LOBBY "Assets/Saved/Lobby.txt"
 
@@ -177,6 +181,7 @@ void MenuManager::InitMenu()
 	WarningSeizure(); 
 	InitEpilepsyMenu();
 	InitRebindMenu();
+	InitCredits();
 }
 
 void MenuManager::InitMenuPause()
@@ -208,7 +213,7 @@ void MenuManager::InitMenuPause()
 			{Event::KeyPressed, Keyboard::Escape}),
 		ActionData("Select", [this]()
 			{ MenuManager::GetInstance().ClickAction(); },
-			{Event::MouseButtonPressed, Mouse::Left}) });
+			{Event::MouseButtonPressed, Mouse::Left})});
 
 	function<void()> _callbackContinue = [this]() {
 		Get("GamePause")->Toggle();
@@ -238,6 +243,7 @@ void MenuManager::InitMenuPause()
 	function<void()> _callbackCalibration = [this]() { Get("GamePause")->Toggle(); LatencyMenu(); };
 	function<void()> _more = [this]() { MusicManager::GetInstance().IncreaseMusicPackName(); };
 	function<void()> _less = [this]() { MusicManager::GetInstance().DecreaseMusicPackName(); };
+	function<void()> _credit = [this]() { SoundManager::GetInstance().Play(SOUND_CREDIT); Get("GamePause")->Toggle(); ToggleCredits(); };
 	function<void()> _callbackEchap = [this]() { Get("GamePause")->Toggle(); CloseMenu(); };
 
 	float _x = static_cast<float>(window->getSize().x / 2);
@@ -256,6 +262,10 @@ void MenuManager::InitMenuPause()
 		new UIButton("MusicPackMore", Vector2f(static_cast<float>(window->getSize().x / 1.47), static_cast<float>(_windowY / 1.41)), WHITE_COLOR, CYAN_COLOR, ">", 50, FONT, SOUND_UP, _more),
 		new UIButton("MusicPackLess", Vector2f(static_cast<float>(window->getSize().x / 1.75), static_cast<float>(_windowY / 1.41)), WHITE_COLOR, CYAN_COLOR, "<", 50, FONT, SOUND_DOWN, _less),
 		new UIText("MusicText", Vector2f(_x, static_cast<float>(_windowY / 1.28)), Color(161, 6,6), "For changing the Music Pack, you need to change zone",20,FONT, false),
+
+		new UIButton("credit", Vector2f(static_cast<float>(window->getSize().x / 1.3), static_cast<float>(_windowY / 1.16)), Color(119,136,153), WHITE_COLOR, {
+			new UIImage("credit", Vector2f(static_cast<float>(window->getSize().x / 1.3), static_cast<float>(_windowY / 1.16)), Vector2f(150.0f, 48.0f), CREDIT_BUTTON),
+		}, SOUND_START, _credit, FloatRect(static_cast<float>(window->getSize().x / 1.3), static_cast<float>(_windowY / 1.16), 150.0f, 48.0f)),
 
 		new UIButton("Exit", Vector2f(_x, static_cast<float>(_windowY / 1.16)), WHITE_COLOR, CYAN_COLOR, "Exit Game", 50, FONT, SOUND_EXIT, _callbackEchap),
 		new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), PAUSE_MENU), }, 1);
@@ -358,9 +368,9 @@ void MenuManager::InitMenuOptions()
 		//Menu Graphique
 		new UIButton("GraphicalOptionsButton", Vector2f(_x, static_cast<float>(_windowY / 4.2)), WHITE_COLOR, CYAN_COLOR, "Graphical Options", 40, FONT, SOUND_START, _graphics),
 
-		new UIButton("CheckBoxS", Vector2f(static_cast<float>(window->getSize().x / 10), static_cast<float>(_windowY / 3)), WHITE_COLOR, Color(0,139,139), {
-			new UIImage("CheckBoxImageS", Vector2f(static_cast<float>(window->getSize().x / 10), static_cast<float>(_windowY / 3)), Vector2f(200.0f, 200.0f), REBIND),
-		}, SOUND_TOGGLE, _rebind, FloatRect(static_cast<float>(window->getSize().x / 10), static_cast<float>(_windowY / 3), 200.0f, 200.0f)),
+		new UIButton("Rebind", Vector2f(static_cast<float>(window->getSize().x / 10), static_cast<float>(_windowY / 3)), Color(119,136,153), WHITE_COLOR, {
+			new UIImage("Rebiiind", Vector2f(static_cast<float>(window->getSize().x / 10), static_cast<float>(_windowY / 3)), Vector2f(200.0f, 200.0f), REBIND),
+		}, SOUND_START, _rebind, FloatRect(static_cast<float>(window->getSize().x / 10), static_cast<float>(_windowY / 3), 200.0f, 200.0f)),
 
 		// Activer/Désactiver le Sound
 		new UIText("ToggleSText", Vector2f(_x, static_cast<float>(_windowY / 3)), Color(172, 172,173), "Toggle Sound",40,FONT, true),
@@ -499,7 +509,7 @@ void MenuManager::InitMenuLatency()
 		new UIButton("CalibDown", Vector2f(static_cast<float>(window->getSize().x / 3.2), static_cast<float>(_windowY / 2.79)), WHITE_COLOR, CYAN_COLOR, "<", 50, FONT, SOUND_DOWN, _calibrationDown),
 		new UIText("CalibTextUpdate", Vector2f(_x, static_cast<float>(_windowY / 2)), Color(172, 172,173), "300",40,FONT, true),
 		
-		new UIAnimation("Unicorn", Vector2f(static_cast<float>(window->getSize().x / 2.3), static_cast<float>(_windowY / 1.7)), Vector2f(180.0f, 130.0f), UNICORN),
+		new UIAnimation("Unicorn", Vector2f(static_cast<float>(window->getSize().x / 2.3), static_cast<float>(_windowY / 1.7)), Vector2f(180.0f, 130.0f), UNICORN, Vector2f(51.0f, 35.0f), 5),
 
 		// Retour menu précédent
 		new UIButton("ReturnOptions", Vector2f(_x, static_cast<float>(_windowY / 1.2)), WHITE_COLOR, CYAN_COLOR, "Done", 40, FONT, SOUND_EXIT, _close)
@@ -622,6 +632,34 @@ void MenuManager::InitRebindMenu()
 		}, 1);
 }
 
+void MenuManager::InitCredits()
+{
+	float _x = static_cast<float>(window->getSize().x / 2);
+	unsigned int _windowY = window->getSize().y;
+
+	function<void()> _callbackEchap = [this]() {  SoundManager::GetInstance().Stop(SOUND_CREDIT); ToggleCredits(); Get("GamePause")->Toggle(); };
+
+	new Menu("Credits", { new UIAnimation("1", Vector2f(0, 0), Vector2f(static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)), CREDITS, Vector2f(640.0f, 360.0f), 8),
+		new UIText("CTxt", Vector2f(_x, static_cast<float>(_windowY / 10)), WHITE_COLOR, "Credits",50,FONT, true),
+		new UIText("C", Vector2f(static_cast<float>(window->getSize().x / 1.16), static_cast<float>(_windowY / 1.03)), Color::Red, "Copie de Crypt of The Necrodancer",20,FONT),
+
+		new UIText("CTxtI", Vector2f(_x, static_cast<float>(_windowY / 4.5)), WHITE_COLOR, "Chef Gru : Kylari",35,FONT),
+		new UIImage("Wtf", Vector2f(static_cast<float>(window->getSize().x / 6), static_cast<float>(_windowY / 4.1)), Vector2f(100.0f, 100.0f) * 2.0f, WTF),
+
+		new UIText("CTxtA", Vector2f(_x, static_cast<float>(_windowY / 3.2)), WHITE_COLOR, "Lead Vector : UltiRed",35,FONT),
+
+		new UIText("CTxtG", Vector2f(_x, static_cast<float>(_windowY / 2.5)), WHITE_COLOR, "Minion Jerry: Greg",35,FONT),
+
+		new UIText("CTxtJ", Vector2f(_x, static_cast<float>(_windowY / 2)), WHITE_COLOR, "Minion Bob : Mystop",35,FONT),
+
+		new UIText("CTxtM", Vector2f(_x, static_cast<float>(_windowY / 1.5)), WHITE_COLOR, "Intermittant Fred McDade: Medy31",35,FONT),
+
+		// Retour menu précédent
+		new UIButton("Return", Vector2f(_x, static_cast<float>(_windowY / 1.2)), WHITE_COLOR, CYAN_COLOR, "Done", 40, FONT, SOUND_EXIT, _callbackEchap)
+		}, 5);
+
+}
+
 void MenuManager::ToggleWarningSeizure()
 {
 	Get("WarningSeizure")->Toggle();
@@ -635,4 +673,9 @@ void MenuManager::ToggleEpilepsyMenu()
 void MenuManager::ToggleRebindMenu()
 {
 	Get("Rebind")->Toggle();
+}
+
+void MenuManager::ToggleCredits()
+{
+	Get("Credits")->Toggle();
 }

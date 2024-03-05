@@ -30,7 +30,7 @@ void ActionMap::Update(const Event& _event)
 	{
 		for (const InputTypeData& _inputData : _action->GetData().keys)
 		{
-			if (_event.type == _inputData.type && _event.key.code == _inputData.key)
+			if (_event.type == _inputData.type && _event.text.unicode == _inputData.keyChar)
 			{
 				_action->Execute();
 			}

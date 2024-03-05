@@ -35,6 +35,7 @@ public :
 	void ToggleWarningSeizure();
 	void ToggleEpilepsyMenu();
 	void ToggleRebindMenu();
+	void ToggleCredits();
 
 private :
 	void InitMenuPause();
@@ -50,6 +51,7 @@ private :
 	void WarningSeizure();
 	void InitEpilepsyMenu();
 	void InitRebindMenu();
+	void InitCredits();
 
 	void Delete();
 	void GoToLobby();

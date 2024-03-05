@@ -15,7 +15,7 @@ Calibration::Calibration(const function<void()> _endCallback)
 	currentTry = 0;
 
 	new ActionMap("Calibration", {
-		{ ActionData("Click",[&]() {RegisterValue(); },{Event::KeyPressed,Keyboard::Space})}
+		{ ActionData("Click",[&]() {RegisterValue(); },{Event::KeyPressed,' '})}
 		});
 	latency = 0;
 	isFinished = false;

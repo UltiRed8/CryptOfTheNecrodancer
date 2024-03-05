@@ -16,6 +16,7 @@ using namespace sf;
 class InputManager : public Singleton<InputManager>, public IManager<string, ActionMap>
 {
 	Vector2f mousePosition;
+	
 
 public:
 	Vector2f GetMousePosition() const

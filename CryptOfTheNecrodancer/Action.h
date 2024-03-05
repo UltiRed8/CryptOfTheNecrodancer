@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <functional>
+#include <iostream>
 
 #include "IManagable.h"
 
@@ -13,7 +14,7 @@ typedef Event::EventType ActionType;
 struct InputTypeData
 {
 	ActionType type;
-	int key;
+	int keyChar;
 };
 
 struct ActionData
@@ -23,6 +24,14 @@ struct ActionData
 	function<void()> callback;
 
 public:
+	void SetPrimaryKey(const int _keyChar)
+	{
+		keys[0].keyChar = _keyChar;
+	}
+	void SetSecondaryKey(const int _keyChar)
+	{
+		keys[1].keyChar = _keyChar;
+	}
 	ActionData();
 	template<class Class, typename RType = void, typename... Args>
 	ActionData(const string& _name, Class* _owner, RType(Class::* _callback)(Args...),
@@ -41,6 +50,7 @@ public:
 		keys.push_back(_primaryKey);
 		keys.push_back(_secondaryKey);
 		callback = _callback;
+		//cout << (char)(_primaryKey.keyChar) << endl;
 	}
 
 	bool operator!() const
@@ -67,7 +77,7 @@ public:
 	virtual void Register() override;
 
 public:
-	bool ContainsKey(const int _keyToFind) const;
+	bool ContainsKey(const char _keyToFind) const;
 	bool IsEmpty() const;
 	void Execute();
 };

@@ -109,6 +109,13 @@ void Map::QuickRestart()
 	UpdateZoneFileName();
 	dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetRessources()->SetDiamonds(0);
 	currentLevel = 1;
+
+	vector<string> _zones = {
+		"zone1_", // Lobby has the same textures as Zone 1
+		"zone1_",
+		"zone2_",
+	};
+	zoneFileName = _zones[preparedZone] + to_string(currentLevel);
 	GenerateDungeon();
 }
 

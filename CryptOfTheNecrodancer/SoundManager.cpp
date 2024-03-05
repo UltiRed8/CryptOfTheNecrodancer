@@ -31,6 +31,20 @@ void SoundManager::Play(const string& _path, const DirectionalSettings& _setting
 	_soundData->play();
 }
 
+void SoundManager::Stop(const string& _path)
+{
+	if (_path == "") return;
+
+	SoundData* _soundData = Get(_path);
+
+	if (!_soundData)
+	{
+		_soundData = new SoundData(_path);
+	}
+
+	_soundData->stop();
+}
+
 void SoundManager::IncreaseVolume()
 {
 	if (*volume <= 99.0f)

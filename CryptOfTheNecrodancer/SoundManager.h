@@ -38,6 +38,7 @@ public :
 
 public:
 	void Play(const string& _path, const DirectionalSettings& _settings = DirectionalSettings());
+	void Stop(const string& _path);
 	void IncreaseVolume();
 	void DecreaseVolume();
 	void ToggleVolume();
