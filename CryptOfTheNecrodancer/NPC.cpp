@@ -9,7 +9,7 @@
 NPC::NPC(const NPCType& _type, const Vector2f& _position) : Living(900, 1000, "", STRING_ID("NPC"), _position)
 {
 	type = ET_NPC;
-	zIndex = 3;
+	zIndex = 2;
 	currentCooldown = 0;
 	npcType = _type;
 	ChangeTexture();

@@ -325,7 +325,6 @@ void Generator::GenerateShopRoom()
 	for (int _index = 0; _index < 2; _index++)
 	{
 		Entity* _entity = _shopFloors[11 + _index];
-		_entity->SetZIndex(2);
 		_entity->SetTexture(PATH_SHOP_TILE);
 		EraseElement(_shopFloors, (Tile*)_entity);
 		others.push_back(_entity);

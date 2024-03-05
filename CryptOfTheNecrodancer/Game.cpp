@@ -41,14 +41,14 @@ void Game::Start()
 	if (Shader::isAvailable())
 	{
 		shader = new Shader();;
-		if (!shader->loadFromFile("Assets/test.frag", Shader::Fragment))
-		{
-			cerr << "error" << endl;
-			// error...
-		}
+		//if (!shader->loadFromFile("Assets/test.frag", Shader::Fragment))
+		//{
+		//	cerr << "error" << endl;
+		//	// error...
+		//}
 		//shader->setUniform("wave_phase", 10.0f);
-		shader->setUniform("scene", Shader::CurrentTexture);
-		shader->setUniform("bloomBlur", Shader::CurrentTexture);
+		//shader->setUniform("scene", Shader::CurrentTexture);
+		//shader->setUniform("bloomBlur", Shader::CurrentTexture);
 	}
 
 	player = new Player(300.0f,100.f,"Player",{0.f,0.f});
