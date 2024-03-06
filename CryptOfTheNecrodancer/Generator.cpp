@@ -610,7 +610,7 @@ void Generator::GenUpdate()
 			// 14- update doors
 			[&]() { UpdateDoors(); },
 			// 16- Water generation
-			[&]() { GenerateWater(); },
+			//[&]() { GenerateWater(); },
 			// 15- erase overlappings
 			[&]() { EraseOverlappings(); },
 			// TODO 3d effect

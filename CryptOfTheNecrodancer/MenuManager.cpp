@@ -35,8 +35,8 @@
 #define LOADING_MENU "UI/Loading.png"
 #define WARNING_MENU "UI/SeizureWarningMenu.png"
 #define EPILEPSY_MENU "UI/EpilepsyMenu.png"
-#define REBIND_MENU "UI/RebindMenu.png"
 #define CREDIT_BUTTON "UI/CreditsButton.png"
+#define CALIBRATION_MENU "UI/CalibrationMenu.png"
 
 #define EMPTYCHECKBOX "UI/EmptyCheckbox.png"
 #define EMPTYBAR "UI/EmptyBar.png"
@@ -129,6 +129,8 @@ void MenuManager::Update()
 			_menu->Update(window);
 		}
 	}
+
+	if(calibration) calibration->Update();
 }
 
 bool MenuManager::BlockPlayer()
@@ -185,6 +187,7 @@ void MenuManager::InitMenu()
 	WarningSeizure(); 
 	InitEpilepsyMenu();
 	InitCredits();
+	InitCalibration();
 }
 
 void MenuManager::InitMenuPause()
@@ -497,21 +500,20 @@ void MenuManager::InitMenuLatency()
 	function<void()> _calibrationUp = [this]() { MusicManager::GetInstance().SetAcceptDelay(10.0f); dynamic_cast<UIText*>(Get("LatencyMenu")->Get("CalibTextUpdate"))->GetText()->setString(to_string(*MusicManager::GetInstance().GetAcceptDelay()).substr(0, to_string(*MusicManager::GetInstance().GetAcceptDelay()).find_first_of('.'))); }; //TODO
 	function<void()> _calibrationDown = [this]() { MusicManager::GetInstance().SetAcceptDelay(-10.0f); dynamic_cast<UIText*>(Get("LatencyMenu")->Get("CalibTextUpdate"))->GetText()->setString(to_string(*MusicManager::GetInstance().GetAcceptDelay()).substr(0, to_string(*MusicManager::GetInstance().GetAcceptDelay()).find_first_of('.'))); }; //TODO
 	function<void()> _close = [this]() { LatencyMenu(); Get("GamePause")->Toggle(); };
+	function<void()> _calibration = [this]() { Get("Calibration")->Open(); LatencyMenu(); ToggleCalibration(); };
 	
 	new Menu("LatencyMenu", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), LATENCY_MENU),
 		new UIText("CalibText", Vector2f(_x, static_cast<float>(_windowY / 4)), WHITE_COLOR, "Video/Audio Latency : ",35,FONT),
 		new ProgressBar("CalibBar", PT_LEFT, Vector2f(static_cast<float>(window->getSize().x / 2.9), static_cast<float>(_windowY / 2.72)), Vector2f(400.0f, 30.0f), EMPTYBAR, FULLBAR, MusicManager::GetInstance().GetAcceptDelay(), 450.0f),
 		new UIButton("CalibUp", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 2.79)), WHITE_COLOR, CYAN_COLOR, ">", 50, FONT, SOUND_UP, _calibrationUp),
 		new UIButton("CalibDown", Vector2f(static_cast<float>(window->getSize().x / 3.2), static_cast<float>(_windowY / 2.79)), WHITE_COLOR, CYAN_COLOR, "<", 50, FONT, SOUND_DOWN, _calibrationDown),
-		new UIText("CalibTextUpdate", Vector2f(_x, static_cast<float>(_windowY / 2)), Color(172, 172,173), "300",40,FONT, true),
-		
+		new UIText("CalibTextUpdate", Vector2f(_x, static_cast<float>(_windowY / 2.3)), Color(172, 172,173), "60",40,FONT, true),
+		new UIButton("CalibAuto", Vector2f(_x, static_cast<float>(_windowY / 2)), WHITE_COLOR, CYAN_COLOR, "Auto Calibration", 40, FONT, SOUND_START, _calibration),
 		new UIAnimation("Unicorn", Vector2f(static_cast<float>(window->getSize().x / 2.3), static_cast<float>(_windowY / 1.7)), Vector2f(180.0f, 130.0f), UNICORN, Vector2f(51.0f, 35.0f), 5),
 
 		// Retour menu précédent
 		new UIButton("ReturnOptions", Vector2f(_x, static_cast<float>(_windowY / 1.2)), WHITE_COLOR, CYAN_COLOR, "Done", 40, FONT, SOUND_EXIT, _close)
 		}, 5);
-
-
 }
 
 void MenuManager::LatencyMenu()
@@ -630,6 +632,19 @@ void MenuManager::InitCredits()
 
 }
 
+void MenuManager::InitCalibration()
+{
+	float _x = static_cast<float>(window->getSize().x / 2);
+	unsigned int _windowY = window->getSize().y;
+
+	new Menu("Calibration", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), CALIBRATION_MENU),
+		//Rythmed Heart
+		new UIImage("RythmHearts", Vector2f(_x - 40.0f, static_cast<float>(_windowY / 2.5) - 50.0f), Vector2f(40.0f, 50.0f) * 2.0f, RYTHMHEART0),
+		new UIText("CalibrationTxt", Vector2f(_x, static_cast<float>(_windowY / 1.5)), Color(112,128,144), "Press Space when you hear the sound",35,FONT),
+		new UIText("CalibrationTxt2", Vector2f(_x, static_cast<float>(_windowY / 1.3)), Color(47,79,79), "It will take approximately 1 minute",35,FONT),
+		}, 4);
+}
+
 void MenuManager::ToggleWarningSeizure()
 {
 	Get("WarningSeizure")->Toggle();
@@ -643,4 +658,14 @@ void MenuManager::ToggleEpilepsyMenu()
 void MenuManager::ToggleCredits()
 {
 	Get("Credits")->Toggle();
+}
+
+void MenuManager::ToggleCalibration()
+{
+	function<void()> _timer = [this]() { Get("Calibration")->Close(); MusicManager::GetInstance().Unpause(); };
+	calibration = new Calibration(_timer);
+	if (Get("Calibration")->IsOpened())
+	{
+		calibration->Start();
+	}
 }

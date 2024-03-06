@@ -76,10 +76,10 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 		CollisionReaction(ET_WATER, [this](Entity* _entity) {
 			Water* _water = dynamic_cast<Water*>(_entity);
 			_water->Destroy();
-			WindowManager::GetInstance().Shake(25);
 			Map::GetInstance().AddFloorAt(GetPosition());
 			SetIsStun();
 			// MenuManager::GetInstance().
+			return false;
 		}),
 		CollisionReaction(ET_ENEMY, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();

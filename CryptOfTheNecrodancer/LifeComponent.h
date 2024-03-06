@@ -16,6 +16,7 @@ class LifeComponent:public Component
 	function<void()> deathcallback;
 	bool isAlive;
 	ProgressBar* healthBar;
+	Vector2f pBPos;
 
 public :
 	void ResetHealth()
@@ -34,6 +35,10 @@ public :
 	float GetMaxHealth() const
 	{
 		return maxHealth;
+	}
+	ProgressBar* GetHealthBar() const
+	{
+		return healthBar;
 	}
 	
 public:
