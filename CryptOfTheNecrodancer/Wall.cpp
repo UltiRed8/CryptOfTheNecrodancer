@@ -11,6 +11,13 @@
 
 Wall::Wall(const Vector2f& _position, const WallType& _type, const string& _zoneName, const bool _canSpawnWithTorch) : Placeable(STRING_ID("Wall"), "", _position)
 {
+	visuals = new RectangleShape(TILE_SIZE);
+	visuals->setPosition(_position + Vector2f(0.0f, -0.5f) * TILE_SIZE);
+
+	zIndex = 2;
+
+	shape->setFillColor(Color::Transparent);
+
 	zoneName = _zoneName;
 
 	wallType = _type;
@@ -25,10 +32,23 @@ Wall::Wall(const Vector2f& _position, const WallType& _type, const string& _zone
 	
 	textureIndex = Random(15, 0);
 
-	TextureManager::GetInstance().LoadFromTextureSheet(shape, GetPathWithType(wallType), textureIndex, Vector2i(24, 24));
+	if (wallType == WT_DIRT)
+	{
+		TextureManager::GetInstance().LoadFromTextureSheet(visuals, "Dungeons/" + zoneName + "/Walls.png", textureIndex, Vector2i(24, 24));
+	}
+	else
+	{
+		TextureManager::GetInstance().Load(visuals, GetPathWithType(wallType));
+	}
+
 	type = ET_WALL;
 	torch = nullptr;
 	canSpawnWithTorch = _canSpawnWithTorch;
+}
+
+Wall::~Wall()
+{
+	delete visuals;
 }
 
 void Wall::DestroyWall(const bool _usingBomb)
@@ -43,10 +63,7 @@ void Wall::DestroyWall(const bool _usingBomb)
 		SoundManager::GetInstance().Play(SOUND_DIG_FAIL);
 		return;
 	}
-	if (!isIn3D)
-	{
-		Map::GetInstance().AddFloorAt(GetPosition());
-	}
+	Map::GetInstance().AddFloorAt(GetPosition());
 	SoundManager::GetInstance().Play(SOUND_DIG_DIRT);
 	if (wallType  == WT_SHOP)
 	{
@@ -63,21 +80,16 @@ void Wall::DestroyWall(const bool _usingBomb)
 
 	WindowManager::GetInstance().Shake(25);
 
-
-	// TODO 3d part 2
-	/*Entity* _entity = Map::GetInstance().GetEntityAt(GetPosition() + (Vector2f(0.0f, -1.0f) * TILE_SIZE));
+	Entity* _entity = Map::GetInstance().GetEntityAt(GetPosition() + (Vector2f(0.0f, -1.0f) * TILE_SIZE));
 	if (_entity)
 	{
-		if (_entity->GetType() == ET_WALL)
+		if (Wall* _wall = dynamic_cast<Wall*>(_entity))
 		{
-			if (Wall* _wall = dynamic_cast<Wall*>(_entity))
-			{
-				_wall->Enable3D();
-			}
+			_wall->Enable3D();
 		}
-	}*/
+	}
 
-	Destroy();
+	Map::GetInstance().RemoveWall(this);
 }
 
 bool Wall::CouldBeDoor()
@@ -141,7 +153,22 @@ void Wall::SpawnTorch()
 
 void Wall::Enable3D()
 {
-	TextureManager::GetInstance().LoadFromTextureSheet(shape, "Dungeons/zone1/3d.png", textureIndex, Vector2i(24, 24));
-	Map::GetInstance().AddFloorAt(GetPosition());
-	isIn3D = true;
+	shape->setFillColor(Color::White);
+
+	if (wallType == WT_SHOP)
+	{
+		TextureManager::GetInstance().Load(shape, "Dungeons/ShopWall3D.png");
+	}
+	else if (wallType == WT_STONE)
+	{
+		TextureManager::GetInstance().Load(shape, "Dungeons/" + zoneName + "/StoneWall3D.png");
+	}
+	else if (wallType == WT_INVULNERABLE)
+	{
+		TextureManager::GetInstance().Load(shape, "Dungeons/Bedrock3D.png");
+	}
+	else
+	{
+		TextureManager::GetInstance().LoadFromTextureSheet(shape, "Dungeons/" + zoneName + "/3d.png", textureIndex, Vector2i(24, 24));
+	}
 }

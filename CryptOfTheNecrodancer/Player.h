@@ -10,6 +10,7 @@ using namespace sf;
 
 class Player : public Living
 {
+	RectangleShape* visuals;
 	Inventory* inventory;
 	PlayerRessource* ressources;
 	int* chainMultiplier;
@@ -73,5 +74,11 @@ public :
 
 	void Update() override;
 	virtual void DieEvent() override;
+	virtual vector<Drawable*> GetDrawables() override
+	{
+		vector<Drawable*> _drawables;
+		_drawables.push_back(shape);
+		_drawables.push_back(visuals);
+		return _drawables;
+	}
 };
-

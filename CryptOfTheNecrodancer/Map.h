@@ -102,9 +102,8 @@ private:
 	void UpdateZoneFileName();
 	void PrepareMusic();
 
-
-
 public:
+	void RemoveWall(Wall* _wall);
 	void UpdateLights(const int _brightness);
 	void EndDungeonGeneration();
 	void ClearGenerator();

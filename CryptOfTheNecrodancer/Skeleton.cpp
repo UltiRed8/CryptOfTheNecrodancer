@@ -14,7 +14,7 @@ Skeleton::Skeleton(const float _maxHp, const float _maxDammage, const Vector2f& 
 	components.push_back(new AnimationComponent(this, {
 		AnimationData("Idle", Vector2f(24, 26), 0, 3, 0.1f, true),
 		AnimationData("Attack", Vector2f(24, 26), 4, 3, 0.1f, true),
-	}, "Attack", shape));
+	}, "Attack", visuals));
 
 	currentCooldown = Random(2,0);
 }
@@ -54,4 +54,5 @@ void Skeleton::Update()
 	{
 		_component->Update();
 	}
+	visuals->setPosition(shape->getPosition() + Vector2f(0.0f, -0.5f) * TILE_SIZE);
 }

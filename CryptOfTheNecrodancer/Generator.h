@@ -126,11 +126,11 @@ public:
 		return shopkeeper;
 	}
 
-	vector<Wall*> GetWalls() const
+	vector<Wall*>& GetWalls()
 	{
 		return walls;
 	}
-	vector<Tile*> GetFloors() const
+	vector<Tile*>& GetFloors()
 	{
 		return floors;
 	}

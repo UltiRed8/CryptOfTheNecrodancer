@@ -15,28 +15,70 @@
 #define SHOVEL "Items/Shovel/Shovel.png"
 #define PICKAXE "Items/Shovel/Pickaxe.png"
 
-Inventory::Inventory()
+Inventory::Inventory() : Menu("Inventory", {}, 0, false)
 {
+	others.push_back(new Slot(ST_SHOVEL, I_SHOVEL, this));
+	others.push_back(new Slot(ST_ATTACK, I_ATTACK, this));
+	others.push_back(new Slot(ST_BODY, I_BODY, this));
+	others.push_back(new Slot(ST_HEAD, I_HEAD, this));
+	others.push_back(new Slot(ST_FEET, I_FEET, this));
 
-	float _x = static_cast<float>(SCREEN_WIDTH / 2);
-	unsigned int _windowY = SCREEN_HEIGHT;
-	//items.push_back(new Shovel);
-	new Menu("PlayerInventory", { }, 2);
+	usables.push_back(new Slot(ST_THROW, I_THROW, this));
+	usables.push_back(new Slot(ST_BOMB, I_BOMB, this));
 
+	foods.push_back(new Slot(ST_FOOD_TOP, I_ITEM, this));
+	foods.push_back(new Slot(ST_FOOD_DOWN, I_ITEM, this));
 }
 
 Inventory::~Inventory()
 {
-	for (Item* _item : items)
+	for (Slot* _slot : others)
 	{
-		_item->Destroy();
+		delete _slot;
+	}
+	for (Slot* _slot : usables)
+	{
+		delete _slot;
+	}
+	for (Slot* _slot : foods)
+	{
+		delete _slot;
 	}
 }
 
-void Inventory::AddItem(Item* _item)
+vector<Drawable*> Inventory::GetDrawables()
 {
-}
+	vector<Drawable*> _drawables;
+	Vector2f _position = Vector2f(10.0f, 10.0f);
 
-void Inventory::RemoveItem(Item* _item)
-{
+	for (Slot* _slot : others)
+	{
+		if (!_slot->isVisible) continue;
+		_slot->SetPosition(_position);
+		vector<Drawable*> _slotDrawables = _slot->GetDrawables();
+		_drawables.insert(_drawables.end(), _slotDrawables.begin(), _slotDrawables.end());
+		_position.x += 110.0f;
+	}
+
+	_position = Vector2f(10.0f, 140.0f);
+	for (Slot* _slot : usables)
+	{
+		if (!_slot->isVisible) continue;
+		_slot->SetPosition(_position);
+		vector<Drawable*> _slotDrawables = _slot->GetDrawables();
+		_drawables.insert(_drawables.end(), _slotDrawables.begin(), _slotDrawables.end());
+		_position.y += 110.0f;
+	}
+
+	_position = Vector2f(SCREEN_WIDTH - 10.0f - 90.0f, 140.0f);
+	for (Slot* _slot : foods)
+	{
+		if (!_slot->isVisible) continue;
+		_slot->SetPosition(_position);
+		vector<Drawable*> _slotDrawables = _slot->GetDrawables();
+		_drawables.insert(_drawables.end(), _slotDrawables.begin(), _slotDrawables.end());
+		_position.y += 110.0f;
+	}
+
+	return _drawables;
 }

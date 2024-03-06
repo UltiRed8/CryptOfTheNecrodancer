@@ -11,7 +11,7 @@ Slime::Slime(const float _maxHp, const float _maxDammage, const Vector2f& _posit
 	slimeType = S_NONE;
 	components.push_back(new AnimationComponent(this, {
 		AnimationData("Idle", Vector2f(26, 26), 0, 3, 0.1f, false),
-	}, "Idle", shape));
+	}, "Idle", visuals));
 }
 
 void Slime::SetNextDirection()

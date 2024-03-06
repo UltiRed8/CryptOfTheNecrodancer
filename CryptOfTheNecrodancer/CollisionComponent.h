@@ -9,10 +9,10 @@ using namespace std;
 using namespace sf;
 struct CollisionReaction
 {
-	function<void(Entity* _entity)> callback;
+	function<bool(Entity* _entity)> callback;
 	EntityType type;
 
-	CollisionReaction(const EntityType& _type, const function<void(Entity* _entity)>& _callback)
+	CollisionReaction(const EntityType& _type, const function<bool(Entity* _entity)>& _callback)
 	{
 		callback = _callback;
 		type = _type;

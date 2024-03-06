@@ -145,6 +145,7 @@ void Generator::GenerateLobby()
 
 		SetAllFloorOriginColor();
 		UpdateDoors();
+		Temp();
 		MenuManager::GetInstance().ToggleLoading();
 		Map::GetInstance().UpdateLights(50);
 		CameraManager::GetInstance().Get("PlayerCamera")->SetCameraToPlayer();
@@ -562,7 +563,7 @@ void Generator::GenUpdate()
 			[&]() { EraseOverlappings(); },
 			// end dungeon generation
 			[&]() { Map::GetInstance().EndDungeonGeneration(); },
-			//[&]() { Temp(); }, // TODO 3d effect
+			[&]() { Temp(); }, // TODO 3d effect
 			
 		};
 		_functionList[generationIndex]();

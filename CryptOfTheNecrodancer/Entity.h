@@ -13,7 +13,6 @@ enum EntityType
 	ET_NONE, ET_FLOOR, ET_WALL, ET_ENEMY, ET_PLAYER, ET_ITEM, ET_STAIR, ET_TRAP, ET_SHADOW, ET_DOOR, ET_PICKABLE, ET_NPC, ET_WATER
 };
 
-
 class Entity : public IManagable<string>
 {
 protected:
@@ -86,5 +85,3 @@ public:
 	void Register() override;
 	virtual void Update();
 };
-
-// TODO bug : on peux spawn dans le shop

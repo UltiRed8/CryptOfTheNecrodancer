@@ -9,12 +9,6 @@ CameraManager::CameraManager()
 	zoomIndex = new float(0.6f);
 	minimumZoomIndex = new float(0.2f);
 	maximumZoomIndex = new float(1.5f);
-
-	// TODO temp innpus, to remove!!
-	new ActionMap("Camera", {
-		ActionData("Zoom", [this]() { ZoomIn(); }, {Event::KeyPressed, Keyboard::Add}),
-		ActionData("Dezoom", [this]() { ZoomOut(); }, {Event::KeyPressed, Keyboard::Subtract}),
-	});
 }
 
 void CameraManager::Update()

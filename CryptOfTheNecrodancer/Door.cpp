@@ -10,13 +10,21 @@
 
 Door::Door(const Vector2f& _position, const int _direction) : Entity(STRING_ID("Door"), "", _position)
 {
+	visuals = new RectangleShape(TILE_SIZE);
+	visuals->setPosition(_position + Vector2f(0.0f, -0.5f) * TILE_SIZE);
+
 	type = ET_DOOR;
-	zIndex = 1;
+	zIndex = 3;
 	direction = _direction;
 	if (direction != -1)
 	{
 		UpdateTexture();
 	}
+}
+
+Door::~Door()
+{
+	delete visuals;
 }
 
 void Door::ComputeDirection()
@@ -60,7 +68,7 @@ void Door::ComputeDirection()
 
 void Door::UpdateTexture()
 {
-	TextureManager::GetInstance().Load(shape, direction == 0 ? PATH_DOOR_H : PATH_DOOR_V);
+	TextureManager::GetInstance().Load(visuals, direction == 0 ? PATH_DOOR_H : PATH_DOOR_V);
 }
 
 void Door::OpenDoor()

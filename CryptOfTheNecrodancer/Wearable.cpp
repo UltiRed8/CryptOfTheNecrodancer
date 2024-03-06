@@ -1,6 +1,6 @@
 #include "Wearable.h"
 
-Wearable::Wearable(ListWearable _type, const string& _id, const Vector2f& _position) : Item(_id, _position)
+Wearable::Wearable(ListWearable _type, const string& _id, const Vector2f& _position) : Item(ST_HEAD, _id, _position)
 {
 	type = _type;
 }
