@@ -27,6 +27,7 @@
 
 Player::Player(const float _maxHp, const float _maxDammage, const string _id, const Vector2f& _position) : Living(_maxHp, _maxDammage,PATH_PLAYER,_id, _position)
 {
+	isStun = false;
 	isConfuse = false;
 	inventory = new Inventory();
 	ressources = new PlayerRessource();
@@ -72,6 +73,8 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 			_water->Destroy();
 			WindowManager::GetInstance().Shake(25);
 			Map::GetInstance().AddFloorAt(GetPosition());
+			SetIsStun();
+			// MenuManager::GetInstance().
 		}),
 
 		CollisionReaction(ET_ENEMY, [this](Entity* _entity) {

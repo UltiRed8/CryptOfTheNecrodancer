@@ -1,9 +1,10 @@
 #pragma once
-#include "Pickable.h"
+#include "Placeable.h"
+
+#define PATH_WATER "Dungeons/Water.png"
 
 
-
-class Water : public Pickable
+class Water : public Placeable
 {
 public:
 	Water(const Vector2f& _position);

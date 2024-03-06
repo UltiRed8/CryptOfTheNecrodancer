@@ -189,28 +189,46 @@ void Generator::GenerateRooms(const int _roomCount)
 
 void Generator::GenerateWater()
 {
-	int _randomTileIndex;
-	int _waterTileNumberPerRoom = Random(10, 0);
+	loadingText->GetText()->setString("Generating Water");
 
 	for (Room* _room : rooms)
 	{
-		if (_room != shop)
+		int _waterTileNumberPerRoom = Random(5, 0) + 1;
+
+		for (int _i = 0; _i < _waterTileNumberPerRoom; _i++)
 		{
-			for (int _i = 0; _i < _waterTileNumberPerRoom; _i++)
+			if (spawnablePositions.empty()) return;
+			// je prends un position spawnable aléatoire
+			Vector2f _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
+			// je supprime sa position de spawnablePositions
+			EraseElement(spawnablePositions, _position);
+			// je supprime cette tile
+			Entity* _entity = GetEntityAt(_position);
+			if (_entity)
 			{
-				vector<Tile*> _tiles = _room->GetFloor();
-				_randomTileIndex = Random((int)(_tiles.size() - 1), 0);
-				if (_room->GetFloor()[_randomTileIndex]->GetType() == ET_FLOOR)
+				if (Tile* _floor = dynamic_cast<Tile*>(_entity))
 				{
-					_room->GetFloor()[_randomTileIndex]->Destroy();
-					others.push_back(new Water(_room->GetFloor()[_randomTileIndex]->GetPosition()));
-					EraseElement(floors, _room->GetFloor()[_randomTileIndex]);
-					EraseElement(_room->GetFloor(), _room->GetFloor()[_randomTileIndex]);
+					EraseElement(floors, _floor);
+					EraseElement(_room->GetFloor(), _floor);
+					_floor->Destroy();
+
 				}
 			}
+			others.push_back(new Water(_position));
 		}
+
 	}
 }
+
+void Generator::GenerateFire()
+{
+
+}
+
+void Generator::GenerateIce()
+{
+}
+
 
 vector<Wall*> Generator::PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const bool _finalDestructible, const WallType& _type)
 {
@@ -298,7 +316,7 @@ void Generator::EraseOverlappings()
 
 	for (Entity* _entity : _entities)
 	{
-		const Vector2f& _entityPosition = _entity->GetPosition();
+		Vector2f _entityPosition = _entity->GetPosition();
 		if (Contains<Vector2f>(_entityPosition, _allPositions))
 		{
 			_validEntities.push_back(_entity);
@@ -344,7 +362,7 @@ void Generator::GenerateShopRoom()
 	shop->Generate(usedPositions);
 	rooms.push_back(shop);
 
-	const Vector2f& _shopkeeperPosition = usedPositions[12];
+	Vector2f _shopkeeperPosition = usedPositions[12];
 	shopkeeper = new NPC(NPC_SHOPKEEPER, _shopkeeperPosition);
 	others.push_back(shopkeeper);
 
@@ -398,7 +416,7 @@ void Generator::SpawnPlayer()
 {
 	loadingText->GetText()->setString("Placing player");
 
-	const Vector2f& _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
+	Vector2f _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
 	EraseElement(spawnablePositions, _position);
 	EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position);
 }
@@ -407,7 +425,7 @@ void Generator::SpawnStairs()
 {
 	loadingText->GetText()->setString("Placing stairs");
 
-	const Vector2f& _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
+	Vector2f _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
 	EraseElement(spawnablePositions, _position);
 	stairs.push_back(new Stair(_position, Map::GetInstance().GetCurrentZone()));
 }
@@ -469,7 +487,7 @@ void Generator::GenerateDiamond(const int _diamondOnFloor, int _diamondInWall)
 
 	for (int _i = 0; _i < _diamondOnFloor; _i++)
 	{
-		const Vector2f& _position = GetRandomElementInVector(spawnablePositions);
+		Vector2f _position = GetRandomElementInVector(spawnablePositions);
 		others.push_back(new Pickable(1, PT_DIAMOND, STRING_ID("Diamond"), _position));
 		EraseElement(spawnablePositions, _position);
 	}
@@ -515,7 +533,7 @@ void Generator::SpawnTraps(const int _amount)
 	{
 		if (spawnablePositions.empty()) return;
 
-		const Vector2f& _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
+		Vector2f _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
 		EraseElement(spawnablePositions, _position);
 		others.push_back(new Trap(_position));
 	}
@@ -536,7 +554,7 @@ void Generator::AddOther(Entity* _entity)
 void Generator::UpdateTilesColor()
 {
 	const bool _hasChain = *dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetChainMultiplier() > 1.0f;
-	
+
 
 	if (!_hasChain)
 	{
@@ -591,10 +609,10 @@ void Generator::GenUpdate()
 			[&]() { PlaceTorches(); },
 			// 14- update doors
 			[&]() { UpdateDoors(); },
+			// 16- Water generation
+			[&]() { GenerateWater(); },
 			// 15- erase overlappings
 			[&]() { EraseOverlappings(); },
-			// 16- Water generation TEST
-			[&]() { GenerateWater(); },
 			// end dungeon generation
 			[&]() { Map::GetInstance().EndDungeonGeneration(); },
 			//[&]() { Temp(); }, // TODO 3d effect

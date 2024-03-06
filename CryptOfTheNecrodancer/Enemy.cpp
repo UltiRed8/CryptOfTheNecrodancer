@@ -27,6 +27,10 @@ Enemy::Enemy(const float _maxHp, const float _maxDammage, const string& _id, con
 			indexPatern--;
 			dynamic_cast<Player*>(_entity)->ResetChainMultiplier();
 		}),
+		CollisionReaction(ET_WATER, [this](Entity* _entity) {
+			GetComponent<MovementComponent>()->UndoMove();
+			indexPatern--;
+		}),
 	});
 	rewardAmount = _droppedCoins;
 	type = ET_ENEMY;
