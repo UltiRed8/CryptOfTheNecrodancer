@@ -11,7 +11,7 @@ Torch::Torch(const Vector2f& _position) : Placeable(STRING_ID("Torch"), PATH_TOR
 		AnimationData("Torch", Vector2f(26, 26), 0, 3, 0.1f, false)
 	}, "Torch", shape));
 
-	shape->move(Vector2f(0.0f, -0.5f) * TILE_SIZE);
+	shape->move(Vector2f(0.0f, -1.0f) * TILE_SIZE);
 
 	lightSource = new LightSource(STRING_ID("TorchLightSource"), this, 100);
 }

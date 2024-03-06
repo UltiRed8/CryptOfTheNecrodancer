@@ -28,7 +28,10 @@ void CollisionComponent::CheckCollision(const vector<CollisionReaction>& _reacti
 				{
 					if (_entityType == _reaction.type)
 					{
-						_reaction.callback(_entity);
+						if (_reaction.callback(_entity))
+						{
+							return;
+						}
 					}
 				}
 			}

@@ -237,6 +237,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Items.h" />
     <ClInclude Include="LifeComponent.h" />
     <ClInclude Include="LightSource.h" />
     <ClInclude Include="LightningManager.h" />

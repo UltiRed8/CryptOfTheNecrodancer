@@ -14,12 +14,12 @@ enum WallType
 
 class Wall:public Placeable
 {
+	RectangleShape* visuals;
 	WallType wallType;
 	bool hasDiamond;
 	string zoneName;
 	Torch* torch;
 	bool canSpawnWithTorch;
-	bool isIn3D;
 	int textureIndex;
 
 public:
@@ -31,11 +31,12 @@ public:
 	{
 		hasDiamond = _hasDiamond;
 
-		TextureManager::GetInstance().Load(shape, "Dungeons/" + zoneName + "/" DIAMOND_IN_WALL);
+		TextureManager::GetInstance().Load(visuals, "Dungeons/" + zoneName + "/" DIAMOND_IN_WALL);
+		TextureManager::GetInstance().LoadFromTextureSheet(shape, "Dungeons/" + zoneName + "/3d.png", 0, Vector2i(24, 24));
 
 		components.push_back(new AnimationComponent(this, {
 			AnimationData("DiamondInWall", Vector2f(24, 24), Random(2, 0) * 3, 2, 0.1f, false),
-		}, "DiamondInWall", shape));
+		}, "DiamondInWall", visuals));
 	}
 	bool GetHasDiamond()
 	{
@@ -44,7 +45,7 @@ public:
 	string GetPathWithType(const WallType& _type) const
 	{
 		string _path[] = {
-			"Dungeons/" + zoneName + "/Walls.png",
+			"",
 			"Dungeons/Bedrock.png",
 			"Dungeons/ShopWall.png",
 			"Dungeons/" + zoneName + "/StoneWall.png"
@@ -55,10 +56,18 @@ public:
 
 public:
 	Wall(const Vector2f& _position,const WallType& _type, const string& _zoneName, const bool _canSpawnWithTorch = true);
+	~Wall();
 
 public:
 	void DestroyWall(const bool _usingBomb = false);
 	bool CouldBeDoor();
 	void SpawnTorch();
 	void Enable3D();
+	virtual vector<Drawable*> GetDrawables() override
+	{
+		vector<Drawable*> _drawables;
+		_drawables.push_back(shape);
+		_drawables.push_back(visuals);
+		return _drawables;
+	}
 };

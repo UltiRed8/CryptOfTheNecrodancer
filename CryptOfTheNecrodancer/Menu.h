@@ -43,5 +43,5 @@ public:
 	void Open();
 	void Close();
 	void Toggle();
-	vector<Drawable*> GetDrawables();
+	virtual vector<Drawable*> GetDrawables();
 };

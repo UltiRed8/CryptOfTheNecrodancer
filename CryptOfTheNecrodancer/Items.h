@@ -1,0 +1,6 @@
+#pragma once
+
+enum SlotType
+{
+	ST_SHOVEL, ST_ATTACK, ST_BODY, ST_HEAD, ST_FEET, ST_THROW, ST_BOMB, ST_FOOD_TOP, ST_FOOD_DOWN
+};

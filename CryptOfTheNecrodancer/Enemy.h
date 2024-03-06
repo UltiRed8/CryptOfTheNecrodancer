@@ -10,6 +10,7 @@
 class Enemy : public Living
 {
 protected:
+	RectangleShape* visuals;
 	int rewardAmount;
 	int indexPatern;
 	int currentCooldown;
@@ -30,4 +31,11 @@ public:
 	void InitLifeUI();
 	virtual void SelectDirection() = 0;
 	virtual void Update() override;
+	virtual vector<Drawable*> GetDrawables() override
+	{
+		vector<Drawable*> _drawables;
+		_drawables.push_back(shape);
+		_drawables.push_back(visuals);
+		return _drawables;
+	}
 };

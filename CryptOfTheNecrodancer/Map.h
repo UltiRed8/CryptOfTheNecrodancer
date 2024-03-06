@@ -99,8 +99,11 @@ private:
 	void LoadMap();
 	void OpenLobby();
 	void GenerateDungeon();
+	void UpdateZoneFileName();
+	void PrepareMusic();
 
 public:
+	void RemoveWall(Wall* _wall);
 	void UpdateLights(const int _brightness);
 	void EndDungeonGeneration();
 	void ClearGenerator();
@@ -108,41 +111,9 @@ public:
 	void Open(const Zone& _zoneToOpen);
 	void OpenPrepared();
 	void QuickRestart();
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-private:
-
-	void UpdateZoneFileName();
-
-	void PrepareMusic();
-	void DeleteAll();
-
-public:
 	void Update();
 	void AddOther(Entity* _entity);
 	void AddFloorAt(const Vector2f& _position);
-
-
-
 	template <typename Type>
 	vector<Vector2f> GetEmptyTilesAround(const vector<Type*>& _entities)
 	{
@@ -176,25 +147,5 @@ public:
 		}
 
 		return _availablePositions;
-	}
-
-	vector<Entity*> GetAllAround(const Vector2f& _position, const int _distance)
-	{
-		vector<Entity*> _entitiesFound;
-
-		for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
-		{
-			if (_entity)
-			{
-				const Vector2f& _entityPosition = _entity->GetPosition();
-
-				if (Distance(_entityPosition, _position) < _distance)
-				{
-					_entitiesFound.push_back(_entity);
-				}
-			}
-		}
-
-		return _entitiesFound;
 	}
 };

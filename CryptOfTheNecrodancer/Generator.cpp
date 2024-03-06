@@ -145,6 +145,7 @@ void Generator::GenerateLobby()
 
 		SetAllFloorOriginColor();
 		UpdateDoors();
+		Temp();
 		MenuManager::GetInstance().ToggleLoading();
 		Map::GetInstance().UpdateLights(50);
 		CameraManager::GetInstance().Get("PlayerCamera")->SetCameraToPlayer();
@@ -325,7 +326,6 @@ void Generator::GenerateShopRoom()
 	for (int _index = 0; _index < 2; _index++)
 	{
 		Entity* _entity = _shopFloors[11 + _index];
-		_entity->SetZIndex(2);
 		_entity->SetTexture(PATH_SHOP_TILE);
 		EraseElement(_shopFloors, (Tile*)_entity);
 		others.push_back(_entity);
@@ -484,7 +484,7 @@ void Generator::SpawnTraps(const int _amount)
 {
 	loadingText->GetText()->setString("Spawning traps");
 
-	for (int _index = 0; _index < 50; _index++)
+	for (int _index = 0; _index < _amount; _index++)
 	{
 		if (spawnablePositions.empty()) return;
 
@@ -563,7 +563,7 @@ void Generator::GenUpdate()
 			[&]() { EraseOverlappings(); },
 			// end dungeon generation
 			[&]() { Map::GetInstance().EndDungeonGeneration(); },
-			//[&]() { Temp(); }, // TODO 3d effect
+			[&]() { Temp(); }, // TODO 3d effect
 			
 		};
 		_functionList[generationIndex]();

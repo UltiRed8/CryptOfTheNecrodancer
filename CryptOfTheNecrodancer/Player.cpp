@@ -16,26 +16,30 @@
 #include "WindowManager.h"
 
 #define PATH_PLAYER "Entities/PlayerSprite.png"
+#define PATH_SHADOW "Entities/Shadow.png"
 
 #define SOUND_CHAIN_START "Assets/Sounds/sfx_chain_groove_ST.ogg"
 #define SOUND_CHAIN_FAIL "Assets/Sounds/sfx_chain_break_ST.ogg"
 
 #define PATH_FLOOR "Dungeons/" + Map::GetInstance().GetZoneFileName() + "/floor.png"
 
-
-
-Player::Player(const float _maxHp, const float _maxDammage, const string _id, const Vector2f& _position) : Living(_maxHp, _maxDammage,PATH_PLAYER,_id, _position)
+Player::Player(const float _maxHp, const float _maxDammage, const string _id, const Vector2f& _position) : Living(_maxHp, _maxDammage, PATH_SHADOW, _id, _position)
 {
+	visuals = new RectangleShape(TILE_SIZE);
+	TextureManager::GetInstance().Load(visuals, PATH_PLAYER);
+	visuals->setPosition(_position + Vector2f(0.0f, -0.5f) * TILE_SIZE);
+
 	isConfuse = false;
 	inventory = new Inventory();
+	inventory->Open();
 	ressources = new PlayerRessource();
 	alreadyMoved = false;
-	zIndex = 2;
+	zIndex = 3;
 	chainMultiplier = new int(1);
 	type = ET_PLAYER;
 	components.push_back(new AnimationComponent(this, {
 		AnimationData("Idle", Vector2f(26, 26), 0, 3, 0.1f, false),
-	}, "Idle", shape));
+		}, "Idle", visuals));
 	CollisionComponent* _collisions = new CollisionComponent(this);
 	components.push_back(_collisions);
 	MovementComponent* _movement = GetComponent<MovementComponent>();
@@ -44,6 +48,12 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 			GetComponent<MovementComponent>()->UndoMove();
 			Wall* _wall = dynamic_cast<Wall*>(_entity);
 			_wall->DestroyWall();
+			return true;
+		}),
+		CollisionReaction(ET_PICKABLE, [this](Entity* _entity) {
+			Pickable* _pickable = dynamic_cast<Pickable*>(_entity);
+			_pickable->PickUp();
+			return false;
 		}),
 		CollisionReaction(ET_STAIR, [this](Entity* _entity) {
 			if (Stair* _stair = dynamic_cast<Stair*>(_entity))
@@ -53,26 +63,22 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 					GetComponent<MovementComponent>()->UndoMove();
 				}
 			}
+			return false;
 		}),
 		CollisionReaction(ET_DOOR, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
 			Door* _door = dynamic_cast<Door*>(_entity);
 			_door->OpenDoor();
 			WindowManager::GetInstance().Shake(25);
+			return true;
 		}),
-
-		CollisionReaction(ET_PICKABLE, [this](Entity* _entity) {
-			Pickable* _pickable = dynamic_cast<Pickable*>(_entity);
-			_pickable->PickUp();
-		}),
-
 		CollisionReaction(ET_WATER, [this](Entity* _entity) {
 			Tile* _water = dynamic_cast<Tile*>(_entity);
 			_water->Destroy();
 			WindowManager::GetInstance().Shake(300);
 			Map::GetInstance().AddFloorAt(_water->GetPosition());
+			return false;
 		}),
-
 		CollisionReaction(ET_ENEMY, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
 			if (GetComponent<DamageComponent>()->Attack(_entity))
@@ -87,12 +93,15 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 					}
 				}
 			}
+			return true;
 		}),
 		CollisionReaction(ET_NPC, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
+			return true;
 		}),
 		CollisionReaction(ET_TRAP, [this](Entity* _entity) {
 			dynamic_cast<Trap*>(_entity)->Trigger();
+			return false;
 		}),
 	});
 
@@ -102,12 +111,8 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 	InitLife();
 }
 
-// TODO bug : le menu game over ne désactive pas les mouvements du joueur
-// TODO ne pas oublier : si game over, ne pas envoyer le joueur au niveau suivant a la fin de la musique
-
 Player::~Player()
 {
-	delete inventory;
 	delete chainMultiplier;
 	delete ressources;
 }
@@ -179,16 +184,12 @@ void Player::InitInput()
 		});
 
 	// TODO remove
-	new ActionMap("TempDebug",
-		{ ActionData("Decrease", [this]() { *chainMultiplier = 1; cout << "Set chain multiplier to: 1!" << endl; }, {Event::KeyPressed, Keyboard::Num1}),
-		  ActionData("Increase", [this]() { *chainMultiplier = 2; cout << "Set chain multiplier to: 2!" << endl; }, {Event::KeyPressed, Keyboard::Num2}),
-		  ActionData("SpeedIncrease", [this]() { MusicManager::GetInstance().SpeedUp(); }, {Event::KeyPressed, Keyboard::Num3}),
-		  ActionData("SpeedDecrease", [this]() { MusicManager::GetInstance().SpeedDown(); }, {Event::KeyPressed, Keyboard::Num4}),
-		  ActionData("temp1", [this]() { Map::GetInstance().OpenPrepared(); }, {Event::KeyPressed, Keyboard::Num5}),
-		  ActionData("DecreaseLife", [this]() { GetComponent<LifeComponent>()->ChangeHealth(-50); UpdateLife(); }, {Event::KeyPressed, Keyboard::M}),
-		  ActionData("Increase Life", [this]() { GetComponent<LifeComponent>()->ChangeHealth(50); UpdateLife(); }, {Event::KeyPressed, Keyboard::P}),
-		  ActionData("EMOTIONNAL DAMAGE", [this]() { DieEvent(); }, {Event::KeyPressed, Keyboard::O}),
-		});
+	new ActionMap("TempDebug", {
+		ActionData("temp1", [this]() { Map::GetInstance().OpenPrepared(); }, {Event::KeyPressed, Keyboard::Num0}),
+		ActionData("slot1", [this]() { inventory->GetSlot(ST_SHOVEL)->Toggle(); }, {Event::KeyPressed, Keyboard::Num1}),
+		ActionData("DecreaseLife", [this]() { GetComponent<LifeComponent>()->ChangeHealth(-50); UpdateLife(); }, {Event::KeyPressed, Keyboard::Subtract}),
+		ActionData("Increase Life", [this]() { GetComponent<LifeComponent>()->ChangeHealth(50); UpdateLife(); }, {Event::KeyPressed, Keyboard::Add}),
+	});
 }
 
 void Player::InitLife()
@@ -245,7 +246,7 @@ void Player::UpdateLife()
 
 void Player::UpdateHeartAnimation()
 {
-	heartIndex --;
+	heartIndex--;
 	if (heartIndex < 0)
 	{
 		heartIndex = (int)(life->GetAllValues().size() - 1);
@@ -256,6 +257,7 @@ void Player::UpdateHeartAnimation()
 void Player::Update()
 {
 	Entity::Update();
+	visuals->setPosition(shape->getPosition() + Vector2f(0.0f, -0.5f) * TILE_SIZE);
 }
 
 void Player::DieEvent()

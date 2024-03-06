@@ -423,6 +423,9 @@
     <ClCompile Include="UIAnimation.cpp">
       <Filter>Source Files\Object\UiElement\UIAnimation</Filter>
     </ClCompile>
+    <ClCompile Include="Calibration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EntityManager.h">
@@ -652,6 +655,12 @@
     </ClInclude>
     <ClInclude Include="UIAnimation.h">
       <Filter>Source Files\Object\UiElement\UIAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="Calibration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Items.h">
+      <Filter>Source Files\Inventory\Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

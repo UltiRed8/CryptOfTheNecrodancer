@@ -119,6 +119,12 @@ void Map::QuickRestart()
 	GenerateDungeon();
 }
 
+void Map::RemoveWall(Wall* _wall)
+{
+	EraseElement(generator->GetWalls(), _wall);
+	_wall->Destroy();
+}
+
 void Map::UpdateLights(const int _brightness)
 {
 	LightningManager& _light = LightningManager::GetInstance();
