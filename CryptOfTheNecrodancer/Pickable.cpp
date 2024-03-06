@@ -14,18 +14,18 @@ Pickable::Pickable(const int _amount, const PickableType& _type, const string& _
 	pickableType = _type;
 
 	zIndex = 1;
-
 	if (_type != PT_CUSTOM)
 	{
 		if (_type == PT_COIN)
 		{
 			TextureManager::GetInstance().LoadFromTextureSheet(shape, PATH_COIN, Random(3, 0), Vector2i(24, 24));
 		}
-		else
+		else if (_type == PT_DIAMOND)
 		{
 			SetTexture(PATH_DIAMOND);
 		}
 	}
+
 	type = ET_PICKABLE;
 }
 

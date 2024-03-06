@@ -14,6 +14,7 @@
 #include "MenuManager.h"
 #include "Heart.h"
 #include "WindowManager.h"
+#include "Water.h"
 
 #define PATH_PLAYER "Entities/PlayerSprite.png"
 #define PATH_SHADOW "Entities/Shadow.png"
@@ -28,7 +29,7 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 	visuals = new RectangleShape(TILE_SIZE);
 	TextureManager::GetInstance().Load(visuals, PATH_PLAYER);
 	visuals->setPosition(_position + Vector2f(0.0f, -0.5f) * TILE_SIZE);
-
+	isStun = false;
 	isConfuse = false;
 	inventory = new Inventory();
 	inventory->Open();
@@ -73,11 +74,12 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 			return true;
 		}),
 		CollisionReaction(ET_WATER, [this](Entity* _entity) {
-			Tile* _water = dynamic_cast<Tile*>(_entity);
+			Water* _water = dynamic_cast<Water*>(_entity);
 			_water->Destroy();
-			WindowManager::GetInstance().Shake(300);
-			Map::GetInstance().AddFloorAt(_water->GetPosition());
-			return false;
+			WindowManager::GetInstance().Shake(25);
+			Map::GetInstance().AddFloorAt(GetPosition());
+			SetIsStun();
+			// MenuManager::GetInstance().
 		}),
 		CollisionReaction(ET_ENEMY, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();

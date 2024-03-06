@@ -62,7 +62,8 @@ void Game::Start()
 	//calibration = new Calibration([&]() {EndCalibration(); });
 	EndCalibration();
 	//calibration->Start();
-	new Camera("PlayerCamera", CAMERA_PLAYER, Vector2f(0.f, 0.f), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
+	new Camera("MiniMapCamera", CAMERA_MINIMAP, Vector2f(0,0), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
+	new Camera("PlayerCamera", CAMERA_PLAYER, Vector2f(20.f, 20.f), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
 }
 
 void Game::Update()
@@ -83,9 +84,15 @@ void Game::Update()
 
 void Game::UpdateWindow()
 {
-	window->setView(*CameraManager::GetInstance().Get("PlayerCamera"));
 	window->clear();
-	for (Drawable* _drawable : EntityManager::GetInstance().GetDrawables())
+	window->setView(*CameraManager::GetInstance().Get("PlayerCamera"));
+	const vector<Drawable*>& _entities = EntityManager::GetInstance().GetDrawables();
+	for (Drawable* _drawable : _entities)
+	{
+		window->draw(*_drawable);
+	}
+	window->setView(*CameraManager::GetInstance().Get("MiniMapCamera"));
+	for (Drawable* _drawable : _entities)
 	{
 		window->draw(*_drawable, shader);
 	}

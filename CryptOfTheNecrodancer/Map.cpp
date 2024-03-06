@@ -98,8 +98,8 @@ void Map::GenerateDungeon()
 void Map::EndDungeonGeneration()
 {
 	CameraManager::GetInstance().Get("PlayerCamera")->SetCameraToPlayer();
-	//UpdateLights(2);
-	UpdateLights(100);
+	UpdateLights(2);
+	// UpdateLights(100);
 	PrepareMusic();
 	MusicManager::GetInstance().Play();
 }
