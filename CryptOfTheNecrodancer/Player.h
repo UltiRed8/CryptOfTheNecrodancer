@@ -82,6 +82,7 @@ public:
 
 public :
 	void ResetChainMultiplier();
+	void Slide();
 	void InitInput();
 	void InitLife();
 

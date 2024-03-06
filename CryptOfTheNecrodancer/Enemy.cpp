@@ -45,6 +45,7 @@ Enemy::Enemy(const float _maxHp, const float _maxDammage, const string& _id, con
 		CollisionReaction(ET_WATER, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
 			indexPatern--;
+			return false;
 		}),
 	});
 	rewardAmount = _droppedCoins;

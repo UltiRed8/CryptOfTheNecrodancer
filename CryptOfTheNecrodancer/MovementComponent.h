@@ -16,6 +16,7 @@ class MovementComponent :public Component
 	CollisionComponent* collision;
 	vector<CollisionReaction> reactions;
 	Vector2f oldPosition;
+	Vector2i oldDirection;
 
 public:
 	bool GetCanMove()
@@ -37,6 +38,14 @@ public:
 			delete direction;
 		}
 		direction = new Vector2i(_direction);
+	}
+	Vector2i* GetDirection()
+	{
+		return direction;
+	}
+	Vector2i GetOldDirection()  
+	{
+		return oldDirection;
 	}
 
 public:

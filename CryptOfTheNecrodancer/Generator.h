@@ -126,6 +126,10 @@ public:
 		return shopkeeper;
 	}
 
+	vector<Entity*> GetOthers()
+	{
+		return others;
+	}
 	vector<Wall*>& GetWalls()
 	{
 		return walls;

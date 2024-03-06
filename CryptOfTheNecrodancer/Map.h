@@ -78,7 +78,10 @@ public:
 		{
 			_entities.push_back(_floor);
 		}
-
+		for (Entity* _other : generator->GetOthers())
+		{
+			_entities.push_back(_other);
+		}
 
 		for (Entity* _entity : _entities)
 		{

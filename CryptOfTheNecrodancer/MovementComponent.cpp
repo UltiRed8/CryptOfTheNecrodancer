@@ -9,6 +9,7 @@ MovementComponent::MovementComponent(Entity* _owner, const int _speed ):Componen
 	reactions = vector<CollisionReaction>();
 	speed = _speed;
 	oldPosition = Vector2f();
+	oldDirection = Vector2i(0, 0);
 }
 
 
@@ -27,6 +28,7 @@ void MovementComponent::Move()
 	const float _directionY = (direction->y * speed * _tileSize.y) ;
 	const Vector2f& _position = owner->GetPosition() + Vector2f(_directionX, _directionY);
 	oldPosition = _shape->getPosition();
+	oldDirection = Vector2i(_directionX, _directionY);
 	_shape->setPosition(_position);
 	direction = new Vector2i(0, 0);
 }
