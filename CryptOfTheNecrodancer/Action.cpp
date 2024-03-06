@@ -35,11 +35,11 @@ void Action::Register()
 	_newMap->Add(id, this);
 }
 
-bool Action::ContainsKey(const int _keyToFind) const
+bool Action::ContainsKey(const char _keyToFind) const
 {
 	for (const InputTypeData& _key : data.keys)
 	{
-		if (_key.key == _keyToFind)
+		if (_key.keyChar == _keyToFind)
 		{
 			return true;
 		}

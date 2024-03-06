@@ -52,7 +52,7 @@ void Game::Update()
 {
 	while (window->isOpen())
 	{
-		// calibration->Update();
+		//calibration->Update();
 		MusicManager::GetInstance().Update();
 		TimerManager::GetInstance().Update();
 		InputManager::GetInstance().Update();

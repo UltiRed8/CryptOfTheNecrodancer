@@ -22,7 +22,7 @@
 
 MusicManager::MusicManager()
 {
-	rythmType = RT_ALL;
+	rythmType = RT_FREEMOVE;
 
 	currentMain = nullptr;
 	currentShopkeeper = nullptr;
