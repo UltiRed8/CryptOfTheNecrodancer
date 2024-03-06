@@ -1,14 +1,20 @@
 #include "LifeComponent.h"
 #include"Entity.h"
 #include"Player.h"
+#define EMPTY "UI/HealthBarEmpty.png"
+#define FULL "UI/HealthBarFull.png"
 
-LifeComponent::LifeComponent(Entity* _owner, const function<void()> _deathCallback, const bool _invulnerable, const float _maxHealth):Component(_owner)
+LifeComponent::LifeComponent(Entity* _owner, const function<void()> _deathCallback, const bool _invulnerable, const float _maxHealth, bool _isPlayer) : Component(_owner)
 {
 	invulnerable = _invulnerable;
 	maxHealth = _maxHealth;
 	currentHealth = new float(maxHealth);
 	deathcallback = _deathCallback;
 	isAlive = true;
+	if (_isPlayer) return;
+	healthBar = new ProgressBar(STRING_ID("LifeEnemy"), PT_LEFT, Vector2f(_owner->GetPosition().x, _owner->GetPosition().y - TILE_SIZE.y / 2.f), Vector2f(300.0f, 50.0f) / 2.0f,
+		EMPTY, FULL, currentHealth);
+	//healthBar.tamere; //TODO
 }
 
 LifeComponent::~LifeComponent()

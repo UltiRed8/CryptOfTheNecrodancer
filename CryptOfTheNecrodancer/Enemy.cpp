@@ -49,6 +49,7 @@ Enemy::Enemy(const float _maxHp, const float _maxDammage, const string& _id, con
 	});
 	rewardAmount = _droppedCoins;
 	type = ET_ENEMY;
+	
 }
 //Tu part de la fin des coeur 
 

@@ -2,6 +2,7 @@
 
 #include"Component.h"
 #include"TimerManager.h"
+#include"ProgressBar.h"
 
 #include<functional>
 
@@ -14,6 +15,7 @@ class LifeComponent:public Component
 	float maxHealth;
 	function<void()> deathcallback;
 	bool isAlive;
+	ProgressBar* healthBar;
 
 public :
 	void ResetHealth()
@@ -35,7 +37,7 @@ public :
 	}
 	
 public:
-	LifeComponent(Entity* _owner, const function<void()> _deathCallback, const bool _invulnerable = false, const float _maxHealth = 100.0f);
+	LifeComponent(Entity* _owner, const function<void()> _deathCallback, const bool _invulnerable = false, const float _maxHealth = 100.0f, bool _isPlayer = false);
 	~LifeComponent();
 
 private:
