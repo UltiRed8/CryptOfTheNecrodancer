@@ -6,6 +6,7 @@
 #include "DamageComponent.h"
 #include "Pickable.h"
 #include "LightSource.h"
+#include "MenuManager.h"
 
 class Enemy : public Living
 {
@@ -33,7 +34,9 @@ public:
 	virtual void Update() override;
 	virtual vector<Drawable*> GetDrawables() override
 	{
+		vector<Drawable*> _drawable = GetComponent<LifeComponent>()->GetHealthBar()->GetDrawables();
 		vector<Drawable*> _drawables;
+		_drawables.insert(_drawables.end(), _drawable.begin(), _drawable.end());
 		_drawables.push_back(shape);
 		_drawables.push_back(visuals);
 		return _drawables;

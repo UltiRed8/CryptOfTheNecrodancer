@@ -16,6 +16,8 @@
 #include "RythmIndicator.h"
 #include "UIAnimation.h"
 
+#pragma region Define
+
 #define FONT "Assets/Font/Font.ttf"
 #define FONT "Assets/Font/Font.ttf"
 #define WHITE_COLOR Color::White
@@ -33,8 +35,8 @@
 #define LOADING_MENU "UI/Loading.png"
 #define WARNING_MENU "UI/SeizureWarningMenu.png"
 #define EPILEPSY_MENU "UI/EpilepsyMenu.png"
-#define REBIND_MENU "UI/RebindMenu.png"
 #define CREDIT_BUTTON "UI/CreditsButton.png"
+#define CALIBRATION_MENU "UI/CalibrationMenu.png"
 
 #define EMPTYCHECKBOX "UI/EmptyCheckbox.png"
 #define EMPTYBAR "UI/EmptyBar.png"
@@ -52,6 +54,8 @@
 #define SOUND_CREDIT "Assets/Sounds/Credits.ogg"
 
 #define LOBBY "Assets/Saved/Lobby.txt"
+
+#pragma endregion
 
 vector<Drawable*> MenuManager::GetDrawables()
 {
@@ -122,6 +126,8 @@ void MenuManager::Update()
 			_menu->Update(window);
 		}
 	}
+
+	if(calibration) calibration->Update();
 }
 
 bool MenuManager::BlockPlayer()
@@ -172,8 +178,8 @@ void MenuManager::InitMenu()
 	Loading();
 	WarningSeizure(); 
 	InitEpilepsyMenu();
-	InitRebindMenu();
 	InitCredits();
+	InitCalibration();
 }
 
 void MenuManager::InitMenuPause()
@@ -214,7 +220,7 @@ void MenuManager::InitMenuPause()
 			}
 		}
 		};
-	function<void()> _callbackRestart = [this]() { Restart(); };
+	function<void()> _callbackRestart = [this]() { Restart(); Get("GamePause")->Toggle(); };
 	function<void()> _callbackOptions = [this]() { Get("GamePause")->Toggle(); OptionsMenu(); };
 	function<void()> _callbackLobby = [this]() {Get("GamePause")->Toggle(); GoToLobby(); MusicManager::GetInstance().Unpause(); };
 	function<void()> _callbackDelete = [this]() { DeleteSaveDataMenu(); };
@@ -287,8 +293,6 @@ void MenuManager::GoToLobby()
 
 void MenuManager::Restart()
 {
-	Get("GamePause")->Toggle();
-
 	if (Map::GetInstance().GetCurrentZone() == Z_LOBBY)
 	{
 		MusicManager::GetInstance().Unpause();
@@ -319,7 +323,6 @@ void MenuManager::InitMenuOptions()
 	unsigned int _windowY = window->getSize().y;
 
 	function<void()> _activateSound = [this]() { SoundManager::GetInstance().ToggleVolume(); };
-	function<void()> _rebind = [this]() { ToggleRebindMenu(); OptionsMenu(); }; //TODO
 	function<void()> _activateMusic = [this]() { MusicManager::GetInstance().ToggleVolume(); };
 	function<void()> _volumeUpM = [this]() { MusicManager::GetInstance().IncreaseVolume(); };
 	function<void()> _volumeUpS = [this]() { SoundManager::GetInstance().IncreaseVolume(); };
@@ -331,10 +334,6 @@ void MenuManager::InitMenuOptions()
 	new Menu("Options", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), OPTIONS_MENU),
 		//Menu Graphique
 		new UIButton("GraphicalOptionsButton", Vector2f(_x, static_cast<float>(_windowY / 4.2)), WHITE_COLOR, CYAN_COLOR, "Graphical Options", 40, FONT, SOUND_START, _graphics),
-
-		new UIButton("Rebind", Vector2f(static_cast<float>(window->getSize().x / 10), static_cast<float>(_windowY / 3)), Color(119,136,153), WHITE_COLOR, {
-			new UIImage("Rebiiind", Vector2f(static_cast<float>(window->getSize().x / 10), static_cast<float>(_windowY / 3)), Vector2f(200.0f, 200.0f), REBIND),
-		}, SOUND_START, _rebind, FloatRect(static_cast<float>(window->getSize().x / 10), static_cast<float>(_windowY / 3), 200.0f, 200.0f)),
 
 		// Activer/Désactiver le Sound
 		new UIText("ToggleSText", Vector2f(_x, static_cast<float>(_windowY / 3)), Color(172, 172,173), "Toggle Sound",40,FONT, true),
@@ -465,21 +464,20 @@ void MenuManager::InitMenuLatency()
 	function<void()> _calibrationUp = [this]() { MusicManager::GetInstance().SetAcceptDelay(10.0f); dynamic_cast<UIText*>(Get("LatencyMenu")->Get("CalibTextUpdate"))->GetText()->setString(to_string(*MusicManager::GetInstance().GetAcceptDelay()).substr(0, to_string(*MusicManager::GetInstance().GetAcceptDelay()).find_first_of('.'))); }; //TODO
 	function<void()> _calibrationDown = [this]() { MusicManager::GetInstance().SetAcceptDelay(-10.0f); dynamic_cast<UIText*>(Get("LatencyMenu")->Get("CalibTextUpdate"))->GetText()->setString(to_string(*MusicManager::GetInstance().GetAcceptDelay()).substr(0, to_string(*MusicManager::GetInstance().GetAcceptDelay()).find_first_of('.'))); }; //TODO
 	function<void()> _close = [this]() { LatencyMenu(); Get("GamePause")->Toggle(); };
+	function<void()> _calibration = [this]() { Get("Calibration")->Open(); LatencyMenu(); ToggleCalibration(); };
 	
 	new Menu("LatencyMenu", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), LATENCY_MENU),
 		new UIText("CalibText", Vector2f(_x, static_cast<float>(_windowY / 4)), WHITE_COLOR, "Video/Audio Latency : ",35,FONT),
 		new ProgressBar("CalibBar", PT_LEFT, Vector2f(static_cast<float>(window->getSize().x / 2.9), static_cast<float>(_windowY / 2.72)), Vector2f(400.0f, 30.0f), EMPTYBAR, FULLBAR, MusicManager::GetInstance().GetAcceptDelay(), 450.0f),
 		new UIButton("CalibUp", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 2.79)), WHITE_COLOR, CYAN_COLOR, ">", 50, FONT, SOUND_UP, _calibrationUp),
 		new UIButton("CalibDown", Vector2f(static_cast<float>(window->getSize().x / 3.2), static_cast<float>(_windowY / 2.79)), WHITE_COLOR, CYAN_COLOR, "<", 50, FONT, SOUND_DOWN, _calibrationDown),
-		new UIText("CalibTextUpdate", Vector2f(_x, static_cast<float>(_windowY / 2)), Color(172, 172,173), "300",40,FONT, true),
-		
+		new UIText("CalibTextUpdate", Vector2f(_x, static_cast<float>(_windowY / 2.3)), Color(172, 172,173), "60",40,FONT, true),
+		new UIButton("CalibAuto", Vector2f(_x, static_cast<float>(_windowY / 2)), WHITE_COLOR, CYAN_COLOR, "Auto Calibration", 40, FONT, SOUND_START, _calibration),
 		new UIAnimation("Unicorn", Vector2f(static_cast<float>(window->getSize().x / 2.3), static_cast<float>(_windowY / 1.7)), Vector2f(180.0f, 130.0f), UNICORN, Vector2f(51.0f, 35.0f), 5),
 
 		// Retour menu précédent
 		new UIButton("ReturnOptions", Vector2f(_x, static_cast<float>(_windowY / 1.2)), WHITE_COLOR, CYAN_COLOR, "Done", 40, FONT, SOUND_EXIT, _close)
 		}, 5);
-
-
 }
 
 void MenuManager::LatencyMenu()
@@ -570,32 +568,6 @@ void MenuManager::InitEpilepsyMenu()
 	}, 3);
 }
 
-void MenuManager::InitRebindMenu()
-{
-	function<void()> _changeUp = [this]() {  }; //TODO
-	function<void()> _changeDown = [this]() {  }; //TODO
-	function<void()> _changeLeft = [this]() {  }; //TODO
-	function<void()> _changeRight = [this]() {  }; //TODO
-	function<void()> _callbackEchap = [this]() { ToggleRebindMenu(); CloseMenu(); OptionsMenu(); };
-
-	float _x = static_cast<float>(window->getSize().x / 4);
-	unsigned int _windowY = window->getSize().y;
-
-	new Menu("Rebind", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), REBIND_MENU),
-		
-		new UIButton("Haut", Vector2f(_x, static_cast<float>(_windowY / 3.5)), WHITE_COLOR, CYAN_COLOR, "Haut", 50, FONT, SOUND_START, _changeUp),
-		
-		new UIButton("Bas", Vector2f(_x, static_cast<float>(_windowY / 2.5)), WHITE_COLOR, CYAN_COLOR, "Bas", 50, FONT, SOUND_START, _changeDown),
-		
-		new UIButton("Gauche", Vector2f(_x, static_cast<float>(_windowY / 2)), WHITE_COLOR, CYAN_COLOR, "Gauche", 50, FONT, SOUND_START, _changeLeft),
-
-		new UIButton("Droite",Vector2f(_x, static_cast<float>(_windowY / 1.6)), WHITE_COLOR, CYAN_COLOR, "Droite", 50, FONT, SOUND_START, _changeRight),
-
-		new UIButton("Done", Vector2f(static_cast<float>(window->getSize().x / 2) , static_cast<float>(_windowY / 1.16)), WHITE_COLOR, CYAN_COLOR, "Done", 50, FONT, SOUND_EXIT, _callbackEchap),
-
-		}, 1);
-}
-
 void MenuManager::InitCredits()
 {
 	float _x = static_cast<float>(window->getSize().x / 2);
@@ -624,6 +596,19 @@ void MenuManager::InitCredits()
 
 }
 
+void MenuManager::InitCalibration()
+{
+	float _x = static_cast<float>(window->getSize().x / 2);
+	unsigned int _windowY = window->getSize().y;
+
+	new Menu("Calibration", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), CALIBRATION_MENU),
+		//Rythmed Heart
+		new UIImage("RythmHearts", Vector2f(_x - 40.0f, static_cast<float>(_windowY / 2.5) - 50.0f), Vector2f(40.0f, 50.0f) * 2.0f, RYTHMHEART0),
+		new UIText("CalibrationTxt", Vector2f(_x, static_cast<float>(_windowY / 1.5)), Color(112,128,144), "Press Space when you hear the sound",35,FONT),
+		new UIText("CalibrationTxt2", Vector2f(_x, static_cast<float>(_windowY / 1.3)), Color(47,79,79), "It will take approximately 1 minute",35,FONT),
+		}, 4);
+}
+
 void MenuManager::ToggleWarningSeizure()
 {
 	Get("WarningSeizure")->Toggle();
@@ -634,12 +619,17 @@ void MenuManager::ToggleEpilepsyMenu()
 	Get("Epilepsy")->Toggle();
 }
 
-void MenuManager::ToggleRebindMenu()
-{
-	Get("Rebind")->Toggle();
-}
-
 void MenuManager::ToggleCredits()
 {
 	Get("Credits")->Toggle();
+}
+
+void MenuManager::ToggleCalibration()
+{
+	function<void()> _timer = [this]() { Get("Calibration")->Close(); MusicManager::GetInstance().Unpause(); };
+	calibration = new Calibration(_timer);
+	if (Get("Calibration")->IsOpened())
+	{
+		calibration->Start();
+	}
 }

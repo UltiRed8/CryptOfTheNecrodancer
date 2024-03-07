@@ -42,6 +42,11 @@ public:
 		type = _type;
 		UpdateOriginAndPosition();
 	}
+	void SetPosition(const Vector2f& _position) const
+	{
+		foreground->setPosition(_position);
+		background->setPosition(_position);
+	}
 
 public:
 	ProgressBar(const string& _id, const ProgressType& _type, const Vector2f& _position, const Vector2f& _size,

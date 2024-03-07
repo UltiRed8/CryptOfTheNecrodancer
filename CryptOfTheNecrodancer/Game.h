@@ -24,7 +24,6 @@ private:
 	void Update();
 	void UpdateWindow();
 	void Stop();
-	void EndCalibration();
 
 public:
 	void Launch();

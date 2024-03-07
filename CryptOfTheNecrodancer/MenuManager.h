@@ -3,6 +3,7 @@
 #include "IManager.h"
 #include "Singleton.h"
 #include "Menu.h"
+#include "Calibration.h"
 
 #include <string>
 
@@ -11,6 +12,7 @@ class MenuManager : public Singleton<MenuManager>, public IManager<string, Menu>
 	RenderWindow* window;
 	Vector2f factor;
 	float* index;
+	Calibration* calibration;
 
 public:
 	vector<Drawable*> GetDrawables();
@@ -34,8 +36,8 @@ public :
 	void ToggleLoading();
 	void ToggleWarningSeizure();
 	void ToggleEpilepsyMenu();
-	void ToggleRebindMenu();
 	void ToggleCredits();
+	void ToggleCalibration();
 
 private :
 	void InitMenuPause();
@@ -50,8 +52,8 @@ private :
 	void Loading();
 	void WarningSeizure();
 	void InitEpilepsyMenu();
-	void InitRebindMenu();
 	void InitCredits();
+	void InitCalibration();
 
 	void Delete();
 	void GoToLobby();

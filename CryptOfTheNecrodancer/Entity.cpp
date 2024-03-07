@@ -1,6 +1,7 @@
 #include "Entity.h"
 #include "Macro.h"
 #include "EntityManager.h"
+#include "Player.h"
 
 #include "AnimationComponent.h"
 
@@ -43,6 +44,15 @@ void Entity::Update()
 	{
 		_animationComponent->GetCurrent()->Replay();
 	}
+
+	/*if (Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("player")))
+	{
+		if (_player->GetIsStun())
+		{
+			return;
+		}
+	}*/
+
 	for (Component* _component : components)
 	{
 		_component->Update();

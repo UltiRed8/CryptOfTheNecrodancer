@@ -34,6 +34,10 @@ void Tile::InvertAlpha(const bool _reset)
 
 void Tile::ToggleHighlight(const int _alphaValueToHighlight)
 {
+	if (type == ET_WATER)
+	{
+		return;
+	}
 	if (defaultColor.a == _alphaValueToHighlight)
 	{
 		shape->setFillColor(defaultColor.a == 255 ? C_PURPLE : C_GREEN);

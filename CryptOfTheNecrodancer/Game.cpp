@@ -63,13 +63,13 @@ void Game::Start()
 	EndCalibration();
 	//calibration->Start();
 	new Camera("PlayerCamera", CAMERA_PLAYER, Vector2f(0.f, 0.f), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
+	new Camera("MiniMapCamera", CAMERA_MINIMAP, Vector2f(0,0), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
 }
 
 void Game::Update()
 {
 	while (window->isOpen())
 	{
-		//calibration->Update();
 		MusicManager::GetInstance().Update();
 		TimerManager::GetInstance().Update();
 		InputManager::GetInstance().Update();
@@ -83,9 +83,15 @@ void Game::Update()
 
 void Game::UpdateWindow()
 {
-	window->setView(*CameraManager::GetInstance().Get("PlayerCamera"));
 	window->clear();
-	for (Drawable* _drawable : EntityManager::GetInstance().GetDrawables())
+	window->setView(*CameraManager::GetInstance().Get("PlayerCamera"));
+	const vector<Drawable*>& _entities = EntityManager::GetInstance().GetDrawables();
+	for (Drawable* _drawable : _entities)
+	{
+		window->draw(*_drawable);
+	}
+	window->setView(*CameraManager::GetInstance().Get("MiniMapCamera"));
+	for (Drawable* _drawable : _entities)
 	{
 		window->draw(*_drawable, shader);
 	}
@@ -100,12 +106,6 @@ void Game::UpdateWindow()
 void Game::Stop()
 {
 	cout << "Fin!" << endl;
-}
-
-void Game::EndCalibration()
-{
-	MenuManager::GetInstance().ToggleWarningSeizure();	//Warning Seizure
-	Map::GetInstance().Open(Z_LOBBY);
 }
 
 void Game::Launch()

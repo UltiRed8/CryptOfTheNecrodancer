@@ -17,12 +17,28 @@ class Player : public Living
 	bool alreadyMoved;
 	Menu* life;
 	bool isConfuse;
+	bool isStun;
 	int heartIndex;
 
 public:
 	bool GetPressingKeys()
 	{
 		return alreadyMoved;
+	}
+	bool GetIsStun() const
+	{
+		return isStun;
+	}
+	void SetIsStun(const bool _isStun = true)
+	{
+		isStun = _isStun;
+		if (isStun)
+		{
+			new Timer("ResetStun", [this]() {
+				isStun = false;
+
+				}, seconds(0.5f), 1, true);
+		}
 	}
 	bool GetIsConfuse() const
 	{

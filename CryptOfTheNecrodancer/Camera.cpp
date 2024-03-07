@@ -33,8 +33,13 @@ void Camera::InitPosition()
 {
 	Vector2f _cameraPosition;
 	_cameraPosition = type == CAMERA_PLAYER ? Vector2f(0.0f, 0.0f) : Vector2f(0.8f, 0.8f);
-	
-	const Vector2f& _cameraSize = Vector2f(1.0f, 1.0f);
+
+	const Vector2f& _cameraSize = type == CAMERA_PLAYER ? Vector2f(1.0f, 1.0f) : Vector2f(0.2f, 0.2f);
+
+	if (type == CAMERA_MINIMAP)
+	{
+		zoom(0.5);
+	}
 
 	setViewport(FloatRect(_cameraPosition, _cameraSize));
 }
@@ -66,26 +71,23 @@ void Camera::Update()
 		}
 	};
 
-	if (type == CAMERA_PLAYER)
+	Entity* _player = EntityManager::GetInstance().Get("Player");
+	const Vector2f& _currentPosition = getCenter();
+	const Vector2f& _target = _player->GetPosition() + (TILE_SIZE / 2.0f);
+	Listener::setPosition(Vector3f(_target.x, _target.y, 0.0f));
+
+	Vector2f _offset = Vector2f(0.0f, 0.0f);
+
+	if (abs(_currentPosition.x - _target.x) > 10)
 	{
-		Entity* _player = EntityManager::GetInstance().Get("Player");
-		const Vector2f& _currentPosition = getCenter();
-		const Vector2f& _target = _player->GetPosition() + (TILE_SIZE / 2.0f);
-		Listener::setPosition(Vector3f(_target.x, _target.y, 0.0f));
-
-		Vector2f _offset = Vector2f(0.0f, 0.0f);
-
-		if (abs(_currentPosition.x - _target.x) > 10)
-		{
-			_offset.x = _currentPosition.x > _target.x ? -0.3f : 0.3f;
-		}
-		if (abs(_currentPosition.y - _target.y) > 10)
-		{
-			_offset.y = _currentPosition.y > _target.y ? -0.3f : 0.3f;
-		}
-
-		_offset *= _deltaTime;
-
-		move(_offset);
+		_offset.x = _currentPosition.x > _target.x ? -0.3f : 0.3f;
 	}
+	if (abs(_currentPosition.y - _target.y) > 10)
+	{
+		_offset.y = _currentPosition.y > _target.y ? -0.3f : 0.3f;
+	}
+
+	_offset *= _deltaTime;
+
+	move(_offset);
 }

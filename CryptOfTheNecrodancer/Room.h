@@ -14,6 +14,10 @@ public:
 	{
 		return floor;
 	}
+	Vector2i GetSize()
+	{
+		return size;
+	}
 
 public:
 	Room(const Vector2i& _size = Vector2i(-1, -1));
