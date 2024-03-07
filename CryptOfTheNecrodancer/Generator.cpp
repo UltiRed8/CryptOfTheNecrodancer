@@ -3,6 +3,7 @@
 #include "LightningManager.h"
 #include "Macro.h"
 #include "Torch.h"
+#include "Item.h"
 #include "Map.h"
 #include "Trap.h"
 
@@ -143,12 +144,17 @@ void Generator::GenerateLobby()
 		stairs[2]->SetText("Soon(TM)");
 		stairs[2]->SetLocked(LT_FORCE);
 
+		others.push_back(new Weapon(WT_DAGGER, STRING_ID("Dagger"), stairs[0]->GetPosition() + Vector2f(0.0f, -1.0f) * TILE_SIZE));
+		others.push_back(new Pickaxe(PT_SHOVEL, STRING_ID("Shovel"), stairs[0]->GetPosition() + Vector2f(0.0f, -2.0f) * TILE_SIZE));
+
 		SetAllFloorOriginColor();
 		UpdateDoors();
 		Temp();
 		MenuManager::GetInstance().ToggleLoading();
 		Map::GetInstance().UpdateLights(50);
 		CameraManager::GetInstance().Get("PlayerCamera")->SetCameraToPlayer();
+		MusicManager::GetInstance().Play();
+
 	}, seconds(2.0f), 1, true);
 }
 
@@ -488,7 +494,7 @@ void Generator::SpawnTraps(const int _amount)
 	{
 		if (spawnablePositions.empty()) return;
 
-		const Vector2f& _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
+		Vector2f _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
 		EraseElement(spawnablePositions, _position);
 		others.push_back(new Trap(_position));
 	}
@@ -562,8 +568,8 @@ void Generator::GenUpdate()
 			// 15- erase overlappings
 			[&]() { EraseOverlappings(); },
 			// end dungeon generation
+			[&]() { Temp(); }, // TODO 3d effect // TODO rename
 			[&]() { Map::GetInstance().EndDungeonGeneration(); },
-			[&]() { Temp(); }, // TODO 3d effect
 			
 		};
 		_functionList[generationIndex]();

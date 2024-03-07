@@ -167,7 +167,7 @@ void Map::PrepareMusic()
 		{ "zone5_3", 155 },
 	};
 
-	MusicManager::GetInstance().PrepareMain(zoneFileName, _bpmList[zoneFileName], true);
+	MusicManager::GetInstance().PrepareMusic(zoneFileName, true);
 }
 
 void Map::OpenLobby()
@@ -179,8 +179,7 @@ void Map::OpenLobby()
 	UpdateZoneFileName();
 	ClearGenerator();
 	generator->GenerateLobby();
-	MusicManager::GetInstance().PrepareMain("Lobby", 130, false, true);
-	MusicManager::GetInstance().Play();
+	MusicManager::GetInstance().Prepare("boss_1", false, true);
 }
 
 void Map::AddFloorAt(const Vector2f& _position)

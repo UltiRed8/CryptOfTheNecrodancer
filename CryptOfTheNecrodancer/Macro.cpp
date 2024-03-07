@@ -65,6 +65,39 @@ Vector2i GetDirectionByPositions(Vector2f _entityPos, Vector2f _destination)
 	return NormalizeDistance(_destination - _entityPos);
 }
 
+vector<string> Split(string _line, const string& _divider)
+{
+	vector<string> _results;
+
+	size_t _pos = 0;
+
+	while ((_pos = _line.find(_divider)) != string::npos)
+	{
+		_pos = _line.find(_divider);
+		_results.push_back(_line.substr(0, _pos));
+		_line = _line.substr(_pos + _divider.length());
+	}
+	_results.push_back(_line);
+
+	return _results;
+}
+
+bool Contain(const string& _id, const string& _value)
+{
+	return false;
+}
+
+bool StringContains(const string& _id, const string& _value)
+{
+
+	if (_id.find(_value) != string::npos)
+	{
+		return true;
+	}
+	return false;
+
+}
+
 Vector2f operator * (const Vector2f& _vector, const Vector2f& _multiplier)
 {
 	return Vector2f(_vector.x * _multiplier.x, _vector.y * _multiplier.y);

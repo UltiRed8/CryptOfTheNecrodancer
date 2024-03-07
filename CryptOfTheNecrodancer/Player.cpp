@@ -23,7 +23,7 @@
 
 #define PATH_FLOOR "Dungeons/" + Map::GetInstance().GetZoneFileName() + "/floor.png"
 
-Player::Player(const float _maxHp, const float _maxDammage, const string _id, const Vector2f& _position) : Living(_maxHp, _maxDammage, PATH_SHADOW, _id, _position)
+Player::Player(const float _maxHp, const float _maxDammage, const string _id, const Vector2f& _position) : Living(_maxHp, _maxDammage, PATH_SHADOW, _id, _position, false)
 {
 	visuals = new RectangleShape(TILE_SIZE);
 	TextureManager::GetInstance().Load(visuals, PATH_PLAYER);
@@ -117,13 +117,15 @@ Player::~Player()
 	delete ressources;
 }
 
-void Player::ResetChainMultiplier()
+bool Player::ResetChainMultiplier()
 {
 	if (*chainMultiplier >= 2)
 	{
 		*chainMultiplier = 1;
 		SoundManager::GetInstance().Play(SOUND_CHAIN_FAIL);
+		return true;
 	}
+	return false;
 }
 
 void Player::InitInput()
@@ -133,53 +135,37 @@ void Player::InitInput()
 		if (!alreadyMoved && !MenuManager::GetInstance().BlockPlayer())
 			{
 				GetComponent<MovementComponent>()->SetDirection(Vector2i(0,-1) * GetConfusionEffect());
-				if (!MusicManager::GetInstance().TriggerEvent())
-				{
-					GetComponent<MovementComponent>()->SetDirection(Vector2i(0,0));
-				}
 				alreadyMoved = true;
 			}}, {Event::KeyPressed, Keyboard::Up}),
 
-		  ActionData("HautR", [this]() { alreadyMoved = false; }, {Event::KeyReleased, Keyboard::Up}),
+		  ActionData("HautR", [this]() { alreadyMoved = false; GetComponent<MovementComponent>()->SetDirection(Vector2i(0,0)); }, {Event::KeyReleased, Keyboard::Up}),
 
 		  ActionData("Bas", [this]() { if (!alreadyMoved && !MenuManager::GetInstance().BlockPlayer())
 			{
 				 GetComponent<MovementComponent>()->SetDirection(Vector2i(0,1) * GetConfusionEffect());
-				 if (!MusicManager::GetInstance().TriggerEvent())
-				 {
-					 GetComponent<MovementComponent>()->SetDirection(Vector2i(0, 0));
-				 }
 				 alreadyMoved = true;
 			}; }, {Event::KeyPressed, Keyboard::Down}),
 
-		  ActionData("BasR", [this]() { alreadyMoved = false; }, {Event::KeyReleased, Keyboard::Down}),
+		  ActionData("BasR", [this]() { alreadyMoved = false; GetComponent<MovementComponent>()->SetDirection(Vector2i(0,0)); }, {Event::KeyReleased, Keyboard::Down}),
 
 
 
 		  ActionData("Droite", [this]() { if (!alreadyMoved && !MenuManager::GetInstance().BlockPlayer())
 			{
 				 GetComponent<MovementComponent>()->SetDirection(Vector2i(1,0) * GetConfusionEffect());
-				 if (!MusicManager::GetInstance().TriggerEvent())
-				 {
-					 GetComponent<MovementComponent>()->SetDirection(Vector2i(0, 0));
-				 }
 				 alreadyMoved = true;
 			}}, {Event::KeyPressed, Keyboard::Right}),
 
-		  ActionData("DroiteR", [this]() { alreadyMoved = false; }, {Event::KeyReleased, Keyboard::Right}),
+		  ActionData("DroiteR", [this]() { alreadyMoved = false; GetComponent<MovementComponent>()->SetDirection(Vector2i(0,0)); }, {Event::KeyReleased, Keyboard::Right}),
 
 
 		  ActionData("Gauche", [this]() { if (!alreadyMoved && !MenuManager::GetInstance().BlockPlayer())
 			{
 				 GetComponent<MovementComponent>()->SetDirection(Vector2i(-1,0) * GetConfusionEffect());
-				 if (!MusicManager::GetInstance().TriggerEvent())
-				 {
-					 GetComponent<MovementComponent>()->SetDirection(Vector2i(0, 0));
-				 }
 				 alreadyMoved = true;
 			}; }, {Event::KeyPressed, Keyboard::Left}),
 
-		  ActionData("GaucheR", [this]() { alreadyMoved = false; }, {Event::KeyReleased, Keyboard::Left}),
+		  ActionData("GaucheR", [this]() { alreadyMoved = false; GetComponent<MovementComponent>()->SetDirection(Vector2i(0,0)); }, {Event::KeyReleased, Keyboard::Left}),
 
 		});
 
@@ -187,6 +173,8 @@ void Player::InitInput()
 	new ActionMap("TempDebug", {
 		ActionData("temp1", [this]() { Map::GetInstance().OpenPrepared(); }, {Event::KeyPressed, Keyboard::Num0}),
 		ActionData("slot1", [this]() { inventory->GetSlot(ST_SHOVEL)->Toggle(); }, {Event::KeyPressed, Keyboard::Num1}),
+		ActionData("slot2", [this]() { MusicManager::GetInstance().SpeedDown(); }, {Event::KeyPressed, Keyboard::Num2}),
+		ActionData("slot3", [this]() { MusicManager::GetInstance().SpeedUp(); }, {Event::KeyPressed, Keyboard::Num3}),
 		ActionData("DecreaseLife", [this]() { GetComponent<LifeComponent>()->ChangeHealth(-50); UpdateLife(); }, {Event::KeyPressed, Keyboard::Subtract}),
 		ActionData("Increase Life", [this]() { GetComponent<LifeComponent>()->ChangeHealth(50); UpdateLife(); }, {Event::KeyPressed, Keyboard::Add}),
 	});

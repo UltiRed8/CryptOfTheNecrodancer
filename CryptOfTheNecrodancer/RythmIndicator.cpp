@@ -1,23 +1,38 @@
 #include "RythmIndicator.h"
 #include "TimerManager.h"
+#include "MusicManager.h"
 
-RythmIndicator::RythmIndicator(const RythmIndicatorDirection& _direction,Menu* _owner, const string& _path) : UIImage(STRING_ID("ARythmIndicator"), GetPositionWithDirection(_direction),{12.f,50.f}, _path)
+RythmIndicator::RythmIndicator(const RythmIndicatorDirection& _direction, Menu* _owner, const string& _path, const float _speed) : UIImage(STRING_ID("ARythmIndicator"), GetPositionWithDirection(_direction),{12.f,50.f}, _path)
 {
 	directionType = _direction;
 	SetDirectionWithDirectionType();
 	SetOwner(_owner);
 	Register();
 
-	shape->setFillColor({ 255,255,255,0 });
 	opacity = 0;
-	speed = { 0.5f,0.5f };
+	shape->setFillColor({ 255,255,255,(Uint8)opacity });
+	speed = _speed;
+}
 
-	isRunning = true;
+RythmIndicator::RythmIndicator(const RythmIndicatorDirection& _direction, Menu* _owner, const string& _path, const float _speed, const float _posX) : UIImage(STRING_ID("ARythmIndicator"), Vector2f(0.0f, 0.0f), {12.f,50.f}, _path)
+{
+	directionType = _direction;
+	SetDirectionWithDirectionType();
+	SetOwner(_owner);
+	Register();
+
+	Vector2f _position = GetPositionWithDirection(_direction);
+	_position.x = _posX - 6.0f;
+	shape->setPosition(_position);
+
+	opacity = abs(_position.x / (SCREEN_WIDTH / 2.0f)) * 255;
+	shape->setFillColor({ 255,255,255,(Uint8)opacity });
+	speed = _speed;
 }
 
 void RythmIndicator::Update(const Vector2i& _mousePosition)
 {
-	if (!isRunning) return;
+	if (!MusicManager::GetInstance().IsRunning()) return;
 
 	const float _deltaTime = TimerManager::GetInstance().GetDeltaTime();
 	const Vector2f& _currentPosition = shape->getPosition();
@@ -38,14 +53,4 @@ void RythmIndicator::Update(const Vector2i& _mousePosition)
 	}
 
 	shape->move({ speed * direction * _deltaTime});
-}
-
-void RythmIndicator::Resume()
-{
-	isRunning = true;
-}
-
-void RythmIndicator::Pause()
-{
-	isRunning = false;
 }

@@ -18,7 +18,7 @@ public:
 	{
 		type = _type;
 		item = new UIImage(STRING_ID("item_" + to_string(type) + "_slot"), Vector2f(0.0f, 0.0f), Vector2f(30.0f, 33.0f) * 3.0f, "");
-		isVisible = true;
+		isVisible = false;
 		item->SetOwner(_owner);
 		item->Register();
 	}

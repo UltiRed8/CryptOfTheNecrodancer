@@ -53,9 +53,6 @@
 
 #define LOBBY "Assets/Saved/Lobby.txt"
 
-#define PATH_SHOVEL "UI/Shovel.png"
-#define PATH_SWORD "UI/Sword.png"
-
 vector<Drawable*> MenuManager::GetDrawables()
 {
 	vector<Drawable*> _drawables;
@@ -155,11 +152,6 @@ void MenuManager::InitHUD()
 		//Diamond
 		new UIImage("Diamond", Vector2f(SCREEN_WIDTH - 55 * 3, SCREEN_HEIGHT - 55 * 11.6), Vector2f(25.0f, 25.0f) * 2.0f, DIAMOND),
 		new UIText("DiamondUpdateText", Vector2f(SCREEN_WIDTH - 55 * 1.2, SCREEN_HEIGHT - 55 * 11.3), WHITE_COLOR, "x " ,25, FONT, false, dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetRessources()->GetDiamonds()),
-
-	/*	new UIImage("Shovel", Vector2f(10, 10), Vector2f(90, 99), PATH_SHOVEL),
-		new UIImage("Sword", Vector2f(120, 10), Vector2f(90, 99), PATH_SWORD),*/
-
-
 		});
 
 	_hud->Open();
@@ -202,13 +194,6 @@ void MenuManager::InitMenuPause()
 						}
 					}
 				}
-				for (UIElement* _element : Get("HUD")->GetAllValues())
-				{
-					if (RythmIndicator* _indicator = dynamic_cast<RythmIndicator*>(_element))
-					{
-						_indicator->Pause();
-					}
-				}
 			},
 			{Event::KeyPressed, Keyboard::Escape}),
 		ActionData("Select", [this]()
@@ -226,13 +211,6 @@ void MenuManager::InitMenuPause()
 				{
 					_animation->GetTimer()->Resume();
 				}
-			}
-		}
-		for (UIElement* _element : Get("HUD")->GetAllValues())
-		{
-			if (RythmIndicator* _indicator = dynamic_cast<RythmIndicator*>(_element))
-			{
-				_indicator->Resume();
 			}
 		}
 		};
@@ -301,13 +279,6 @@ void MenuManager::Delete()
 
 void MenuManager::GoToLobby()
 {
-	for (UIElement* _element : Get("HUD")->GetAllValues())
-	{
-		if (RythmIndicator* _indicator = dynamic_cast<RythmIndicator*>(_element))
-		{
-			_indicator->Resume();
-		}
-	}
 	if (Map::GetInstance().GetCurrentZone() == Z_LOBBY)	return;
 	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
 	_player->ResetLife();
@@ -329,13 +300,6 @@ void MenuManager::Restart()
 				{
 					_animation->GetTimer()->Resume();
 				}
-			}
-		}
-		for (UIElement* _element : Get("HUD")->GetAllValues())
-		{
-			if (RythmIndicator* _indicator = dynamic_cast<RythmIndicator*>(_element))
-			{
-				_indicator->Resume();
 			}
 		}
 		return;

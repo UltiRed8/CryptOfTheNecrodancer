@@ -20,6 +20,10 @@ class Player : public Living
 	int heartIndex;
 
 public:
+	bool GetPressingKeys()
+	{
+		return alreadyMoved;
+	}
 	bool GetIsConfuse() const
 	{
 		return isConfuse;
@@ -65,7 +69,7 @@ public:
 	~Player();
 
 public :
-	void ResetChainMultiplier();
+	bool ResetChainMultiplier();
 	void InitInput();
 	void InitLife();
 

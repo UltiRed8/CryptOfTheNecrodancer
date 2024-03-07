@@ -1,7 +1,7 @@
 #include "MovementComponent.h"
 #include"TimerManager.h"
 
-MovementComponent::MovementComponent(Entity* _owner, const int _speed ):Component(_owner)
+MovementComponent::MovementComponent(Entity* _owner, const int _speed, const bool _shouldResetDirection):Component(_owner)
 {
 	canMove = true;
 	direction = new Vector2i(0, 0);
@@ -9,6 +9,7 @@ MovementComponent::MovementComponent(Entity* _owner, const int _speed ):Componen
 	reactions = vector<CollisionReaction>();
 	speed = _speed;
 	oldPosition = Vector2f();
+	shouldResetDirection = _shouldResetDirection;
 }
 
 
@@ -28,7 +29,14 @@ void MovementComponent::Move()
 	const Vector2f& _position = owner->GetPosition() + Vector2f(_directionX, _directionY);
 	oldPosition = _shape->getPosition();
 	_shape->setPosition(_position);
-	direction = new Vector2i(0, 0);
+	if (shouldResetDirection)
+	{
+		if (direction)
+		{
+			delete direction;
+		}
+		direction = new Vector2i(0, 0);
+	}
 }
 
 void MovementComponent::UndoMove()

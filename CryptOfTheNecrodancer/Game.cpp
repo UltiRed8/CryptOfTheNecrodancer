@@ -56,8 +56,8 @@ void Game::Start()
 	Init();
 
 	// TODO temporaire
-	MenuManager::GetInstance().ToggleWarningSeizure();	//Warning Seizure
-	Map::GetInstance().Open(Z_LOBBY);
+	//MenuManager::GetInstance().ToggleWarningSeizure();	//Warning Seizure
+	//Map::GetInstance().Open(Z_LOBBY);
 
 	//calibration = new Calibration([&]() {EndCalibration(); });
 	EndCalibration();

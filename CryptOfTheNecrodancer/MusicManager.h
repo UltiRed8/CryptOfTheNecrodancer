@@ -4,44 +4,46 @@
 #include "IManager.h"
 #include "Singleton.h"
 #include "Timer.h"
-
+#include <fstream>
 #include <SFML/Audio.hpp>
 
-enum RythmType
-{
-	RT_NONE, RT_FREEMOVE, RT_ALL
-};
+using namespace std;
 
 class MusicManager : public IManager<string, MusicData>, public Singleton<MusicManager>
 {
-	MusicData* currentMain;
-	MusicData* currentShopkeeper;
-	RythmType rythmType;
-
 	int* musicPackName;
+	bool isFreeMove;
+	float latency;
+	float* volume;
+	bool isRunning;
 	float* acceptDelay;
 	float minAcceptDelay;
 	float maxAcceptDelay;
-	int currentBPM;
-	bool isRunning;
 	float playSpeed;
 	float tempVolume;
-	float* volume;
-	float currentTime;
-	float maxTime;
-	Timer* rythmLoop;
 	float delta;
-	float latency;
-	int beatDelay;
-	bool didEvent;
-	bool needsAnimationUpdate;
+	vector<MusicData*> prepared;
+	vector<int> beats;
+	int beatIndex;
+	int currentBeat;
+	int lastBeat;
+	bool isLoop;
+	int largestWait;
+	int shortestWait;
+
+	int first;
+	int last;
+	int lastMaxValue;
 
 public:
+	bool IsRunning() const
+	{
+		return isRunning;
+	}
 	float* GetAcceptDelay() const
 	{
 		return acceptDelay;
 	}
-
 	void SetAcceptDelay(const float _acceptDelay)
 	{
 		*acceptDelay += _acceptDelay;
@@ -55,7 +57,6 @@ public:
 			*acceptDelay = maxAcceptDelay;
 		}
 	}
-
 	float* GetVolume() const
 	{
 		return volume;
@@ -68,15 +69,6 @@ public:
 			_music->setVolume(*volume);
 		}
 	}
-	int GetCurrentBPM() const
-	{
-		return currentBPM;
-	}
-	void SetCurrentBPM(const int _bpm)
-	{
-		currentBPM = _bpm;
-	}
-
 	int* GetMusicPackName() const
 	{
 		return musicPackName;
@@ -111,23 +103,26 @@ public:
 	~MusicManager();
 
 public:
-	MusicData* GetMusic(const string& _path, const Vector2f& _position);
-	void PrepareMain(const string& _path, const int _bpm, const bool _withShopkeeper = false, const bool _shouldLoop = false);
-	void StopAll();
-	void UpdateEntitiesAnimations();
+	void PrepareMusic(const string& _path, const bool _withShopkeeper = false, const bool _shouldLoop = false);
+	void Prepare(const string& _path, const bool _isShopkeeper, const bool _shouldLoop);
+	void Play();
+	void Play(const string& _path, const bool _shouldLoop);
 	void Update();
+	void StopAll();
 	void Toggle();
 	void Pause();
 	void Unpause();
-	void Play();
 	void SpeedUp();
 	void SpeedDown();
 	void SetPlaySpeed(const float _newValue);
 	void IncreaseVolume();
 	void DecreaseVolume();
 	void ToggleVolume();
-	bool TriggerEvent();
+	void TriggerEvent();
 
 private:
-	void UpdateLoop();
+	void SpawnBars(const int _delay);
+	MusicData* GetMusic(const string& _path, const Vector2f& _position);
+	void UpdateEntitiesAnimations(const int _delay);
+	void Load(const string& _path);
 };
