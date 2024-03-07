@@ -4,6 +4,10 @@
 #include "InputManager.h"
 #include "TimerManager.h"
 #include "MusicManager.h"
+#include "MenuManager.h"
+
+#define PATH_HEART1 "UI/RythmHearts0.png"
+#define PATH_HEART2 "UI/RythmHearts1.png"
 
 Calibration::Calibration(const function<void()> _endCallback)
 {
@@ -52,6 +56,12 @@ void Calibration::Start()
 	timer = new Timer(STRING_ID("Calibration"), [&]() {
 		SoundManager::GetInstance().Play("Assets/Sounds/en_general_hit.ogg");
 		currentTry++;
+		Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("Calibration")->Get("RythmHearts"))->GetShape();
+		TextureManager::GetInstance().Load(_shape, PATH_HEART2);
+		new Timer("CalibHeart", [this]() {
+			Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("Calibration")->Get("RythmHearts"))->GetShape();
+			TextureManager::GetInstance().Load(_shape, PATH_HEART1);
+		}, seconds(0.1f), 1, true);
 		}, milliseconds(500),tries, false);
 }
 

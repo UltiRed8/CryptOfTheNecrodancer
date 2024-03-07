@@ -88,6 +88,12 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 			Slide();
 			return true;
 			}),
+			_water->Destroy();
+			Map::GetInstance().AddFloorAt(GetPosition());
+			SetIsStun();
+			// MenuManager::GetInstance().
+			return false;
+		}),
 		CollisionReaction(ET_ENEMY, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
 			if (GetComponent<DamageComponent>()->Attack(_entity))

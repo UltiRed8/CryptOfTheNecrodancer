@@ -672,7 +672,6 @@ void Generator::GenUpdate()
 			[&]() { GenerateWater(); },
 			// 
 			[&]() { GenerateIce(); },
-			
 			// 15- erase overlappings
 			[&]() { EraseOverlappings(); },
 			// TODO 3d effect

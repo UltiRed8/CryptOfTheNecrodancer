@@ -12,9 +12,9 @@ LifeComponent::LifeComponent(Entity* _owner, const function<void()> _deathCallba
 	deathcallback = _deathCallback;
 	isAlive = true;
 	if (_isPlayer) return;
-	healthBar = new ProgressBar(STRING_ID("LifeEnemy"), PT_LEFT, Vector2f(_owner->GetPosition().x, _owner->GetPosition().y - TILE_SIZE.y / 2.f), Vector2f(300.0f, 50.0f) / 2.0f,
+	pBPos = Vector2f(_owner->GetPosition().x, _owner->GetPosition().y - TILE_SIZE.y / 2.f);
+	healthBar = new ProgressBar(STRING_ID("LifeEnemy"), PT_LEFT, pBPos, Vector2f(50.0f, 10.0f),
 		EMPTY, FULL, currentHealth);
-	//healthBar.tamere; //TODO
 }
 
 LifeComponent::~LifeComponent()
@@ -33,12 +33,15 @@ void LifeComponent::Death()
 
 void LifeComponent::Update()
 {
+	pBPos = Vector2f(owner->GetPosition().x, owner->GetPosition().y - TILE_SIZE.y / 2.f);
+	healthBar->SetPosition(pBPos);
 }
 
 bool LifeComponent::ChangeHealth(const float _byAmount)
 {
 	if (invulnerable) return false;
 	*currentHealth += _byAmount;
+	healthBar->SetValue(*currentHealth);
 	if (*currentHealth <= 0.0f)
 	{
 		*currentHealth = 0.0f;

@@ -44,10 +44,11 @@ void Entity::Update()
 	{
 		_animationComponent->GetCurrent()->Replay();
 	}
-	
-	for (Component* _component : components)
+
+
+	/*if (Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("player")))
 	{
-		if (type == ET_PLAYER)
+		if (_player->GetIsStun())
 		{
 			Player* _player = static_cast<Player*>(EntityManager::GetInstance().Get("Player"));
 			if (_player->GetIsStun() && _component == _player->GetComponent<MovementComponent>())
@@ -55,6 +56,10 @@ void Entity::Update()
 				return;
 			}
 		}
+	}*/
+
+	for (Component* _component : components)
+	{
 		_component->Update();
 	}
 }
