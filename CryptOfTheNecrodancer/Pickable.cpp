@@ -8,7 +8,7 @@
 #define PATH_COIN "Entities/Coins.png"
 #define PATH_DIAMOND "UI/Diamond.png"
 
-Pickable::Pickable(const int _amount, const PickableType& _type, const string& _id, const Vector2f& _pos, const string& _path) : Placeable(_id,_path, _pos)
+Pickable::Pickable(const int _amount, const PickableType& _type, const string& _id, const Vector2f& _pos, const string& _path) : Placeable(_id,_path, _pos * Vector2f(0.0f,-0.5f * TILE_SIZE.y))
 {
 	amount = _amount;
 	pickableType = _type;

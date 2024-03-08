@@ -168,7 +168,7 @@ void Generator::Enable3DEffect()
 		Entity* _entity = GetEntityAt(_wall->GetPosition() - Vector2f(0, -1) * TILE_SIZE);
 		if (_entity)
 		{
-			if (_entity->GetType() == ET_FLOOR || _entity->GetType() == ET_WATER)
+			if (_entity->GetType() == ET_FLOOR || _entity->GetType() == ET_WATER || _entity->GetType() == ET_ICE)
 			{
 				_wall->Enable3D();
 			}
