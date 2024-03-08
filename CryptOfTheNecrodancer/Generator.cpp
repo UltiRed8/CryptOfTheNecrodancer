@@ -656,7 +656,6 @@ void Generator::GenUpdate()
 			// 6- get spawnable positions
 			[&]() { GetSpawnablePositions(); },
 			// 7- generate diamonds
-			[&]() { GenerateDiamond(); },
 			// 8- spawn player
 			[&]() { SpawnPlayer(); },
 			// 9- spawn stairs
@@ -681,6 +680,8 @@ void Generator::GenUpdate()
 			// TODO 3d effect
 			[&]() { Enable3DEffect(); }, 
 			// end dungeon generation
+			[&]() { GenerateDiamond(); },
+
 			[&]() { Map::GetInstance().EndDungeonGeneration(); },
 			
 
