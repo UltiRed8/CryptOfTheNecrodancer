@@ -87,12 +87,6 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 			Ice* _ice = dynamic_cast<Ice*>(_entity);
 			Slide();
 			return true;
-			}),
-			_water->Destroy();
-			Map::GetInstance().AddFloorAt(GetPosition());
-			SetIsStun();
-			// MenuManager::GetInstance().
-			return false;
 		}),
 		CollisionReaction(ET_ENEMY, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
@@ -144,7 +138,9 @@ void Player::ResetChainMultiplier()
 void Player::Slide()
 {
 	MovementComponent* _movement = GetComponent<MovementComponent>();
-	Map::GetInstance().GetEntityAt(GetPosition())->GetType() == ET_ICE ? _movement->SetDirection(_movement->GetOldDirection()) : _movement->SetDirection(Vector2i(0, 0));
+	Map::GetInstance().GetEntityAt(GetPosition())->GetType() == ET_ICE 
+		? _movement->SetDirection(_movement->GetOldDirection()) : _movement->SetDirection(Vector2i(0, 0));
+	alreadyMoved = true;
 }
 
 void Player::InitInput()
