@@ -8,6 +8,7 @@ MovementComponent::MovementComponent(Entity* _owner, const int _speed, const boo
 	collision = nullptr;
 	reactions = vector<CollisionReaction>();
 	speed = _speed;
+	oldPosition = Vector2f(0.0f, 0.0f);
 	oldDirection = Vector2i(0, 0);
 	shouldResetDirection = _shouldResetDirection;
 }

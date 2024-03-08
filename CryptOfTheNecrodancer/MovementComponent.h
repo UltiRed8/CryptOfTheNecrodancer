@@ -15,7 +15,8 @@ class MovementComponent :public Component
 	Vector2i* direction;
 	CollisionComponent* collision;
 	vector<CollisionReaction> reactions;
-	Vector2i oldPosition;
+	Vector2f oldPosition;
+	Vector2i oldDirection;
 	bool shouldResetDirection;
 
 public:
