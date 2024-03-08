@@ -132,6 +132,9 @@ void MusicManager::Prepare(const string& _path, const bool _isShopkeeper, const 
 {
 	if (_path == "") return;
 	beatIndex = 0;
+
+	StopAll();
+	
 	Vector2f _position = Vector2f(0.0f, 0.0f);
 	string _musicPath = to_string(*musicPackName) + "/" + _path;
 

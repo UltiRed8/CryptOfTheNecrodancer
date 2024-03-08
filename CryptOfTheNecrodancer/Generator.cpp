@@ -7,6 +7,8 @@
 #include "Map.h"
 #include "Trap.h"
 #include "Water.h"
+#include "Ice.h"
+#include "HotCoals.h"
 
 #define PATH_SHOP_TILE "Dungeons/ShopTile.png"
 #define PATH_UPGRADE_TILE "Dungeons/UpgradeTile.png"
@@ -226,11 +228,68 @@ void Generator::GenerateWater()
 
 void Generator::GenerateFire()
 {
+	loadingText->GetText()->setString("Generating Water");
 
+	for (Room* _room : rooms)
+	{
+		int _waterTileNumberPerRoom = Random(5, 0) + 1;
+
+		for (int _i = 0; _i < _waterTileNumberPerRoom; _i++)
+		{
+			if (spawnablePositions.empty()) return;
+			// je prends un position spawnable aléatoire
+			Vector2f _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
+			// je supprime sa position de spawnablePositions
+			EraseElement(spawnablePositions, _position);
+			// je supprime cette tile
+			Entity* _entity = GetEntityAt(_position);
+			if (_entity)
+			{
+				if (Tile* _floor = dynamic_cast<Tile*>(_entity))
+				{
+					EraseElement(floors, _floor);
+					EraseElement(_room->GetFloor(), _floor);
+					_floor->Destroy();
+
+				}
+			}
+			others.push_back(new HotCoals(_position));
+		}
+
+	}
 }
 
 void Generator::GenerateIce()
 {
+	loadingText->GetText()->setString("Generating Water");
+
+	for (Room* _room : rooms)
+	{
+		int _waterTileNumberPerRoom = Random(5, 0) + 1;
+
+		for (int _i = 0; _i < _waterTileNumberPerRoom; _i++)
+		{
+			if (spawnablePositions.empty()) return;
+			// je prends un position spawnable aléatoire
+			Vector2f _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
+			// je supprime sa position de spawnablePositions
+			EraseElement(spawnablePositions, _position);
+			// je supprime cette tile
+			Entity* _entity = GetEntityAt(_position);
+			if (_entity)
+			{
+				if (Tile* _floor = dynamic_cast<Tile*>(_entity))
+				{
+					EraseElement(floors, _floor);
+					EraseElement(_room->GetFloor(), _floor);
+					_floor->Destroy();
+
+				}
+			}
+			others.push_back(new Ice(_position));
+		}
+
+	}
 }
 
 
@@ -614,6 +673,9 @@ void Generator::GenUpdate()
 			[&]() { UpdateDoors(); },
 			// 16- Water generation
 			[&]() { GenerateWater(); },
+			// 
+			[&]() { GenerateIce(); },
+
 			// 15- erase overlappings
 			[&]() { EraseOverlappings(); },
 			// TODO 3d effect

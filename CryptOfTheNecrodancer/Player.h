@@ -85,6 +85,7 @@ public:
 	~Player();
 
 public :
+	void Slide();
 	bool ResetChainMultiplier();
 	void InitInput();
 	void InitLife();

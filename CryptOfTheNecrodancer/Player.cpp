@@ -15,6 +15,8 @@
 #include "Heart.h"
 #include "WindowManager.h"
 #include "Water.h"
+#include "Ice.h"
+#include "HotCoals.h"
 
 #define PATH_PLAYER "Entities/PlayerSprite.png"
 #define PATH_SHADOW "Entities/Shadow.png"
@@ -75,11 +77,16 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 		}),
 		CollisionReaction(ET_WATER, [this](Entity* _entity) {
 			Water* _water = dynamic_cast<Water*>(_entity);
-			_water->Destroy();
+			_water->DestroyAfterDelay(0.5f);
+			WindowManager::GetInstance().Shake(25);
 			Map::GetInstance().AddFloorAt(GetPosition());
 			SetIsStun();
-			// MenuManager::GetInstance().
-			return false;
+			return true;
+			}),
+		CollisionReaction(ET_ICE, [this](Entity* _entity) {
+			Ice* _ice = dynamic_cast<Ice*>(_entity);
+			Slide();
+			return true;
 		}),
 		CollisionReaction(ET_ENEMY, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
@@ -128,6 +135,14 @@ bool Player::ResetChainMultiplier()
 		return true;
 	}
 	return false;
+}
+
+void Player::Slide()
+{
+	MovementComponent* _movement = GetComponent<MovementComponent>();
+	Map::GetInstance().GetEntityAt(GetPosition())->GetType() == ET_ICE 
+		? _movement->SetDirection(_movement->GetOldDirection()) : _movement->SetDirection(Vector2i(0, 0));
+	alreadyMoved = true;
 }
 
 void Player::InitInput()

@@ -8,7 +8,8 @@ MovementComponent::MovementComponent(Entity* _owner, const int _speed, const boo
 	collision = nullptr;
 	reactions = vector<CollisionReaction>();
 	speed = _speed;
-	oldPosition = Vector2f();
+	oldPosition = Vector2f(0.0f, 0.0f);
+	oldDirection = Vector2i(0, 0);
 	shouldResetDirection = _shouldResetDirection;
 }
 
@@ -28,6 +29,7 @@ void MovementComponent::Move()
 	const float _directionY = (direction->y * speed * _tileSize.y) ;
 	const Vector2f& _position = owner->GetPosition() + Vector2f(_directionX, _directionY);
 	oldPosition = _shape->getPosition();
+	oldDirection = Vector2i(_directionX, _directionY);
 	_shape->setPosition(_position);
 	if (shouldResetDirection)
 	{

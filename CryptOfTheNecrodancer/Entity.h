@@ -77,6 +77,7 @@ public:
 
 	void SetTexture(const string& _path)
 	{
+		if (_path == "") return;
 		TextureManager::GetInstance().Load(shape, _path);
 	}
 

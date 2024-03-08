@@ -9,6 +9,12 @@ class ActionMap : public IManager<string, Action>, public IManagable<string>
 {
 	vector<Action*> actions;
 
+
+	vector<Action*> GetActions()
+	{
+		return actions;
+	}
+
 public:
 	ActionMap(const string& _name, const vector<ActionData>& _actions = vector<ActionData>());
 	~ActionMap();
