@@ -182,7 +182,7 @@ private:
 	void SpawnPlayer();
 	void SpawnStairs();
 	void SpawnTraps(const int _amount);
-	void Temp();
+	void Enable3DEffect();
 
 public:
 	void GenUpdate();

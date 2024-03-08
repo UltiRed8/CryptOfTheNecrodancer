@@ -14,7 +14,7 @@ Wall::Wall(const Vector2f& _position, const WallType& _type, const string& _zone
 	visuals = new RectangleShape(TILE_SIZE);
 	visuals->setPosition(_position + Vector2f(0.0f, -0.5f) * TILE_SIZE);
 
-	zIndex = 2;
+	zIndex = 0;
 
 	shape->setFillColor(Color::Transparent);
 

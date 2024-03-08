@@ -151,7 +151,7 @@ void Generator::GenerateLobby()
 
 		SetAllFloorOriginColor();
 		UpdateDoors();
-		Temp();
+		Enable3DEffect();
 		MenuManager::GetInstance().ToggleLoading();
 		Map::GetInstance().UpdateLights(50);
 		CameraManager::GetInstance().Get("PlayerCamera")->SetCameraToPlayer();
@@ -159,14 +159,14 @@ void Generator::GenerateLobby()
 	}, seconds(2.0f), 1, true);
 }
 
-void Generator::Temp()
+void Generator::Enable3DEffect()
 {
 	for (Wall* _wall : walls)
 	{
 		Entity* _entity = GetEntityAt(_wall->GetPosition() - Vector2f(0, -1) * TILE_SIZE);
 		if (_entity)
 		{
-			if (_entity->GetType() == ET_FLOOR)
+			if (_entity->GetType() == ET_FLOOR || _entity->GetType() == ET_WATER)
 			{
 				_wall->Enable3D();
 			}
@@ -195,12 +195,12 @@ void Generator::GenerateRooms(const int _roomCount)
 
 void Generator::GenerateWater()
 {
+	return;
 	loadingText->GetText()->setString("Generating Water");
 
 	for (Room* _room : rooms)
 	{
 		int _waterTileNumberPerRoom = Random(5, 0) + 1;
-
 		for (int _i = 0; _i < _waterTileNumberPerRoom; _i++)
 		{
 			if (spawnablePositions.empty()) return;
@@ -217,12 +217,10 @@ void Generator::GenerateWater()
 					EraseElement(floors, _floor);
 					EraseElement(_room->GetFloor(), _floor);
 					_floor->Destroy();
-
 				}
 			}
 			others.push_back(new Water(_position));
 		}
-
 	}
 }
 
@@ -615,13 +613,12 @@ void Generator::GenUpdate()
 			// 14- update doors
 			[&]() { UpdateDoors(); },
 			// 16- Water generation
-			//[&]() { GenerateWater(); },
+			[&]() { GenerateWater(); },
 			// 15- erase overlappings
 			[&]() { EraseOverlappings(); },
 			// TODO 3d effect
-			[&]() { Temp(); }, 
+			[&]() { Enable3DEffect(); }, 
 			// end dungeon generation
-			[&]() { Temp(); }, // TODO 3d effect // TODO rename
 			[&]() { Map::GetInstance().EndDungeonGeneration(); },
 			
 
