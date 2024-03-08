@@ -26,12 +26,14 @@ void Skeleton::SelectDirection()
 
 	Vector2i _direction = Vector2i(0, 0);
 
-	if (_playerPos.y != _skeletonPos.y)
+	int _randomDirection = Random(1, 0);
+
+	if (_playerPos.y != _skeletonPos.y && _randomDirection)
 	{
 		_direction.y = _playerPos.y - _skeletonPos.y;
 		_direction.y = (_direction.y > 0) ? 1 : -1;
 	}
-	else
+	else if (_playerPos.x != _skeletonPos.x)
 	{
 		_direction.x = _playerPos.x - _skeletonPos.x;
 		_direction.x = (_direction.x > 0) ? 1 : -1;
