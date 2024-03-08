@@ -7,6 +7,9 @@
 #define SOUND_DIAMOND_PICKED_UP "Assets/Sounds/sfx_pickup_diamond.ogg"
 #define PATH_COIN "Entities/Coins.png"
 #define PATH_DIAMOND "UI/Diamond.png"
+#define PATH_SHADOW "Entities/Shadow.png"
+
+#define PI 3.14159265358979323846
 
 Pickable::Pickable(const int _amount, const PickableType& _type, const string& _id, const Vector2f& _pos, const string& _path) : Placeable(_id,_path, _pos)
 {
@@ -27,6 +30,7 @@ Pickable::Pickable(const int _amount, const PickableType& _type, const string& _
 	}
 
 	type = ET_PICKABLE;
+
 }
 
 void Pickable::PickUp()

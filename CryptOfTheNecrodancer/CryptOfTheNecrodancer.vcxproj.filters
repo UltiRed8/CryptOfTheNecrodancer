@@ -142,12 +142,6 @@
     <Filter Include="Source Files\Object\Entity\Trap">
       <UniqueIdentifier>{badf7bb1-a86d-414c-b4cb-492c40187d77}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Object\Entity\Wall">
-      <UniqueIdentifier>{4d1668c3-65ca-4a3e-92b2-49f05bdbd9ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Object\Entity\Pickable">
-      <UniqueIdentifier>{8ac0a34a-1cb6-405b-ac96-dd78ebce8e1e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Object\Entity\Living">
       <UniqueIdentifier>{0c150cc1-5a8e-4a20-9673-7268dc567feb}</UniqueIdentifier>
     </Filter>
@@ -175,15 +169,6 @@
     <Filter Include="Source Files\Object\Entity\Living\Enemy\Slime">
       <UniqueIdentifier>{d8fb313d-8653-43f4-af62-bf5f26672f1e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Object\Entity\Placeable">
-      <UniqueIdentifier>{d057bd98-d6a4-49cd-9fea-9360dd118a48}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Object\Entity\Placeable\Tile">
-      <UniqueIdentifier>{9c82ab8b-8589-4998-a1c9-5684a437cfd3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Object\Entity\Placeable\Wall">
-      <UniqueIdentifier>{bcacc391-2f6f-4549-a68b-01aeec8908d3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Inventory\Item\Bomb">
       <UniqueIdentifier>{905074a0-41c9-4324-ae3c-98e3f718f0b6}</UniqueIdentifier>
     </Filter>
@@ -196,11 +181,23 @@
     <Filter Include="Source Files\Object\UiElement\UIImage\RythmIndicator">
       <UniqueIdentifier>{66991929-a401-436c-8072-c220b1b198c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Object\Entity\Placeable\Wall\Torch">
-      <UniqueIdentifier>{870be7e5-08f0-4e28-a9eb-3fcbaeed3952}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Object\UiElement\UIAnimation">
       <UniqueIdentifier>{f7ae8b73-a64f-40f5-a905-d62f63a8c25c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Able\Pickable">
+      <UniqueIdentifier>{8ac0a34a-1cb6-405b-ac96-dd78ebce8e1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Able\Placeable">
+      <UniqueIdentifier>{d057bd98-d6a4-49cd-9fea-9360dd118a48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Able\Placeable\Tile">
+      <UniqueIdentifier>{9c82ab8b-8589-4998-a1c9-5684a437cfd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Able\Placeable\Wall">
+      <UniqueIdentifier>{bcacc391-2f6f-4549-a68b-01aeec8908d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Able\Placeable\Wall\Torch">
+      <UniqueIdentifier>{870be7e5-08f0-4e28-a9eb-3fcbaeed3952}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -376,7 +373,7 @@
       <Filter>Source Files\Object\Entity\Living\Player</Filter>
     </ClCompile>
     <ClCompile Include="Pickable.cpp">
-      <Filter>Source Files\Object\Entity\Pickable</Filter>
+      <Filter>Source Files\Able\Pickable</Filter>
     </ClCompile>
     <ClCompile Include="Skeleton.cpp">
       <Filter>Source Files\Object\Entity\Living\Enemy\Skeleton</Filter>
@@ -391,13 +388,13 @@
       <Filter>Source Files\Object\Entity\Living\NPC</Filter>
     </ClCompile>
     <ClCompile Include="Placeable.cpp">
-      <Filter>Source Files\Object\Entity\Placeable</Filter>
+      <Filter>Source Files\Able\Placeable</Filter>
     </ClCompile>
     <ClCompile Include="Wall.cpp">
-      <Filter>Source Files\Object\Entity\Placeable\Wall</Filter>
+      <Filter>Source Files\Able\Placeable\Wall</Filter>
     </ClCompile>
     <ClCompile Include="Tile.cpp">
-      <Filter>Source Files\Object\Entity\Placeable\Tile</Filter>
+      <Filter>Source Files\Able\Placeable\Tile</Filter>
     </ClCompile>
     <ClCompile Include="Bomb.cpp">
       <Filter>Source Files\Inventory\Item\Bomb</Filter>
@@ -412,7 +409,7 @@
       <Filter>Source Files\Object\UiElement\UIImage\RythmIndicator</Filter>
     </ClCompile>
     <ClCompile Include="Torch.cpp">
-      <Filter>Source Files\Object\Entity\Placeable\Wall\Torch</Filter>
+      <Filter>Source Files\Able\Placeable\Wall\Torch</Filter>
     </ClCompile>
     <ClCompile Include="UIAnimation.cpp">
       <Filter>Source Files\Object\UiElement\UIAnimation</Filter>
@@ -609,7 +606,7 @@
       <Filter>Source Files\Object\Entity\Trap</Filter>
     </ClInclude>
     <ClInclude Include="Pickable.h">
-      <Filter>Source Files\Object\Entity\Pickable</Filter>
+      <Filter>Source Files\Able\Pickable</Filter>
     </ClInclude>
     <ClInclude Include="WindowManager.h">
       <Filter>Source Files\Manager\Window</Filter>
@@ -630,13 +627,13 @@
       <Filter>Source Files\Object\Entity\Living\NPC</Filter>
     </ClInclude>
     <ClInclude Include="Placeable.h">
-      <Filter>Source Files\Object\Entity\Placeable</Filter>
+      <Filter>Source Files\Able\Placeable</Filter>
     </ClInclude>
     <ClInclude Include="Wall.h">
-      <Filter>Source Files\Object\Entity\Placeable\Wall</Filter>
+      <Filter>Source Files\Able\Placeable\Wall</Filter>
     </ClInclude>
     <ClInclude Include="Tile.h">
-      <Filter>Source Files\Object\Entity\Placeable\Tile</Filter>
+      <Filter>Source Files\Able\Placeable\Tile</Filter>
     </ClInclude>
     <ClInclude Include="Bomb.h">
       <Filter>Source Files\Inventory\Item\Bomb</Filter>
@@ -651,7 +648,7 @@
       <Filter>Source Files\Object\UiElement\UIImage\RythmIndicator</Filter>
     </ClInclude>
     <ClInclude Include="Torch.h">
-      <Filter>Source Files\Object\Entity\Placeable\Wall\Torch</Filter>
+      <Filter>Source Files\Able\Placeable\Wall\Torch</Filter>
     </ClInclude>
     <ClInclude Include="UIAnimation.h">
       <Filter>Source Files\Object\UiElement\UIAnimation</Filter>

@@ -178,7 +178,7 @@ private:
 	void GenerateWalls();
 	void SetAllFloorOriginColor();
 	void UpdateDoors();
-	void GenerateDiamond(const int _diamondOnFloor = 1, int _diamondInWall = 2);
+	void GenerateDiamond(const int _diamondOnFloor = 100, int _diamondInWall = 2);
 	void SpawnEnnemy(const int _amountOfEnemies);
 	void UpdateTilesColor();
 	void PlaceShopDoor();

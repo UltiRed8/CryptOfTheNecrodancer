@@ -21,7 +21,7 @@ public:
 	}
 	Vector2f GetPositionWithDirection(const RythmIndicatorDirection& _direction) const
 	{
-		const float _y = SCREEN_HEIGHT * 0.89;
+		const float _y = SCREEN_HEIGHT * 0.89f;
 		vector<Vector2f> _position = {
 			Vector2f(0 - 6, _y),
 			Vector2f(SCREEN_WIDTH - 6, _y),

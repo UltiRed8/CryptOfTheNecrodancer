@@ -67,11 +67,11 @@ void MusicManager::Update()
 			if (isLoop)
 			{
 				beatIndex = 0;
-				delta = -largestWait;
+				delta = (float)(-largestWait);
 				lastMaxValue = currentBeat;
 				currentBeat = beats[0];
 				lastBeat = 0;
-				UpdateEntitiesAnimations(largestWait * (((1.0 - playSpeed) * -1.0f) + 1.0f));
+				UpdateEntitiesAnimations((const int)(largestWait * (((1.0 - playSpeed) * -1.0f) + 1.0f)));
 				SpawnBars(largestWait);
 			}
 			else
@@ -79,15 +79,15 @@ void MusicManager::Update()
 				return;
 			}
 		}
-		first = lastBeat - *acceptDelay / 2.0f;
-		last = lastBeat + *acceptDelay / 2.0f;
+		first = (int)(lastBeat - *acceptDelay / 2.0f);
+		last = (int)(lastBeat + *acceptDelay / 2.0f);
 		lastMaxValue = currentBeat;
 		currentBeat = beats[beatIndex];
 		if (lastBeat != 0)
 		{
 			const int _delay = (beats[beatIndex] - lastBeat);
 			SpawnBars(_delay);
-			UpdateEntitiesAnimations(_delay * (((1.0 - playSpeed) * -1.0f) + 1.0f));
+			UpdateEntitiesAnimations((const int)(_delay * (((1.0 - playSpeed) * -1.0f) + 1.0f)));
 			if (largestWait < _delay)
 			{
 				largestWait = _delay;
@@ -295,7 +295,7 @@ void MusicManager::SpeedUp()
 	{
 		if (RythmIndicator* _indicator = dynamic_cast<RythmIndicator*>(_element))
 		{
-			_indicator->SetSpeed(((1.0 - playSpeed) * -1.0f) + 1.0f);
+			_indicator->SetSpeed((const float)(((1.0 - playSpeed) * -1.0f) + 1.0f));
 		}
 	}
 	new Timer("ResetPlaySpeed", [this]() {
@@ -304,7 +304,7 @@ void MusicManager::SpeedUp()
 		{
 			if (RythmIndicator* _indicator = dynamic_cast<RythmIndicator*>(_element))
 			{
-				_indicator->SetSpeed(((1.0 - playSpeed) * -1.0f) + 1.0f);
+				_indicator->SetSpeed((const float)(((1.0 - playSpeed) * -1.0f) + 1.0f));
 			}
 		}
 	}, seconds(6.5f), 1, true);
@@ -318,7 +318,7 @@ void MusicManager::SpeedDown()
 	{
 		if (RythmIndicator* _indicator = dynamic_cast<RythmIndicator*>(_element))
 		{
-			_indicator->SetSpeed(((1.0 - playSpeed) * -1.0f) + 1.0f);
+			_indicator->SetSpeed((const float)(((1.0 - playSpeed) * -1.0f) + 1.0f));
 		}
 	}
 	new Timer("ResetPlaySpeed", [this]() {
@@ -327,7 +327,7 @@ void MusicManager::SpeedDown()
 		{
 			if (RythmIndicator* _indicator = dynamic_cast<RythmIndicator*>(_element))
 			{
-				_indicator->SetSpeed(((1.0 - playSpeed) * -1.0f) + 1.0f);
+				_indicator->SetSpeed((const float)(((1.0 - playSpeed) * -1.0f) + 1.0f));
 			}
 		}
 	}, seconds(6.5f), 1, true);
@@ -425,7 +425,7 @@ void MusicManager::SpawnBars(const int _delay)
 	}
 	else
 	{
-		const int _amount = beats.size();
+		const int _amount = (const int)(beats.size());
 		const float _percent = (float)beatIndex / (float)_amount;
 		_path = _percent > 0.8f ? PATH_RYTHM_INDICATOR_RED : PATH_RYTHM_INDICATOR_BLUE;
 	}
@@ -436,7 +436,7 @@ void MusicManager::SpawnBars(const int _delay)
 	const float _difference = _distance * ((float)_delay / 2.0f / (float)shortestWait);
 	const float _posX1 = _distance - _difference;
 	const float _posX2 = _distance + _difference;
-	const float _speed = _distance / shortestWait * (((1.0 - playSpeed) * -1.0f) + 1.0f);
+	const float _speed = (float)(_distance / shortestWait * (((1.0 - playSpeed) * -1.0f) + 1.0f));
 
 	new RythmIndicator(RID_RIGHT, _hud, _path, _speed / 2.0f, _posX1);
 	new RythmIndicator(RID_LEFT, _hud, _path, _speed / 2.0f, _posX2);
