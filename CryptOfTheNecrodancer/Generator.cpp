@@ -174,6 +174,7 @@ void Generator::Enable3DEffect()
 			}
 		}
 	}
+
 }
 
 void Generator::GenerateRooms(const int _roomCount)
@@ -197,12 +198,11 @@ void Generator::GenerateRooms(const int _roomCount)
 
 void Generator::GenerateWater()
 {
-	return;
 	loadingText->GetText()->setString("Generating Water");
 
 	for (Room* _room : rooms)
 	{
-		int _waterTileNumberPerRoom = Random(5, 0) + 1;
+		int _waterTileNumberPerRoom = Random(100, 50) + 1;
 		for (int _i = 0; _i < _waterTileNumberPerRoom; _i++)
 		{
 			if (spawnablePositions.empty()) return;
@@ -656,6 +656,7 @@ void Generator::GenUpdate()
 			// 6- get spawnable positions
 			[&]() { GetSpawnablePositions(); },
 			// 7- generate diamonds
+			[&]() { GenerateDiamond(); },
 			// 8- spawn player
 			[&]() { SpawnPlayer(); },
 			// 9- spawn stairs
@@ -671,17 +672,15 @@ void Generator::GenUpdate()
 			// 14- update doors
 			[&]() { UpdateDoors(); },
 			// 16- Water generation
-			[&]() { GenerateWater(); },
+			// [&]() { GenerateWater(); },
 			// 
-			[&]() { GenerateIce(); },
+			// [&]() { GenerateIce(); },
 
 			// 15- erase overlappings
 			[&]() { EraseOverlappings(); },
 			// TODO 3d effect
 			[&]() { Enable3DEffect(); }, 
 			// end dungeon generation
-			[&]() { GenerateDiamond(); },
-
 			[&]() { Map::GetInstance().EndDungeonGeneration(); },
 			
 

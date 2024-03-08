@@ -51,7 +51,7 @@ Wall::~Wall()
 	delete visuals;
 }
 
-void Wall::DestroyWall(const bool _usingBomb)
+void Wall::DestroyWall(const bool _usingBomb, const bool _canShake)
 {
 	if (IsToRemove()) return;
 	bool _canBreak = true;
@@ -78,8 +78,10 @@ void Wall::DestroyWall(const bool _usingBomb)
 		torch->Destroy();
 	}
 
-	WindowManager::GetInstance().Shake(25);
-
+	if (_canShake)
+	{
+		WindowManager::GetInstance().Shake(25);
+	}
 	Entity* _entity = Map::GetInstance().GetEntityAt(GetPosition() + (Vector2f(0.0f, -1.0f) * TILE_SIZE));
 	if (_entity)
 	{

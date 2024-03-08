@@ -14,7 +14,7 @@ LifeComponent::LifeComponent(Entity* _owner, const function<void()> _deathCallba
 	if (_isPlayer) return;
 	pBPos = Vector2f(_owner->GetPosition().x, _owner->GetPosition().y - TILE_SIZE.y / 2.f);
 	healthBar = new ProgressBar(STRING_ID("LifeEnemy"), PT_LEFT, pBPos, Vector2f(50.0f, 10.0f),
-		EMPTY, FULL, currentHealth);
+		EMPTY, FULL, currentHealth, maxHealth);
 }
 
 LifeComponent::~LifeComponent()
@@ -35,6 +35,7 @@ void LifeComponent::Update()
 {
 	pBPos = Vector2f(owner->GetPosition().x, owner->GetPosition().y - TILE_SIZE.y / 2.f);
 	healthBar->SetPosition(pBPos);
+	// update progress bar
 }
 
 bool LifeComponent::ChangeHealth(const float _byAmount)
@@ -60,6 +61,7 @@ bool LifeComponent::ChangeHealth(const float _byAmount)
 	{
 		_player->UpdateLife();
 	}
+
 
 	return false;
 }
