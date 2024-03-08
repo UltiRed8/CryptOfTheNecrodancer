@@ -39,10 +39,9 @@ void WindowManager::Update()
 
 	if (currentValue > 0)
 	{
-		float _deltaTime = TimerManager::GetInstance().GetDeltaTime();
-		const int _dirX = Random(5, 0) - 1;
-		const int _dirY = Random(5, 0) - 1;
-		window->setPosition(baseWindowPosition + Vector2i((Vector2f(_dirX, _dirY) * _deltaTime) * 30.0f));
+		const int _dirX = Random(2, 0) - 1;
+		const int _dirY = Random(2, 0) - 1;
+		window->setPosition(baseWindowPosition + (Vector2i(_dirX, _dirY) * currentValue));
 		currentValue--;
 	}
 } 
