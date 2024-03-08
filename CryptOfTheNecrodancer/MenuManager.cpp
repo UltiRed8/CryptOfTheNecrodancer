@@ -24,6 +24,7 @@
 #define CYAN_COLOR Color::Cyan
 
 #define RYTHMHEART0 "UI/RythmHearts0.png"
+#define RYTHMHEART1 "UI/RythmHearts1.png"
 #define COIN "UI/Coin.png"
 #define DIAMOND "UI/Diamond.png"
 

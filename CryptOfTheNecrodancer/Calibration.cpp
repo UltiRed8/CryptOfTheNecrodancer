@@ -4,6 +4,10 @@
 #include "InputManager.h"
 #include "TimerManager.h"
 #include "MusicManager.h"
+#include "MenuManager.h"
+
+#define RYTHMHEART0 "UI/RythmHearts0.png"
+#define RYTHMHEART1 "UI/RythmHearts1.png"
 
 Calibration::Calibration(const function<void()> _endCallback)
 {
@@ -35,8 +39,6 @@ void Calibration::RegisterValue()
 
 void Calibration::ComputeMSLatency()
 {
-	EraseElement(calibrationValue, calibrationValue[0]);
-	EraseElement(calibrationValue, calibrationValue[0]);
 	float _sum = 0;
 	for (const int _value : calibrationValue)
 	{
@@ -55,6 +57,12 @@ void Calibration::ComputeMSLatency()
 void Calibration::Start()
 {
 	timer = new Timer(STRING_ID("Calibration"), [&]() {
+		Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("Calibration")->Get("RythmHearts"))->GetShape();
+		TextureManager::GetInstance().Load(_shape, RYTHMHEART1);
+		new Timer("HeartIndicatorReset", [this]() {
+			Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("Calibration")->Get("RythmHearts"))->GetShape();
+			TextureManager::GetInstance().Load(_shape, RYTHMHEART0);
+			}, seconds(0.1f), 1, true);
 		SoundManager::GetInstance().Play("Assets/Sounds/en_general_hit.ogg");
 		currentTry++;
 	}, milliseconds(500),tries, false);

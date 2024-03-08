@@ -41,7 +41,10 @@ bool LifeComponent::ChangeHealth(const float _byAmount)
 {
 	if (invulnerable) return false;
 	*currentHealth += _byAmount;
-	healthBar->SetValue(*currentHealth);
+	if (owner->GetType() != ET_PLAYER)
+	{
+		healthBar->SetValue(*currentHealth);
+	}
 	if (*currentHealth <= 0.0f)
 	{
 		*currentHealth = 0.0f;
@@ -57,5 +60,6 @@ bool LifeComponent::ChangeHealth(const float _byAmount)
 	{
 		_player->UpdateLife();
 	}
+
 	return false;
 }
