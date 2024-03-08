@@ -15,8 +15,8 @@ class MovementComponent :public Component
 	Vector2i* direction;
 	CollisionComponent* collision;
 	vector<CollisionReaction> reactions;
-	Vector2f oldPosition;
-	Vector2i oldDirection;
+	Vector2i oldPosition;
+	bool shouldResetDirection;
 
 public:
 	bool GetCanMove()
@@ -49,7 +49,7 @@ public:
 	}
 
 public:
-	MovementComponent(Entity* _owner, const int _speed = 1);
+	MovementComponent(Entity* _owner, const int _speed = 1, const bool _shouldResetDirection = true);
 
 public:
 	void UndoMove();

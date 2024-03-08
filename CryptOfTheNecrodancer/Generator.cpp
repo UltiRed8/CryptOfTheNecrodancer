@@ -3,6 +3,7 @@
 #include "LightningManager.h"
 #include "Macro.h"
 #include "Torch.h"
+#include "Item.h"
 #include "Map.h"
 #include "Trap.h"
 #include "Water.h"
@@ -147,23 +148,27 @@ void Generator::GenerateLobby()
 		stairs[2]->SetText("Soon(TM)");
 		stairs[2]->SetLocked(LT_FORCE);
 
+		others.push_back(new Weapon(WT_DAGGER, STRING_ID("Dagger"), stairs[0]->GetPosition() + Vector2f(0.0f, -1.0f) * TILE_SIZE));
+		others.push_back(new Pickaxe(PT_SHOVEL, STRING_ID("Shovel"), stairs[0]->GetPosition() + Vector2f(0.0f, -2.0f) * TILE_SIZE));
+
 		SetAllFloorOriginColor();
 		UpdateDoors();
-		Temp();
+		Enable3DEffect();
 		MenuManager::GetInstance().ToggleLoading();
 		Map::GetInstance().UpdateLights(50);
 		CameraManager::GetInstance().Get("PlayerCamera")->SetCameraToPlayer();
-		}, seconds(2.0f), 1, true);
+		MusicManager::GetInstance().Play();
+	}, seconds(2.0f), 1, true);
 }
 
-void Generator::Temp()
+void Generator::Enable3DEffect()
 {
 	for (Wall* _wall : walls)
 	{
 		Entity* _entity = GetEntityAt(_wall->GetPosition() - Vector2f(0, -1) * TILE_SIZE);
 		if (_entity)
 		{
-			if (_entity->GetType() == ET_FLOOR)
+			if (_entity->GetType() == ET_FLOOR || _entity->GetType() == ET_WATER)
 			{
 				_wall->Enable3D();
 			}
@@ -192,12 +197,12 @@ void Generator::GenerateRooms(const int _roomCount)
 
 void Generator::GenerateWater()
 {
+	return;
 	loadingText->GetText()->setString("Generating Water");
 
 	for (Room* _room : rooms)
 	{
 		int _waterTileNumberPerRoom = Random(5, 0) + 1;
-
 		for (int _i = 0; _i < _waterTileNumberPerRoom; _i++)
 		{
 			if (spawnablePositions.empty()) return;
@@ -214,12 +219,10 @@ void Generator::GenerateWater()
 					EraseElement(floors, _floor);
 					EraseElement(_room->GetFloor(), _floor);
 					_floor->Destroy();
-
 				}
 			}
 			others.push_back(new Water(_position));
 		}
-
 	}
 }
 
@@ -672,10 +675,11 @@ void Generator::GenUpdate()
 			[&]() { GenerateWater(); },
 			// 
 			[&]() { GenerateIce(); },
+
 			// 15- erase overlappings
 			[&]() { EraseOverlappings(); },
 			// TODO 3d effect
-			[&]() { Temp(); }, 
+			[&]() { Enable3DEffect(); }, 
 			// end dungeon generation
 			[&]() { Map::GetInstance().EndDungeonGeneration(); },
 			

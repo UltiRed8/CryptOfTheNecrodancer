@@ -15,7 +15,7 @@ Tile::Tile(const string& _tilePath, const Vector2f& _position, const EntityType&
 	}
 	if (_type == ET_WATER)
 	{
-		zIndex = 2;
+		zIndex = 0;
 	}
 }
 

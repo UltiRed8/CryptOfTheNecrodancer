@@ -4,10 +4,6 @@
 #include "InputManager.h"
 #include "TimerManager.h"
 #include "MusicManager.h"
-#include "MenuManager.h"
-
-#define PATH_HEART1 "UI/RythmHearts0.png"
-#define PATH_HEART2 "UI/RythmHearts1.png"
 
 Calibration::Calibration(const function<void()> _endCallback)
 {
@@ -19,7 +15,7 @@ Calibration::Calibration(const function<void()> _endCallback)
 	currentTry = 0;
 
 	new ActionMap("Calibration", {
-		{ ActionData("Click",[&]() {RegisterValue(); },{Event::KeyPressed,' '})}
+		{ ActionData("Click",[&]() {RegisterValue(); },{Event::KeyPressed, Keyboard::Space})}
 		});
 	latency = 0;
 	isFinished = false;
@@ -39,15 +35,20 @@ void Calibration::RegisterValue()
 
 void Calibration::ComputeMSLatency()
 {
+	EraseElement(calibrationValue, calibrationValue[0]);
+	EraseElement(calibrationValue, calibrationValue[0]);
 	float _sum = 0;
-	const int _size = (int)(calibrationValue.size());
-	for (int _index = 0; _index < _size; _index++)
+	for (const int _value : calibrationValue)
 	{
-		_sum += calibrationValue[_index];
+		_sum += _value;
 	}
-	const int _totalMs = 500 * _size;
-	const float _result = (float)(_totalMs) - _sum;
-	latency = _result / _size;
+	const int _size = (int)(calibrationValue.size());
+	latency = _sum / _size - 500;
+	if (latency < -12.0f || latency > 12.0f)
+	{
+		latency = latency < 0.0f ? -12.0f : 12.0f;
+		cout << "Latency capped!" << endl;
+	}
 	cout << "Latency: " << latency << endl;
 }
 
@@ -56,13 +57,7 @@ void Calibration::Start()
 	timer = new Timer(STRING_ID("Calibration"), [&]() {
 		SoundManager::GetInstance().Play("Assets/Sounds/en_general_hit.ogg");
 		currentTry++;
-		Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("Calibration")->Get("RythmHearts"))->GetShape();
-		TextureManager::GetInstance().Load(_shape, PATH_HEART2);
-		new Timer("CalibHeart", [this]() {
-			Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("Calibration")->Get("RythmHearts"))->GetShape();
-			TextureManager::GetInstance().Load(_shape, PATH_HEART1);
-		}, seconds(0.1f), 1, true);
-		}, milliseconds(500),tries, false);
+	}, milliseconds(500),tries, false);
 }
 
 void Calibration::Update()

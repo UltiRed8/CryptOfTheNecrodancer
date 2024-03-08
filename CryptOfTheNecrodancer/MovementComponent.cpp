@@ -1,15 +1,15 @@
 #include "MovementComponent.h"
 #include"TimerManager.h"
 
-MovementComponent::MovementComponent(Entity* _owner, const int _speed ):Component(_owner)
+MovementComponent::MovementComponent(Entity* _owner, const int _speed, const bool _shouldResetDirection):Component(_owner)
 {
 	canMove = true;
 	direction = new Vector2i(0, 0);
 	collision = nullptr;
 	reactions = vector<CollisionReaction>();
 	speed = _speed;
-	oldPosition = Vector2f();
 	oldDirection = Vector2i(0, 0);
+	shouldResetDirection = _shouldResetDirection;
 }
 
 
@@ -30,7 +30,14 @@ void MovementComponent::Move()
 	oldPosition = _shape->getPosition();
 	oldDirection = Vector2i(_directionX, _directionY);
 	_shape->setPosition(_position);
-	direction = new Vector2i(0, 0);
+	if (shouldResetDirection)
+	{
+		if (direction)
+		{
+			delete direction;
+		}
+		direction = new Vector2i(0, 0);
+	}
 }
 
 void MovementComponent::UndoMove()

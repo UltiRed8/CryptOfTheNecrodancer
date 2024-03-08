@@ -196,9 +196,6 @@
     <Filter Include="Source Files\Object\UiElement\UIImage\RythmIndicator">
       <UniqueIdentifier>{66991929-a401-436c-8072-c220b1b198c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Inventory\Item\Weapon">
-      <UniqueIdentifier>{f2e12441-37c5-4a27-9408-2a4e2eb85d64}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Object\Entity\Placeable\Wall\Torch">
       <UniqueIdentifier>{870be7e5-08f0-4e28-a9eb-3fcbaeed3952}</UniqueIdentifier>
     </Filter>
@@ -414,9 +411,6 @@
     <ClCompile Include="RythmIndicator.cpp">
       <Filter>Source Files\Object\UiElement\UIImage\RythmIndicator</Filter>
     </ClCompile>
-    <ClCompile Include="Weapon.cpp">
-      <Filter>Source Files\Inventory\Item\Weapon</Filter>
-    </ClCompile>
     <ClCompile Include="Torch.cpp">
       <Filter>Source Files\Object\Entity\Placeable\Wall\Torch</Filter>
     </ClCompile>
@@ -424,6 +418,9 @@
       <Filter>Source Files\Object\UiElement\UIAnimation</Filter>
     </ClCompile>
     <ClCompile Include="Calibration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Water.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -646,9 +643,6 @@
     </ClInclude>
     <ClInclude Include="RythmIndicator.h">
       <Filter>Source Files\Object\UiElement\UIImage\RythmIndicator</Filter>
-    </ClInclude>
-    <ClInclude Include="Weapon.h">
-      <Filter>Source Files\Inventory\Item\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="Torch.h">
       <Filter>Source Files\Object\Entity\Placeable\Wall\Torch</Filter>

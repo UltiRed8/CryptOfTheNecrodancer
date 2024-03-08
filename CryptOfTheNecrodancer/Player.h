@@ -21,6 +21,10 @@ class Player : public Living
 	int heartIndex;
 
 public:
+	bool GetPressingKeys()
+	{
+		return alreadyMoved;
+	}
 	bool GetIsStun() const
 	{
 		return isStun;
@@ -81,8 +85,8 @@ public:
 	~Player();
 
 public :
-	void ResetChainMultiplier();
 	void Slide();
+	bool ResetChainMultiplier();
 	void InitInput();
 	void InitLife();
 

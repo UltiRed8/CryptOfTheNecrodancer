@@ -70,11 +70,26 @@ bool IsNearlyEqual(Vector2f _first, Vector2f _second);
 
 Vector2i GetDirectionByPositions(Vector2f _entityPos, Vector2f _destination);
 
+vector<string> Split(string _line, const string& _divider);
+
+template <typename Type>
+vector<Type> VectorToInt(const vector<string>& _vector)
+{
+	vector<Type> _results;
+	for (const string& _element : _vector)
+	{
+		_results.push_back(stoi(_element));
+	}
+	return _results;
+}
+
 template <typename Type>
 static void SetOriginCentered(Type* _element)
 {
 	_element->setOrigin(_element->getGlobalBounds().getSize() / 2.0f);
 }
+
+bool StringContains(const string& _id, const string& _value);
 
 template <typename Class, typename Type>
 static void EraseElements(vector<Class>& _vector, vector<Type> _element)
