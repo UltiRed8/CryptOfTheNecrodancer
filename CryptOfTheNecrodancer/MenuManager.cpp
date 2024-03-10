@@ -104,7 +104,8 @@ MenuManager::MenuManager()
 {
 	window = new RenderWindow();
 	index = new float(10.0f);
-	calibration = nullptr;
+	function<void()> _endCallback = [this]() { Get("Calibration")->Close(); MusicManager::GetInstance().Unpause(); };
+	calibration = new Calibration(_endCallback);
 }
 
 void MenuManager::ClickAction()
@@ -612,7 +613,7 @@ void MenuManager::InitCalibration()
 		//Rythmed Heart
 		new UIImage("RythmHearts", Vector2f(_x - 40.0f, static_cast<float>(_windowY / 2.5) - 50.0f), Vector2f(40.0f, 50.0f) * 2.0f, RYTHMHEART0),
 		new UIText("CalibrationTxt", Vector2f(_x, static_cast<float>(_windowY / 1.5)), Color(112,128,144), "Press Space when you hear the sound",35,FONT),
-		new UIText("CalibrationTxt2", Vector2f(_x, static_cast<float>(_windowY / 1.3)), Color(47,79,79), "It will take approximately 1 minute",35,FONT),
+	new UIText("CalibrationTxt2", Vector2f(_x, static_cast<float>(_windowY / 1.3)), Color(47,79,79), "It will take approximately 1 minute",35,FONT),
 		}, 4);
 }
 
@@ -633,8 +634,6 @@ void MenuManager::ToggleCredits()
 
 void MenuManager::ToggleCalibration()
 {
-	function<void()> _timer = [this]() { Get("Calibration")->Close(); MusicManager::GetInstance().Unpause(); };
-	calibration = new Calibration(_timer);
 	if (Get("Calibration")->IsOpened())
 	{
 		calibration->Start();

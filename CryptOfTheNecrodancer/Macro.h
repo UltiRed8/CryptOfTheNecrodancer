@@ -94,7 +94,6 @@ bool StringContains(const string& _id, const string& _value);
 template <typename Class, typename Type>
 static void EraseElements(vector<Class>& _vector, vector<Type> _element)
 {
-	cout << "Removing Elements: " << _element.size() << endl;
 	for (Type _value : _element)
 	{
 		_vector.erase(remove(_vector.begin(), _vector.end(), _value), _vector.end());

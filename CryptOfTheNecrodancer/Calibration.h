@@ -20,6 +20,7 @@ public:
 
 public:
 	Calibration(const function<void()> _endCallback);
+	~Calibration();
 
 private:
 	void RegisterValue();

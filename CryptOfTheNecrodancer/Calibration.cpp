@@ -26,6 +26,11 @@ Calibration::Calibration(const function<void()> _endCallback)
 	endCallback = _endCallback;
 }
 
+Calibration::~Calibration()
+{
+	timer->Destroy();
+}
+
 void Calibration::RegisterValue()
 {
 	if (isFinished)
@@ -33,7 +38,6 @@ void Calibration::RegisterValue()
 		return;
 	}
 	calibrationValue.push_back(currentTime);
-	cout << "Value: " << currentTime << endl;
 	currentTime = 0;
 }
 
@@ -49,13 +53,19 @@ void Calibration::ComputeMSLatency()
 	if (latency < -12.0f || latency > 12.0f)
 	{
 		latency = latency < 0.0f ? -12.0f : 12.0f;
-		cout << "Latency capped!" << endl;
 	}
-	cout << "Latency: " << latency << endl;
+	for (const float _value : calibrationValue)
+	{
+		EraseElement(calibrationValue, _value);
+
+	}
+	calibrationValue.clear();
 }
 
 void Calibration::Start()
 {
+	currentTime = 0;
+	isFinished = false;
 	timer = new Timer(STRING_ID("Calibration"), [&]() {
 		Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("Calibration")->Get("RythmHearts"))->GetShape();
 		TextureManager::GetInstance().Load(_shape, RYTHMHEART1);
@@ -75,13 +85,14 @@ void Calibration::Update()
 		return;
 	}
 	currentTime += (int)TimerManager::GetInstance().GetDeltaTime();
-	if (currentTry == tries)
+	if (currentTry >= tries)
 	{
+		currentTime = 0;
+		currentTry = 0;
+		isFinished = true;
 		timer->Pause();
-		timer->Destroy();
 		ComputeMSLatency();
 		MusicManager::GetInstance().SetLatency(latency);
-		isFinished = true;
 		if (endCallback)
 		{
 			endCallback();
