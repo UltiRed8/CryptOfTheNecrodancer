@@ -119,6 +119,9 @@ void Generator::GenerateLobby()
 			{ '1', [this](const Vector2f& _position) { others.push_back(new Tile(PATH_UPGRADE_TILE, _position)); }},
 			{ 'P', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position); }},
 			{ 'T', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP, zoneFileName)); others.push_back(new Torch(_position)); }},
+			{ 'H', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Pickaxe(PT_PICKAXE, STRING_ID("Shovel"),_position)); }},
+			{ 'W', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Weapon(WT_BROADSWORD, STRING_ID("Dagger"), _position)); }},
+			{ 'A', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Armor(AT_BODY_LEATHERARMOR,STRING_ID("Armor"),_position)); }},
 		};
 
 		string _line;
@@ -147,9 +150,7 @@ void Generator::GenerateLobby()
 		stairs[1]->SetZoneToLoad(Z_ZONE2);
 		stairs[2]->SetText("Soon(TM)");
 		stairs[2]->SetLocked(LT_FORCE);
-
-		others.push_back(new Weapon(WT_DAGGER, STRING_ID("Dagger"), stairs[0]->GetPosition() + Vector2f(0.0f, -1.0f) * TILE_SIZE));
-		others.push_back(new Pickaxe(PT_SHOVEL, STRING_ID("Shovel"), stairs[0]->GetPosition() + Vector2f(0.0f, -2.0f) * TILE_SIZE));
+		
 
 		SetAllFloorOriginColor();
 		UpdateDoors();
@@ -292,7 +293,6 @@ void Generator::GenerateIce()
 	}
 }
 
-
 vector<Wall*> Generator::PlaceWallsAroundFloor(vector<Tile*> _floors, const int _width, const bool _finalDestructible, const WallType& _type)
 {
 	vector<Wall*> _wallsOfRoom;
@@ -419,6 +419,8 @@ void Generator::EraseOverlappings()
 
 void Generator::GenerateShopRoom()
 {
+	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
+	_player->GetComponent<LifeComponent>()->SetIsInvulnerable(true);
 	loadingText->GetText()->setString("Generating shop room");
 
 	shop = new Room(Vector2i(5, 7));
@@ -673,12 +675,12 @@ void Generator::GenUpdate()
 			[&]() { UpdateDoors(); },
 			// 16- Water generation
 			// [&]() { GenerateWater(); },
-			// 
-			// [&]() { GenerateIce(); },
+			 
+			 //[&]() { GenerateIce(); },
 
-			// 15- erase overlappings
+			//// 15- erase overlappings
 			[&]() { EraseOverlappings(); },
-			// TODO 3d effect
+			//// TODO 3d effect
 			[&]() { Enable3DEffect(); }, 
 			// end dungeon generation
 			[&]() { Map::GetInstance().EndDungeonGeneration(); },

@@ -10,12 +10,12 @@
 #define PATH_PICKAXE "Items/Shovel/Pickaxe.png"
 #define PATH_SHOVEL "Items/Shovel/Shovel.png"
 
-#define PATH_HEAD_HELMET "Items/Armor/Head_Helmet.png"
-#define PATH_HEAD_MINERSCAP "Items/Armor/Head_MinersCap.png"
-#define PATH_BODY_CHAINMAIL "Items/Armor/Body_Chainmail.png"
-#define PATH_BODY_LEATHERARMOR "Items/Armor/Body_LeatherArmor.png"
-#define PATH_FEET_BOOTSOFSTRENGTH "Items/Armor/Feet_BootsOfStrength.png"
-#define PATH_FEET_HARGREAVES "Items/Armor/Feet_Hargreaves.png"
+#define PATH_HEAD_HELMET "Items/Head/Helmet.png"
+#define PATH_HEAD_MINERSCAP "Items/Head/MinersCap.png"
+#define PATH_BODY_CHAINMAIL "Items/Body/Chainmail.png"
+#define PATH_BODY_LEATHERARMOR "Items/Body/LeatherArmor.png"
+#define PATH_FEET_BOOTSOFSTRENGTH "Items/Feet/BootsOfStrength.png"
+#define PATH_FEET_HARGREAVES "Items/Feet/Hargreaves.png"
 
 struct ItemStats
 {

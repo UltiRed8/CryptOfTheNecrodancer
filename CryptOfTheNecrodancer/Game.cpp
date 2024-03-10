@@ -11,6 +11,7 @@
 #include "UIText.h"
 #include "LightningManager.h"
 #include "WindowManager.h"
+#include <SFML/Graphics.hpp>
 
 Game::Game()
 {
@@ -40,7 +41,7 @@ void Game::Start()
 
 	if (Shader::isAvailable())
 	{
-		shader = new Shader();;
+		shader = new Shader();
 		//if (!shader->loadFromFile("Assets/test.frag", Shader::Fragment))
 		//{
 		//	cerr << "error" << endl;

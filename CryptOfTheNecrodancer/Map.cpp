@@ -101,6 +101,8 @@ void Map::EndDungeonGeneration()
 	// UpdateLights(100);
 	PrepareMusic();
 	MusicManager::GetInstance().Play();
+	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
+	_player->GetComponent<LifeComponent>()->SetIsInvulnerable(false);
 }
 
 void Map::QuickRestart()
@@ -178,7 +180,7 @@ void Map::OpenLobby()
 	UpdateZoneFileName();
 	ClearGenerator();
 	generator->GenerateLobby();
-	MusicManager::GetInstance().Prepare("boss_1", false, true);
+	MusicManager::GetInstance().Prepare("lobby", false, true);
 }
 
 void Map::AddFloorAt(const Vector2f& _position)
