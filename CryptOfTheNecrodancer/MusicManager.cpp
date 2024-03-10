@@ -31,7 +31,7 @@ MusicManager::MusicManager()
 	minAcceptDelay = 0.0f;
 	maxAcceptDelay = 450.0f;
 	playSpeed = 1.0f;
-	tempVolume = 0.0f;
+	tempVolume = 1.0f;
 	delta = 0.0f;
 	beatIndex = 0;
 	currentBeat = 0;
@@ -76,7 +76,12 @@ void MusicManager::Update()
 			}
 			else
 			{
-				return;
+				beatIndex = 0; 
+				new Timer(STRING_ID("Reset"), [this]() {
+					Map::GetInstance().OpenPrepared();
+					}, seconds(0.5f), 1, true);
+				
+				//return;
 			}
 		}
 		first = (int)(lastBeat - *acceptDelay / 2.0f);
@@ -149,7 +154,7 @@ void MusicManager::Prepare(const string& _path, const bool _isShopkeeper, const 
 	MusicData* _music = GetMusic(_musicPath, _position);
 	prepared.push_back(_music);
 	_music->setLoop(_shouldLoop);
-	isLoop = _shouldLoop;
+	isLoop = _shouldLoop; // TODO Crash du au retour au lobby après un changement de pack de musique
 
 	if (_isShopkeeper)
 	{
@@ -390,7 +395,7 @@ void MusicManager::DecreaseVolume()
 
 void MusicManager::ToggleVolume()
 {
-	if (tempVolume > 0.0f)
+	if (tempVolume > 0.0f && *volume != 0.0f)
 	{
 		for (MusicData* _music : GetAllValues())
 		{
