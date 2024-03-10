@@ -40,7 +40,7 @@ void Calibration::RegisterValue()
 void Calibration::ComputeMSLatency()
 {
 	float _sum = 0;
-	for (const int _value : calibrationValue)
+	for (const float _value : calibrationValue)
 	{
 		_sum += _value;
 	}

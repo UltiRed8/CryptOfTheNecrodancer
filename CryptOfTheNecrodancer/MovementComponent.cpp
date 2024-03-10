@@ -29,7 +29,7 @@ void MovementComponent::Move()
 	const float _directionY = (direction->y * speed * _tileSize.y) ;
 	const Vector2f& _position = owner->GetPosition() + Vector2f(_directionX, _directionY);
 	oldPosition = _shape->getPosition();
-	oldDirection = Vector2i(_directionX, _directionY);
+	oldDirection = Vector2i((int)_directionX, (int)_directionY);
 	_shape->setPosition(_position);
 	if (shouldResetDirection)
 	{
