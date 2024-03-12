@@ -165,8 +165,6 @@ void MenuManager::InitHUD()
 		new UIImage("Diamond", Vector2f(SCREEN_WIDTH - 55 * 3, SCREEN_HEIGHT - 55 * 11.6), Vector2f(25.0f, 25.0f) * 2.0f, DIAMOND),
 		new UIText("DiamondUpdateText", Vector2f(SCREEN_WIDTH - 55 * 1.2, SCREEN_HEIGHT - 55 * 11.3), WHITE_COLOR, "x " ,25, FONT, false, dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetRessources()->GetDiamonds()),
 
-		new UIImage("Shovel", Vector2f(10.f,10.f), Vector2f(50.f, 56.0f) * 2.0f, SHOVEL),
-		new UIImage("Sword", Vector2f(130.f,10.f), Vector2f(50.0f, 56.0f) * 2.0f, SWORD),
 		});
 
 	_hud->Open();

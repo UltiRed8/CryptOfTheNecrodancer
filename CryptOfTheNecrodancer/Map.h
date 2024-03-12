@@ -115,7 +115,7 @@ public:
 	void OpenPrepared();
 	void QuickRestart();
 	void Update();
-	void AddOther(Entity* _entity);
+	Entity* AddOther(Entity* _entity);
 	void AddFloorAt(const Vector2f& _position);
 	template <typename Type>
 	vector<Vector2f> GetEmptyTilesAround(const vector<Type*>& _entities)

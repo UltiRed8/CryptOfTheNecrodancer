@@ -57,9 +57,9 @@ void Wall::DestroyWall(const bool _usingBomb, const bool _canShake)
 {
 	if (IsToRemove()) return;
 	bool _canBreak = true;
-	if (wallType == WT_INVULNERABLE) _canBreak = true;
+	if (wallType == WT_INVULNERABLE) _canBreak = false;
 	if (wallType == WT_SHOP && !_usingBomb) _canBreak = false;
-	if (wallType == WT_STONE && !_usingBomb /*TODO is not using pickaxe?*/) _canBreak = false;
+	if (wallType == WT_STONE && !_usingBomb && ((Player*)(EntityManager::GetInstance().Get("Player")))->GetDigLevel() <= 1) _canBreak = false;
 	if (!_canBreak)
 	{
 		SoundManager::GetInstance().Play(SOUND_DIG_FAIL);
