@@ -4,9 +4,8 @@
 #include "Macro.h"
 #include "Item.h"
 #include "Items.h"
+
 using namespace std;
-
-
 
 struct Slot : public UIImage
 {
@@ -17,57 +16,49 @@ struct Slot : public UIImage
 
 public:
 	Slot(const SlotType& _type, const string& _path, Menu* _owner);
+	~Slot()
+	{
+		if (currentItem)
+		{
+			delete currentItem;
+		}
+	}
 
 public:
-
-	string GetItemPath() const
-	{
-		return item->GetTexturePath();
-	}
-
-	Item* GetItem() const
-	{
-		return currentItem;
-	}
-
-	void SetItem(Item* _item)
-	{
-		currentItem = _item;
-	}
-
-	void SetPosition(const Vector2f& _position)
-	{
-		shape->setPosition(_position);
-	}
-
 	void SetItemPosition(const Vector2f& _position)
 	{
 		const Vector2f& _itemSize = item->GetShape()->getGlobalBounds().getSize();
 		item->GetShape()->setPosition(_position + _itemSize / 4.f);
 	}
-
-	void SetTexture(const string& _path)
+	Item* GetItem() const
 	{
-		TextureManager::GetInstance().Load(item->GetShape(), _path);
+		return currentItem;
+	}
+	void SetItem(Item* _item)
+	{
+		currentItem = _item;
+	}
+	void SetPosition(const Vector2f& _position)
+	{
+		shape->setPosition(_position);
+	}
+	void SetVisible()
+	{
 		isVisible = true;
-		//SetItemPosition(shape->getPosition());
 	}
-
-	void Toggle()
-	{
-		isVisible = !isVisible;
-	}
-
 	SlotType GetType() const
 	{
 		return type;
 	}
-
 	virtual vector<Drawable*> GetDrawables() override
 	{
 		vector<Drawable*> _drawables;
 
 		_drawables.push_back(shape);
+		if (currentItem)
+		{
+			item->GetShape()->setTexture(currentItem->GetVisuals()->getTexture());
+		}
 		_drawables.push_back(item->GetShape());
 
 		return _drawables;

@@ -40,10 +40,18 @@ public:
 	Item(const SlotType& _type, const string& _id, const Vector2f& _position,const bool _isInInventory = false);
 	~Item();
 
-protected :
+protected:
 	void UpdateTexture();
 
-public :
+public:
+	ItemStats GetStats() const
+	{
+		return stats;
+	}
+	RectangleShape* GetVisuals() const
+	{
+		return visuals;
+	}
 
 	bool IsInInventory() const
 	{

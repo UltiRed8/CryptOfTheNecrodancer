@@ -34,6 +34,7 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 	visuals->setPosition(_position + Vector2f(0.0f, -0.5f) * TILE_SIZE);
 	isStun = false;
 	isConfuse = false;
+	pickupCooldown = false;
 	inventory = new Inventory();
 	inventory->Open();
 	ressources = new PlayerRessource();
@@ -116,9 +117,10 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 
 		CollisionReaction(ET_ITEM, [this](Entity* _entity) {
 			Item* _item = dynamic_cast<Item*>(_entity);
-			if (!_item->IsInInventory())
+			if (!_item->IsInInventory() && !pickupCooldown)
 			{
 				_item->PickUp();
+				pickupCooldown = true;
 			}
 			return false;
 		}),
@@ -199,7 +201,6 @@ void Player::InitInput()
 	// TODO remove
 	new ActionMap("TempDebug", {
 		ActionData("temp1", [this]() { Map::GetInstance().OpenPrepared(); }, {Event::KeyPressed, Keyboard::Num0}),
-		ActionData("slot1", [this]() { inventory->GetSlot(ST_SHOVEL)->Toggle(); }, {Event::KeyPressed, Keyboard::Num1}),
 		ActionData("slot2", [this]() { MusicManager::GetInstance().SpeedDown(); }, {Event::KeyPressed, Keyboard::Num2}),
 		ActionData("slot3", [this]() { MusicManager::GetInstance().SpeedUp(); }, {Event::KeyPressed, Keyboard::Num3}),
 		ActionData("DecreaseLife", [this]() { GetComponent<LifeComponent>()->ChangeHealth(-50); UpdateLife(); }, {Event::KeyPressed, Keyboard::Subtract}),
@@ -272,6 +273,7 @@ void Player::UpdateHeartAnimation()
 
 void Player::Update()
 {
+	pickupCooldown = false;
 	Entity::Update();
 	visuals->setPosition(shape->getPosition() + Vector2f(0.0f, -0.5f) * TILE_SIZE);
 }

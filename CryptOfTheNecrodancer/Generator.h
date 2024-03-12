@@ -32,6 +32,7 @@ class Generator
 	vector<Wall*> shopWalls;
 	vector<Entity*> others;
 	vector<Stair*> stairs;
+	vector<Item*> items;
 
 	vector<Vector2f> usedPositions;
 	vector<Vector2f> spawnablePositions;
@@ -51,6 +52,10 @@ class Generator
 	bool* discoModeEnabled;
 
 public:
+	vector<Item*>& GetItems()
+	{
+		return items;
+	}
 	vector<Vector2f> GetAllWallsAndFloorPositions() const
 	{
 		vector<Vector2f> _positions = GetAllPositions(floors);
@@ -195,6 +200,7 @@ public:
 	void AddFloorAt(const Vector2f& _position);
 	void AddOther(Entity* _entity);
 	void Update();
+	void AddItem(Item* _item);
 	
 	template <typename Type>
 	vector<Vector2f> GetEmptyTilesAround(const vector<Type*>& _entities)

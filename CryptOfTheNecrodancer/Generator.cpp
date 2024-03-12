@@ -49,38 +49,36 @@ Generator::~Generator()
 	{
 		_floor->Destroy();
 	}
-	floors.clear();
 
 	for (Wall* _wall : walls)
 	{
 		_wall->Destroy();
 	}
-	walls.clear();
 
 	for (Entity* _entity : others)
 	{
 		_entity->Destroy();
 	}
-	others.clear();
 
 	for (Stair* _stair : stairs)
 	{
 		_stair->Destroy();
 	}
-	stairs.clear();
 
 	for (Room* _room : rooms)
 	{
 		delete _room;
 	}
-	rooms.clear();
-	shop = nullptr;
 
 	for (Path* _path : paths)
 	{
 		delete _path;
 	}
-	paths.clear();
+
+	for (Item* _item : items)
+	{
+		_item->Destroy();
+	}
 }
 
 void Generator::Generate()
@@ -119,9 +117,9 @@ void Generator::GenerateLobby()
 			{ '1', [this](const Vector2f& _position) { others.push_back(new Tile(PATH_UPGRADE_TILE, _position)); }},
 			{ 'P', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position); }},
 			{ 'T', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP, zoneFileName)); others.push_back(new Torch(_position)); }},
-			{ 'H', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Pickaxe(PT_PICKAXE, STRING_ID("Shovel"),_position)); }},
-			{ 'W', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Weapon(WT_BROADSWORD, STRING_ID("Dagger"), _position)); }},
-			{ 'A', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Armor(AT_BODY_LEATHERARMOR,STRING_ID("Armor"),_position)); }},
+			{ 'H', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Pickaxe(PT_PICKAXE, STRING_ID("Shovel"),_position)); }},
+			{ 'W', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Weapon(WT_BROADSWORD, STRING_ID("Dagger"), _position)); }},
+			{ 'A', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Armor(AT_BODY_LEATHERARMOR,STRING_ID("Armor"),_position)); }},
 		};
 
 		string _line;
@@ -176,6 +174,11 @@ void Generator::Enable3DEffect()
 		}
 	}
 
+}
+
+void Generator::AddItem(Item* _item)
+{
+	items.push_back(_item);
 }
 
 void Generator::GenerateRooms(const int _roomCount)

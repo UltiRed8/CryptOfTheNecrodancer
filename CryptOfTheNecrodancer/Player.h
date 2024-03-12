@@ -19,15 +19,17 @@ class Player : public Living
 	bool isConfuse;
 	bool isStun;
 	int heartIndex;
+	bool pickupCooldown;
 
 public:
-
-
+	int GetDigLevel() const
+	{
+		return inventory->GetSlot(ST_SHOVEL)->GetItem()->GetStats().digLevel;
+	}
 	Inventory* GetInventory() const
 	{
 		return inventory;
 	}
-
 	bool GetPressingKeys()
 	{
 		return alreadyMoved;
