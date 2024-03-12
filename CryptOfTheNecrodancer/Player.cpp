@@ -113,6 +113,15 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 			dynamic_cast<Trap*>(_entity)->Trigger();
 			return false;
 		}),
+
+		CollisionReaction(ET_ITEM, [this](Entity* _entity) {
+			Item* _item = dynamic_cast<Item*>(_entity);
+			if (!_item->IsInInventory())
+			{
+				_item->PickUp();
+			}
+			return false;
+		}),
 	});
 
 	new LightSource("PlayerLight", this, 350);

@@ -21,6 +21,13 @@ class Player : public Living
 	int heartIndex;
 
 public:
+
+
+	Inventory* GetInventory() const
+	{
+		return inventory;
+	}
+
 	bool GetPressingKeys()
 	{
 		return alreadyMoved;

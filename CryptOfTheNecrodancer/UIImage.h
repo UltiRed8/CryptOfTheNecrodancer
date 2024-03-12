@@ -20,6 +20,11 @@ public:
 		return shape;
 	}
 
+	string GetTexturePath() const
+	{
+		return texturePath;
+	}
+
 public:
 	UIImage(const string& _id, const Vector2f& _position, const Vector2f& _size, const string& _path);
 	~UIImage();

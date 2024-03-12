@@ -1,6 +1,7 @@
 #include "Inventory.h"
 #include "MenuManager.h"
 #include "Macro.h"
+#include "Map.h"
 
 //HUD FRAME
 #define I_SHOVEL "UI/hud_shovel.png"
@@ -11,23 +12,23 @@
 #define I_THROW "UI/hud_throw.png"
 #define I_BOMB "UI/hud_bomb.png"
 #define I_ITEM "UI/hud_item.png"
-
 #define SHOVEL "Items/Shovel/Shovel.png"
 #define PICKAXE "Items/Shovel/Pickaxe.png"
 
 Inventory::Inventory() : Menu("Inventory", {}, 0, false)
 {
-	others.push_back(new Slot(ST_SHOVEL, I_SHOVEL, this));
-	others.push_back(new Slot(ST_ATTACK, I_ATTACK, this));
-	others.push_back(new Slot(ST_BODY, I_BODY, this));
-	others.push_back(new Slot(ST_HEAD, I_HEAD, this));
-	others.push_back(new Slot(ST_FEET, I_FEET, this));
+	Menu* _menu = MenuManager::GetInstance().Get("Inventory");
+	others.push_back(new Slot(ST_SHOVEL, I_SHOVEL, _menu));
+	others.push_back(new Slot(ST_ATTACK, I_ATTACK, _menu));
+	others.push_back(new Slot(ST_BODY, I_BODY, _menu));
+	others.push_back(new Slot(ST_HEAD, I_HEAD, _menu));
+	others.push_back(new Slot(ST_FEET, I_FEET, _menu));
 
-	usables.push_back(new Slot(ST_THROW, I_THROW, this));
-	usables.push_back(new Slot(ST_BOMB, I_BOMB, this));
+	usables.push_back(new Slot(ST_THROW, I_THROW, _menu));
+	usables.push_back(new Slot(ST_BOMB, I_BOMB, _menu));
 
-	foods.push_back(new Slot(ST_FOOD_TOP, I_ITEM, this));
-	foods.push_back(new Slot(ST_FOOD_DOWN, I_ITEM, this));
+	foods.push_back(new Slot(ST_FOOD_TOP, I_ITEM, _menu));
+	foods.push_back(new Slot(ST_FOOD_DOWN, I_ITEM, _menu));
 }
 
 Inventory::~Inventory()
@@ -55,6 +56,7 @@ vector<Drawable*> Inventory::GetDrawables()
 	{
 		if (!_slot->isVisible) continue;
 		_slot->SetPosition(_position);
+		_slot->SetItemPosition(_position);
 		vector<Drawable*> _slotDrawables = _slot->GetDrawables();
 		_drawables.insert(_drawables.end(), _slotDrawables.begin(), _slotDrawables.end());
 		_position.x += 110.0f;
@@ -65,6 +67,7 @@ vector<Drawable*> Inventory::GetDrawables()
 	{
 		if (!_slot->isVisible) continue;
 		_slot->SetPosition(_position);
+		_slot->SetItemPosition(_position);
 		vector<Drawable*> _slotDrawables = _slot->GetDrawables();
 		_drawables.insert(_drawables.end(), _slotDrawables.begin(), _slotDrawables.end());
 		_position.y += 110.0f;
@@ -75,10 +78,26 @@ vector<Drawable*> Inventory::GetDrawables()
 	{
 		if (!_slot->isVisible) continue;
 		_slot->SetPosition(_position);
+		_slot->SetItemPosition(_position);
 		vector<Drawable*> _slotDrawables = _slot->GetDrawables();
 		_drawables.insert(_drawables.end(), _slotDrawables.begin(), _slotDrawables.end());
 		_position.y += 110.0f;
 	}
 
 	return _drawables;
+}
+
+Slot::Slot(const SlotType& _type, const string& _path, Menu* _owner) : UIImage(STRING_ID(to_string(type) + "_slot"), Vector2f(0.0f, 0.0f), Vector2f(30.0f, 33.0f) * 3.0f, _path)
+{
+	type = _type;
+	const string& _rPath = _type == ST_SHOVEL ? PATH_SHOVEL : _type == ST_ATTACK ? PATH_DAGGER : "";
+	item = new UIImage(STRING_ID("item_" + to_string(type) + "_slot"), Vector2f(0.0f, 0.0f), Vector2f(30.0f, 33.0f) * 2.0f, _rPath);
+
+	currentItem =(Item*)( _type == ST_SHOVEL ? Map::GetInstance().AddOther(new Pickaxe(PT_SHOVEL, STRING_ID("Pickaxe"), {}, true))
+		: _type == ST_ATTACK ? Map::GetInstance().AddOther(new Weapon(WT_DAGGER, STRING_ID("Dagger"), {}, true))
+		: nullptr);
+
+	isVisible = _type == ST_SHOVEL ? true : _type == ST_ATTACK ? true : false;
+	item->SetOwner(_owner);
+	item->Register();
 }

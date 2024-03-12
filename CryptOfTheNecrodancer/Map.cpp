@@ -193,7 +193,8 @@ void Map::Update()
 	generator->Update();
 }
 
-void Map::AddOther(Entity* _entity)
+Entity* Map::AddOther(Entity* _entity)
 {
 	generator->AddOther(_entity);
+	return _entity;
 }
