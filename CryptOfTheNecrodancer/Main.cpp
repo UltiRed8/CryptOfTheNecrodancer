@@ -8,3 +8,12 @@ int main()
 
 	return 0;
 }
+
+void WinMain()
+{
+	srand(unsigned(time(NULL)));
+	Game _game;
+	_game.Launch();
+
+	return;
+}

@@ -12,7 +12,7 @@ class Game
 	Player* player;
 	Map* map;
 	Calibration* calibration;
-	Shader* shader;
+	float delta;
 
 public:
 	Game();

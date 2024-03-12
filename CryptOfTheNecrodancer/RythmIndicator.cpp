@@ -25,7 +25,7 @@ RythmIndicator::RythmIndicator(const RythmIndicatorDirection& _direction, Menu* 
 	_position.x = _posX - 6.0f;
 	shape->setPosition(_position);
 
-	opacity = abs(_position.x / (SCREEN_WIDTH / 2.0f)) * 255;
+	opacity = 0;
 	shape->setFillColor({ 255,255,255,(Uint8)opacity });
 	speed = _speed;
 }

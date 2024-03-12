@@ -99,7 +99,7 @@ void Generator::GenerateLobby()
 
 	MenuManager::GetInstance().ToggleLoading();
 	new Timer(STRING_ID("Lobby"), [this]() {
-		ifstream _in = ifstream("Assets/Saved/Lobby.txt");
+		ifstream _in = ifstream("Assets/Saved/Lobby.map");
 		if (!_in)
 		{
 			cerr << "Erreur de chargement du lobby !" << endl;
@@ -115,13 +115,15 @@ void Generator::GenerateLobby()
 			{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Door(_position)); }},
 			{ 'E', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_HEPHAESTUS, _position)); }},
 			{ 'M', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_MERLIN, _position)); }},
-			{ '2', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); /* TODO spawn item here (shops)*/ }},
 			{ '1', [this](const Vector2f& _position) { others.push_back(new Tile(PATH_UPGRADE_TILE, _position)); }},
 			{ 'P', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position); }},
 			{ 'T', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP, zoneFileName)); others.push_back(new Torch(_position)); }},
 			{ 'H', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Pickaxe(PT_PICKAXE, STRING_ID("Shovel"),_position)); }},
 			{ 'W', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Weapon(WT_BROADSWORD, STRING_ID("Dagger"), _position)); }},
 			{ 'A', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Armor(AT_BODY_LEATHERARMOR,STRING_ID("Armor"),_position)); }},
+			{ 'O', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Weapon(WT_SPEAR, STRING_ID("Shovel1"),_position)); }},
+			{ 'N', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Weapon(WT_STAFF, STRING_ID("Dagger1"), _position)); }},
+			{ 'L', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Armor(AT_HEAD_MINERSCAP,STRING_ID("Armor1"),_position)); }},
 		};
 
 		string _line;
@@ -148,9 +150,8 @@ void Generator::GenerateLobby()
 		stairs[0]->SetZoneToLoad(Z_ZONE1);
 		stairs[1]->SetText("Zone 2");
 		stairs[1]->SetZoneToLoad(Z_ZONE2);
-		stairs[2]->SetText("Soon(TM)");
+		stairs[2]->SetText("---Paid DLC---\nOnly for 9.99$\nDownload NOW!!");
 		stairs[2]->SetLocked(LT_FORCE);
-		
 
 		SetAllFloorOriginColor();
 		UpdateDoors();
@@ -222,7 +223,7 @@ void Generator::GenerateWater()
 					_floor->Destroy();
 				}
 			}
-			others.push_back(new Water(_position));
+			floors.push_back(new Tile("", _position, ET_WATER));
 		}
 	}
 }
@@ -674,9 +675,9 @@ void Generator::GenUpdate()
 			// 14- update doors
 			[&]() { UpdateDoors(); },
 			// 16- Water generation
-			// [&]() { GenerateWater(); },
+			//[&]() { GenerateWater(); },
 			 
-			 //[&]() { GenerateIce(); },
+			//[&]() { GenerateIce(); },
 
 			//// 15- erase overlappings
 			[&]() { EraseOverlappings(); },

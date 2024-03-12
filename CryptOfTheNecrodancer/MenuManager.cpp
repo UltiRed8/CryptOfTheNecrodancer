@@ -56,7 +56,7 @@
 #define SOUND_TOGGLE "Assets/Sounds/sfx_ui_toggle.ogg"
 #define SOUND_CREDIT "Assets/Sounds/Credits.ogg"
 
-#define LOBBY "Assets/Saved/Lobby.txt"
+#define LOBBY "Assets/Saved/Lobby.map"
 
 #pragma endregion
 
@@ -65,6 +65,7 @@ vector<Drawable*> MenuManager::GetDrawables()
 	vector<Drawable*> _drawables;
 	int _currentZIndex = 0;
 	bool _shouldContinue;
+
 	do
 	{
 		_shouldContinue = false;

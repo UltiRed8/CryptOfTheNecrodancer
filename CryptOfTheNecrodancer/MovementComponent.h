@@ -18,8 +18,17 @@ class MovementComponent :public Component
 	Vector2f oldPosition;
 	Vector2i oldDirection;
 	bool shouldResetDirection;
+	bool isStun;
 
 public:
+	bool GetIsStun() const
+	{
+		return isStun;
+	}
+	void SetIsStun(const bool _status)
+	{
+		isStun = _status;
+	}
 	bool GetCanMove()
 	{
 		return canMove;

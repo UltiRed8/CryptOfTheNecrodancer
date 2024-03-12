@@ -11,5 +11,5 @@ void Placeable::DestroyAfterDelay(const float _seconds)
 {
 	new Timer("DestroyWaterAfterStun", [this]() {
 		Destroy();
-		}, seconds(_seconds), 1, true);
+	}, seconds(_seconds), 1, true);
 }

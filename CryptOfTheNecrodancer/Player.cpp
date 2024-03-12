@@ -77,13 +77,19 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 			return true;
 		}),
 		CollisionReaction(ET_WATER, [this](Entity* _entity) {
-			Water* _water = dynamic_cast<Water*>(_entity);
-			_water->DestroyAfterDelay(0.5f);
-			WindowManager::GetInstance().Shake(25);
-			Map::GetInstance().AddFloorAt(GetPosition());
-			SetIsStun();
+			if (GetComponent<MovementComponent>()->GetIsStun())
+			{
+				Map::GetInstance().AddFloorAt(_entity->GetPosition());
+				_entity->Destroy();
+				WindowManager::GetInstance().Shake(25);
+				GetComponent<MovementComponent>()->SetIsStun(false);
+			}
+			else
+			{
+				GetComponent<MovementComponent>()->SetIsStun(true);
+			}
 			return true;
-			}),
+		}),
 		CollisionReaction(ET_ICE, [this](Entity* _entity) {
 			Ice* _ice = dynamic_cast<Ice*>(_entity);
 			Slide();

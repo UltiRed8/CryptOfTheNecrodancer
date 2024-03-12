@@ -1,7 +1,7 @@
 #include "Water.h"
 #include "Macro.h"
 
-Water::Water(const Vector2f& _position) : Placeable(STRING_ID("Water"), "", _position)
+Water::Water(const Vector2f& _position) : Tile("", _position, ET_WATER)
 {
 	type = ET_WATER;
 	zIndex = 0;

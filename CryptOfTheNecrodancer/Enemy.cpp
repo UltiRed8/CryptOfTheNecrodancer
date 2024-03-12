@@ -12,8 +12,6 @@ Enemy::Enemy(const float _maxHp, const float _maxDammage, const string& _id, con
 	currentCooldown = 0;
 	cooldown = 0;
 
-
-
 	visuals = new RectangleShape(TILE_SIZE);
 	TextureManager::GetInstance().Load(visuals, _path);
 	visuals->setPosition(_position + Vector2f(0.0f, -0.5f) * TILE_SIZE);
@@ -50,9 +48,7 @@ Enemy::Enemy(const float _maxHp, const float _maxDammage, const string& _id, con
 	});
 	rewardAmount = _droppedCoins;
 	type = ET_ENEMY;
-	
 }
-//Tu part de la fin des coeur 
 
 void Enemy::DieEvent()
 {
@@ -62,13 +58,7 @@ void Enemy::DieEvent()
 
 void Enemy::InitLifeUI()
 {
-	//TODO Changer position
-	Menu* _ennmyLife = new Menu("PlayerLife", {
-		/*new Heart(STRING_ID("Hearts"), Vector2f(25.0f, 25.0f) * 2.0f, Vector2f(SCREEN_WIDTH - 55 * 4.2f, SCREEN_HEIGHT - 55 * 12.8)),
-		new Heart(STRING_ID("Hearts"), Vector2f(25.0f, 25.0f) * 2.0f, Vector2f(SCREEN_WIDTH - 55 * (4.2f + 1.0f), SCREEN_HEIGHT - 55 * 12.8)),
-		new Heart(STRING_ID("Hearts"), Vector2f(25.0f, 25.0f) * 2.0f, Vector2f(SCREEN_WIDTH - 55 * (4.2f + 2.0f), SCREEN_HEIGHT - 55 * 12.8)),*/
-		}, 7, false);
-
+	Menu* _ennmyLife = new Menu("PlayerLife", {}, 7, false);
 	_ennmyLife->Open();
 }
 

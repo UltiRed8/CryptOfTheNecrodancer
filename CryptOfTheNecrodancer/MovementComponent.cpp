@@ -39,6 +39,7 @@ void MovementComponent::Move()
 		}
 		direction = new Vector2i(0, 0);
 	}
+	if (isStun) UndoMove();
 }
 
 void MovementComponent::UndoMove()

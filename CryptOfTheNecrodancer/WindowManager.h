@@ -3,6 +3,7 @@
 #include "Singleton.h"
 
 #include <SFML/Graphics.hpp>
+#include <vector>
 
 using namespace std;
 using namespace sf;
@@ -13,13 +14,16 @@ class WindowManager : public Singleton<WindowManager>
 	int currentValue;
 	Vector2i baseWindowPosition;
 	bool* isShakable;
+	Shader* shader;
+	vector<string> shaderNames;
+	int currentShader;
 
 public:
-	WindowManager();
-	~WindowManager();
-
-public:
-	RenderWindow* GetWindow() const 
+	Shader* GetShader() const
+	{
+		return shader;
+	}
+	RenderWindow* GetWindow() const
 	{
 		return window;
 	}
@@ -28,10 +32,17 @@ public:
 		*isShakable = !*isShakable;
 	}
 
+public:
+	WindowManager();
+	~WindowManager();
+
 private:
 	void CreateWindow();
+	void Init();
+	void InitShaders();
 
 public:
+	void LoadShader(const int _id);
 	void Rename(const string& _newWindowName);
 	void Shake(const int _strength);
 	void Update();
