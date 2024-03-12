@@ -54,7 +54,7 @@
 #define SOUND_UP "Assets/Sounds/sfx_ui_select_up.ogg"
 #define SOUND_DOWN "Assets/Sounds/sfx_ui_select_down.ogg"
 #define SOUND_TOGGLE "Assets/Sounds/sfx_ui_toggle.ogg"
-#define SOUND_CREDIT "Assets/Sounds/Credits.ogg"
+#define MUSIC_CREDIT "Credits"
 
 #define LOBBY "Assets/Saved/Lobby.map"
 
@@ -236,7 +236,7 @@ void MenuManager::InitMenuPause()
 	function<void()> _callbackCalibration = [this]() { Get("GamePause")->Toggle(); LatencyMenu(); };
 	function<void()> _more = [this]() { MusicManager::GetInstance().IncreaseMusicPackName(); };
 	function<void()> _less = [this]() { MusicManager::GetInstance().DecreaseMusicPackName(); };
-	function<void()> _credit = [this]() { SoundManager::GetInstance().Play(SOUND_CREDIT); Get("GamePause")->Toggle(); ToggleCredits(); };
+	function<void()> _credit = [this]() { MusicManager::GetInstance().Play(MUSIC_CREDIT, true, false); Get("GamePause")->Toggle(); ToggleCredits(); };
 	function<void()> _callbackEchap = [this]() { Get("GamePause")->Toggle(); CloseMenu(); };
 
 	float _x = static_cast<float>(window->getSize().x / 2);
@@ -582,7 +582,7 @@ void MenuManager::InitCredits()
 	float _x = static_cast<float>(window->getSize().x / 2);
 	unsigned int _windowY = window->getSize().y;
 
-	function<void()> _callbackEchap = [this]() {  SoundManager::GetInstance().Stop(SOUND_CREDIT); ToggleCredits(); Get("GamePause")->Toggle(); };
+	function<void()> _callbackEchap = [this]() { MusicManager::GetInstance().GetCurrent()->stop(); ToggleCredits(); Get("GamePause")->Toggle(); };
 
 	new Menu("Credits", { new UIAnimation("1", Vector2f(0, 0), Vector2f(static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)), CREDITS, Vector2f(640.0f, 360.0f), 8),
 		new UIText("CTxt", Vector2f(_x, static_cast<float>(_windowY / 10)), WHITE_COLOR, "Credits",50,FONT, true),

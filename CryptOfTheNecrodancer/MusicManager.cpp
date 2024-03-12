@@ -180,13 +180,13 @@ void MusicManager::Play()
 	prepared.clear();
 }
 
-void MusicManager::Play(const string& _path, const bool _shouldLoop)
+void MusicManager::Play(const string& _path, const bool _shouldLoop, const bool _haveBeat)
 {
 	if (_path == "") return;
 
 	string _musicPath = to_string(*musicPackName) + "/" + _path;
 
-	Load(_musicPath);
+	if (_haveBeat) Load(_musicPath);
 
 	MusicData* _music = GetMusic(_musicPath, Vector2f(0.0f, 0.0f));
 	_music->setLoop(_shouldLoop);
@@ -200,6 +200,7 @@ void MusicManager::Load(const string& _path)
 	if (!_in)
 	{
 		cerr << "Impossible de charger le fichier !" << endl;
+		
 		return;
 	}
 

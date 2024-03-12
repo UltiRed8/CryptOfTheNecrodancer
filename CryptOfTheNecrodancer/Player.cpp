@@ -201,7 +201,7 @@ void Player::InitInput()
 		ActionData("slot3", [this]() { MusicManager::GetInstance().SpeedUp(); }, {Event::KeyPressed, Keyboard::Num3}),
 		ActionData("DecreaseLife", [this]() { GetComponent<LifeComponent>()->ChangeHealth(-50); UpdateLife(); }, {Event::KeyPressed, Keyboard::Subtract}),
 		ActionData("Increase Life", [this]() { GetComponent<LifeComponent>()->ChangeHealth(50); UpdateLife(); }, {Event::KeyPressed, Keyboard::Add}),
-		//ActionData("Set Bomb", [this]() { new Bomb(GetPosition());}, {Event::KeyPressed, Keyboard::Space}),
+		ActionData("Set Bomb", [this]() { new Bomb(GetPosition());}, {Event::KeyPressed, Keyboard::P}),
 	});
 }
 

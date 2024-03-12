@@ -106,7 +106,7 @@ public:
 	void PrepareMusic(const string& _path, const bool _withShopkeeper = false, const bool _shouldLoop = false);
 	void Prepare(const string& _path, const bool _isShopkeeper, const bool _shouldLoop);
 	void Play();
-	void Play(const string& _path, const bool _shouldLoop);
+	void Play(const string& _path, const bool _shouldLoop, const bool _haveBeat = true);
 	void Update();
 	void StopAll();
 	void Toggle();
