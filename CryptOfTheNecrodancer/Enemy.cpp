@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "Map.h"
 #include "Heart.h"
+#include "SoundManager.h"
 
 #define PATH_SHADOW "Entities/Shadow.png"
 
@@ -36,14 +37,10 @@ Enemy::Enemy(const float _maxHp, const float _maxDammage, const string& _id, con
 		CollisionReaction(ET_PLAYER, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
 			GetComponent<DamageComponent>()->Attack(_entity);
+			SoundManager::GetInstance().Play(attackSound);
 			indexPatern--;
 			dynamic_cast<Player*>(_entity)->ResetChainMultiplier();
 			return true;
-		}),
-		CollisionReaction(ET_WATER, [this](Entity* _entity) {
-			GetComponent<MovementComponent>()->UndoMove();
-			indexPatern--;
-			return false;
 		}),
 	});
 	rewardAmount = _droppedCoins;
@@ -53,6 +50,7 @@ Enemy::Enemy(const float _maxHp, const float _maxDammage, const string& _id, con
 void Enemy::DieEvent()
 {
 	Map::GetInstance().AddOther(new Pickable(rewardAmount, PT_COIN, STRING_ID("Coin"), this->GetPosition()));
+	SoundManager::GetInstance().Play(deathSound);
 	this->Destroy();
 }
 

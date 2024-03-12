@@ -26,8 +26,8 @@ Pickable::Pickable(const int _amount, const PickableType& _type, const string& _
 		else if (_type == PT_DIAMOND)
 		{
 			SetTexture(PATH_DIAMOND);
-			shape->move(Vector2f(0.5f, 0.5f) * TILE_SIZE);
 			shape->setScale({ 0.5f, 0.5f });
+			shape->move(Vector2f(0.25f, 0.25f) * TILE_SIZE);
 		}
 	}
 
