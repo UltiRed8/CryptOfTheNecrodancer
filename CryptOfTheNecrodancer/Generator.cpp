@@ -115,6 +115,7 @@ void Generator::GenerateLobby()
 			{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Door(_position)); }},
 			{ 'E', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_HEPHAESTUS, _position)); }},
 			{ 'M', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_MERLIN, _position)); }},
+			{ 'D', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_DUNGEONMASTER, _position)); }},
 			{ '1', [this](const Vector2f& _position) { others.push_back(new Tile(PATH_UPGRADE_TILE, _position)); }},
 			{ 'P', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position); }},
 			{ 'T', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP, zoneFileName)); others.push_back(new Torch(_position)); }},

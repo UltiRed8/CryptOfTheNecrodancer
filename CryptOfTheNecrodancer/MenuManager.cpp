@@ -182,7 +182,6 @@ void MenuManager::InitMenu()
 	InitMenuOptions();
 	InitMenuClose();
 	InitGraphicMenu();
-	InitDeleteSaveDataMenu();
 	InitGameOver();
 	Loading();
 	WarningSeizure(); 
@@ -232,7 +231,6 @@ void MenuManager::InitMenuPause()
 	function<void()> _callbackRestart = [this]() { Restart(); Get("GamePause")->Toggle(); };
 	function<void()> _callbackOptions = [this]() { Get("GamePause")->Toggle(); OptionsMenu(); };
 	function<void()> _callbackLobby = [this]() {Get("GamePause")->Toggle(); GoToLobby(); MusicManager::GetInstance().Unpause(); };
-	function<void()> _callbackDelete = [this]() { DeleteSaveDataMenu(); };
 	function<void()> _callbackCalibration = [this]() { Get("GamePause")->Toggle(); LatencyMenu(); };
 	function<void()> _more = [this]() { MusicManager::GetInstance().IncreaseMusicPackName(); };
 	function<void()> _less = [this]() { MusicManager::GetInstance().DecreaseMusicPackName(); };
@@ -247,49 +245,20 @@ void MenuManager::InitMenuPause()
 		new UIButton("RestartButton", Vector2f(_x, static_cast<float>(_windowY / 3.5)), WHITE_COLOR, CYAN_COLOR, "Quick Restart", 50, FONT, SOUND_START, _callbackRestart),
 		new UIButton("OptionsButton", Vector2f(_x, static_cast<float>(_windowY / 2.7)), WHITE_COLOR, CYAN_COLOR, "Options", 50, FONT, SOUND_START, _callbackOptions),
 		new UIButton("ReturnLobbyButton", Vector2f(_x, static_cast<float>(_windowY / 2.2)), WHITE_COLOR, CYAN_COLOR, "Quit to Lobby", 50, FONT, SOUND_EXIT, _callbackLobby),
-		new UIButton("DeleteSaveDataButton", Vector2f(_x, static_cast<float>(_windowY / 1.85)), WHITE_COLOR, CYAN_COLOR, "Delete Save Data", 50, FONT, SOUND_START, _callbackDelete),
-		new UIButton("Calibration", Vector2f(_x, static_cast<float>(_windowY / 1.58)), WHITE_COLOR, CYAN_COLOR, "Calibration Latency", 50, FONT, SOUND_START, _callbackCalibration),
+		new UIButton("Calibration", Vector2f(_x, static_cast<float>(_windowY / 1.9)), WHITE_COLOR, CYAN_COLOR, "Calibration Latency", 50, FONT, SOUND_START, _callbackCalibration),
 
-		new UIText("MusicPack", Vector2f(static_cast<float>(window->getSize().x / 2.3), static_cast<float>(_windowY / 1.4)), Color(172, 172,173), "Music Pack",50,FONT, true),
-		new UIText("MusicPackTextUpdate", Vector2f(static_cast<float>(window->getSize().x / 1.6), static_cast<float>(_windowY / 1.4)), Color(172, 172,173), "",50,FONT, true, MusicManager::GetInstance().GetMusicPackName()),
-		new UIButton("MusicPackMore", Vector2f(static_cast<float>(window->getSize().x / 1.47), static_cast<float>(_windowY / 1.41)), WHITE_COLOR, CYAN_COLOR, ">", 50, FONT, SOUND_UP, _more),
-		new UIButton("MusicPackLess", Vector2f(static_cast<float>(window->getSize().x / 1.75), static_cast<float>(_windowY / 1.41)), WHITE_COLOR, CYAN_COLOR, "<", 50, FONT, SOUND_DOWN, _less),
-		new UIText("MusicText", Vector2f(_x, static_cast<float>(_windowY / 1.28)), Color(161, 6,6), "For changing the Music Pack, you need to change zone",20,FONT, false),
+		new UIText("MusicPack", Vector2f(static_cast<float>(window->getSize().x / 2.3), static_cast<float>(_windowY / 1.65)), Color(172, 172,173), "Music Pack",50,FONT, true),
+		new UIText("MusicPackTextUpdate", Vector2f(static_cast<float>(window->getSize().x / 1.6), static_cast<float>(_windowY / 1.65)), Color(172, 172,173), "",50,FONT, true, MusicManager::GetInstance().GetMusicPackName()),
+		new UIButton("MusicPackMore", Vector2f(static_cast<float>(window->getSize().x / 1.47), static_cast<float>(_windowY / 1.66)), WHITE_COLOR, CYAN_COLOR, ">", 50, FONT, SOUND_UP, _more),
+		new UIButton("MusicPackLess", Vector2f(static_cast<float>(window->getSize().x / 1.75), static_cast<float>(_windowY / 1.66)), WHITE_COLOR, CYAN_COLOR, "<", 50, FONT, SOUND_DOWN, _less),
+		new UIText("MusicText", Vector2f(_x, static_cast<float>(_windowY / 1.48)), Color(161, 6,6), "For changing the Music Pack, you need to change zone",20,FONT, false),
 
-		new UIButton("credit", Vector2f(static_cast<float>(window->getSize().x / 1.3), static_cast<float>(_windowY / 1.16)), Color(119,136,153), WHITE_COLOR, {
-			new UIImage("credit", Vector2f(static_cast<float>(window->getSize().x / 1.3), static_cast<float>(_windowY / 1.16)), Vector2f(150.0f, 48.0f), CREDIT_BUTTON),
-		}, SOUND_START, _credit, FloatRect(static_cast<float>(window->getSize().x / 1.3), static_cast<float>(_windowY / 1.16), 150.0f, 48.0f)),
+		new UIButton("credit", Vector2f(static_cast<float>(window->getSize().x / 1.3), static_cast<float>(_windowY / 1.2)), Color(119,136,153), WHITE_COLOR, {
+			new UIImage("credit", Vector2f(static_cast<float>(window->getSize().x / 1.3), static_cast<float>(_windowY / 1.2)), Vector2f(150.0f, 48.0f), CREDIT_BUTTON),
+		}, SOUND_START, _credit, FloatRect(static_cast<float>(window->getSize().x / 1.3), static_cast<float>(_windowY / 1.2), 150.0f, 48.0f)),
 
-		new UIButton("Exit", Vector2f(_x, static_cast<float>(_windowY / 1.16)), WHITE_COLOR, CYAN_COLOR, "Exit Game", 50, FONT, SOUND_EXIT, _callbackEchap),
+		new UIButton("Exit", Vector2f(_x, static_cast<float>(_windowY / 1.2)), WHITE_COLOR, CYAN_COLOR, "Exit Game", 50, FONT, SOUND_EXIT, _callbackEchap),
 		new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), PAUSE_MENU), }, 1);
-}
-
-void MenuManager::InitDeleteSaveDataMenu()
-{
-	float _x = static_cast<float>(window->getSize().x / 2);
-	unsigned int _windowY = window->getSize().y;
-
-	function<void()> _delete = [&]() { Delete(); };
-	function<void()> _return = [this]() { DeleteSaveDataMenu(); };
-
-	new Menu("Delete", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), AREYOUSURE),
-		new UIText("AreYouSureText1", Vector2f(_x, static_cast<float>(_windowY / 4)), WHITE_COLOR, "Are you sure you want to",35, FONT),
-		new UIText("AreYouSureText2", Vector2f(_x, static_cast<float>(_windowY / 3.3)), WHITE_COLOR, "delete your save data ?",35, FONT),
-		new UIButton("StayText", Vector2f(_x, static_cast<float>(_windowY / 1.8)), WHITE_COLOR, CYAN_COLOR, "No, stay here", 35, FONT, SOUND_EXIT, _return),
-		new UIButton("DeleteShit", Vector2f(_x, static_cast<float>(_windowY / 1.6)), WHITE_COLOR, CYAN_COLOR, "Yes, delete this shit", 35, FONT, SOUND_START, _delete) }, 2);
-}
-
-void MenuManager::DeleteSaveDataMenu()
-{
-	Get("Delete")->Toggle();
-}
-
-void MenuManager::Delete()
-{
-	//TODO
-	//Fonction pour delete la data Save
-	DeleteSaveDataMenu();
-	GoToLobby();
 }
 
 void MenuManager::GoToLobby()

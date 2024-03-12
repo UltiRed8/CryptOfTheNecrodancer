@@ -5,6 +5,7 @@
 #define PATH_SHOPKEEPER "Entities/ShopkeeperSprite.png"
 #define PATH_MERLIN "Entities/MerlinSprite.png"
 #define PATH_HEPHAESTUS "Entities/HephaestusSprite.png"
+#define PATH_DUNGEONMASTER "Entities/DungeonMasterSprite.png"
 
 NPC::NPC(const NPCType& _type, const Vector2f& _position) : Living(900, 1000, "", STRING_ID("NPC"), _position)
 {
@@ -22,6 +23,7 @@ void NPC::ChangeTexture()
 		PATH_SHOPKEEPER,
 		PATH_MERLIN,
 		PATH_HEPHAESTUS,
+		PATH_DUNGEONMASTER
 	};
 
 	TextureManager::GetInstance().Load(shape, _paths[npcType]);
@@ -46,13 +48,22 @@ void NPC::UpdateAnimation()
 		shape->setScale(2.0f, 2.0f);
 		shape->move(Vector2f(-0.5f, -1.0f) * TILE_SIZE);
 	}
-	else
+	else if(npcType == NPC_HEPHAESTUS)
 	{
 		components.push_back(new AnimationComponent(this, {
 			AnimationData("AnvilHit", Vector2f(65, 68), 0, 4, 0.1f, false),
 		}, "AnvilHit", shape));
 		shape->setScale(3.0f, 3.0f);
 		shape->move(Vector2f(-1.0f, -1.0f) * TILE_SIZE);
+	}
+	else
+	{
+		components.push_back(new AnimationComponent(this, {
+			AnimationData("Left", Vector2f(57, 51), 0, 2, 0.1f, false),
+			AnimationData("Right", Vector2f(57, 51), 3, 2, 0.1f, false),
+			}, "Left", shape));
+		shape->setScale(1.5f, 1.5f);
+		shape->move(Vector2f(-TILE_SIZE.x / 2.5f, -TILE_SIZE.y / 2.0f));
 	}
 }
 
@@ -63,7 +74,7 @@ void NPC::DieEvent()
 void NPC::Update()
 {
 
-	if (npcType == NPC_MERLIN)
+	if (npcType == NPC_MERLIN || npcType == NPC_DUNGEONMASTER)
 	{
 		currentCooldown++;
 		if (currentCooldown >= 2)

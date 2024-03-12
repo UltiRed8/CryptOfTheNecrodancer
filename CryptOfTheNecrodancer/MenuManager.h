@@ -26,7 +26,6 @@ public :
 	void Update();
 	bool BlockPlayer();
 	void InitMenu();
-	void DeleteSaveDataMenu();
 	void OptionsMenu();
 	void CloseMenu();
 	void GraphicMenu();
@@ -42,7 +41,6 @@ public :
 private :
 	void InitMenuPause();
 	void InitHUD();
-	void InitDeleteSaveDataMenu();
 	void InitMenuOptions();
 	void InitMenuClose();
 	void InitGraphicMenu();
@@ -55,7 +53,6 @@ private :
 	void InitCredits();
 	void InitCalibration();
 
-	void Delete();
 	void GoToLobby();
 	void Restart();
 };
