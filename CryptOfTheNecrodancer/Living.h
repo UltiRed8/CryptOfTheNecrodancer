@@ -3,6 +3,8 @@
 
 class Living : public Entity
 {
+protected:
+	string hitSound;
 
 public:
 	Living(const float _maxHp,const float _maxDammage,const string& _path,const string& _id,const Vector2f& _pos, const bool _shouldResetDirection = true);
@@ -10,5 +12,6 @@ public:
 
 public:
 	virtual void DieEvent() = 0;
+	void Hit();
 };
 

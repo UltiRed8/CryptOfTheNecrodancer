@@ -17,6 +17,8 @@ protected:
 	int currentCooldown;
 	int cooldown;
 	vector<Vector2i>directionsPatern;
+	string attackSound;
+	string deathSound;
 
 public:
 	int GetRewardAmount() const

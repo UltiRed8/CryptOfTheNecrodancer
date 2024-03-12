@@ -8,6 +8,9 @@
 
 #define PATH_BAT "Entities/BatSprite.png"
 
+#define SOUND_ATTACK_BAT  "Assets/Sounds/en_bat_attack_melee.ogg"
+#define SOUND_HIT_BAT  "Assets/Sounds/en_bat_hit.ogg"
+#define SOUND_DEATH_BAT  "Assets/Sounds/en_bat_death.ogg"
 
 Bat::Bat(const Vector2f& _position) :Enemy(100.f,50.f,STRING_ID("Bat"), PATH_BAT, _position, 2)
 {
@@ -23,6 +26,10 @@ Bat::Bat(const Vector2f& _position) :Enemy(100.f,50.f,STRING_ID("Bat"), PATH_BAT
 	}, "Idle", visuals));
 
 	cooldown = 2;
+
+	attackSound = SOUND_ATTACK_BAT;
+	hitSound = SOUND_HIT_BAT;
+	deathSound = SOUND_DEATH_BAT;
 }
 
 void Bat::SelectDirection()
