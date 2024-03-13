@@ -4,8 +4,6 @@
 #define C_PURPLE Color(255, 62, 216, 255)
 #define C_GREEN Color(53, 233, 136, 255)
 
-#define PATH_WATER "Dungeons/Water.png"
-
 Tile::Tile(const string& _tilePath, const Vector2f& _position, const EntityType& _type) : Placeable(STRING_ID("Tile"), _tilePath, _position)
 {
 	entities = vector<Entity*>();
@@ -15,10 +13,6 @@ Tile::Tile(const string& _tilePath, const Vector2f& _position, const EntityType&
 		shape->setFillColor(Color::Black);
 		shape->move(Vector2f(0.0f, -0.5f) * TILE_SIZE);
 		zIndex = 3;
-	}
-	if (_type == ET_WATER)
-	{
-		TextureManager::GetInstance().LoadFromTextureSheet(shape, PATH_WATER, Random(2, 0), Vector2i(26, 26));
 	}
 }
 
@@ -37,10 +31,6 @@ void Tile::InvertAlpha(const bool _reset)
 
 void Tile::ToggleHighlight(const int _alphaValueToHighlight)
 {
-	if (type == ET_WATER)
-	{
-		return;
-	}
 	if (defaultColor.a == _alphaValueToHighlight)
 	{
 		shape->setFillColor(defaultColor.a == 255 ? C_PURPLE : C_GREEN);

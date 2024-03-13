@@ -56,12 +56,12 @@ void Game::Update()
 	while (window->isOpen())
 	{
 		delta += TimerManager::GetInstance().GetDeltaTime();
+		WindowManager::GetInstance().Update();
 		MusicManager::GetInstance().Update();
 		TimerManager::GetInstance().Update();
 		InputManager::GetInstance().Update();
 		MenuManager::GetInstance().Update();
 		CameraManager::GetInstance().Update();
-		WindowManager::GetInstance().Update();
 		Map::GetInstance().GetGenerator()->GenUpdate();
 	}
 	Stop();

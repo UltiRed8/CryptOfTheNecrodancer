@@ -6,6 +6,10 @@
 #include "LightSource.h"
 #include "EntityManager.h"
 
+#define SOUND_ATTACK_SKELETON "Assets/Sounds/en_skel_attack_melee.ogg"
+#define SOUND_HIT_SKELETON "Assets/Sounds/en_skel_hit.ogg"
+#define SOUND_DEATH_SKELETON "Assets/Sounds/en_skel_death.ogg"
+
 Skeleton::Skeleton(const float _maxHp, const float _maxDammage, const Vector2f& _position, const string& _path, const int _droppedCoins) 
 	: Enemy(_maxHp,_maxDammage,STRING_ID("Skeleton"), PATH_SKELETON, _position, _droppedCoins)
 {
@@ -17,6 +21,10 @@ Skeleton::Skeleton(const float _maxHp, const float _maxDammage, const Vector2f& 
 	}, "Attack", visuals));
 
 	currentCooldown = Random(2,0);
+
+	attackSound = SOUND_ATTACK_SKELETON;
+	hitSound = SOUND_HIT_SKELETON;
+	deathSound = SOUND_DEATH_SKELETON;
 }
 
 void Skeleton::SelectDirection()

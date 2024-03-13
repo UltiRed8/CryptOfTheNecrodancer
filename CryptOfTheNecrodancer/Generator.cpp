@@ -6,7 +6,6 @@
 #include "Item.h"
 #include "Map.h"
 #include "Trap.h"
-#include "Water.h"
 #include "Ice.h"
 #include "HotCoals.h"
 
@@ -49,38 +48,36 @@ Generator::~Generator()
 	{
 		_floor->Destroy();
 	}
-	floors.clear();
 
 	for (Wall* _wall : walls)
 	{
 		_wall->Destroy();
 	}
-	walls.clear();
 
 	for (Entity* _entity : others)
 	{
 		_entity->Destroy();
 	}
-	others.clear();
 
 	for (Stair* _stair : stairs)
 	{
 		_stair->Destroy();
 	}
-	stairs.clear();
 
 	for (Room* _room : rooms)
 	{
 		delete _room;
 	}
-	rooms.clear();
-	shop = nullptr;
 
 	for (Path* _path : paths)
 	{
 		delete _path;
 	}
-	paths.clear();
+
+	for (Item* _item : items)
+	{
+		_item->Destroy();
+	}
 }
 
 void Generator::Generate()
@@ -119,12 +116,12 @@ void Generator::GenerateLobby()
 			{ '1', [this](const Vector2f& _position) { others.push_back(new Tile(PATH_UPGRADE_TILE, _position)); }},
 			{ 'P', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position); }},
 			{ 'T', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP, zoneFileName)); others.push_back(new Torch(_position)); }},
-			{ 'H', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Pickaxe(PT_PICKAXE, STRING_ID("Shovel"),_position)); }},
-			{ 'W', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Weapon(WT_BROADSWORD, STRING_ID("Dagger"), _position)); }},
-			{ 'A', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Armor(AT_BODY_LEATHERARMOR,STRING_ID("Armor"),_position)); }},
-			{ 'O', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Weapon(WT_SPEAR, STRING_ID("Shovel1"),_position)); }},
-			{ 'N', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Weapon(WT_STAFF, STRING_ID("Dagger1"), _position)); }},
-			{ 'L', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Armor(AT_HEAD_MINERSCAP,STRING_ID("Armor1"),_position)); }},
+			{ 'O', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Weapon(WT_SPEAR, STRING_ID("Shovel1"),_position)); }},
+			{ 'N', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Weapon(WT_STAFF, STRING_ID("Dagger1"), _position)); }},
+			{ 'L', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Armor(AT_HEAD_MINERSCAP,STRING_ID("Armor1"),_position)); }},
+			{ 'H', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Pickaxe(PT_PICKAXE, STRING_ID("Shovel"),_position)); }},
+			{ 'W', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Weapon(WT_BROADSWORD, STRING_ID("Dagger"), _position)); }},
+			{ 'A', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Armor(AT_BODY_LEATHERARMOR,STRING_ID("Armor"),_position)); }},
 		};
 
 		string _line;
@@ -171,13 +168,18 @@ void Generator::Enable3DEffect()
 		Entity* _entity = GetEntityAt(_wall->GetPosition() - Vector2f(0, -1) * TILE_SIZE);
 		if (_entity)
 		{
-			if (_entity->GetType() == ET_FLOOR || _entity->GetType() == ET_WATER || _entity->GetType() == ET_ICE)
+			if (_entity->GetType() == ET_FLOOR || _entity->GetType() == ET_ICE)
 			{
 				_wall->Enable3D();
 			}
 		}
 	}
 
+}
+
+void Generator::AddItem(Item* _item)
+{
+	items.push_back(_item);
 }
 
 void Generator::GenerateRooms(const int _roomCount)
@@ -195,36 +197,6 @@ void Generator::GenerateRooms(const int _roomCount)
 		else
 		{
 			delete _room;
-		}
-	}
-}
-
-void Generator::GenerateWater()
-{
-	loadingText->GetText()->setString("Generating Water");
-
-	for (Room* _room : rooms)
-	{
-		int _waterTileNumberPerRoom = Random(100, 50) + 1;
-		for (int _i = 0; _i < _waterTileNumberPerRoom; _i++)
-		{
-			if (spawnablePositions.empty()) return;
-			// je prends un position spawnable aléatoire
-			Vector2f _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
-			// je supprime sa position de spawnablePositions
-			EraseElement(spawnablePositions, _position);
-			// je supprime cette tile
-			Entity* _entity = GetEntityAt(_position);
-			if (_entity)
-			{
-				if (Tile* _floor = dynamic_cast<Tile*>(_entity))
-				{
-					EraseElement(floors, _floor);
-					EraseElement(_room->GetFloor(), _floor);
-					_floor->Destroy();
-				}
-			}
-			floors.push_back(new Tile("", _position, ET_WATER));
 		}
 	}
 }
@@ -626,10 +598,6 @@ void Generator::UpdateTilesColor()
 	{
 		for (Tile* _floor : floors)
 		{
-			if (_floor->GetType() == ET_WATER)
-			{
-				break;
-			}
 			_floor->InvertAlpha(isPurple);
 		}
 	}
@@ -675,8 +643,6 @@ void Generator::GenUpdate()
 			[&]() { PlaceTorches(); },
 			// 14- update doors
 			[&]() { UpdateDoors(); },
-			// 16- Water generation
-			//[&]() { GenerateWater(); },
 			 
 			//[&]() { GenerateIce(); },
 

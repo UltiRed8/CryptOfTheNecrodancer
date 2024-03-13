@@ -4,7 +4,7 @@
 
 enum TrapType
 {
-	TR_CONFUSION, TR_FAST, TR_SLOW, TR_BOMB
+	TR_CONFUSION, TR_FAST, TR_SLOW, TR_BOMB, TR_WATER
 };
 
 class Trap : public Placeable

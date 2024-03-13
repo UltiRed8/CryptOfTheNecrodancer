@@ -10,8 +10,6 @@ enum PickableType
 class Pickable : public Placeable
 {
 	PickableType pickableType;
-	Timer* animationTimer;
-	float animationValue;
 	int amount;
 
 public:
@@ -20,5 +18,3 @@ public:
 public:
 	virtual void PickUp();
 };
-
-

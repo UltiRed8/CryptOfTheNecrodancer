@@ -417,9 +417,6 @@
     <ClCompile Include="Calibration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Water.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Ice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

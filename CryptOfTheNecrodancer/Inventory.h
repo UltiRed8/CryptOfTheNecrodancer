@@ -12,25 +12,56 @@ struct Slot : public UIImage
 	SlotType type;
 	UIImage* item;
 	bool isVisible;
+	Item* currentItem;
 
 public:
-	Slot(const SlotType& _type, const string& _path, Menu* _owner) : UIImage(STRING_ID(to_string(type) + "_slot"), Vector2f(0.0f, 0.0f), Vector2f(30.0f, 33.0f) * 3.0f, _path)
+	Slot(const SlotType& _type, const string& _path, Menu* _owner);
+	~Slot()
 	{
-		type = _type;
-		item = new UIImage(STRING_ID("item_" + to_string(type) + "_slot"), Vector2f(0.0f, 0.0f), Vector2f(30.0f, 33.0f) * 3.0f, "");
-		isVisible = false;
-		item->SetOwner(_owner);
-		item->Register();
+		if (currentItem)
+		{
+			delete currentItem;
+		}
 	}
 
 public:
+	void SetItemPosition(const Vector2f& _position)
+	{
+		const Vector2f& _itemSize = item->GetShape()->getGlobalBounds().getSize();
+		item->GetShape()->setPosition(_position + _itemSize / 4.f);
+	}
+	Item* GetItem() const
+	{
+		return currentItem;
+	}
+	void SetItem(Item* _item)
+	{
+		currentItem = _item;
+	}
 	void SetPosition(const Vector2f& _position)
 	{
 		shape->setPosition(_position);
 	}
-	void Toggle()
+	void SetVisible()
 	{
-		isVisible = !isVisible;
+		isVisible = true;
+	}
+	SlotType GetType() const
+	{
+		return type;
+	}
+	virtual vector<Drawable*> GetDrawables() override
+	{
+		vector<Drawable*> _drawables;
+
+		_drawables.push_back(shape);
+		if (currentItem)
+		{
+			item->GetShape()->setTexture(currentItem->GetVisuals()->getTexture());
+		}
+		_drawables.push_back(item->GetShape());
+
+		return _drawables;
 	}
 };
 
@@ -40,7 +71,7 @@ class Inventory : public Menu
 	vector<Slot*> usables;
 	vector<Slot*> foods;
 
-public :
+public:
 	Inventory();
 	~Inventory();
 
@@ -61,7 +92,6 @@ public:
 		}
 		return nullptr;
 	}
-
 public:
 	virtual vector<Drawable*> GetDrawables() override;
 };

@@ -15,6 +15,7 @@
 #define PATH_BODY_CHAINMAIL "Items/Body/Chainmail.png"
 #define PATH_BODY_LEATHERARMOR "Items/Body/LeatherArmor.png"
 #define PATH_FEET_BOOTSOFSTRENGTH "Items/Feet/BootsOfStrength.png"
+
 #define PATH_FEET_HARGREAVES "Items/Feet/Hargreaves.png"
 
 struct ItemStats
@@ -27,29 +28,61 @@ struct ItemStats
 class Item : public Entity
 {
 	RectangleShape* visuals;
-	SlotType type;
+	SlotType stype;
 	Timer* animationTimer;
 	float animationValue;
+	bool isInInventory;
+
 protected:
 	ItemStats stats;
 
 public:
-	Item(const SlotType& _type, const string& _id, const Vector2f& _position);
+	Item(const SlotType& _type, const string& _id, const Vector2f& _position,const bool _isInInventory = false);
 	~Item();
 
-protected :
+protected:
 	void UpdateTexture();
 
-public :
+public:
+	ItemStats GetStats() const
+	{
+		return stats;
+	}
+	RectangleShape* GetVisuals() const
+	{
+		return visuals;
+	}
+
+	bool IsInInventory() const
+	{
+		return isInInventory;
+	}
+
+	void SetInInventory(bool _isInInventory)
+	{
+		isInInventory = _isInInventory;
+	}
+
+	void SetPosition(const Vector2f& _position)
+	{
+		shape->setPosition(_position);
+	}
+
 	virtual string GetTexturePath() = 0;
 	virtual vector<Drawable*> GetDrawables() override
 	{
+		if (isInInventory)
+		{
+			return vector<Drawable*>();
+		}
 		vector<Drawable*> _drawables;
 		_drawables.push_back(shape);
 		_drawables.push_back(visuals);
 		return _drawables;
 	}
 	virtual ItemStats UpdateStat() = 0;
+
+	virtual void PickUp();
 };
 
 struct Weapon : Item
@@ -57,7 +90,7 @@ struct Weapon : Item
 	WeaponType weaponType;
 
 public:
-	Weapon(const WeaponType& _wType, const string& _id, const Vector2f& _position) : Item(ST_ATTACK, _id, _position)
+	Weapon(const WeaponType& _wType, const string& _id, const Vector2f& _position,const bool _isInInventory = false) : Item(ST_ATTACK, _id, _position, _isInInventory)
 	{
 		weaponType = _wType;
 		stats = UpdateStat();
@@ -92,7 +125,7 @@ struct Pickaxe : Item
 	PickaxeType pickaxeType;
 
 public:
-	Pickaxe(const PickaxeType& _pType, const string& _id, const Vector2f& _position) : Item(ST_SHOVEL, _id, _position)
+	Pickaxe(const PickaxeType& _pType, const string& _id, const Vector2f& _position,const bool _isInInventory = false) : Item(ST_SHOVEL, _id, _position,_isInInventory)
 	{
 		pickaxeType = _pType;
 		stats = UpdateStat();
@@ -123,7 +156,7 @@ struct Armor : Item
 	ArmorType armorType;
 
 	public:
-	Armor(const ArmorType& _aType,  const string& _id, const Vector2f& _position) : Item(GetSlotTypeWithArmorType(_aType), _id, _position)
+	Armor(const ArmorType& _aType,  const string& _id, const Vector2f& _position,const bool _isInInventory = false) : Item(GetSlotTypeWithArmorType(_aType), _id, _position, _isInInventory)
 	{
 		armorType = _aType;
 		stats = UpdateStat();

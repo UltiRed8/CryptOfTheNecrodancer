@@ -5,6 +5,7 @@
 #include "EntityManager.h"
 #include "Player.h"
 #include "MusicManager.h"
+#include "SoundManager.h"
 #include "Bomb.h"
 #include "CameraManager.h"
 
@@ -15,6 +16,11 @@
 #define PATH_SLOW_TRAP "Entities/SlowTrap.png"
 #define PATH_SLOW_TRAP_PRESSED "Entities/SlowTrapPressed.png"
 #define PATH_BOMB_TRAP "Entities/BombTrap.png"
+#define PATH_WATER_TRAP "Entities/Water.png"
+
+#define SOUND_WATER_IN "Assets/Sounds/mov_water_in.ogg"
+#define SOUND_WATER_OUT "Assets/Sounds/mov_water_out.ogg"
+#define SOUND_TRAP "Assets/Sounds/obj_trap_trapdoor_open.ogg"
 
 Trap::Trap(const Vector2f& _position, const TrapType& _trapType) : Placeable(STRING_ID("Trap"), "", _position)
 {
@@ -25,28 +31,43 @@ Trap::Trap(const Vector2f& _position, const TrapType& _trapType) : Placeable(STR
 	normalPath = "";
 	cooldown = 0;
 	Init();
-	TextureManager::GetInstance().Load(shape, normalPath);
-	shape->setScale(0.5f, 0.5f);
+	if (_trapType == TR_WATER)
+	{
+		TextureManager::GetInstance().LoadFromTextureSheet(shape, PATH_WATER_TRAP, Random(0, 2), Vector2i(26, 26));
+	}
+	else
+	{
+		TextureManager::GetInstance().Load(shape, normalPath);
+		shape->setScale(0.5f, 0.5f);
+		shape->move(Vector2f(0.25f, 0.25f) * TILE_SIZE);
+	}
 }
 
 Trap::Trap(const Vector2f& _position) : Placeable(STRING_ID("Trap"), "", _position)
 {
 	type = ET_TRAP;
-	trapType = (TrapType)(Random(3, 0));
+	trapType = (TrapType)(Random(4, 0));
 	callback = nullptr;
 	pressedPath = "";
 	normalPath = "";
 	cooldown = 0;
 	Init();
-	TextureManager::GetInstance().Load(shape, normalPath);
-	shape->setScale(0.5f, 0.5f);
+	if (trapType == TR_WATER)
+	{
+		TextureManager::GetInstance().LoadFromTextureSheet(shape, PATH_WATER_TRAP, Random(2, 0), Vector2i(26, 26));
+	}
+	else
+	{
+		TextureManager::GetInstance().Load(shape, normalPath);
+		shape->setScale(0.5f, 0.5f);
+		shape->move(Vector2f(0.25f, 0.25f) * TILE_SIZE);
+	}
 }
 
 void Trap::Init()
 {
 	InitAllPaths();
 	InitCallback();
-	shape->move(Vector2f(0.25f, 0.25f) * TILE_SIZE);
 }
 
 void Trap::InitAllPaths()
@@ -56,6 +77,7 @@ void Trap::InitAllPaths()
 		PATH_FAST_TRAP,
 		PATH_SLOW_TRAP,
 		PATH_BOMB_TRAP,
+		PATH_WATER_TRAP,
 	};
 
 	string _pressedPaths[] = {
@@ -63,6 +85,7 @@ void Trap::InitAllPaths()
 		PATH_FAST_TRAP_PRESSED,
 		PATH_SLOW_TRAP_PRESSED,
 		PATH_BOMB_TRAP,
+		PATH_WATER_TRAP,
 	};
 
 	normalPath = _normalPaths[trapType];
@@ -80,6 +103,21 @@ void Trap::InitCallback()
 		[&]() { MusicManager::GetInstance().SpeedUp(); cooldown = 5; },
 		[&]() { MusicManager::GetInstance().SpeedDown(); cooldown = 5; },
 		[&]() { new Bomb(GetPosition() + Vector2f(-0.25f, -0.25f) * TILE_SIZE); cooldown = -1; },
+		[&]() {
+			Player* _player = (Player*)EntityManager::GetInstance().Get("Player");
+			MovementComponent* _component = _player->GetComponent<MovementComponent>();
+			if (_component->GetIsStun())
+			{
+				Destroy();
+				_component->SetIsStun(false);
+				SoundManager::GetInstance().Play(SOUND_WATER_OUT);
+			}
+			else
+			{
+				SoundManager::GetInstance().Play(SOUND_WATER_IN);
+				_component->SetIsStun(true);
+			}
+		},
 	};
 
 	callback = _callbacks[trapType];
@@ -89,7 +127,12 @@ void Trap::Trigger()
 {
 	if (cooldown != 0) return;
 
-	TextureManager::GetInstance().Load(shape, pressedPath);
+	SoundManager::GetInstance().Play(SOUND_TRAP);
+
+	if (trapType != TR_WATER)
+	{
+		TextureManager::GetInstance().Load(shape, pressedPath);
+	}
 
 	if (callback)
 	{
@@ -104,7 +147,10 @@ void Trap::Update()
 		cooldown--;
 		if (cooldown == 0)
 		{
-			TextureManager::GetInstance().Load(shape, normalPath);
+			if (trapType != TR_WATER)
+			{
+				TextureManager::GetInstance().Load(shape, normalPath);
+			}
 		}
 	}
 	Entity::Update();

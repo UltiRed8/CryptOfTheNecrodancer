@@ -14,13 +14,14 @@
 #include "MenuManager.h"
 #include "Heart.h"
 #include "WindowManager.h"
-#include "Water.h"
 #include "Ice.h"
 #include "HotCoals.h"
 #include "Bomb.h"
 
 #define PATH_PLAYER "Entities/PlayerSprite.png"
 #define PATH_SHADOW "Entities/Shadow.png"
+
+#define SOUND_DEATH "Assets/Sounds/sfx_player_death_ST.ogg"
 
 #define SOUND_CHAIN_START "Assets/Sounds/sfx_chain_groove_ST.ogg"
 #define SOUND_CHAIN_FAIL "Assets/Sounds/sfx_chain_break_ST.ogg"
@@ -34,6 +35,7 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 	visuals->setPosition(_position + Vector2f(0.0f, -0.5f) * TILE_SIZE);
 	isStun = false;
 	isConfuse = false;
+	pickupCooldown = false;
 	inventory = new Inventory();
 	inventory->Open();
 	ressources = new PlayerRessource();
@@ -51,7 +53,7 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 		CollisionReaction(ET_WALL, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
 			Wall* _wall = dynamic_cast<Wall*>(_entity);
-			_wall->DestroyWall(false, false);
+			_wall->DestroyWall(false);
 			return true;
 		}),
 		CollisionReaction(ET_PICKABLE, [this](Entity* _entity) {
@@ -76,20 +78,6 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 			WindowManager::GetInstance().Shake(25);
 			return true;
 		}),
-		CollisionReaction(ET_WATER, [this](Entity* _entity) {
-			if (GetComponent<MovementComponent>()->GetIsStun())
-			{
-				Map::GetInstance().AddFloorAt(_entity->GetPosition());
-				_entity->Destroy();
-				WindowManager::GetInstance().Shake(25);
-				GetComponent<MovementComponent>()->SetIsStun(false);
-			}
-			else
-			{
-				GetComponent<MovementComponent>()->SetIsStun(true);
-			}
-			return true;
-		}),
 		CollisionReaction(ET_ICE, [this](Entity* _entity) {
 			Ice* _ice = dynamic_cast<Ice*>(_entity);
 			Slide();
@@ -97,6 +85,8 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 		}),
 		CollisionReaction(ET_ENEMY, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
+			Enemy* _enemy = (Enemy*)_entity;
+			_enemy->Hit();
 			if (GetComponent<DamageComponent>()->Attack(_entity))
 			{
 				WindowManager::GetInstance().Shake(25);
@@ -117,6 +107,16 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 		}),
 		CollisionReaction(ET_TRAP, [this](Entity* _entity) {
 			dynamic_cast<Trap*>(_entity)->Trigger();
+			return false;
+		}),
+
+		CollisionReaction(ET_ITEM, [this](Entity* _entity) {
+			Item* _item = dynamic_cast<Item*>(_entity);
+			if (!_item->IsInInventory() && !pickupCooldown)
+			{
+				_item->PickUp();
+				pickupCooldown = true;
+			}
 			return false;
 		}),
 	});
@@ -196,7 +196,6 @@ void Player::InitInput()
 	// TODO remove
 	new ActionMap("TempDebug", {
 		ActionData("temp1", [this]() { Map::GetInstance().OpenPrepared(); }, {Event::KeyPressed, Keyboard::Num0}),
-		ActionData("slot1", [this]() { inventory->GetSlot(ST_SHOVEL)->Toggle(); }, {Event::KeyPressed, Keyboard::Num1}),
 		ActionData("slot2", [this]() { MusicManager::GetInstance().SpeedDown(); }, {Event::KeyPressed, Keyboard::Num2}),
 		ActionData("slot3", [this]() { MusicManager::GetInstance().SpeedUp(); }, {Event::KeyPressed, Keyboard::Num3}),
 		ActionData("DecreaseLife", [this]() { GetComponent<LifeComponent>()->ChangeHealth(-50); UpdateLife(); }, {Event::KeyPressed, Keyboard::Subtract}),
@@ -269,12 +268,14 @@ void Player::UpdateHeartAnimation()
 
 void Player::Update()
 {
+	pickupCooldown = false;
 	Entity::Update();
 	visuals->setPosition(shape->getPosition() + Vector2f(0.0f, -0.5f) * TILE_SIZE);
 }
 
 void Player::DieEvent()
 {
+	SoundManager::GetInstance().Play(SOUND_DEATH);
 	Map::GetInstance().ClearGenerator();
 	Menu* _died = MenuManager::GetInstance().Get("Dead");
 	_died->Open();
