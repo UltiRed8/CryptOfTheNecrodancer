@@ -28,6 +28,11 @@
 
 #define PATH_FLOOR "Dungeons/" + Map::GetInstance().GetZoneFileName() + "/floor.png"
 
+int Player::GetDigLevel() const
+{
+	return inventory->GetSlot(ST_SHOVEL)->GetItem()->GetStats().digLevel;
+}
+
 Player::Player(const float _maxHp, const float _maxDammage, const string _id, const Vector2f& _position) : Living(_maxHp, _maxDammage, PATH_SHADOW, _id, _position, false)
 {
 	visuals = new RectangleShape(TILE_SIZE);

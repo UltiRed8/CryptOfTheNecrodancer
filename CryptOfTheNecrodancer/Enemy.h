@@ -4,7 +4,6 @@
 #include "CollisionComponent.h"	
 #include "LifeComponent.h"
 #include "DamageComponent.h"
-#include "Pickable.h"
 #include "LightSource.h"
 #include "MenuManager.h"
 

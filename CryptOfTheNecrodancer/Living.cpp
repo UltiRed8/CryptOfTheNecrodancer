@@ -3,7 +3,6 @@
 #include "DamageComponent.h"
 #include "MovementComponent.h"
 #include "SoundManager.h"
-#include "Pickable.h"
 #include "Map.h"
 
 #define SOUND_DEATH "Assets/Sounds/en_general_death.ogg"

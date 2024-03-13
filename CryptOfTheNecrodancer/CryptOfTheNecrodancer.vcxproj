@@ -177,7 +177,6 @@
     <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Path.cpp" />
-    <ClCompile Include="Pickable.cpp" />
     <ClCompile Include="Placeable.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerRessource.cpp" />
@@ -256,7 +255,6 @@
     <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Path.h" />
-    <ClInclude Include="Pickable.h" />
     <ClInclude Include="Placeable.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerRessource.h" />

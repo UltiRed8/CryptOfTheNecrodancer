@@ -8,7 +8,7 @@
 
 #define PATH_BAT "Entities/BatSprite.png"
 
-#define SOUND_ATTACK_BAT  "Assets/Sounds/en_bat_attack_melee.ogg"
+#define SOUND_ATTACK_BAT  "Assets/Sounds/en_bat_attack.ogg"
 #define SOUND_HIT_BAT  "Assets/Sounds/en_bat_hit.ogg"
 #define SOUND_DEATH_BAT  "Assets/Sounds/en_bat_death.ogg"
 

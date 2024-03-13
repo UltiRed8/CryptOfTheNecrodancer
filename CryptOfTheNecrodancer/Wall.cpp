@@ -69,12 +69,12 @@ void Wall::DestroyWall(const bool _usingBomb, const bool _canShake)
 	SoundManager::GetInstance().Play(wallType == WT_DIRT ? SOUND_DIG_DIRT : SOUND_DIG_STONE);
 	if (wallType  == WT_SHOP)
 	{
-		new Pickable(25, PT_COIN, STRING_ID("Coin"), GetPosition(), COIN);
+		new Pickable(PIT_COIN, STRING_ID("Coin"), GetPosition(), 25);
 	}
 	if (hasDiamond)
 	{
 		SoundManager::GetInstance().Play(SOUND_DIG_DIAMOND);
-		Map::GetInstance().AddOther(new Pickable(1, PT_DIAMOND, STRING_ID("Diamond"), GetPosition()));
+		Map::GetInstance().AddOther(new Pickable(PIT_DIAMOND, STRING_ID("Diamond"), GetPosition()));
 	}
 	if (torch)
 	{

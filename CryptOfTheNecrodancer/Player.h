@@ -22,10 +22,7 @@ class Player : public Living
 	bool pickupCooldown;
 
 public:
-	int GetDigLevel() const
-	{
-		return inventory->GetSlot(ST_SHOVEL)->GetItem()->GetStats().digLevel;
-	}
+	int GetDigLevel() const;
 	Inventory* GetInventory() const
 	{
 		return inventory;

@@ -372,9 +372,6 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Object\Entity\Living\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Pickable.cpp">
-      <Filter>Source Files\Able\Pickable</Filter>
-    </ClCompile>
     <ClCompile Include="Skeleton.cpp">
       <Filter>Source Files\Object\Entity\Living\Enemy\Skeleton</Filter>
     </ClCompile>
@@ -601,9 +598,6 @@
     </ClInclude>
     <ClInclude Include="Trap.h">
       <Filter>Source Files\Object\Entity\Trap</Filter>
-    </ClInclude>
-    <ClInclude Include="Pickable.h">
-      <Filter>Source Files\Able\Pickable</Filter>
     </ClInclude>
     <ClInclude Include="WindowManager.h">
       <Filter>Source Files\Manager\Window</Filter>
