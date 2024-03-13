@@ -36,6 +36,10 @@ public :
 	{
 		return maxHealth;
 	}
+	void SetCurrentHealth(const float _newHealth) // ADD, NOT SET ALERT
+	{
+		*currentHealth += _newHealth;
+	}
 	ProgressBar* GetHealthBar() const
 	{
 		return healthBar;
@@ -55,5 +59,7 @@ private:
 
 public:
 	virtual void Update() override;
+	void SetMaxHealth(const float _newHealth);
+	void SetChangeCurrentHealth(float _byAmount);
 	bool ChangeHealth(const float _byAmount);
 };

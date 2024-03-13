@@ -206,6 +206,7 @@ void Player::InitInput()
 		ActionData("DecreaseLife", [this]() { GetComponent<LifeComponent>()->ChangeHealth(-50); UpdateLife(); }, {Event::KeyPressed, Keyboard::Subtract}),
 		ActionData("Increase Life", [this]() { GetComponent<LifeComponent>()->ChangeHealth(50); UpdateLife(); }, {Event::KeyPressed, Keyboard::Add}),
 		ActionData("Set Bomb", [this]() { new Bomb(GetPosition());}, {Event::KeyPressed, Keyboard::P}),
+		ActionData("Add Heart", [this]() { AddHeart();}, {Event::KeyPressed, Keyboard::M}),
 	});
 }
 
@@ -220,7 +221,8 @@ void Player::InitLife()
 
 	for (int _index = 0; _index < _heartsCount; _index++)
 	{
-		Heart* _heart = new Heart(STRING_ID("Hearts"), Vector2f(25.0f, 25.0f) * 2.0f, Vector2f(SCREEN_WIDTH - 55 * (3.8f + _index * 1.2f), SCREEN_HEIGHT - 55 * 12.3), H_FULL);
+		Heart* _heart = new Heart(STRING_ID("Hearts"), Vector2f(25.0f, 25.0f) * 2.0f,
+			Vector2f(SCREEN_WIDTH - 55 * (3.8f + _index * 1.2f), SCREEN_HEIGHT - 55 * 12.3), H_FULL);
 		_heart->SetOwner(life);
 		_heart->Register();
 	}
@@ -275,6 +277,7 @@ void Player::Update()
 {
 	pickupCooldown = false;
 	Entity::Update();
+	UpdateLife();
 	visuals->setPosition(shape->getPosition() + Vector2f(0.0f, -0.5f) * TILE_SIZE);
 }
 
@@ -284,4 +287,36 @@ void Player::DieEvent()
 	Map::GetInstance().ClearGenerator();
 	Menu* _died = MenuManager::GetInstance().Get("Dead");
 	_died->Open();
+}
+
+
+void Player::AddHeart(const int _amount)
+{
+	// Get Life Component
+	LifeComponent* _lifeComp = GetComponent<LifeComponent>();
+	const int _lifeBefore = _lifeComp->GetMaxHealth();
+	_lifeComp->SetMaxHealth(_lifeBefore + _amount * 100.0f);
+	_lifeComp->SetCurrentHealth(_amount * 100.0f);
+	const float _life = _lifeComp->GetMaxHealth();
+	const int _heartsCount = (int)(_life / 100.0f - _lifeBefore / 100.0f);
+	const int _maxHeartsCount = (int)(_life / 100.0f);
+	
+	vector<UIElement*> _element = life->GetAllValues();
+	// Move hearts
+	for (int _i = 0; _i < _heartsCount - 1; _i++)
+	{
+		if (Heart* _heart = dynamic_cast<Heart*>(_element[_i]))
+		{
+			_heart->GetShape()->move(Vector2f(55 * (3.8f + _i * 1.2f, -55.0f * _heartsCount), 55 * 12.3));
+		}
+	}
+	// ajoute au début un coeur
+	for (int _index = 0; _index < _heartsCount; _index++)
+	{
+		Heart* _heart = new Heart(STRING_ID("Hearts"), Vector2f(25.0f, 25.0f) * 2.0f,
+			Vector2f(SCREEN_WIDTH - 55 * (3.8f + (_maxHeartsCount - 1) * 1.2f), SCREEN_HEIGHT - 55 * 12.3), H_FULL);
+		_heart->SetOwner(life);
+		_heart->Register();
+	}
+	UpdateLife();
 }

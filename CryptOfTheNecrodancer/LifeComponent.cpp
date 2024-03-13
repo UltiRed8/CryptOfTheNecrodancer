@@ -37,6 +37,18 @@ void LifeComponent::Update()
 	healthBar->SetPosition(pBPos);
 }
 
+void LifeComponent::SetMaxHealth(const float _newHealth)
+{
+	maxHealth = _newHealth;
+}
+
+
+
+void LifeComponent::SetChangeCurrentHealth(float _byAmount)
+{
+	*currentHealth = _byAmount;
+}
+
 bool LifeComponent::ChangeHealth(const float _byAmount)
 {
 	if (invulnerable) return false;
@@ -81,9 +93,9 @@ bool LifeComponent::ChangeHealth(const float _byAmount)
 	{
 		*currentHealth = maxHealth;
 	}
-	if (Player* _player = dynamic_cast<Player*>(owner))
-	{
-		_player->UpdateLife();
-	}
+	//if (Player* _player = dynamic_cast<Player*>(owner))
+	//{
+	//	_player->UpdateLife();
+	//}
 	return false;
 }

@@ -19,7 +19,7 @@ Heart::Heart(const string& _id, const Vector2f& _size, const Vector2f& _position
 	UpdateLife();
 }
 
-void Heart::UpdateLife() //Change la vie
+void Heart::UpdateLife() // ça change la vie
 {
 	TextureManager::GetInstance().Load(shape, GetPathWithState());
 }

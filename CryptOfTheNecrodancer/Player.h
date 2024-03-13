@@ -94,6 +94,7 @@ public :
 
 	void Update() override;
 	virtual void DieEvent() override;
+	void AddHeart(const int _amount = 1);
 	virtual vector<Drawable*> GetDrawables() override
 	{
 		vector<Drawable*> _drawables;
