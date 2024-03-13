@@ -17,6 +17,8 @@
 #define PATH_HEAD_MINERSCAP "Items/Head/MinersCap.png"
 #define PATH_BODY_CHAINMAIL "Items/Body/Chainmail.png"
 #define PATH_BODY_LEATHERARMOR "Items/Body/LeatherArmor.png"
+#define PATH_BODY_PLATEMAIL "Items/Body/Platemail.png"
+#define PATH_BODY_HEAVYPLATE "Items/Body/Heavyplate.png"
 #define PATH_FEET_BOOTSOFSTRENGTH "Items/Feet/BootsOfStrength.png"
 
 #define PATH_FEET_HARGREAVES "Items/Feet/Hargreaves.png"
@@ -29,6 +31,8 @@
 #define PATH_DIAMOND "UI/Diamond.png"
 #define PATH_HEART "UI/FullHeart.png"
 #define PATH_SHADOW "Entities/Shadow.png"
+
+class Map;
 
 struct InteractionData
 {
@@ -72,6 +76,7 @@ class Item : public Entity
 	bool isInInventory;
 
 protected:
+	bool isPickable;
 	ItemStats stats;
 	function<void()> callback;
 
@@ -202,24 +207,17 @@ struct Armor : Item
 	ArmorType armorType;
 
 	public:
-	Armor(const ArmorType& _aType,  const string& _id, const Vector2f& _position,const bool _isInInventory = false) : Item(GetSlotTypeWithArmorType(_aType), _id, _position, _isInInventory)
-	{
-		armorType = _aType;
-		stats = UpdateStat();
-		UpdateTexture();
-	}
+		Armor(const ArmorType& _aType, const string& _id, const Vector2f& _position, const bool _isInInventory = false);
 
 public:
 	SlotType GetSlotTypeWithArmorType(const ArmorType& _aType)
 	{
-		SlotType _tab[] =
-		{
-			ST_HEAD,
-			ST_BODY,
-			ST_FEET,
-		};
+		vector<SlotType> _tab;
+		for (int _i = 0; _i < 2; _i++) _tab.push_back(ST_HEAD);
+		for (int _i = 0; _i < 4; _i++) _tab.push_back(ST_BODY);
+		for (int _i = 0; _i < 2; _i++) _tab.push_back(ST_FEET);
 
-		return _tab[(int)floor(_aType / 2.0f)];
+		return _tab[_aType];
 	}
 	virtual string GetTexturePath() override
 	{
@@ -228,6 +226,8 @@ public:
 			PATH_HEAD_MINERSCAP,
 			PATH_BODY_CHAINMAIL,
 			PATH_BODY_LEATHERARMOR,
+			PATH_BODY_HEAVYPLATE,
+			PATH_BODY_PLATEMAIL,
 			PATH_FEET_BOOTSOFSTRENGTH,
 			PATH_FEET_HARGREAVES,
 		};
@@ -237,9 +237,11 @@ public:
 	{
 		const ItemStats _values[] = {
 			ItemStats(0.0f, 0.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
-			ItemStats(0.0f, 0.0f, 3, { InteractionData(FloatRect(-1.0f, -1.0f, 3.0f, 3.0f ), true) }, false),
+			ItemStats(0.0f, 0.0f, 3, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
 			ItemStats(0.0f, 1.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
 			ItemStats(0.0f, 0.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
+			ItemStats(0.0f, 2.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
+			ItemStats(0.0f, 1.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
 			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
 			ItemStats(0.0f, 0.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
 		};
@@ -260,6 +262,7 @@ public:
 		InitCallback();
 		UpdateTexture();
 		zIndex = 3;
+		isPickable = true;
 	}
 
 public:

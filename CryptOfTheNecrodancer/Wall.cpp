@@ -53,17 +53,18 @@ Wall::~Wall()
 	delete visuals;
 }
 
-void Wall::DestroyWall(const bool _usingBomb, const bool _canShake)
+bool Wall::DestroyWall(const int _digLevel, const bool _canShake)
 {
-	if (IsToRemove()) return;
+	if (IsToRemove()) return false;
 	bool _canBreak = true;
 	if (wallType == WT_INVULNERABLE) _canBreak = false;
-	if (wallType == WT_SHOP && !_usingBomb) _canBreak = false;
-	if (wallType == WT_STONE && !_usingBomb && ((Player*)(EntityManager::GetInstance().Get("Player")))->GetDigLevel() <= 1) _canBreak = false;
+	if (wallType == WT_SHOP && _digLevel <= 2) _canBreak = false;
+	if (wallType == WT_STONE && _digLevel <= 2) _canBreak = false;
+	if (_digLevel == 0) _canBreak = false;
 	if (!_canBreak)
 	{
 		SoundManager::GetInstance().Play(SOUND_DIG_FAIL);
-		return;
+		return false;
 	}
 	Map::GetInstance().AddFloorAt(GetPosition());
 	SoundManager::GetInstance().Play(wallType == WT_DIRT ? SOUND_DIG_DIRT : SOUND_DIG_STONE);
@@ -95,6 +96,8 @@ void Wall::DestroyWall(const bool _usingBomb, const bool _canShake)
 	}
 
 	Map::GetInstance().RemoveWall(this);
+
+	return true;
 }
 
 bool Wall::CouldBeDoor()

@@ -107,3 +107,8 @@ Vector2i operator * (const Vector2i& _vector, const Vector2i& _multiplier)
 {
 	return Vector2i(_vector.x * _multiplier.x, _vector.y * _multiplier.y);
 }
+
+FloatRect operator * (const FloatRect& _rect, const Vector2f& _multiplier)
+{
+	return FloatRect(_rect.getPosition().x * _multiplier.x, _rect.getPosition().y * _multiplier.y, _rect.getSize().x * _multiplier.x, _rect.getSize().y * _multiplier.y);
+}

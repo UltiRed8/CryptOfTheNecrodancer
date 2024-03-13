@@ -62,6 +62,7 @@ void Enemy::InitLifeUI()
 
 void Enemy::Update()
 {
+	if (!GetComponent<LifeComponent>()->GetIsAlive()) return;
 	currentCooldown--;
 	if (currentCooldown <= 0)
 	{

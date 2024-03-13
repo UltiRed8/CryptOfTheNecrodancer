@@ -59,7 +59,7 @@ public:
 	~Wall();
 
 public:
-	void DestroyWall(const bool _usingBomb = false, const bool _canShake = true);
+	bool DestroyWall(const int _digLevel, const bool _canShake = true);
 	bool CouldBeDoor();
 	void SpawnTorch();
 	void Enable3D();

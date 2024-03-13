@@ -56,7 +56,6 @@ bool LifeComponent::ChangeHealth(const float _byAmount)
 		}
 	}
 
-	cout << "Avant calc defense: " << _byAmount << endl;
 	float _value = abs(_byAmount / _defense);
 	_value = _value < 50.0f ? 50.0f : _value;
 
@@ -64,7 +63,6 @@ bool LifeComponent::ChangeHealth(const float _byAmount)
 
 	_value *= _byAmount < 0.0f ? -1.0f : 1.0f;
 
-	cout << "Apres calc defense: " << _value << endl;
 
 	*currentHealth += _value;
 	if (owner->GetType() != ET_PLAYER)

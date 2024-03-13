@@ -121,7 +121,8 @@ void Generator::GenerateLobby()
 			{ 'L', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Armor(AT_HEAD_MINERSCAP,STRING_ID("Armor1"),_position)); }},
 			{ 'H', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Pickaxe(PT_PICKAXE, STRING_ID("Shovel"),_position)); }},
 			{ 'W', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Weapon(WT_BROADSWORD, STRING_ID("Dagger"), _position)); }},
-			{ 'A', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Armor(AT_BODY_LEATHERARMOR,STRING_ID("Armor"),_position)); }},
+			{ 'A', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Armor(AT_BODY_HEAVYPLATE,STRING_ID("Armor"),_position)); }},
+			{ 'C', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Pickable(PIT_HEART,STRING_ID("Heart"),_position)); }},
 		};
 
 		string _line;
@@ -230,7 +231,6 @@ void Generator::GenerateFire()
 			}
 			others.push_back(new HotCoals(_position));
 		}
-
 	}
 }
 
@@ -263,7 +263,6 @@ void Generator::GenerateIce()
 			}
 			others.push_back(new Ice(_position));
 		}
-
 	}
 }
 
