@@ -8,6 +8,25 @@
 #include "CameraManager.h"
 using namespace sf;
 
+struct AttackZone
+{
+	Vector2f offset;
+	Shape* shape;
+	bool isRed;
+
+public:
+	AttackZone(const Vector2f& _offset, Shape* _shape, const bool _isRed)
+	{
+		offset = _offset;
+		shape = _shape;
+		isRed = _isRed;
+	}
+	~AttackZone()
+	{
+		delete shape;
+	}
+};
+
 class Player : public Living
 {
 	RectangleShape* visuals;
@@ -20,8 +39,13 @@ class Player : public Living
 	bool isStun;
 	int heartIndex;
 	bool pickupCooldown;
+	vector<AttackZone*> damageZone;
 
 public:
+	bool GetPickupCooldown() const
+	{
+		return pickupCooldown;
+	}
 	int GetDigLevel() const;
 	Inventory* GetInventory() const
 	{
@@ -80,7 +104,7 @@ public:
 	}
 
 public:
-	Player(const float _maxHp,const float _maxDamages,const string _id, const Vector2f& _position);
+	Player(const float _maxHp,const string _id, const Vector2f& _position);
 	~Player();
 
 public :
@@ -88,9 +112,10 @@ public :
 	bool ResetChainMultiplier();
 	void InitInput();
 	void InitLife();
-
+	bool TryToAttack();
 	void UpdateLife();
 	void UpdateHeartAnimation();
+	void UpdateDamageZone();
 
 	void Update() override;
 	virtual void DieEvent() override;
@@ -100,6 +125,10 @@ public :
 		vector<Drawable*> _drawables;
 		_drawables.push_back(shape);
 		_drawables.push_back(visuals);
+		for (AttackZone* _zone : damageZone)
+		{
+			_drawables.push_back(_zone->shape);
+		}
 		return _drawables;
 	}
 };

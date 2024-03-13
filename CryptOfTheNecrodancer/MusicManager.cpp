@@ -450,13 +450,8 @@ void MusicManager::SpawnBars(const int _delay)
 
 void MusicManager::TriggerEvent()
 {
-	if (!dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetPressingKeys())
-	{
-		if (dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->ResetChainMultiplier())
-		{
-			SoundManager::GetInstance().Play(SOUND_RYTHM_FAILED);
-		}
-	}
+	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
+	
 	Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
 	TextureManager::GetInstance().Load(_shape, PATH_HEART2);
 	new Timer("HeartIndicatorReset", [this]() {
@@ -465,7 +460,15 @@ void MusicManager::TriggerEvent()
 		}, seconds(0.1f), 1, true);
 	EntityManager::GetInstance().Update();
 
+	if (!_player->GetPressingKeys() && !_player->GetPickupCooldown())
+	{
+		if (_player->ResetChainMultiplier())
+		{
+			SoundManager::GetInstance().Play(SOUND_RYTHM_FAILED);
+		}
+	}
+
 	LightningManager::GetInstance().Update();
-	dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->UpdateHeartAnimation();
+	_player->UpdateHeartAnimation();
 	Map::GetInstance().Update();
 }

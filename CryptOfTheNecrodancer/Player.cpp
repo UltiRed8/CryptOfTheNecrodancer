@@ -30,10 +30,14 @@
 
 int Player::GetDigLevel() const
 {
-	return inventory->GetSlot(ST_SHOVEL)->GetItem()->GetStats().digLevel;
+	if (Item* _item = inventory->GetSlot(ST_SHOVEL)->GetItem())
+	{
+		return _item->GetStats().digLevel;
+	}
+	return 0;
 }
 
-Player::Player(const float _maxHp, const float _maxDammage, const string _id, const Vector2f& _position) : Living(_maxHp, _maxDammage, PATH_SHADOW, _id, _position, false)
+Player::Player(const float _maxHp, const string _id, const Vector2f& _position) : Living(_maxHp, 0.0f, PATH_SHADOW, _id, _position, false)
 {
 	visuals = new RectangleShape(TILE_SIZE);
 	TextureManager::GetInstance().Load(visuals, PATH_PLAYER);
@@ -56,15 +60,20 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 	MovementComponent* _movement = GetComponent<MovementComponent>();
 	_movement->InitCollisions(_collisions, {
 		CollisionReaction(ET_WALL, [this](Entity* _entity) {
-			GetComponent<MovementComponent>()->UndoMove();
 			Wall* _wall = dynamic_cast<Wall*>(_entity);
-			_wall->DestroyWall(false);
+			if (_wall->DestroyWall(GetDigLevel()))
+			{
+				if (Item* _item = inventory->GetSlot(ST_SHOVEL)->GetItem())
+				{
+					if (_item->GetStats().preventMovement)
+					{
+						GetComponent<MovementComponent>()->UndoMove();
+					}
+					return true;
+				}
+			}
+			GetComponent<MovementComponent>()->UndoMove();
 			return true;
-		}),
-		CollisionReaction(ET_PICKABLE, [this](Entity* _entity) {
-			Pickable* _pickable = dynamic_cast<Pickable*>(_entity);
-			_pickable->PickUp();
-			return false;
 		}),
 		CollisionReaction(ET_STAIR, [this](Entity* _entity) {
 			if (Stair* _stair = dynamic_cast<Stair*>(_entity))
@@ -88,33 +97,19 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 			Slide();
 			return true;
 		}),
-		CollisionReaction(ET_ENEMY, [this](Entity* _entity) {
-			GetComponent<MovementComponent>()->UndoMove();
-			Enemy* _enemy = (Enemy*)_entity;
-			_enemy->Hit();
-			if (GetComponent<DamageComponent>()->Attack(_entity))
-			{
-				WindowManager::GetInstance().Shake(25);
-				if (*chainMultiplier <= 3)
-				{
-					*chainMultiplier += 1;
-					if (*chainMultiplier == 2)
-					{
-						SoundManager::GetInstance().Play(SOUND_CHAIN_START);
-					}
-				}
-			}
-			return true;
+		CollisionReaction(ET_TRAP, [this](Entity* _entity) {
+			dynamic_cast<Trap*>(_entity)->Trigger();
+			return false;
 		}),
 		CollisionReaction(ET_NPC, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
 			return true;
 		}),
-		CollisionReaction(ET_TRAP, [this](Entity* _entity) {
-			dynamic_cast<Trap*>(_entity)->Trigger();
+		CollisionReaction(ET_PICKABLE, [this](Entity* _entity) {
+			Pickable* _pickable = dynamic_cast<Pickable*>(_entity);
+			_pickable->PickUp();
 			return false;
 		}),
-
 		CollisionReaction(ET_ITEM, [this](Entity* _entity) {
 			Item* _item = dynamic_cast<Item*>(_entity);
 			if (!_item->IsInInventory() && !pickupCooldown)
@@ -124,18 +119,23 @@ Player::Player(const float _maxHp, const float _maxDammage, const string _id, co
 			}
 			return false;
 		}),
-	});
+		});
 
 	new LightSource("PlayerLight", this, 350);
 
 	InitInput();
 	InitLife();
+
+	UpdateDamageZone();
 }
 
 Player::~Player()
 {
 	delete chainMultiplier;
 	delete ressources;
+	for (AttackZone* _zone : damageZone) {
+		delete _zone;
+	}
 }
 
 bool Player::ResetChainMultiplier()
@@ -152,7 +152,7 @@ bool Player::ResetChainMultiplier()
 void Player::Slide()
 {
 	MovementComponent* _movement = GetComponent<MovementComponent>();
-	Map::GetInstance().GetEntityAt(GetPosition())->GetType() == ET_ICE 
+	Map::GetInstance().GetEntityAt(GetPosition())->GetType() == ET_ICE
 		? _movement->SetDirection(_movement->GetOldDirection()) : _movement->SetDirection(Vector2i(0, 0));
 	alreadyMoved = true;
 }
@@ -273,12 +273,139 @@ void Player::UpdateHeartAnimation()
 	dynamic_cast<Heart*>(life->GetAllValues()[heartIndex])->UIHeart();
 }
 
+void Player::UpdateDamageZone()
+{
+	for (AttackZone* _zone : damageZone)
+	{
+		delete _zone;
+	}
+	damageZone.clear();
+
+	Item* _weapon = inventory->GetSlot(ST_ATTACK)->GetItem();
+	if (_weapon)
+	{
+		for (const InteractionData& _data : _weapon->GetStats().attackRange)
+		{
+			FloatRect _rect = _data.rect * TILE_SIZE;
+
+			RectangleShape* _shape = new RectangleShape(_rect.getSize());
+			_shape->setPosition(GetPosition() + _rect.getPosition());
+			_shape->setOrigin(-_rect.getPosition() + TILE_SIZE / 2.0f);
+			_shape->setFillColor(Color::Transparent);
+			damageZone.push_back(new AttackZone(_rect.getPosition(), _shape, _data.isRed));
+		}
+	}
+}
+
 void Player::Update()
 {
+	map<string, int> _rotations = {
+		{ "01", 90 },
+		{ "0-1", 270 },
+		{ "10", 0 },
+		{ "-10", 180 },
+	};
+
+	const Vector2i& _direction = *GetComponent<MovementComponent>()->GetDirection();
+
+	const string& _value = to_string(_direction.x) + to_string(_direction.y);
+
+	const int _rotation = _rotations[_value];
+
+	for (AttackZone* _zone : damageZone)
+	{
+		Shape* _shape = _zone->shape;
+		_shape->setPosition(GetPosition() + TILE_SIZE / 2.0f);
+		_shape->setRotation(_rotation);
+	}
+
 	pickupCooldown = false;
-	Entity::Update();
-	UpdateLife();
+
+	if (AnimationComponent* _animationComponent = GetComponent<AnimationComponent>())
+	{
+		_animationComponent->GetCurrent()->Replay();
+	}
+
+	for (Component* _component : components)
+	{
+		if ((MovementComponent*)_component)
+		{
+			continue;
+		}
+		_component->Update();
+	}
+
 	visuals->setPosition(shape->getPosition() + Vector2f(0.0f, -0.5f) * TILE_SIZE);
+
+	if (!GetPressingKeys()) return;
+
+	if (!TryToAttack())
+	{
+		GetComponent<MovementComponent>()->Update();
+	}
+	visuals->setPosition(shape->getPosition() + Vector2f(0.0f, -0.5f) * TILE_SIZE);
+}
+
+bool Player::TryToAttack()
+{
+	bool _limiter = true;
+
+	for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
+	{
+		if (_entity->GetType() == ET_ENEMY)
+		{
+			for (AttackZone* _zone : damageZone)
+			{
+				if (!_zone->isRed) continue;
+				if (_entity->GetShape()->getGlobalBounds().intersects(_zone->shape->getGlobalBounds()))
+				{
+					for (Entity* _entity : EntityManager::GetInstance().GetAllValues())
+					{
+						if (_entity->GetType() == ET_ENEMY)
+						{
+							for (AttackZone* _zone : damageZone)
+							{
+								if (_zone->shape->getGlobalBounds().contains(_entity->GetPosition()))
+								{
+									if (Enemy* _enemy = (Enemy*)_entity)
+									{
+										if (_limiter)
+										{
+											_limiter = false;
+											if (Item* _item = inventory->GetSlot(ST_ATTACK)->GetItem())
+											{
+												if (!_item->GetStats().preventMovement)
+												{
+
+													GetComponent<MovementComponent>()->Update();
+												}
+											}
+											WindowManager::GetInstance().Shake(25);
+										}
+										_enemy->Hit();
+										if (GetComponent<DamageComponent>()->Attack(_entity))
+										{
+											if (*chainMultiplier <= 3)
+											{
+												*chainMultiplier += 1;
+												if (*chainMultiplier == 2)
+												{
+													SoundManager::GetInstance().Play(SOUND_CHAIN_START);
+												}
+											}
+										}
+
+									}
+								}
+							}
+						}
+					}
+					return true;
+				}
+			}
+		}
+	}
+	return false;
 }
 
 void Player::DieEvent()

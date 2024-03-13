@@ -98,7 +98,7 @@ void Map::EndDungeonGeneration()
 {
 	CameraManager::GetInstance().Get("PlayerCamera")->SetCameraToPlayer();
 	UpdateLights(2);
-	// UpdateLights(100);
+	//UpdateLights(100);
 	PrepareMusic();
 	MusicManager::GetInstance().Play();
 	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));

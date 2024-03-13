@@ -17,6 +17,7 @@
 
 Item::Item(const SlotType& _type, const string& _id, const Vector2f& _position, const bool _isInInventory) : Entity(_id, "", _position)
 {
+	isPickable = false;
 	visuals = new RectangleShape(TILE_SIZE);
 	visuals->setPosition(_position + Vector2f(0.0f, -0.5f) * TILE_SIZE);
 	TextureManager::GetInstance().Load(shape, PATH_SHADOW);
@@ -36,7 +37,7 @@ Item::Item(const SlotType& _type, const string& _id, const Vector2f& _position, 
 		{
 			animationValue = 0.0f;
 		}
-	}, seconds(0.1f), -1, false);
+		}, seconds(0.1f), -1, false);
 }
 
 Item::~Item()
@@ -52,14 +53,14 @@ void Item::UpdateTexture()
 
 void Item::PickUp()
 {
-	if ((Pickable*)this)
+	if (isPickable)
 	{
 		ExecuteCallback();
 		Destroy();
 		return;
 	}
 
-	Player* _player = (Player*) EntityManager::GetInstance().Get("Player");
+	Player* _player = (Player*)EntityManager::GetInstance().Get("Player");
 	Inventory* _inventory = _player->GetInventory();
 	Slot* _slot = _inventory->GetSlot(stype);
 
@@ -70,7 +71,7 @@ void Item::PickUp()
 		Map::GetInstance().GetGenerator()->AddItem(_item);
 	}
 
-	int _slotID = (int) _slot->GetType();
+	int _slotID = (int)_slot->GetType();
 	if (_slotID == 1)
 	{
 		SoundManager::GetInstance().Play(SOUND_PICKUP_WEAPON);
@@ -89,4 +90,35 @@ void Item::PickUp()
 
 	SetInInventory(true);
 	EraseElement(Map::GetInstance().GetGenerator()->GetItems(), this);
+
+	if (_slot->GetType() == ST_ATTACK)
+	{
+		_player->UpdateDamageZone();
+	}
+}
+
+Armor::Armor(const ArmorType& _aType, const string& _id, const Vector2f& _position, const bool _isInInventory) : Item(GetSlotTypeWithArmorType(_aType), _id, _position, _isInInventory)
+{
+	armorType = _aType;
+	stats = UpdateStat();
+	UpdateTexture();
+	if (armorType == AT_HEAD_MINERSCAP)
+	{
+		callback = [this]() {
+			Vector2f _directions[] = {
+				Vector2f(0.0f, 1.0f),
+				Vector2f(0.0f, -1.0f),
+				Vector2f(1.0f, 0.0f),
+				Vector2f(-1.0f, 0.0f),
+			};
+			Player* _player = (Player*)EntityManager::GetInstance().Get("Player");
+			if (_player)
+			{
+				for (const Vector2f& _direction : _directions)
+				{
+					Map::GetInstance().GetEntityAt(_player->GetPosition() + _direction * TILE_SIZE);
+				}
+			}
+		};
+	}
 }

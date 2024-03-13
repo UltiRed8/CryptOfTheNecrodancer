@@ -42,7 +42,7 @@ void Bomb::Explode()
 		{
 			if (Wall* _wall = dynamic_cast<Wall*>(_entity))
 			{
-				_wall->DestroyWall(true);
+				_wall->DestroyWall(3);
 			}
 			else if (Enemy* _enemy = dynamic_cast<Enemy*>(_entity))
 			{
