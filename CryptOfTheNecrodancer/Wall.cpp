@@ -53,17 +53,20 @@ Wall::~Wall()
 	delete visuals;
 }
 
-bool Wall::DestroyWall(const int _digLevel, const bool _canShake)
+bool Wall::DestroyWall(const int _digLevel, const bool _canShake, const bool _withFailSound)
 {
 	if (IsToRemove()) return false;
 	bool _canBreak = true;
 	if (wallType == WT_INVULNERABLE) _canBreak = false;
 	if (wallType == WT_SHOP && _digLevel <= 2) _canBreak = false;
-	if (wallType == WT_STONE && _digLevel <= 2) _canBreak = false;
+	if (wallType == WT_STONE && _digLevel < 2) _canBreak = false;
 	if (_digLevel == 0) _canBreak = false;
 	if (!_canBreak)
 	{
-		SoundManager::GetInstance().Play(SOUND_DIG_FAIL);
+		if (_withFailSound)
+		{
+			SoundManager::GetInstance().Play(SOUND_DIG_FAIL);
+		}
 		return false;
 	}
 	Map::GetInstance().AddFloorAt(GetPosition());

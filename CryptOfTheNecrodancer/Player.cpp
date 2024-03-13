@@ -343,6 +343,18 @@ void Player::Update()
 	{
 		GetComponent<MovementComponent>()->Update();
 	}
+
+	if (Item* _item = inventory->GetSlot(ST_HEAD)->GetItem())
+	{
+		if (Armor* _armor = (Armor*) _item)
+		{
+			if (_armor->GetArmorType() == AT_HEAD_MINERSCAP)
+			{
+				_armor->ExecuteCallback();
+			}
+		}
+	}
+
 	visuals->setPosition(shape->getPosition() + Vector2f(0.0f, -0.5f) * TILE_SIZE);
 }
 

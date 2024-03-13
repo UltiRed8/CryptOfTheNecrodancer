@@ -210,6 +210,10 @@ struct Armor : Item
 		Armor(const ArmorType& _aType, const string& _id, const Vector2f& _position, const bool _isInInventory = false);
 
 public:
+	ArmorType GetArmorType() const
+	{
+		return armorType;
+	}
 	SlotType GetSlotTypeWithArmorType(const ArmorType& _aType)
 	{
 		vector<SlotType> _tab;
@@ -263,6 +267,10 @@ public:
 		UpdateTexture();
 		zIndex = 3;
 		isPickable = true;
+		if (pickableType == PIT_COIN)
+		{
+			TextureManager::GetInstance().LoadFromTextureSheet(GetVisuals(), PATH_COIN, Random(3, 0), Vector2i(24, 24));
+		}
 	}
 
 public:
@@ -271,7 +279,7 @@ public:
 		const function<void()> _callbacks[] = {
 			[this]() { ((Player*)(EntityManager::GetInstance().Get("Player")))->GetRessources()->AddMoney(amount); SoundManager::GetInstance().Play(SOUND_COIN_PICKED_UP); },
 			[this]() { ((Player*)(EntityManager::GetInstance().Get("Player")))->GetRessources()->AddDiamonds(amount); SoundManager::GetInstance().Play(SOUND_DIAMOND_PICKED_UP); },
-			[this]() { /*((Player*)(EntityManager::GetInstance().Get("Player")))->GetRessources()->AddDiamonds(amount);*/ SoundManager::GetInstance().Play(SOUND_PICKUP_GENERAL);},
+			[this]() { ((Player*)(EntityManager::GetInstance().Get("Player")))->AddHeart(); SoundManager::GetInstance().Play(SOUND_PICKUP_GENERAL);},
 		};
 		callback = _callbacks[pickableType];
 	}

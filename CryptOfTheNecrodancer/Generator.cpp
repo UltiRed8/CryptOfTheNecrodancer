@@ -108,7 +108,7 @@ void Generator::GenerateLobby()
 			{ ' ', nullptr },
 			{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP, zoneFileName, false)); }},
 			{ '.', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); }},
-			{ 'S', [this](const Vector2f& _position) { stairs.push_back(new Stair(_position)); }},
+			{ 'S', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); stairs.push_back(new Stair(_position)); }},
 			{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Door(_position)); }},
 			{ 'E', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_HEPHAESTUS, _position)); }},
 			{ 'M', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_MERLIN, _position)); }},

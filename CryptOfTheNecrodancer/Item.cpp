@@ -116,7 +116,17 @@ Armor::Armor(const ArmorType& _aType, const string& _id, const Vector2f& _positi
 			{
 				for (const Vector2f& _direction : _directions)
 				{
-					Map::GetInstance().GetEntityAt(_player->GetPosition() + _direction * TILE_SIZE);
+					Entity* _entity = Map::GetInstance().GetEntityAt(_player->GetPosition() + _direction * TILE_SIZE);
+					if (_entity)
+					{
+						if (_entity->GetType() == ET_WALL)
+						{
+							if (Wall* _wall = (Wall*)_entity)
+							{
+								_wall->DestroyWall(2, true, false);
+							}
+						}
+					}
 				}
 			}
 		};
