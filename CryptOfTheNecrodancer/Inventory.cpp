@@ -2,6 +2,7 @@
 #include "MenuManager.h"
 #include "SoundManager.h"
 #include "Macro.h"
+#include "Item.h"
 #include "Map.h"
 
 //HUD FRAME
@@ -101,4 +102,26 @@ Slot::Slot(const SlotType& _type, const string& _path, Menu* _owner) : UIImage(S
 	isVisible = _type == ST_SHOVEL ? true : _type == ST_ATTACK ? true : false;
 	item->SetOwner(_owner);
 	item->Register();
+}
+
+Slot::~Slot()
+{
+	if (currentItem)
+	{
+		delete currentItem;
+	}
+}
+
+vector<Drawable*> Slot::GetDrawables()
+{
+	vector<Drawable*> _drawables;
+
+	_drawables.push_back(shape);
+	if (currentItem)
+	{
+		item->GetShape()->setTexture(currentItem->GetVisuals()->getTexture());
+	}
+	_drawables.push_back(item->GetShape());
+
+	return _drawables;
 }

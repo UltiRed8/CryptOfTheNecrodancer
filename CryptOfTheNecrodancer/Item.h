@@ -1,5 +1,8 @@
 #pragma once
-#include "Entity.h"
+
+#include "EntityManager.h"
+#include "Player.h"
+#include "SoundManager.h"
 #include "Items.h"
 
 #define PATH_BROADSWORD "Items/Weapon/Broadsword.png"
@@ -18,11 +21,46 @@
 
 #define PATH_FEET_HARGREAVES "Items/Feet/Hargreaves.png"
 
+#define SOUND_COIN_PICKED_UP "Assets/Sounds/sfx_pickup_gold_01.ogg"
+#define SOUND_DIAMOND_PICKED_UP "Assets/Sounds/sfx_pickup_diamond.ogg"
+#define SOUND_PICKUP_GENERAL "Assets/Sounds/sfx_pickup_general_ST.ogg"
+
+#define PATH_COIN "Entities/Coins.png"
+#define PATH_DIAMOND "UI/Diamond.png"
+#define PATH_HEART "UI/FullHeart.png"
+#define PATH_SHADOW "Entities/Shadow.png"
+
+struct InteractionData
+{
+	FloatRect rect;
+	bool isRed;
+
+public:
+	InteractionData(const FloatRect& _rect, const bool _isRed)
+	{
+		rect = _rect;
+		isRed = _isRed;
+	}
+};
+
 struct ItemStats
 {
 	float damages;
 	float defense;
 	int digLevel;
+	vector<InteractionData> attackRange;
+	bool preventMovement;
+
+public:
+	ItemStats() = default;
+	ItemStats(const float _damages, const float _defense, const int _digLevel, const vector<InteractionData>& _attackRange, const bool _preventMovement)
+	{
+		damages = _damages;
+		defense = _defense;
+		digLevel = _digLevel;
+		attackRange = _attackRange;
+		preventMovement = _preventMovement;
+	}
 };
 
 class Item : public Entity
@@ -35,6 +73,7 @@ class Item : public Entity
 
 protected:
 	ItemStats stats;
+	function<void()> callback;
 
 public:
 	Item(const SlotType& _type, const string& _id, const Vector2f& _position,const bool _isInInventory = false);
@@ -44,6 +83,13 @@ protected:
 	void UpdateTexture();
 
 public:
+	void ExecuteCallback()
+	{
+		if (callback)
+		{
+			callback();
+		}
+	}
 	ItemStats GetStats() const
 	{
 		return stats;
@@ -111,10 +157,10 @@ public:
 	virtual ItemStats UpdateStat() override
 	{
 		const ItemStats _values[] = {
-			{ 1.0f, 0.0f, 0 },
-			{ 1.0f, 0.0f, 0 },
-			{ 1.0f, 0.0f, 0 },
-			{ 1.0f, 0.0f, 0 },
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -1.0f, 1.0f, 3.0f), true) }, true),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f ), true) }, true),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, 0.0f, 20.0f, 1.0f ), false) }, true),
 		};
 		return _values[weaponType];
 	}
@@ -144,8 +190,8 @@ public:
 	virtual ItemStats UpdateStat() override
 	{
 		const ItemStats _values[] = {
-			{ 0.0f, 0.0f, 2 },
-			{ 0.0f, 0.0f, 1 },
+			ItemStats(0.0f, 0.0f, 2, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true),
+			ItemStats(0.0f, 0.0f, 1, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true),
 		};
 		return _values[pickaxeType];
 	}
@@ -190,13 +236,53 @@ public:
 	virtual ItemStats UpdateStat() override
 	{
 		const ItemStats _values[] = {
-			{ 0.0f, 0.5f, 0 },
-			{ 0.0f, 0.0f, 3 },
-			{ 0.0f, 1.0f, 0 },
-			{ 0.0f, 0.5f, 0 },
-			{ 1.0f, 0.0f, 0 },
-			{ 0.0f, 0.5f, 0 },
+			ItemStats(0.0f, 0.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
+			ItemStats(0.0f, 0.0f, 3, { InteractionData(FloatRect(-1.0f, -1.0f, 3.0f, 3.0f ), true) }, false),
+			ItemStats(0.0f, 1.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
+			ItemStats(0.0f, 0.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
+			ItemStats(0.0f, 0.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
 		};
 		return _values[armorType];
+	}
+};
+
+struct Pickable : Item
+{
+	PickableType pickableType;
+	int amount;
+
+public:
+	Pickable(const PickableType& _pickableType, const string& _id, const Vector2f& _position, const int _amount = 1) : Item(ST_ATTACK, _id, _position, false)
+	{
+		pickableType = _pickableType;
+		amount = _amount;
+		InitCallback();
+		UpdateTexture();
+		zIndex = 3;
+	}
+
+public:
+	void InitCallback()
+	{
+		const function<void()> _callbacks[] = {
+			[this]() { ((Player*)(EntityManager::GetInstance().Get("Player")))->GetRessources()->AddMoney(amount); SoundManager::GetInstance().Play(SOUND_COIN_PICKED_UP); },
+			[this]() { ((Player*)(EntityManager::GetInstance().Get("Player")))->GetRessources()->AddDiamonds(amount); SoundManager::GetInstance().Play(SOUND_DIAMOND_PICKED_UP); },
+			[this]() { /*((Player*)(EntityManager::GetInstance().Get("Player")))->GetRessources()->AddDiamonds(amount);*/ SoundManager::GetInstance().Play(SOUND_PICKUP_GENERAL);},
+		};
+		callback = _callbacks[pickableType];
+	}
+	virtual ItemStats UpdateStat() override
+	{
+		return ItemStats();
+	}
+	virtual string GetTexturePath() override
+	{
+		const string _pathes[] = {
+			PATH_COIN,
+			PATH_DIAMOND,
+			PATH_HEART,
+		};
+		return _pathes[pickableType];
 	}
 };

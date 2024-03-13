@@ -1,6 +1,7 @@
 #include "LifeComponent.h"
-#include"Entity.h"
-#include"Player.h"
+#include "Entity.h"
+#include "Player.h"
+#include "Item.h"
 #define EMPTY "UI/HealthBarEmpty.png"
 #define FULL "UI/HealthBarFull.png"
 
@@ -13,8 +14,7 @@ LifeComponent::LifeComponent(Entity* _owner, const function<void()> _deathCallba
 	isAlive = true;
 	if (_isPlayer) return;
 	pBPos = Vector2f(_owner->GetPosition().x, _owner->GetPosition().y - TILE_SIZE.y / 2.f);
-	healthBar = new ProgressBar(STRING_ID("LifeEnemy"), PT_LEFT, pBPos, Vector2f(50.0f, 10.0f),
-		EMPTY, FULL, currentHealth, maxHealth);
+	healthBar = new ProgressBar(STRING_ID("LifeEnemy"), PT_LEFT, pBPos, Vector2f(50.0f, 10.0f), EMPTY, FULL, currentHealth, maxHealth);
 }
 
 LifeComponent::~LifeComponent()
@@ -35,13 +35,38 @@ void LifeComponent::Update()
 {
 	pBPos = Vector2f(owner->GetPosition().x, owner->GetPosition().y - TILE_SIZE.y / 2.f);
 	healthBar->SetPosition(pBPos);
-	// update progress bar
 }
 
 bool LifeComponent::ChangeHealth(const float _byAmount)
 {
 	if (invulnerable) return false;
-	*currentHealth += _byAmount;
+
+	float _defense = 1.0f;
+	if (owner->GetType() == ET_PLAYER)
+	{
+		if (Player* _player = (Player*)owner)
+		{
+			for (Slot* _slot : _player->GetInventory()->GetSlots())
+			{
+				if (Item* _item = _slot->GetItem())
+				{
+					_defense += _item->GetStats().defense;
+				}
+			}
+		}
+	}
+
+	cout << "Avant calc defense: " << _byAmount << endl;
+	float _value = abs(_byAmount / _defense);
+	_value = _value < 50.0f ? 50.0f : _value;
+
+	_value = round(_value / 50.0f) * 50.0f;
+
+	_value *= _byAmount < 0.0f ? -1.0f : 1.0f;
+
+	cout << "Apres calc defense: " << _value << endl;
+
+	*currentHealth += _value;
 	if (owner->GetType() != ET_PLAYER)
 	{
 		healthBar->SetValue(*currentHealth);
@@ -56,12 +81,9 @@ bool LifeComponent::ChangeHealth(const float _byAmount)
 	{
 		*currentHealth = maxHealth;
 	}
-	
 	if (Player* _player = dynamic_cast<Player*>(owner))
 	{
 		_player->UpdateLife();
 	}
-
-
 	return false;
 }

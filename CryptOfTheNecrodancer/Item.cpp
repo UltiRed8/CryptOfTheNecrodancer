@@ -7,12 +7,11 @@
 #include "EntityManager.h"
 #include "Player.h"
 #include "Map.h"
-//TODO DIRE A AXEL QUE C'EST UN ENORME CONNARD AVEC SON PTN DE BLOOM 
-#define PATH_SHADOW "Entities/Shadow.png"
 
 #define PI 3.14159265358979323846f
 
-#define SOUND_PICKUP_GENERAL "Assets/Sounds/sfx_pickup_general_ST.ogg"
+#define PATH_SHADOW "Entities/Shadow.png"
+
 #define SOUND_PICKUP_ARMOR "Assets/Sounds/sfx_pickup_armor.ogg"
 #define SOUND_PICKUP_WEAPON "Assets/Sounds/sfx_pickup_weapon.ogg"
 
@@ -53,19 +52,23 @@ void Item::UpdateTexture()
 
 void Item::PickUp()
 {
+	if ((Pickable*)this)
+	{
+		ExecuteCallback();
+		Destroy();
+		return;
+	}
+
 	Player* _player = (Player*) EntityManager::GetInstance().Get("Player");
 	Inventory* _inventory = _player->GetInventory();
 	Slot* _slot = _inventory->GetSlot(stype);
 
-	// drop l'item du slot
 	if (Item* _item = _slot->GetItem())
 	{
 		_item->SetInInventory(false);
 		_item->SetPosition(GetPosition());
 		Map::GetInstance().GetGenerator()->AddItem(_item);
 	}
-
-	// ST_SHOVEL, ST_ATTACK, ST_BODY, ST_HEAD, ST_FEET, ST_THROW, ST_BOMB, ST_FOOD_TOP, ST_FOOD_DOWN
 
 	int _slotID = (int) _slot->GetType();
 	if (_slotID == 1)
@@ -81,7 +84,6 @@ void Item::PickUp()
 		SoundManager::GetInstance().Play(SOUND_PICKUP_GENERAL);
 	}
 
-	// set this in slot
 	_slot->SetItem(this);
 	_slot->SetVisible();
 

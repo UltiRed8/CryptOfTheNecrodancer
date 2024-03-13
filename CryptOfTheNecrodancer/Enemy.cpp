@@ -49,7 +49,7 @@ Enemy::Enemy(const float _maxHp, const float _maxDammage, const string& _id, con
 
 void Enemy::DieEvent()
 {
-	Map::GetInstance().AddOther(new Pickable(rewardAmount, PT_COIN, STRING_ID("Coin"), this->GetPosition()));
+	Map::GetInstance().AddOther(new Pickable(PIT_COIN, STRING_ID("Coin"), this->GetPosition(), rewardAmount));
 	SoundManager::GetInstance().Play(deathSound);
 	this->Destroy();
 }

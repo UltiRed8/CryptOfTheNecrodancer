@@ -127,11 +127,10 @@ void Trap::Trigger()
 {
 	if (cooldown != 0) return;
 
-	SoundManager::GetInstance().Play(SOUND_TRAP);
-
 	if (trapType != TR_WATER)
 	{
 		TextureManager::GetInstance().Load(shape, pressedPath);
+		SoundManager::GetInstance().Play(SOUND_TRAP);
 	}
 
 	if (callback)

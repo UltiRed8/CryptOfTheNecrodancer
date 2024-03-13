@@ -526,7 +526,7 @@ void Generator::GenerateDiamond(const int _diamondOnFloor, int _diamondInWall)
 	for (int _i = 0; _i < _diamondOnFloor; _i++)
 	{
 		Vector2f _position = GetRandomElementInVector(spawnablePositions);
-		others.push_back(new Pickable(1, PT_DIAMOND, STRING_ID("Diamond"), _position));
+		others.push_back(new Pickable(PIT_DIAMOND, STRING_ID("Diamond"), _position));
 		EraseElement(spawnablePositions, _position);
 	}
 
