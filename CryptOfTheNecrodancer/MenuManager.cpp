@@ -39,6 +39,7 @@
 #define WARNING_MENU "UI/SeizureWarningMenu.png"
 #define EPILEPSY_MENU "UI/EpilepsyMenu.png"
 #define CREDIT_BUTTON "UI/CreditsButton.png"
+#define DELETE_BUTTON "UI/Delete.png"
 #define CALIBRATION_MENU "UI/CalibrationMenu.png"
 
 #define EMPTYCHECKBOX "UI/EmptyCheckbox.png"
@@ -186,6 +187,7 @@ void MenuManager::InitMenu()
 	InitEpilepsyMenu();
 	InitCredits();
 	InitCalibration();
+	InitDeleteSaveDataMenu();
 }
 
 void MenuManager::InitMenuPause()
@@ -233,6 +235,7 @@ void MenuManager::InitMenuPause()
 	function<void()> _more = [this]() { MusicManager::GetInstance().IncreaseMusicPackName(); };
 	function<void()> _less = [this]() { MusicManager::GetInstance().DecreaseMusicPackName(); };
 	function<void()> _credit = [this]() { MusicManager::GetInstance().Play(MUSIC_CREDIT, true, false); Get("GamePause")->Toggle(); ToggleCredits(); };
+	function<void()> _delete = [this]() { Get("GamePause")->Toggle(); DeleteSaveDataMenu(); };
 	function<void()> _callbackEchap = [this]() { Get("GamePause")->Toggle(); CloseMenu(); };
 
 	float _x = static_cast<float>(window->getSize().x / 2);
@@ -254,6 +257,10 @@ void MenuManager::InitMenuPause()
 		new UIButton("credit", Vector2f(static_cast<float>(window->getSize().x / 1.3), static_cast<float>(_windowY / 1.2)), Color(119,136,153), WHITE_COLOR, {
 			new UIImage("credit", Vector2f(static_cast<float>(window->getSize().x / 1.3), static_cast<float>(_windowY / 1.2)), Vector2f(150.0f, 48.0f), CREDIT_BUTTON),
 		}, SOUND_START, _credit, FloatRect(static_cast<float>(window->getSize().x / 1.3), static_cast<float>(_windowY / 1.2), 150.0f, 48.0f)),
+
+		new UIButton("delete", Vector2f(static_cast<float>(window->getSize().x / 5), static_cast<float>(_windowY / 1.3)), Color(119,136,153), WHITE_COLOR, {
+			new UIImage("delete", Vector2f(static_cast<float>(window->getSize().x / 5), static_cast<float>(_windowY / 1.3)), Vector2f(109.0f, 95.0f), DELETE_BUTTON),
+		}, SOUND_START, _delete, FloatRect(static_cast<float>(window->getSize().x / 5), static_cast<float>(_windowY / 1.3), 109.0f, 95.0f)),
 
 		new UIButton("Exit", Vector2f(_x, static_cast<float>(_windowY / 1.2)), WHITE_COLOR, CYAN_COLOR, "Exit Game", 50, FONT, SOUND_EXIT, _callbackEchap),
 		new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), PAUSE_MENU), }, 1);
@@ -410,6 +417,36 @@ void MenuManager::InitGraphicMenu()
 void MenuManager::GraphicMenu()
 {
 	Get("Graphics")->Toggle();
+}
+
+void MenuManager::InitDeleteSaveDataMenu()
+{
+	float _x = static_cast<float>(window->getSize().x / 2);
+	unsigned int _windowY = window->getSize().y;
+
+	function<void()> _delete = [&]() { Delete(); };
+	function<void()> _return = [this]() { Get("GamePause")->Toggle(); DeleteSaveDataMenu();   };
+
+	new Menu("Delete", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), AREYOUSURE),
+		new UIText("AreYouSureText1", Vector2f(_x, static_cast<float>(_windowY / 4)), WHITE_COLOR, "Are you sure you want to",35, FONT),
+		new UIText("AreYouSureText2", Vector2f(_x, static_cast<float>(_windowY / 3.3)), WHITE_COLOR, "delete your save data ?",35, FONT),
+		new UIButton("StayText", Vector2f(_x, static_cast<float>(_windowY / 1.8)), WHITE_COLOR, CYAN_COLOR, "No, stay here", 35, FONT, SOUND_EXIT, _return),
+		new UIButton("DeleteShit", Vector2f(_x, static_cast<float>(_windowY / 1.6)), WHITE_COLOR, CYAN_COLOR, "Yes, delete this shit", 35, FONT, SOUND_START, _delete) }, 2);
+}
+
+void MenuManager::DeleteSaveDataMenu()
+{
+	Get("Delete")->Toggle();
+}
+
+void MenuManager::Delete()
+{
+	//TODO
+	//Fonction pour delete la data Save
+
+	DeleteSaveDataMenu();
+	MusicManager::GetInstance().Unpause();
+	GoToLobby();
 }
 
 void MenuManager::InitLeaveLobby()

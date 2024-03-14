@@ -29,6 +29,8 @@ public :
 	void OptionsMenu();
 	void CloseMenu();
 	void GraphicMenu();
+	void InitDeleteSaveDataMenu();
+	void DeleteSaveDataMenu();
 	void LeaveLobby();
 	void LatencyMenu();
 	void GameOverMenu();
@@ -52,7 +54,7 @@ private :
 	void InitEpilepsyMenu();
 	void InitCredits();
 	void InitCalibration();
-
+	void Delete();
 	void GoToLobby();
 	void Restart();
 };
