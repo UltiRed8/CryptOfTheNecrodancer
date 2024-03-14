@@ -40,6 +40,7 @@ class Player : public Living
 	int heartIndex;
 	bool pickupCooldown;
 	vector<AttackZone*> damageZone;
+	bool shouldSave;
 
 public:
 	bool GetPickupCooldown() const
@@ -103,11 +104,25 @@ public:
 		UpdateLife();
 	}
 
+	void SetShouldSave(bool _shouldSave)
+	{
+		shouldSave = _shouldSave;
+	}
+
+	bool GetShouldSave()
+	{
+		return shouldSave;
+	}
+
 public:
 	Player(const float _maxHp,const string _id, const Vector2f& _position);
 	~Player();
 
 public :
+	void SavePlayerStatsData();
+	void DeleteSavePlayerStatsData();
+	void SavePurchasedItems();
+	void DeleteSavePurchasedItems();
 	void Slide();
 	bool ResetChainMultiplier();
 	void InitInput();
