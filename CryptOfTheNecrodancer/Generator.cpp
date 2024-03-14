@@ -579,7 +579,9 @@ void Generator::SpawnEnnemy(const int _amountOfEnemies)
 
 	vector<function<Entity* (const Vector2f& _position)>> _enemyList =
 	{
-		[this](const Vector2f& _position) { return new Bat(_position); },
+		[this](const Vector2f& _position) { return new NormalBat(_position); },
+		[this](const Vector2f& _position) { return new RedBat(_position); },
+		[this](const Vector2f& _position) { return new BlackBat(_position); },
 		[this](const Vector2f& _position) { return new GreenSlime(_position); },
 		[this](const Vector2f& _position) { return new BlueSlime(_position); },
 		[this](const Vector2f& _position) { return new OrangeSlime(_position); },

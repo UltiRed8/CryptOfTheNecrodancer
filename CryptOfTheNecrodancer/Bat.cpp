@@ -1,19 +1,18 @@
 #include "Bat.h"
-#include"Macro.h"
-#include"MovementComponent.h"
-#include"DamageComponent.h"
-#include"LifeComponent.h"
-#include"Macro.h"
+#include "Macro.h"
+#include "MovementComponent.h"
+#include "DamageComponent.h"
+#include "LifeComponent.h"
 #include "AnimationComponent.h"
-
-#define PATH_BAT "Entities/BatSprite.png"
 
 #define SOUND_ATTACK_BAT  "Assets/Sounds/en_bat_attack.ogg"
 #define SOUND_HIT_BAT  "Assets/Sounds/en_bat_hit.ogg"
 #define SOUND_DEATH_BAT  "Assets/Sounds/en_bat_death.ogg"
 
-Bat::Bat(const Vector2f& _position) :Enemy(100.f,50.f,STRING_ID("Bat"), PATH_BAT, _position, 2)
+Bat::Bat(const float _maxHp, const float _maxDammage, const Vector2f& _position, const int _droppedCoins) : Enemy(_maxHp, _maxDammage, STRING_ID("Bat"), PATH_NORMAL_BAT, _position, _droppedCoins)
 {
+	batType = B_NONE;
+
 	directionsPatern = {
 		Vector2i(1,0),
 		Vector2i(-1,0),

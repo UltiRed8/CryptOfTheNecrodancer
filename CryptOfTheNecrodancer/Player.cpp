@@ -317,7 +317,11 @@ void Player::UpdateDamageZone()
 			RectangleShape* _shape = new RectangleShape(_rect.getSize());
 			_shape->setPosition(GetPosition() + _rect.getPosition());
 			_shape->setOrigin(-_rect.getPosition() + TILE_SIZE / 2.0f);
-			_shape->setFillColor(Color::Transparent);
+
+			Color _color = _data.isRed ? Color::Red : Color::Yellow;
+			_color.a = 100;
+			_shape->setFillColor(_color);
+
 			damageZone.push_back(new AttackZone(_rect.getPosition(), _shape, _data.isRed));
 		}
 	}
