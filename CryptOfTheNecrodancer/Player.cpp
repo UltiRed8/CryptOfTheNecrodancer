@@ -17,6 +17,7 @@
 #include "Ice.h"
 #include "HotCoals.h"
 #include "Bomb.h"
+#include "Chest.h"
 
 #define PATH_PLAYER "Entities/PlayerSprite.png"
 #define PATH_SHADOW "Entities/Shadow.png"
@@ -103,6 +104,12 @@ Player::Player(const float _maxHp, const string _id, const Vector2f& _position) 
 		}),
 		CollisionReaction(ET_NPC, [this](Entity* _entity) {
 			GetComponent<MovementComponent>()->UndoMove();
+			return true;
+		}),
+		CollisionReaction(ET_CHEST, [this](Entity* _entity) {
+			GetComponent<MovementComponent>()->UndoMove();
+			Chest* _chest = dynamic_cast<Chest*>(_entity);
+			_chest->Open();
 			return true;
 		}),
 		CollisionReaction(ET_PICKABLE, [this](Entity* _entity) {

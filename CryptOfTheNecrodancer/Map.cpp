@@ -188,6 +188,11 @@ void Map::AddFloorAt(const Vector2f& _position)
 	generator->AddFloorAt(_position);
 }
 
+void Map::AddItem(Item* _item)
+{
+	generator->AddItem(_item);
+}
+
 void Map::Update()
 {
 	generator->Update();

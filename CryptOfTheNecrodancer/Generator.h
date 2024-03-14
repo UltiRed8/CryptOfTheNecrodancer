@@ -16,6 +16,7 @@
 #include "UIText.h"
 #include <string>
 #include <fstream>
+#include "Chest.h"
 
 #define C_BROWN Color(135, 79, 2, 255)
 #define C_LIGHT_BROWN Color(135, 79, 2, 200)
@@ -192,6 +193,7 @@ private:
 	void SpawnStairs();
 	void SpawnTraps(const int _amount);
 	void Enable3DEffect();
+	void GenerateChest(const int _chestCount);
 
 public:
 	void GenUpdate();

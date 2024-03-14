@@ -178,6 +178,17 @@ void Generator::Enable3DEffect()
 
 }
 
+void Generator::GenerateChest(const int _chestCount)
+{
+	loadingText->GetText()->setString("Generating chests");
+	for (int _index = 0; _index < _chestCount; _index++)
+	{
+		Vector2f _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
+		EraseElement(spawnablePositions, _position);
+		others.push_back(new Chest(_position));
+	}
+}
+
 void Generator::AddItem(Item* _item)
 {
 	items.push_back(_item);
@@ -628,6 +639,8 @@ void Generator::GenUpdate()
 			[&]() { GetSpawnablePositions(); },
 			// 7- generate diamonds
 			[&]() { GenerateDiamond(); },
+
+			[&]() { GenerateChest(100); },
 			// 8- spawn player
 			[&]() { SpawnPlayer(); },
 			// 9- spawn stairs

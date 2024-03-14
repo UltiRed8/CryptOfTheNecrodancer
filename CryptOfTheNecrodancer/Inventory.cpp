@@ -25,8 +25,6 @@ Inventory::Inventory() : Menu("Inventory", {}, 0, false)
 	others.push_back(new Slot(ST_BODY, I_BODY, _menu));
 	others.push_back(new Slot(ST_HEAD, I_HEAD, _menu));
 	others.push_back(new Slot(ST_FEET, I_FEET, _menu));
-
-	usables.push_back(new Slot(ST_THROW, I_THROW, _menu));
 	usables.push_back(new Slot(ST_BOMB, I_BOMB, _menu));
 
 	foods.push_back(new Slot(ST_FOOD_TOP, I_ITEM, _menu));
