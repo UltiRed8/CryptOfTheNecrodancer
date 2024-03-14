@@ -19,7 +19,7 @@ Chest::~Chest()
 
 Item* Chest::CreateRandomItem()
 {
-	SlotType _type = (SlotType)Random(6, 0);
+	const int _type = Random(6, 0);
 
 	vector<vector<int>> _items = {
 		{PT_PICKAXE, PT_SHOVEL, PT_SHOVEL_COURAGE, PT_SHOVEL_CRYSTAL, PT_SHOVEL_TITANIUM,},
@@ -31,26 +31,27 @@ Item* Chest::CreateRandomItem()
 		{AT_BODY_CHAINMAIL, AT_BODY_LEATHERARMOR, AT_BODY_HEAVYPLATE, AT_BODY_PLATEMAIL},
 		{AT_HEAD_HELMET, AT_HEAD_MINERSCAP,},
 		{AT_FEET_BOOTSOFSTRENGTH, AT_FEET_HARGREAVES},
-		{},
-		{},
+		{ CT_APPLE, CT_CARROT, CT_CHEESE, CT_COOKIE, CT_DRUMSTICK, CT_HAM },
 	};
 
-	const vector<int>& _path = _items[_type];
-	if (_path.empty())
+	if (_type == 6)
 	{
-		return nullptr;
+		Item* _item = new BombItem(GetPosition());
+		Map::GetInstance().AddItem(_item);
+		return _item;
 	}
+
+	const vector<int>& _path = _items[_type];
+	
 	const int _itemType = _path[Random(_path.size() - 1, 0)];
 
 	vector<function<Item* ()>> _actions = {
-		[&]() { return new Pickaxe((PickaxeType)_itemType,STRING_ID("Pickaxe"),GetPosition()); },
-		[&]() { return new Weapon((WeaponType)_itemType,STRING_ID("Weapon"),GetPosition()); },
-		[&]() { return new Armor((ArmorType)_itemType,STRING_ID("Armor"),GetPosition()); },
-		[&]() { return new Armor((ArmorType)_itemType,STRING_ID("Armor"),GetPosition()); },
-		[&]() { return new Armor((ArmorType)_itemType,STRING_ID("Armor"),GetPosition()); },
-		nullptr,
-		nullptr,
-		nullptr,
+		[&]() { return new Pickaxe((PickaxeType)_itemType,STRING_ID("Pickaxe"),GetPosition(), false, false); },
+		[&]() { return new Weapon((WeaponType)_itemType,STRING_ID("Weapon"),GetPosition(), false, false); },
+		[&]() { return new Armor((ArmorType)_itemType,STRING_ID("Armor"),GetPosition(), false, false); },
+		[&]() { return new Armor((ArmorType)_itemType,STRING_ID("Armor"),GetPosition(), false, false); },
+		[&]() { return new Armor((ArmorType)_itemType,STRING_ID("Armor"),GetPosition(), false, false); },
+		[&]() { return new Consomable((ConsomableType)_itemType,STRING_ID("Food"),GetPosition(), false); },
 	};
 
 	if (!_actions[_type])

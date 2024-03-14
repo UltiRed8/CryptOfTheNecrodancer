@@ -87,7 +87,7 @@ bool Wall::DestroyWall(const int _digLevel, const bool _canShake, const bool _wi
 
 	if (_canShake)
 	{
-		WindowManager::GetInstance().Shake(25);
+		WindowManager::GetInstance().Shake(Vector2f(*EntityManager::GetInstance().Get("Player")->GetComponent<MovementComponent>()->GetDirection()));
 	}
 	Entity* _entity = Map::GetInstance().GetEntityAt(GetPosition() + (Vector2f(0.0f, -1.0f) * TILE_SIZE));
 	if (_entity)

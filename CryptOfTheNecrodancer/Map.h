@@ -33,6 +33,10 @@ class Map : public Singleton<Map>
 	bool* discoModeEnabled;
 
 public:
+	bool IsInLobby() const
+	{
+		return currentZone == Z_LOBBY;
+	}
 	Generator* GetGenerator() const
 	{
 		return generator;

@@ -18,6 +18,7 @@ class WindowManager : public Singleton<WindowManager>
 	vector<string> shaderNames;
 	int currentShader;
 	Vector2f currentPosition;
+	Vector2f direction;
 
 public:
 	Shader* GetShader() const
@@ -45,6 +46,6 @@ private:
 public:
 	void LoadShader(const int _id);
 	void Rename(const string& _newWindowName);
-	void Shake(const int _strength);
+	void Shake(const Vector2f& _direction = Vector2f(0.0f, 0.0f));
 	void Update();
 };

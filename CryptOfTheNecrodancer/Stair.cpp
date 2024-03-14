@@ -47,7 +47,7 @@ bool Stair::OpenZone()
 	if (IsLocked())
 	{
 		SoundManager::GetInstance().Play(SOUND_LOCKED_STAIRS);
-		WindowManager::GetInstance().Shake(300);
+		WindowManager::GetInstance().Shake();
 		return false;
 	}
 	Map::GetInstance().Prepare(zoneToLoad);

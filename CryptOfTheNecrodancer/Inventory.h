@@ -63,6 +63,7 @@ public:
 	~Inventory();
 
 public:
+	void Reset();
 	vector<Slot*> GetSlots()
 	{
 		vector<Slot*> _all;

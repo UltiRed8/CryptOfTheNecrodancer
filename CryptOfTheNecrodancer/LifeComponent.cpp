@@ -91,9 +91,9 @@ bool LifeComponent::ChangeHealth(const float _byAmount)
 	{
 		*currentHealth = maxHealth;
 	}
-	//if (Player* _player = dynamic_cast<Player*>(owner))
-	//{
-	//	_player->UpdateLife();
-	//}
+	if (Player* _player = dynamic_cast<Player*>(owner))
+	{
+		_player->UpdateLife();
+	}
 	return false;
 }

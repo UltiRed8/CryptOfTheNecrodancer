@@ -22,7 +22,7 @@ WindowManager::~WindowManager()
 
 void WindowManager::CreateWindow()
 {
-	window = new RenderWindow(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer", Style::Close);
+	window = new RenderWindow(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer", Style::Close/* | Style::Fullscreen*/);
 	baseWindowPosition = window->getPosition();
 	Init();
 }
@@ -101,16 +101,25 @@ void WindowManager::Rename(const string& _newWindowName)
 	window->setTitle(_newWindowName);
 }
 
-void WindowManager::Shake(const int _strength)
+void WindowManager::Shake(const Vector2f& _direction)
 {
 	if (!*isShakable) return;
 
-	const int _rotation = Random(360, 0);
+	if (_direction == Vector2f(0.0f, 0.0f))
+	{
+		const int _rotation = Random(360, 0);
 
-	const float _dirX = cos(_rotation);
-	const float _dirY = sin(_rotation);
+		const float _dirX = cos(_rotation);
+		const float _dirY = sin(_rotation);
 
-	const Vector2f& _offset = Vector2f(_dirX * 100.0f, _dirY * 100.0f);
+		direction = Vector2f(_dirX, _dirY);
+	}
+	else
+	{
+		direction = _direction;
+	}
+
+	const Vector2f& _offset = direction * 50.0f;
 
 	currentPosition = Vector2f(baseWindowPosition) + _offset;
 	window->setPosition(Vector2i(currentPosition));
@@ -122,6 +131,21 @@ void WindowManager::Update()
 
 	if (!IsNearlyEquals(currentPosition, Vector2f(baseWindowPosition), 10.0f))
 	{
+		if (currentPosition.x != baseWindowPosition.x)
+		{
+			if ((direction.x > 0.0f && currentPosition.x < baseWindowPosition.x) || (direction.x < 0.0f && currentPosition.x > baseWindowPosition.x))
+			{
+				currentPosition.x = baseWindowPosition.x;
+			}
+		}
+		if (currentPosition.y != baseWindowPosition.y)
+		{
+			if ((direction.y > 0.0f && currentPosition.y < baseWindowPosition.y) || (direction.y < 0.0f && currentPosition.y > baseWindowPosition.y))
+			{
+				currentPosition.y = baseWindowPosition.y;
+			}
+		}
+
 		const float _delta = TimerManager::GetInstance().GetDeltaTime();
 		if (currentPosition.x != baseWindowPosition.x) currentPosition.x += currentPosition.x - baseWindowPosition.x > 0 ? -_delta : _delta;
 		if (currentPosition.y != baseWindowPosition.y) currentPosition.y += currentPosition.y - baseWindowPosition.y > 0 ? -_delta : _delta;

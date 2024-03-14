@@ -87,10 +87,11 @@ Player::Player(const float _maxHp, const string _id, const Vector2f& _position) 
 			return false;
 		}),
 		CollisionReaction(ET_DOOR, [this](Entity* _entity) {
-			GetComponent<MovementComponent>()->UndoMove();
+			MovementComponent* _movement = GetComponent<MovementComponent>();
+			_movement->UndoMove();
 			Door* _door = dynamic_cast<Door*>(_entity);
 			_door->OpenDoor();
-			WindowManager::GetInstance().Shake(25);
+			WindowManager::GetInstance().Shake(Vector2f(*_movement->GetDirection()));
 			return true;
 		}),
 		CollisionReaction(ET_ICE, [this](Entity* _entity) {
@@ -112,16 +113,15 @@ Player::Player(const float _maxHp, const string _id, const Vector2f& _position) 
 			_chest->Open();
 			return true;
 		}),
-		CollisionReaction(ET_PICKABLE, [this](Entity* _entity) {
-			Pickable* _pickable = dynamic_cast<Pickable*>(_entity);
-			_pickable->PickUp();
-			return false;
-		}),
 		CollisionReaction(ET_ITEM, [this](Entity* _entity) {
 			Item* _item = dynamic_cast<Item*>(_entity);
 			if (!_item->IsInInventory() && !pickupCooldown)
 			{
-				_item->PickUp();
+				if (!_item->PickUp())
+				{
+					GetComponent<MovementComponent>()->UndoMove();
+					return false;
+				}
 				pickupCooldown = true;
 			}
 			return false;
@@ -214,12 +214,25 @@ void Player::InitInput()
 		ActionData("Increase Life", [this]() { GetComponent<LifeComponent>()->ChangeHealth(50); UpdateLife(); }, {Event::KeyPressed, Keyboard::Add}),
 		ActionData("Set Bomb", [this]() { new Bomb(GetPosition());}, {Event::KeyPressed, Keyboard::P}),
 		ActionData("Add Heart", [this]() { AddHeart();}, {Event::KeyPressed, Keyboard::M}),
-		ActionData("Spawn Bomb", [this]() { 
+		ActionData("UseBomb", [this]() {
+			if (Map::GetInstance().IsInLobby()) return;
 			if (Item* _item = inventory->GetSlot(ST_BOMB)->GetItem())
 			{
 				_item->ExecuteCallback();
 			}
-				}, {Event::KeyPressed, Keyboard::RShift}),
+		}, {Event::KeyPressed, Keyboard::RShift}),
+		ActionData("UseFood1", [this]() {
+			if (Item* _item = inventory->GetSlot(ST_FOOD_TOP)->GetItem())
+			{
+				_item->ExecuteCallback();
+			}
+		}, {Event::KeyPressed, Keyboard::Numpad1}),
+		ActionData("UseFood2", [this]() {
+			if (Item* _item = inventory->GetSlot(ST_FOOD_DOWN)->GetItem())
+			{
+				_item->ExecuteCallback();
+			}
+		}, {Event::KeyPressed, Keyboard::Numpad0}),
 	});
 }
 
@@ -405,7 +418,7 @@ bool Player::TryToAttack()
 													GetComponent<MovementComponent>()->Update();
 												}
 											}
-											WindowManager::GetInstance().Shake(25);
+											WindowManager::GetInstance().Shake(Vector2f(*GetComponent<MovementComponent>()->GetDirection()));
 										}
 										_enemy->Hit();
 										if (GetComponent<DamageComponent>()->Attack(_entity))

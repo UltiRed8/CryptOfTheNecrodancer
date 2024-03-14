@@ -174,6 +174,7 @@ void Map::PrepareMusic()
 void Map::OpenLobby()
 {
 	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
+	_player->GetInventory()->Reset();
 	_player->GetRessources()->SetMoney(0);
 	_player->SetIsConfuse(false);
 	_player->ResetChainMultiplier();

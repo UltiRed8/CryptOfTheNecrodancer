@@ -33,18 +33,31 @@ Inventory::Inventory() : Menu("Inventory", {}, 0, false)
 
 Inventory::~Inventory()
 {
-	for (Slot* _slot : others)
+	for (Slot* _slot : GetSlots())
 	{
-		delete _slot;
+		_slot->Destroy();
 	}
-	for (Slot* _slot : usables)
+}
+
+void Inventory::Reset()
+{
+	for (Slot* _slot : GetSlots())
 	{
-		delete _slot;
+		_slot->Destroy();
 	}
-	for (Slot* _slot : foods)
-	{
-		delete _slot;
-	}
+	others.clear();
+	usables.clear();
+	foods.clear();
+	Menu* _menu = MenuManager::GetInstance().Get("Inventory");
+	others.push_back(new Slot(ST_SHOVEL, I_SHOVEL, _menu));
+	others.push_back(new Slot(ST_ATTACK, I_ATTACK, _menu));
+	others.push_back(new Slot(ST_BODY, I_BODY, _menu));
+	others.push_back(new Slot(ST_HEAD, I_HEAD, _menu));
+	others.push_back(new Slot(ST_FEET, I_FEET, _menu));
+	usables.push_back(new Slot(ST_BOMB, I_BOMB, _menu));
+
+	foods.push_back(new Slot(ST_FOOD_TOP, I_ITEM, _menu));
+	foods.push_back(new Slot(ST_FOOD_DOWN, I_ITEM, _menu));
 }
 
 vector<Drawable*> Inventory::GetDrawables()
@@ -92,8 +105,8 @@ Slot::Slot(const SlotType& _type, const string& _path, Menu* _owner) : UIImage(S
 	type = _type;
 	const string& _rPath = _type == ST_SHOVEL ? PATH_SHOVEL : _type == ST_ATTACK ? PATH_DAGGER : "";
 	item = new UIImage(STRING_ID("item_" + to_string(type) + "_slot"), Vector2f(0.0f, 0.0f), Vector2f(30.0f, 33.0f) * 2.0f, "");
-	currentItem = _type == ST_SHOVEL ? (Item*) new Pickaxe(PT_SHOVEL_COURAGE, STRING_ID("Pickaxe"), {}, true)
-		: _type == ST_ATTACK ? (Item*) new Weapon(WT_HARP, STRING_ID("Dagger"), {}, true)
+	currentItem = _type == ST_SHOVEL ? (Item*) new Pickaxe(PT_SHOVEL, STRING_ID("Pickaxe"), {}, true)
+		: _type == ST_ATTACK ? (Item*) new Weapon(WT_DAGGER, STRING_ID("Dagger"), {}, true)
 		: _type == ST_BOMB ? (Item*) new BombItem({})
 		: nullptr;
 	

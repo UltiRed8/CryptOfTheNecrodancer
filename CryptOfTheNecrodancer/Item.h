@@ -92,11 +92,15 @@ struct ItemStats
 	int digLevel;
 	vector<InteractionData> attackRange;
 	bool preventMovement;
+	int diamondPrice;
+	int goldPrice;
 
 public:
 	ItemStats() = default;
-	ItemStats(const float _damages, const float _defense, const int _digLevel, const vector<InteractionData>& _attackRange, const bool _preventMovement)
+	ItemStats(const float _damages, const float _defense, const int _digLevel, const vector<InteractionData>& _attackRange, const bool _preventMovement, const int _diamondPrice, const int _goldPrice)
 	{
+		diamondPrice = _diamondPrice;
+		goldPrice = _goldPrice;
 		damages = _damages;
 		defense = _defense;
 		digLevel = _digLevel;
@@ -114,6 +118,7 @@ class Item : public Entity
 	Text* text;
 
 protected:
+	bool inShop;
 	SlotType stype;
 	bool isPickable;
 	ItemStats stats;
@@ -127,6 +132,11 @@ protected:
 	void UpdateTexture();
 
 public:
+	void UpdateText();
+	SlotType GetSlotType() const
+	{
+		return stype;
+	}
 	void SetText(const string& _text)
 	{
 		text = new Text();
@@ -185,7 +195,7 @@ public:
 	}
 	virtual ItemStats UpdateStat() { return ItemStats(); };
 
-	virtual void PickUp();
+	virtual bool PickUp();
 };
 
 struct Weapon : Item
@@ -193,11 +203,13 @@ struct Weapon : Item
 	WeaponType weaponType;
 
 public:
-	Weapon(const WeaponType& _wType, const string& _id, const Vector2f& _position,const bool _isInInventory = false) : Item(ST_ATTACK, _id, _position, _isInInventory)
+	Weapon(const WeaponType& _wType, const string& _id, const Vector2f& _position, const bool _isInInventory = false, const bool _inShop = true) : Item(ST_ATTACK, _id, _position, _isInInventory)
 	{
+		inShop = _inShop;
 		weaponType = _wType;
 		stats = UpdateStat();
 		UpdateTexture();
+		UpdateText();
 	}
 
 public:
@@ -228,14 +240,19 @@ public:
 
 			PATH_LONGSWORD,
 			PATH_LONGSWORD_TITANIUM,
+
 			PATH_RAPIER,
 			PATH_RAPIER_TITANIUM,
+
 			PATH_SPEAR,
 			PATH_SPEAR_TITANIUM,
+
 			PATH_STAFF,
 			PATH_STAFF_TITANIUM,
+
 			PATH_WARHAMMER,
 			PATH_WARHAMMER_TITANIUM,
+
 			PATH_WHIP,
 			PATH_WHIP_TITANIUM,
 		};
@@ -244,45 +261,45 @@ public:
 	virtual ItemStats UpdateStat() override
 	{
 		const ItemStats _values[] = {
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, -1.0f, 1.0f, 3.0f), false) }, true),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, -1.0f, 1.0f, 3.0f), false) }, true),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, -1.0f, 1.0f, 3.0f), false) }, true, 2, 50),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, -1.0f, 1.0f, 3.0f), false) }, true, 3, 80),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -1.0f, 1.0f, 3.0f), true) }, true),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -1.0f, 1.0f, 3.0f), true) }, true),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -1.0f, 1.0f, 3.0f), true) }, true, 1, 40),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -1.0f, 1.0f, 3.0f), true) }, true, 2, 60),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, -1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(0.0f, 1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true) }, false),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, -1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(0.0f, 1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true) }, false),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, -1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(0.0f, 1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true) }, false, 3, 60),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, -1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(0.0f, 1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true) }, false, 5, 90),
 
-			ItemStats(1.0f, 0.5f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f), true) }, false),
-			ItemStats(2.0f, 1.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f), true) }, false),
+			ItemStats(1.0f, 0.5f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f), true) }, false, 3, 60),
+			ItemStats(2.0f, 1.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f), true) }, false, 5, 100),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true),
-			ItemStats(5.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 0, 10),
+			ItemStats(5.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 8, 200),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 2, 80),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, -1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(0.0f, 1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true) }, true),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, -1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(0.0f, 1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true) }, true),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, -1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(0.0f, 1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true) }, true, 3, 50),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, -1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(0.0f, 1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true) }, true, 4, 80),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(-1.0f, -1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(-1.0f, 1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(-1.0f, 0.0f, 1.0f, 1.0f), false) }, true),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(-1.0f, -1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(-1.0f, 1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(-1.0f, 0.0f, 1.0f, 1.0f), false) }, true),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(-1.0f, -1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(-1.0f, 1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(-1.0f, 0.0f, 1.0f, 1.0f), false) }, true, 5, 80),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(-1.0f, -1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(-1.0f, 1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(-1.0f, 0.0f, 1.0f, 1.0f), false) }, true, 6, 100),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f ), true) }, true),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f ), true) }, true),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f ), true) }, true, 3, 60),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f ), true) }, true, 4, 80),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, 0.0f, 1.0f, 1.0f), false) }, false),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, 0.0f, 1.0f, 1.0f), false) }, false),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, 0.0f, 1.0f, 1.0f), false) }, false, 5, 80),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, 0.0f, 1.0f, 1.0f), false) }, false, 6, 120),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f ), true) }, true),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f ), true) }, true),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f ), true) }, true, 2, 50),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f ), true) }, true, 3, 75),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, 0.0f, 20.0f, 1.0f ), false) }, true),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, 0.0f, 20.0f, 1.0f ), false) }, true),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, 0.0f, 20.0f, 1.0f ), false) }, true, 4, 60),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, 0.0f, 20.0f, 1.0f ), false) }, true, 5, 90),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -1.0f, 2.0f, 3.0f), true) }, true),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -1.0f, 2.0f, 3.0f), true) }, true),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -1.0f, 2.0f, 3.0f), true) }, true, 4, 60),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -1.0f, 2.0f, 3.0f), true) }, true, 5, 90),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -2.0f, 1.0f, 5.0f), true) }, true),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -2.0f, 1.0f, 5.0f), true) }, true),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -2.0f, 1.0f, 5.0f), true) }, true, 4, 60),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -2.0f, 1.0f, 5.0f), true) }, true, 5, 90),
 		};
 		return _values[weaponType];
 	}
@@ -293,11 +310,13 @@ struct Pickaxe : Item
 	PickaxeType pickaxeType;
 
 public:
-	Pickaxe(const PickaxeType& _pType, const string& _id, const Vector2f& _position,const bool _isInInventory = false) : Item(ST_SHOVEL, _id, _position,_isInInventory)
+	Pickaxe(const PickaxeType& _pType, const string& _id, const Vector2f& _position, const bool _isInInventory = false, const bool _inShop = true) : Item(ST_SHOVEL, _id, _position, _isInInventory)
 	{
+		inShop = _inShop;
 		pickaxeType = _pType;
 		stats = UpdateStat();
 		UpdateTexture();
+		UpdateText();
 	}
 
 public:
@@ -315,11 +334,11 @@ public:
 	virtual ItemStats UpdateStat() override
 	{
 		const ItemStats _values[] = {
-			ItemStats(0.0f, 0.0f, 2, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true),
-			ItemStats(0.0f, 0.0f, 1, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true),
-			ItemStats(0.0f, 0.0f, 1, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, false),
-			ItemStats(0.0f, 0.0f, 2, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true),
-			ItemStats(0.0f, 0.0f, 1, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, false),
+			ItemStats(0.0f, 0.0f, 2, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 2, 60),
+			ItemStats(0.0f, 0.0f, 1, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 0, 10),
+			ItemStats(0.0f, 0.0f, 1, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, false, 1, 40),
+			ItemStats(0.0f, 0.0f, 2, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 3, 45),
+			ItemStats(0.0f, 0.0f, 1, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, false, 2, 55),
 		};
 		return _values[pickaxeType];
 	}
@@ -330,7 +349,7 @@ struct Armor : Item
 	ArmorType armorType;
 
 	public:
-		Armor(const ArmorType& _aType, const string& _id, const Vector2f& _position, const bool _isInInventory = false);
+		Armor(const ArmorType& _aType, const string& _id, const Vector2f& _position, const bool _isInInventory = false, const bool _inShop = true);
 
 public:
 	ArmorType GetArmorType() const
@@ -363,14 +382,14 @@ public:
 	virtual ItemStats UpdateStat() override
 	{
 		const ItemStats _values[] = {
-			ItemStats(0.0f, 0.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
-			ItemStats(0.0f, 0.0f, 3, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
-			ItemStats(0.0f, 1.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
-			ItemStats(0.0f, 0.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
-			ItemStats(0.0f, 2.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
-			ItemStats(0.0f, 1.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
-			ItemStats(0.0f, 0.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false),
+			ItemStats(0.0f, 0.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 1, 50),
+			ItemStats(0.0f, 0.0f, 3, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 4, 120),
+			ItemStats(0.0f, 1.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 2, 75),
+			ItemStats(0.0f, 0.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 1, 40),
+			ItemStats(0.0f, 2.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 4, 110),
+			ItemStats(0.0f, 1.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 3, 90),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 1, 60),
+			ItemStats(0.0f, 0.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 2, 80),
 		};
 		return _values[armorType];
 	}
@@ -387,6 +406,7 @@ public:
 		pickableType = _pickableType;
 		amount = _amount;
 		InitCallback();
+		stats = UpdateStat();
 		UpdateTexture();
 		zIndex = 3;
 		isPickable = true;
@@ -394,6 +414,8 @@ public:
 		{
 			TextureManager::GetInstance().LoadFromTextureSheet(GetVisuals(), PATH_COIN, Random(3, 0), Vector2i(24, 24));
 		}
+		inShop = pickableType == PIT_HEART ? true : false;
+		UpdateText();
 	}
 
 public:
@@ -408,7 +430,12 @@ public:
 	}
 	virtual ItemStats UpdateStat() override
 	{
-		return ItemStats();
+		const ItemStats _values[] = {
+			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 0, 0),
+			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 0, 0),
+			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 3, 0),
+		};
+		return _values[pickableType];
 	}
 	virtual string GetTexturePath() override
 	{
@@ -434,10 +461,12 @@ public:
 
 	BombItem(const Vector2f& _position) : Item(ST_BOMB, STRING_ID("Bomb"), _position, false)
 	{
+		inShop = false;
 		zIndex = 3;
 		isPickable = false;
 		UpdateTexture();
 		InitCallback();
+		UpdateText();
 	}
 
 	virtual string GetTexturePath() override
@@ -452,13 +481,16 @@ struct Consomable : Item
 	int regen;
 
 public:
-	Consomable(const ConsomableType& _consomableType, const string& _id, const Vector2f& _position) : Item(ST_FOOD_TOP, _id, _position, false)
+	Consomable(const ConsomableType& _consomableType, const string& _id, const Vector2f& _position, const bool _inShop = true) : Item(ST_FOOD_TOP, _id, _position, false)
 	{
+		inShop = _inShop;
 		consomableType = _consomableType;
 		InitRegen();
 		InitCallback();
 		UpdateTexture();
 		zIndex = 3;
+		stats = UpdateStat();
+		UpdateText();
 	}
 
 public:
@@ -478,12 +510,19 @@ public:
 			SoundManager::GetInstance().Play(SOUND_FOOD_USED);
 			_player->GetInventory()->GetSlot(stype)->SetItem(nullptr);
 			Destroy();
-			
 		};
 	}
 	virtual ItemStats UpdateStat() override
 	{
-		return ItemStats();
+		const ItemStats _values[] = {
+			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 1, 30),
+			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 1, 30),
+			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 2, 60),
+			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 1, 15),
+			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 3, 90),
+			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 4, 120),
+		};
+		return _values[consomableType];
 	}
 	virtual string GetTexturePath() override
 	{
