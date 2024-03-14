@@ -16,6 +16,7 @@ using namespace sf;
 
 int GetUniqueID();
 
+
 template <typename Type>
 vector<Vector2f> GetAllPositions(const vector<Type>& _entities)
 {
@@ -28,7 +29,6 @@ vector<Vector2f> GetAllPositions(const vector<Type>& _entities)
 }
 
 int Random(const int _max, const int _min = 0);
-
 
 template <typename Type>
 Type GetRandomElementInVector(const vector<Type> _elements)

@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "Player.h"
 #include "Item.h"
+#include <fstream>
 #define EMPTY "UI/HealthBarEmpty.png"
 #define FULL "UI/HealthBarFull.png"
 
@@ -9,6 +10,14 @@ LifeComponent::LifeComponent(Entity* _owner, const function<void()> _deathCallba
 {
 	invulnerable = _invulnerable;
 	maxHealth = _maxHealth;
+	ifstream _stream = ifstream("Assets/Saved/PlayerStats.txt");
+	if (_stream)
+	{
+		string _line;
+		getline(_stream, _line);
+		getline(_stream, _line);
+		maxHealth = stof(_line);
+	}
 	currentHealth = new float(maxHealth);
 	deathcallback = _deathCallback;
 	isAlive = true;

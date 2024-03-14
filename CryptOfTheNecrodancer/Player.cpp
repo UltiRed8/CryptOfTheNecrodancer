@@ -18,6 +18,13 @@
 #include "HotCoals.h"
 #include "Bomb.h"
 #include "Chest.h"
+#include <cstdio>
+#include <iostream>
+
+using namespace std;
+
+#define SAVE_DATA "Assets/Saved/PlayerStats.txt"
+#define SAVE_PURCHASED "Assets/Saved/PurchasedItems.txt"
 
 #define PATH_PLAYER "Entities/PlayerSprite.png"
 #define PATH_SHADOW "Entities/Shadow.png"
@@ -53,6 +60,7 @@ Player::Player(const float _maxHp, const string _id, const Vector2f& _position) 
 	zIndex = 3;
 	chainMultiplier = new int(1);
 	type = ET_PLAYER;
+	shouldSave = true;
 	components.push_back(new AnimationComponent(this, {
 		AnimationData("Idle", Vector2f(26, 26), 0, 3, 0.1f, false),
 		}, "Idle", visuals));
@@ -138,9 +146,15 @@ Player::Player(const float _maxHp, const string _id, const Vector2f& _position) 
 
 Player::~Player()
 {
+	if (shouldSave)
+	{
+		SavePlayerStatsData();
+		SavePurchasedItems();
+	}
 	delete chainMultiplier;
 	delete ressources;
-	for (AttackZone* _zone : damageZone) {
+	for (AttackZone* _zone : damageZone) 
+	{
 		delete _zone;
 	}
 }
@@ -155,6 +169,43 @@ bool Player::ResetChainMultiplier()
 	}
 	return false;
 }
+
+void Player::SavePlayerStatsData()
+{
+	ofstream _file(SAVE_DATA);
+	if (_file)
+	{
+		_file << *ressources->GetDiamonds() << endl << GetComponent<LifeComponent>()->GetMaxHealth();
+	}
+	else
+	{
+		cerr << "Impossible d'ouvrir le fichier pour sauvegarder." << endl;
+	}
+}
+
+void Player::DeleteSavePlayerStatsData()
+{
+	remove(SAVE_DATA);
+}
+
+void Player::SavePurchasedItems()
+{
+	ofstream _file(SAVE_PURCHASED);
+	if (_file)
+	{
+		//sauvegarder les achats
+		//_file << item;
+	}
+	else
+	{
+		cerr << "Impossible d'ouvrir le fichier pour sauvegarder." << endl;
+	}
+}
+
+void Player::DeleteSavePurchasedItems()
+{
+	remove(SAVE_PURCHASED);
+}	
 
 void Player::Slide()
 {
@@ -440,7 +491,7 @@ void Player::AddHeart(const int _amount)
 {
 	// Get Life Component
 	LifeComponent* _lifeComp = GetComponent<LifeComponent>();
-	const int _lifeBefore = _lifeComp->GetMaxHealth();
+	const float _lifeBefore = _lifeComp->GetMaxHealth();
 	_lifeComp->SetMaxHealth(_lifeBefore + _amount * 100.0f);
 	_lifeComp->SetCurrentHealth(_amount * 100.0f);
 	const float _life = _lifeComp->GetMaxHealth();
