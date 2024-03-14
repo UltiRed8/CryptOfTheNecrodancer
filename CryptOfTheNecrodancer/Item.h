@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "SoundManager.h"
 #include "Items.h"
+#include "Bomb.h"
 
 #define PATH_AXE "Items/Weapon/WeaponAxe.png"
 #define PATH_AXE_TITANIUM "Items/Weapon/WeaponAxeTitanium.png"
@@ -56,6 +57,8 @@
 #define PATH_DIAMOND "UI/Diamond.png"
 #define PATH_HEART "UI/FullHeart.png"
 #define PATH_SHADOW "Entities/Shadow.png"
+
+#define PATH_BOMBITEM "Items/Bomb/Bomb.png"
 
 #define FONT "Assets/Font/Font.ttf"
 
@@ -172,7 +175,7 @@ public:
 		}
 		return _drawables;
 	}
-	virtual ItemStats UpdateStat() = 0;
+	virtual ItemStats UpdateStat() { return ItemStats(); };
 
 	virtual void PickUp();
 };
@@ -407,5 +410,30 @@ public:
 			PATH_HEART,
 		};
 		return _pathes[pickableType];
+	}
+};
+
+struct BombItem : Item
+{
+public:
+	void InitCallback()
+	{
+		callback = [&]() {
+			Player* _player = (Player*)(EntityManager::GetInstance().Get("Player"));
+			new Bomb(_player->GetPosition()); _player->GetInventory()->GetSlot(ST_BOMB)->SetItem(nullptr); Destroy();
+			};
+	}
+
+	BombItem(const Vector2f& _position) : Item(ST_BOMB, STRING_ID("Bomb"), _position, false)
+	{
+		zIndex = 3;
+		isPickable = false;
+		UpdateTexture();
+		InitCallback();
+	}
+
+	virtual string GetTexturePath() override
+	{
+		return PATH_BOMBITEM;
 	}
 };

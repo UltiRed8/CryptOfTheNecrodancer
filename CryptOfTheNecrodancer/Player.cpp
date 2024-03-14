@@ -214,6 +214,12 @@ void Player::InitInput()
 		ActionData("Increase Life", [this]() { GetComponent<LifeComponent>()->ChangeHealth(50); UpdateLife(); }, {Event::KeyPressed, Keyboard::Add}),
 		ActionData("Set Bomb", [this]() { new Bomb(GetPosition());}, {Event::KeyPressed, Keyboard::P}),
 		ActionData("Add Heart", [this]() { AddHeart();}, {Event::KeyPressed, Keyboard::M}),
+		ActionData("Spawn Bomb", [this]() { 
+			if (Item* _item = inventory->GetSlot(ST_BOMB)->GetItem())
+			{
+				_item->ExecuteCallback();
+			}
+				}, {Event::KeyPressed, Keyboard::RShift}),
 	});
 }
 

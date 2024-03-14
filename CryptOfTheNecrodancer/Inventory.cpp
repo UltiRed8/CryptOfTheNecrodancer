@@ -95,9 +95,10 @@ Slot::Slot(const SlotType& _type, const string& _path, Menu* _owner) : UIImage(S
 
 	currentItem = _type == ST_SHOVEL ? (Item*) new Pickaxe(PT_SHOVEL_COURAGE, STRING_ID("Pickaxe"), {}, true)
 		: _type == ST_ATTACK ? (Item*) new Weapon(WT_HARP, STRING_ID("Dagger"), {}, true)
+		: _type == ST_BOMB ? (Item*) new BombItem({})
 		: nullptr;
 	
-	isVisible = _type == ST_SHOVEL ? true : _type == ST_ATTACK ? true : false;
+	isVisible = _type == ST_SHOVEL ? true : _type == ST_ATTACK ? true : _type == ST_BOMB ? true : false;
 	item->SetOwner(_owner);
 	item->Register();
 }

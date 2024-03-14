@@ -31,6 +31,10 @@ public:
 	}
 	void SetItem(Item* _item)
 	{
+		if (!_item)
+		{
+			isVisible = false;
+		}
 		currentItem = _item;
 	}
 	void SetPosition(const Vector2f& _position)
