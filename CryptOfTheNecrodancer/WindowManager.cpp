@@ -53,17 +53,17 @@ void WindowManager::InitShaders()
 
 	return;
 
-	Vector2f _lightPositions[3];
+	/*Vector2f _lightPositions[3];
 	Vector3f _lightColors[3];
-	float _lightIntensities[3];
+	float _lightIntensities[3];*/
 
-	if (!shader->loadFromFile("Assets/Lights.frag", Shader::Fragment))
+	if (!shader->loadFromFile("Assets/PlayerLights.frag", Shader::Fragment))
 	{
 		cerr << "Errow while loading fragment shader!" << endl;
 		return;
 	}
 
-	_lightPositions[0] = Vector2f(140.0f, 360.0f);
+	/*_lightPositions[0] = Vector2f(140.0f, 360.0f);
 	_lightColors[0] = Vector3f(0.0f, 0.0f, 1.0f);
 	_lightIntensities[0] = 300.0f;
 	_lightPositions[1] = Vector2f(640.0f, 360.0f);
@@ -71,10 +71,10 @@ void WindowManager::InitShaders()
 	_lightIntensities[1] = 200.0f;
 	_lightPositions[2] = Vector2f(1140.0f, 360.0f);
 	_lightColors[2] = Vector3f(1.0f, 0.0f, 0.0f);
-	_lightIntensities[2] = 100.0f;
-	shader->setUniformArray("lightPositions", _lightPositions, 3);
-	shader->setUniformArray("lightColors", _lightColors, 3);
-	shader->setUniformArray("lightRanges", _lightIntensities, 3);
+	_lightIntensities[2] = 100.0f;*/
+	shader->setUniform("lightPosition", Vector2f(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT /2.0f));
+	/*shader->setUniformArray("lightColors", _lightColors, 3);
+	shader->setUniformArray("lightRanges", _lightIntensities, 3);*/
 }
 
 void WindowManager::LoadShader(const int _id)

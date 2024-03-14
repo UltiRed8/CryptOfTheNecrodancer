@@ -37,13 +37,19 @@ Item::Item(const SlotType& _type, const string& _id, const Vector2f& _position, 
 		{
 			animationValue = 0.0f;
 		}
-		}, seconds(0.1f), -1, false);
+	}, seconds(0.1f), -1, false);
+
+	SetText("test");
 }
 
 Item::~Item()
 {
 	animationTimer->Pause();
 	animationTimer->Destroy();
+	if (text)
+	{
+		delete text;
+	}
 }
 
 void Item::UpdateTexture()
