@@ -92,7 +92,6 @@ Slot::Slot(const SlotType& _type, const string& _path, Menu* _owner) : UIImage(S
 	type = _type;
 	const string& _rPath = _type == ST_SHOVEL ? PATH_SHOVEL : _type == ST_ATTACK ? PATH_DAGGER : "";
 	item = new UIImage(STRING_ID("item_" + to_string(type) + "_slot"), Vector2f(0.0f, 0.0f), Vector2f(30.0f, 33.0f) * 2.0f, "");
-
 	currentItem = _type == ST_SHOVEL ? (Item*) new Pickaxe(PT_SHOVEL_COURAGE, STRING_ID("Pickaxe"), {}, true)
 		: _type == ST_ATTACK ? (Item*) new Weapon(WT_HARP, STRING_ID("Dagger"), {}, true)
 		: _type == ST_BOMB ? (Item*) new BombItem({})

@@ -104,18 +104,27 @@ void WindowManager::Rename(const string& _newWindowName)
 void WindowManager::Shake(const int _strength)
 {
 	if (!*isShakable) return;
-	currentValue = _strength;
+
+	const int _rotation = Random(360, 0);
+
+	const float _dirX = cos(_rotation);
+	const float _dirY = sin(_rotation);
+
+	const Vector2f& _offset = Vector2f(_dirX * 100.0f, _dirY * 100.0f);
+
+	currentPosition = Vector2f(baseWindowPosition) + _offset;
+	window->setPosition(Vector2i(currentPosition));
 }
 
 void WindowManager::Update()
 {
 	if (!*isShakable) return;
 
-	if (currentValue > 0)
+	if (!IsNearlyEquals(currentPosition, Vector2f(baseWindowPosition), 10.0f))
 	{
-		const int _dirX = Random(2, 0) - 1;
-		const int _dirY = Random(2, 0) - 1;
-		window->setPosition(baseWindowPosition + (Vector2i(_dirX, _dirY) * currentValue));
-		currentValue--;
+		const float _delta = TimerManager::GetInstance().GetDeltaTime();
+		if (currentPosition.x != baseWindowPosition.x) currentPosition.x += currentPosition.x - baseWindowPosition.x > 0 ? -_delta : _delta;
+		if (currentPosition.y != baseWindowPosition.y) currentPosition.y += currentPosition.y - baseWindowPosition.y > 0 ? -_delta : _delta;
+		window->setPosition(Vector2i(currentPosition));
 	}
 } 

@@ -58,6 +58,11 @@ bool IsNearlyEqual(Vector2f _first, Vector2f _second)
 	return Vector2i(_first) == Vector2i(_second);
 }
 
+bool IsNearlyEquals(const Vector2f& _first, const Vector2f& _second, const float _accept)
+{
+	return abs(_first.x - _second.x) < _accept && abs(_first.y - _second.y) < _accept;
+}
+
 Vector2i GetDirectionByPositions(Vector2f _entityPos, Vector2f _destination)
 {
 	if (IsNearlyEqual(_entityPos, _destination)) return Vector2i(0, 0);
