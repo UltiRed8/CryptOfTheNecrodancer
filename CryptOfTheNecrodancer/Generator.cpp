@@ -123,6 +123,27 @@ void Generator::GenerateLobby()
 			{ 'W', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Weapon(WT_BROADSWORD, STRING_ID("Dagger"), _position)); }},
 			{ 'A', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Armor(AT_BODY_HEAVYPLATE,STRING_ID("Armor"),_position)); }},
 			{ 'C', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Pickable(PIT_HEART,STRING_ID("Heart"),_position)); }},
+			{ '8', [this](const Vector2f& _position) {
+				items.push_back(new Pickable(PIT_COIN, STRING_ID("Item"), _position + Vector2f(0.0f, 0.0f) * TILE_SIZE));
+				items.push_back(new Pickable(PIT_DIAMOND, STRING_ID("Item"), _position + Vector2f(1.0f, 0.0f) * TILE_SIZE));
+				items.push_back(new Pickable(PIT_HEART, STRING_ID("Item"), _position + Vector2f(2.0f, 0.0f) * TILE_SIZE));
+				for (int _i = 0; _i < 27; _i++)
+				{
+					items.push_back(new Weapon(static_cast<WeaponType>(_i), STRING_ID("Item"), _position + Vector2f((float)_i, 1.0f) * TILE_SIZE));
+				}
+				for (int _i = 0; _i < 5; _i++)
+				{
+					items.push_back(new Pickaxe(static_cast<PickaxeType>(_i), STRING_ID("Item"), _position + Vector2f((float)_i, 2.0f) * TILE_SIZE));
+				}
+				for (int _i = 0; _i < 5; _i++)
+				{
+					items.push_back(new Pickaxe(static_cast<PickaxeType>(_i), STRING_ID("Item"), _position + Vector2f((float)_i, 2.0f) * TILE_SIZE));
+				}
+				for (int _i = 0; _i < 8; _i++)
+				{
+					items.push_back(new Armor(static_cast<ArmorType>(_i), STRING_ID("Item"), _position + Vector2f((float)_i, 3.0f) * TILE_SIZE));
+				}
+			}},
 		};
 
 		string _line;
