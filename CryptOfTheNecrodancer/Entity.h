@@ -75,10 +75,17 @@ public:
 		return shape->getPosition();
 	}
 
-	void SetTexture(const string& _path)
+	void SetTexture(const string& _path, Shape* _shape = nullptr)
 	{
 		if (_path == "") return;
-		TextureManager::GetInstance().Load(shape, _path);
+		if (_shape)
+		{
+			TextureManager::GetInstance().Load(_shape, _path);
+		}
+		else
+		{
+			TextureManager::GetInstance().Load(shape, _path);
+		}
 	}
 
 public:
