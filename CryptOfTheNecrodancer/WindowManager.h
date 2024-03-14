@@ -17,6 +17,7 @@ class WindowManager : public Singleton<WindowManager>
 	Shader* shader;
 	vector<string> shaderNames;
 	int currentShader;
+	Vector2f currentPosition;
 
 public:
 	Shader* GetShader() const

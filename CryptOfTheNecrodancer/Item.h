@@ -48,9 +48,17 @@
 #define PATH_FEET_BOOTSOFSTRENGTH "Items/Feet/BootsOfStrength.png"
 #define PATH_FEET_HARGREAVES "Items/Feet/Hargreaves.png"
 
+#define PATH_FOOD_APPLE "Items/Item/Apple.png"
+#define PATH_FOOD_CARROT "Items/Item/Carrot.png"
+#define PATH_FOOD_CHEESE "Items/Item/Cheese.png"
+#define PATH_FOOD_COOKIE "Items/Item/Cookie.png"
+#define PATH_FOOD_DRUMSTICK "Items/Item/Drumstick.png"
+#define PATH_FOOD_HAM "Items/Item/Ham.png"
+
 #define SOUND_COIN_PICKED_UP "Assets/Sounds/sfx_pickup_gold_01.ogg"
 #define SOUND_DIAMOND_PICKED_UP "Assets/Sounds/sfx_pickup_diamond.ogg"
 #define SOUND_PICKUP_GENERAL "Assets/Sounds/sfx_pickup_general_ST.ogg"
+#define SOUND_FOOD_USED "Assets/Sounds/sfx_item_food.ogg"
 
 #define PATH_COIN "Entities/Coins.png"
 #define PATH_DIAMOND "UI/Diamond.png"
@@ -97,13 +105,13 @@ public:
 class Item : public Entity
 {
 	RectangleShape* visuals;
-	SlotType stype;
 	Timer* animationTimer;
 	float animationValue;
 	bool isInInventory;
 	Text* text;
 
 protected:
+	SlotType stype;
 	bool isPickable;
 	ItemStats stats;
 	function<void()> callback;
@@ -407,5 +415,58 @@ public:
 			PATH_HEART,
 		};
 		return _pathes[pickableType];
+	}
+};
+
+struct Consomable : Item
+{
+	ConsomableType consomableType;
+	int regen;
+
+public:
+	Consomable(const ConsomableType& _consomableType, const string& _id, const Vector2f& _position) : Item(ST_FOOD_TOP, _id, _position, false)
+	{
+		consomableType = _consomableType;
+		InitRegen();
+		InitCallback();
+		UpdateTexture();
+		zIndex = 3;
+	}
+
+public:
+	void InitRegen()
+	{
+		const int _values[] = {
+			100, 100, 200, 50, 300, 400
+		};
+
+		regen = _values[consomableType];
+	}
+	void InitCallback()
+	{
+		callback = [this]() {
+			Player* _player = (Player*)(EntityManager::GetInstance().Get("Player"));
+			_player->GetComponent<LifeComponent>()->ChangeHealth(regen);
+			SoundManager::GetInstance().Play(SOUND_FOOD_USED);
+			_player->GetInventory()->GetSlot(stype)->SetItem(nullptr);
+			Destroy();
+			
+		};
+	}
+	virtual ItemStats UpdateStat() override
+	{
+		return ItemStats();
+	}
+	virtual string GetTexturePath() override
+	{
+		const string _pathes[] = {
+			PATH_FOOD_APPLE,
+			PATH_FOOD_CARROT,
+			PATH_FOOD_CHEESE,
+			PATH_FOOD_COOKIE,
+			PATH_FOOD_DRUMSTICK,
+			PATH_FOOD_HAM,
+		};
+		return _pathes[consomableType];
 	}
 };

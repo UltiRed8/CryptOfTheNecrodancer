@@ -127,13 +127,9 @@ void Generator::GenerateLobby()
 				items.push_back(new Pickable(PIT_COIN, STRING_ID("Item"), _position + Vector2f(0.0f, 0.0f) * TILE_SIZE));
 				items.push_back(new Pickable(PIT_DIAMOND, STRING_ID("Item"), _position + Vector2f(1.0f, 0.0f) * TILE_SIZE));
 				items.push_back(new Pickable(PIT_HEART, STRING_ID("Item"), _position + Vector2f(2.0f, 0.0f) * TILE_SIZE));
-				for (int _i = 0; _i < 27; _i++)
+				for (int _i = 0; _i < 6; _i++)
 				{
-					items.push_back(new Weapon(static_cast<WeaponType>(_i), STRING_ID("Item"), _position + Vector2f((float)_i, 1.0f) * TILE_SIZE));
-				}
-				for (int _i = 0; _i < 5; _i++)
-				{
-					items.push_back(new Pickaxe(static_cast<PickaxeType>(_i), STRING_ID("Item"), _position + Vector2f((float)_i, 2.0f) * TILE_SIZE));
+					items.push_back(new Consomable(static_cast<ConsomableType>(_i), STRING_ID("Item"), _position + Vector2f((float)_i, 1.0f) * TILE_SIZE));
 				}
 				for (int _i = 0; _i < 5; _i++)
 				{
@@ -142,6 +138,10 @@ void Generator::GenerateLobby()
 				for (int _i = 0; _i < 8; _i++)
 				{
 					items.push_back(new Armor(static_cast<ArmorType>(_i), STRING_ID("Item"), _position + Vector2f((float)_i, 3.0f) * TILE_SIZE));
+				}
+				for (int _i = 0; _i < 27; _i++)
+				{
+					items.push_back(new Weapon(static_cast<WeaponType>(_i), STRING_ID("Item"), _position + Vector2f((float)_i, 4.0f) * TILE_SIZE));
 				}
 			}},
 		};

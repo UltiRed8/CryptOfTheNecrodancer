@@ -68,6 +68,8 @@ bool Contains(const FloatRect& _rect, const vector<Vector2f>& _vector);
 
 bool IsNearlyEqual(Vector2f _first, Vector2f _second);
 
+bool IsNearlyEquals(const Vector2f& _first, const Vector2f& _second, const float _accept = 0.5f);
+
 Vector2i GetDirectionByPositions(Vector2f _entityPos, Vector2f _destination);
 
 vector<string> Split(string _line, const string& _divider);
