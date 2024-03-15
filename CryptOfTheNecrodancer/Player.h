@@ -121,6 +121,7 @@ public:
 	~Player();
 
 public :
+	float LoadHP();
 	void SavePlayerStatsData();
 	void DeleteSavePlayerStatsData();
 	void DeleteSavePurchasedItems();

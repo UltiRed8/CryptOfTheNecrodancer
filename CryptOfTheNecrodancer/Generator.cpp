@@ -98,8 +98,10 @@ Generator::~Generator()
 	}
 }
 
-void Generator::Generate()
+void Generator::Generate(const GenerationSettings& _settings)
 {
+	settings = _settings;
+
 	loadingText = dynamic_cast<UIText*>(MenuManager::GetInstance().Get("Loading")->Get("LoadingText"));
 
 	MenuManager::GetInstance().ToggleLoading();
@@ -204,13 +206,12 @@ void Generator::Enable3DEffect()
 			}
 		}
 	}
-
 }
 
-void Generator::GenerateChest(const int _chestCount)
+void Generator::GenerateChest()
 {
 	loadingText->GetText()->setString("Generating chests");
-	for (int _index = 0; _index < _chestCount; _index++)
+	for (int _index = 0; _index < settings.chestsAmount; _index++)
 	{
 		if (spawnablePositions.empty()) return;
 		Vector2f _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
@@ -224,10 +225,10 @@ void Generator::AddItem(Item* _item)
 	items.push_back(_item);
 }
 
-void Generator::GenerateRooms(const int _roomCount)
+void Generator::GenerateRooms()
 {
 	loadingText->GetText()->setString("Generating rooms");
-	for (int _index = 0; _index < _roomCount; _index++)
+	for (int _index = 0; _index < settings.roomsAmount; _index++)
 	{
 		Room* _room = new Room();
 		if (_room->Generate(usedPositions))
@@ -510,7 +511,7 @@ void Generator::GenerateWalls()
 {
 	loadingText->GetText()->setString("Generating walls");
 
-	PlaceWallsAroundFloor(floors, 4, true, WT_DIRT);
+	PlaceWallsAroundFloor(floors, settings.wallsWidth, true, WT_DIRT);
 }
 
 void Generator::SetAllFloorOriginColor()
@@ -557,60 +558,52 @@ void Generator::GetSpawnablePositions()
 	}
 }
 
-void Generator::GenerateDiamond(const int _diamondOnFloor, int _diamondInWall)
+void Generator::GenerateDiamond()
 {
 	loadingText->GetText()->setString("Generating diamonds");
 
-	for (int _i = 0; _i < _diamondOnFloor; _i++)
+	for (int _i = 0; _i < settings.diamonds; _i++)
 	{
 		Vector2f _position = GetRandomElementInVector(spawnablePositions);
 		others.push_back(new Pickable(PIT_DIAMOND, STRING_ID("Diamond"), _position));
 		EraseElement(spawnablePositions, _position);
 	}
 
-	while (_diamondInWall >= 1)
+	int _diamondInWalls = settings.diamondsInWalls;
+
+	while (_diamondInWalls >= 1)
 	{
 		Wall* _wall = GetRandomElementInVector(walls);
 		if (_wall->GetWallType() == WT_DIRT)
 		{
 			_wall->SetHasDiamond(true);
-			_diamondInWall--;
+			_diamondInWalls--;
 		}
 	}
 }
 
-void Generator::SpawnEnnemy(const int _amountOfEnemies)
+void Generator::SpawnEnnemy()
 {
 	loadingText->GetText()->setString("Spawning enemies");
 
-	vector<function<Entity* (const Vector2f& _position)>> _enemyList =
-	{
-		[this](const Vector2f& _position) { return new NormalBat(_position); },
-		[this](const Vector2f& _position) { return new RedBat(_position); },
-		[this](const Vector2f& _position) { return new BlackBat(_position); },
-		[this](const Vector2f& _position) { return new GreenSlime(_position); },
-		[this](const Vector2f& _position) { return new BlueSlime(_position); },
-		[this](const Vector2f& _position) { return new OrangeSlime(_position); },
-		[this](const Vector2f& _position) { return new NormalSkeleton(_position); },
-	};
+	if (settings.enemyList.empty()) return;
 
-	for (int _index = 0; _index < _amountOfEnemies; _index++)
+	for (int _index = 0; _index < settings.enemiesAmount; _index++)
 	{
 		if (spawnablePositions.empty()) return;
 		Vector2f _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
 		EraseElement(spawnablePositions, _position);
-		others.push_back(_enemyList[Random(static_cast<int>(_enemyList.size() - 1), 0)](_position));
+		others.push_back(settings.enemyList[Random(static_cast<int>(settings.enemyList.size() - 1), 0)](_position));
 	}
 }
 
-void Generator::SpawnTraps(const int _amount)
+void Generator::SpawnTraps()
 {
 	loadingText->GetText()->setString("Spawning traps");
 
-	for (int _index = 0; _index < _amount; _index++)
+	for (int _index = 0; _index < settings.trapsAmount; _index++)
 	{
 		if (spawnablePositions.empty()) return;
-
 		Vector2f _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
 		EraseElement(spawnablePositions, _position);
 		others.push_back(new Trap(_position));
@@ -647,7 +640,7 @@ void Generator::GenUpdate()
 			// 1- place shop room
 			[&]() { GenerateShopRoom(); },
 			// 2- generate rooms
-			[&]() {	GenerateRooms(6); },
+			[&]() {	GenerateRooms(); },
 			// 3- generate paths
 			[&]() { GeneratePaths(); },
 			// 4- floor colors
@@ -659,19 +652,19 @@ void Generator::GenUpdate()
 			// 7- generate diamonds
 			[&]() { GenerateDiamond(); },
 			// 8- generate chests
-			[&]() { GenerateChest(2); },
+			[&]() { GenerateChest(); },
 			// 9- spawn player
 			[&]() { SpawnPlayer(); },
 			// 10- spawn stairs
 			[&]() { SpawnStairs(); },
 			// 11- spawn enemies
-			[&]() { SpawnEnnemy(10); },
+			[&]() { SpawnEnnemy(); },
 			// 12- place shop door
 			[&]() { PlaceShopDoor(); },
 			// 13- place traps
-			[&]() { SpawnTraps(8); },
+			[&]() { SpawnTraps(); },
 			// 14- place torches
-			[&]() { PlaceTorches(); },
+			[&]() { if (settings.hasTorches) PlaceTorches(); },
 			// 15- update doors
 			[&]() { UpdateDoors(); },
 			// 16- erase overlappings

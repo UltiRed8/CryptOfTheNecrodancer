@@ -45,7 +45,19 @@ int Player::GetDigLevel() const
 	return 0;
 }
 
-Player::Player(const float _maxHp, const string _id, const Vector2f& _position) : Living(_maxHp, 0.0f, PATH_SHADOW, _id, _position, false)
+float Player::LoadHP()
+{
+	ifstream _stream = ifstream("Assets/Saved/PlayerStats.txt");
+	if (_stream)
+	{
+		string _line;
+		getline(_stream, _line);
+		getline(_stream, _line);
+		return stof(_line);
+	}
+}
+
+Player::Player(const float _maxHp, const string _id, const Vector2f& _position) : Living(LoadHP(), 0.0f, PATH_SHADOW, _id, _position, false)
 {
 	visuals = new RectangleShape(TILE_SIZE);
 	TextureManager::GetInstance().Load(visuals, PATH_PLAYER);
@@ -156,14 +168,6 @@ Player::Player(const float _maxHp, const string _id, const Vector2f& _position) 
 	new LightSource("PlayerLight", this, 350);
 
 	InitInput();
-	ifstream _stream = ifstream("Assets/Saved/PlayerStats.txt");
-	if (_stream)
-	{
-		string _line;
-		getline(_stream, _line);
-		getline(_stream, _line);
-		GetComponent<LifeComponent>()->SetMaxHealth(stof(_line));
-	}
 	InitLife();
 
 	UpdateDamageZone();
@@ -543,20 +547,21 @@ void Player::AddHeart(const int _amount)
 	const int _heartsCount = (int)(_life / 100.0f - _lifeBefore / 100.0f);
 	const int _maxHeartsCount = (int)(_life / 100.0f);
 	
-	vector<UIElement*> _element = life->GetAllValues();
-	for (int _i = 0; _i < _heartsCount - 1; _i++)
+	Heart* _heart = new Heart(STRING_ID("Hearts"), Vector2f(25.0f, 25.0f) * 2.0f, Vector2f(SCREEN_WIDTH - 55 * 3.8f, SCREEN_HEIGHT - 55 * 12.3), H_FULL);
+	_heart->SetOwner(life);
+	_heart->Register();
+
+	vector<UIElement*> _elements = life->GetAllValues();
+	int _index = 0;
+	for (UIElement* _element : _elements)
 	{
-		if (Heart* _heart = dynamic_cast<Heart*>(_element[_i]))
+		if (Heart* _heart = dynamic_cast<Heart*>(_element))
 		{
-			_heart->GetShape()->move(Vector2f(55 * (3.8f + _i * 1.2f, -55.0f * _heartsCount), 55 * 12.3));
+			_heart->GetShape()->setPosition(SCREEN_WIDTH - 55 * (3.8f + _index * 1.2f), SCREEN_HEIGHT - 55 * 12.3);
+			_index++;
 		}
 	}
-	for (int _index = 0; _index < _heartsCount; _index++)
-	{
-		Heart* _heart = new Heart(STRING_ID("Hearts"), Vector2f(25.0f, 25.0f) * 2.0f,
-			Vector2f(SCREEN_WIDTH - 55 * (3.8f + (_maxHeartsCount - 1) * 1.2f), SCREEN_HEIGHT - 55 * 12.3), H_FULL);
-		_heart->SetOwner(life);
-		_heart->Register();
-	}
+	if (_elements.size() >= 5) return;
+	
 	UpdateLife();
 }

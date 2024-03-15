@@ -18,11 +18,57 @@
 #include <fstream>
 #include "Chest.h"
 
-#define C_BROWN Color(135, 79, 2, 255)
-#define C_LIGHT_BROWN Color(135, 79, 2, 200)
+struct GenerationSettings
+{
+	vector<function<Entity* (const Vector2f& _position)>> enemyList;
+	int roomsAmount;
+	int wallsWidth;
+	int diamonds;
+	int diamondsInWalls;
+	int chestsAmount;
+	int enemiesAmount;
+	int trapsAmount;
+	bool hasTorches;
+
+public:
+	GenerationSettings(const int _roomsAmount = 6, const int _wallsWidth = 3, const int _diamonds = 1, const int _diamondsInWalls = 2, const int _chestsAmount = 2, const int _enemiesAmount = 10, const int _trapsAmount = 5, const bool _hasTorches = true)
+	{
+		roomsAmount = _roomsAmount;
+		wallsWidth = _wallsWidth + 1;
+		diamonds = _diamonds;
+		diamondsInWalls = _diamondsInWalls;
+		chestsAmount = _chestsAmount;
+		enemiesAmount = _enemiesAmount;
+		trapsAmount = _trapsAmount;
+		hasTorches = _hasTorches;
+		enemyList = {
+			[this](const Vector2f& _position) { return new NormalBat(_position); },
+			[this](const Vector2f& _position) { return new RedBat(_position); },
+			[this](const Vector2f& _position) { return new BlackBat(_position); },
+			[this](const Vector2f& _position) { return new GreenSlime(_position); },
+			[this](const Vector2f& _position) { return new BlueSlime(_position); },
+			[this](const Vector2f& _position) { return new OrangeSlime(_position); },
+			[this](const Vector2f& _position) { return new NormalSkeleton(_position); },
+		};
+	}
+	GenerationSettings(const vector<function<Entity* (const Vector2f& _position)>>& _enemyList, const int _roomsAmount = 6, const int _wallsWidth = 3, const int _diamonds = 1, const int _diamondsInWalls = 2, const int _chestsAmount = 2, const int _enemiesAmount = 10, const int _trapsAmount = 5, const bool _hasTorches = true)
+	{
+		roomsAmount = _roomsAmount;
+		wallsWidth = _wallsWidth + 1;
+		diamonds = _diamonds;
+		diamondsInWalls = _diamondsInWalls;
+		chestsAmount = _chestsAmount;
+		enemiesAmount = _enemiesAmount;
+		enemyList = _enemyList;
+		trapsAmount = _trapsAmount;
+		hasTorches = _hasTorches;
+	}
+};
 
 class Generator
 {
+	GenerationSettings settings;
+
 	Zone zone;
 
 	vector<Room*> rooms;
@@ -152,7 +198,7 @@ public:
 	~Generator();
 
 private:
-	void GenerateRooms(const int _roomCount);
+	void GenerateRooms();
 	void GenerateFire();
 	void GenerateIce();
 
@@ -164,20 +210,20 @@ private:
 	void GenerateWalls();
 	void SetAllFloorOriginColor();
 	void UpdateDoors();
-	void GenerateDiamond(const int _diamondOnFloor = 1, int _diamondInWall = 2);
-	void SpawnEnnemy(const int _amountOfEnemies);
+	void GenerateDiamond();
+	void SpawnEnnemy();
 	void UpdateTilesColor();
 	void PlaceShopDoor();
 	void PlaceTorches();
 	void SpawnPlayer();
 	void SpawnStairs();
-	void SpawnTraps(const int _amount);
+	void SpawnTraps();
 	void Enable3DEffect();
-	void GenerateChest(const int _chestCount);
+	void GenerateChest();
 
 public:
 	void GenUpdate();
-	void Generate();
+	void Generate(const GenerationSettings& _settings);
 	void GenerateLobby();
 	void AddFloorAt(const Vector2f& _position);
 	void AddOther(Entity* _entity);

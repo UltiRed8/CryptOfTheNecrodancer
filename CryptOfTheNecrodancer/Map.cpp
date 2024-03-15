@@ -98,7 +98,16 @@ void Map::LoadMap()
 void Map::GenerateDungeon()
 {
 	ClearGenerator();
-	generator->Generate();
+	generator->Generate(GenerationSettings(
+		6, // RoomsAmount
+		3, // WallsWidth
+		1, // Diamonds
+		2, // DiamondsInWalls
+		2, // Chests
+		10, // Enemies
+		5, // Traps
+		true // PlaceTorches
+	));
 }
 
 void Map::EndDungeonGeneration()
