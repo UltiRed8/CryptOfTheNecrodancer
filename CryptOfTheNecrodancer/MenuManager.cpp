@@ -30,6 +30,7 @@
 #define SHOVEL "UI/Shovel.png"
 #define SWORD "UI/Sword.png"
 #define MINIMAP "UI/Minimap1.png"
+#define KEYBOARD "UI/Keys.png"
 
 #define PAUSE_MENU "UI/PauseMenu.png"
 #define AREYOUSURE "UI/AreYouSure.png"
@@ -41,6 +42,7 @@
 #define EPILEPSY_MENU "UI/EpilepsyMenu.png"
 #define CREDIT_BUTTON "UI/CreditsButton.png"
 #define DELETE_BUTTON "UI/Delete.png"
+#define KEYBOARD_BUTTON "UI/KeyboardButton.png"
 #define CALIBRATION_MENU "UI/CalibrationMenu.png"
 
 #define EMPTYCHECKBOX "UI/EmptyCheckbox.png"
@@ -48,7 +50,6 @@
 #define FULLBAR "UI/FullBar.png"
 #define UNICORN "UI/Unicorn.png"
 #define CREDITS "UI/Credits.png"
-#define REBIND "UI/Keybind.png"
 #define WTF "UI/Thomas.png"
 
 #define SOUND_START "Assets/Sounds/sfx_ui_start.ogg"
@@ -194,6 +195,7 @@ void MenuManager::InitMenu()
 	InitCredits();
 	InitCalibration();
 	InitDeleteSaveDataMenu();
+	InitKeyboard();
 }
 
 void MenuManager::InitMenuPause()
@@ -264,9 +266,9 @@ void MenuManager::InitMenuPause()
 			new UIImage("credit", Vector2f(static_cast<float>(window->getSize().x / 1.3), static_cast<float>(_windowY / 1.2)), Vector2f(150.0f, 48.0f), CREDIT_BUTTON),
 		}, SOUND_START, _credit, FloatRect(static_cast<float>(window->getSize().x / 1.3), static_cast<float>(_windowY / 1.2), 150.0f, 48.0f)),
 
-		new UIButton("delete", Vector2f(static_cast<float>(window->getSize().x / 5), static_cast<float>(_windowY / 1.3)), Color(119,136,153), WHITE_COLOR, {
-			new UIImage("delete", Vector2f(static_cast<float>(window->getSize().x / 5), static_cast<float>(_windowY / 1.3)), Vector2f(109.0f, 95.0f), DELETE_BUTTON),
-		}, SOUND_START, _delete, FloatRect(static_cast<float>(window->getSize().x / 5), static_cast<float>(_windowY / 1.3), 109.0f, 95.0f)),
+		new UIButton("delete", Vector2f(static_cast<float>(window->getSize().x / 6), static_cast<float>(_windowY / 1.2)), Color(119,136,153), WHITE_COLOR, {
+			new UIImage("delete", Vector2f(static_cast<float>(window->getSize().x / 6), static_cast<float>(_windowY / 1.2)), Vector2f(54.5f, 47.5f), DELETE_BUTTON),
+		}, SOUND_START, _delete, FloatRect(static_cast<float>(window->getSize().x / 6), static_cast<float>(_windowY / 1.2), 54.5f, 47.5f)),
 
 		new UIButton("Exit", Vector2f(_x, static_cast<float>(_windowY / 1.2)), WHITE_COLOR, CYAN_COLOR, "Exit Game", 50, FONT, SOUND_EXIT, _callbackEchap),
 		new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), PAUSE_MENU), }, 1);
@@ -318,6 +320,7 @@ void MenuManager::InitMenuOptions()
 	function<void()> _volumeDownM = [this]() { MusicManager::GetInstance().DecreaseVolume(); };
 	function<void()> _volumeDownS = [this]() { SoundManager::GetInstance().DecreaseVolume(); };
 	function<void()> _close = [this]() { OptionsMenu(); Get("GamePause")->Toggle(); };
+	function<void()> _keyboard = [this]() { ToggleKeyboard(); };
 	function<void()> _graphics = [this]() { GraphicMenu();  OptionsMenu(); };
 
 	new Menu("Options", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), OPTIONS_MENU),
@@ -349,6 +352,10 @@ void MenuManager::InitMenuOptions()
 		new ProgressBar("MusicBar", PT_LEFT, Vector2f(static_cast<float>(window->getSize().x / 2.9), static_cast<float>(_windowY / 1.4)), Vector2f(400.0f, 30.0f), EMPTYBAR, FULLBAR, MusicManager::GetInstance().GetVolume()),
 		new UIButton("MusicMore", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 1.43)), WHITE_COLOR, CYAN_COLOR, ">", 50, FONT, SOUND_UP, _volumeUpM),
 		new UIButton("MusicLess", Vector2f(static_cast<float>(window->getSize().x / 3.2), static_cast<float>(_windowY / 1.43)), WHITE_COLOR, CYAN_COLOR, "<", 50, FONT, SOUND_DOWN, _volumeDownM),
+
+		new UIButton("keyboard", Vector2f(static_cast<float>(window->getSize().x / 1.5), static_cast<float>(_windowY / 1.23)), Color(119,136,153), WHITE_COLOR, {
+			new UIImage("keyboard", Vector2f(static_cast<float>(window->getSize().x / 1.5), static_cast<float>(_windowY / 1.23)), Vector2f(200.0f, 64.0f), KEYBOARD_BUTTON),
+		}, SOUND_START, _keyboard, FloatRect(static_cast<float>(window->getSize().x / 1.5), static_cast<float>(_windowY / 1.23), 200.0f, 64.0f)),
 
 		// Retour menu précédent
 		new UIButton("ReturnOptions", Vector2f(_x, static_cast<float>(_windowY / 1.2)), WHITE_COLOR, CYAN_COLOR, "Done", 40, FONT, SOUND_EXIT, _close) }, 2);
@@ -550,7 +557,6 @@ void MenuManager::WarningSeizure()
 	function<void()> _skip = [&]() { ToggleWarningSeizure(); };
 	const Vector2f& _sizeWindow = Vector2f((float)(SCREEN_WIDTH), (float)(SCREEN_HEIGHT));
 
-	//const string& _id, const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const string& _path, const Vector2f& _imageSize, const string& _soundPath, const function<void()>& _callback)
 	new Menu("WarningSeizure", { new UIButton("Warning", Vector2f(0.0f, 0.0f), Color::White, Color::White, WARNING_MENU, _sizeWindow, "", _skip), }, 4);
 }
 
@@ -619,6 +625,16 @@ void MenuManager::InitCredits()
 
 }
 
+void MenuManager::InitKeyboard()
+{
+	unsigned int _windowY = window->getSize().y;
+
+	function<void()> _skip = [&]() { ToggleKeyboard(); };
+	const Vector2f& _sizeWindow = Vector2f((float)(SCREEN_WIDTH), (float)(SCREEN_HEIGHT));
+
+	new Menu("Keyboard", { new UIButton("Keyboard", Vector2f(0.0f, 0.0f), Color::White, Color::White, KEYBOARD, _sizeWindow, "", _skip), }, 4);
+}
+
 void MenuManager::InitCalibration()
 {
 	float _x = static_cast<float>(window->getSize().x / 2);
@@ -635,6 +651,7 @@ void MenuManager::InitCalibration()
 void MenuManager::ToggleWarningSeizure()
 {
 	Get("WarningSeizure")->Toggle();
+	ToggleKeyboard();
 }
 
 void MenuManager::ToggleEpilepsyMenu()
@@ -653,4 +670,9 @@ void MenuManager::ToggleCalibration()
 	{
 		calibration->Start();
 	}
+}
+
+void MenuManager::ToggleKeyboard()
+{
+	Get("Keyboard")->Toggle();
 }
