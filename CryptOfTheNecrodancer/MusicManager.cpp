@@ -18,6 +18,9 @@
 #define PATH_HEART2 "UI/RythmHearts1.png"
 #define PATH_STAIR "Dungeons/Stairs.png"
 
+#define PATH_MINIMAP1 "UI/Minimap1.png"
+#define PATH_MINIMAP2 "UI/Minimap2.png"
+
 #define SOUND_RYTHM_FAILED "Assets/Sounds/sfx_missedbeat.ogg"
 
 MusicManager::MusicManager()
@@ -42,6 +45,7 @@ MusicManager::MusicManager()
 	first = 0;
 	last = 0;
 	lastMaxValue = 0;
+	minimapColor = false;
 }
 
 MusicManager::~MusicManager()
@@ -453,7 +457,13 @@ void MusicManager::TriggerEvent()
 	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
 	
 	Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
+	Shape* _minimap = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("Minimap"))->GetShape();
+	
+	minimapColor = !minimapColor;
+	TextureManager::GetInstance().Load(_minimap, minimapColor ? PATH_MINIMAP1 : PATH_MINIMAP2);
+
 	TextureManager::GetInstance().Load(_shape, PATH_HEART2);
+
 	new Timer("HeartIndicatorReset", [this]() {
 		Shape* _shape = dynamic_cast<UIImage*>(MenuManager::GetInstance().Get("HUD")->Get("RythmHearts"))->GetShape();
 		TextureManager::GetInstance().Load(_shape, PATH_HEART1);

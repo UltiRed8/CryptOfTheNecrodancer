@@ -36,7 +36,7 @@ Item* Chest::CreateRandomItem()
 
 	if (_type == 6)
 	{
-		Item* _item = new BombItem(GetPosition());
+		Item* _item = new BombItem(GetPosition(), false);
 		Map::GetInstance().AddItem(_item);
 		return _item;
 	}

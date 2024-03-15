@@ -34,6 +34,7 @@ class Generator
 	vector<Entity*> others;
 	vector<Stair*> stairs;
 	vector<Item*> items;
+	vector<Entity*> shopTiles;
 
 	vector<Vector2f> usedPositions;
 	vector<Vector2f> spawnablePositions;
@@ -62,6 +63,9 @@ public:
 		vector<Vector2f> _positions = GetAllPositions(floors);
 
 		vector<Vector2f> _temp = GetAllPositions(walls);
+		_positions.insert(_positions.end(), _temp.begin(), _temp.end());
+
+		_temp = GetAllPositions(shopTiles);
 		_positions.insert(_positions.end(), _temp.begin(), _temp.end());
 
 		return _positions;

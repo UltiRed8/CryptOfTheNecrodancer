@@ -79,15 +79,18 @@ void Game::UpdateWindow()
 	{
 		window->draw(*_drawable, _activeShader);
 	}
-	window->setView(*CameraManager::GetInstance().Get("MiniMapCamera"));
-	for (Drawable* _drawable : _entities)
-	{
-		window->draw(*_drawable, _activeShader);
-	}
 	window->setView(window->getDefaultView());
 	for (Drawable* _drawable : MenuManager::GetInstance().GetDrawables())
 	{
 		window->draw(*_drawable);
+	}
+	if (!MenuManager::GetInstance().BlockPlayer())
+	{
+		window->setView(*CameraManager::GetInstance().Get("MiniMapCamera"));
+		for (Drawable* _drawable : _entities)
+		{
+			window->draw(*_drawable, _activeShader);
+		}
 	}
 	window->display();
 }

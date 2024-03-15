@@ -175,8 +175,6 @@
     <ClCompile Include="MusicData.cpp" />
     <ClCompile Include="MusicManager.cpp" />
     <ClCompile Include="NPC.cpp" />
-    <ClCompile Include="ParticleManager.cpp" />
-    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Path.cpp" />
     <ClCompile Include="Placeable.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -254,8 +252,6 @@
     <ClInclude Include="MusicData.h" />
     <ClInclude Include="MusicManager.h" />
     <ClInclude Include="NPC.h" />
-    <ClInclude Include="ParticleManager.h" />
-    <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="Placeable.h" />
     <ClInclude Include="Player.h" />

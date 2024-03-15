@@ -29,6 +29,7 @@
 #define DIAMOND "UI/Diamond.png"
 #define SHOVEL "UI/Shovel.png"
 #define SWORD "UI/Sword.png"
+#define MINIMAP "UI/Minimap1.png"
 
 #define PAUSE_MENU "UI/PauseMenu.png"
 #define AREYOUSURE "UI/AreYouSure.png"
@@ -166,6 +167,8 @@ void MenuManager::InitHUD()
 		new UIImage("Diamond", Vector2f(SCREEN_WIDTH - 55 * 3, SCREEN_HEIGHT - 55 * 11.6), Vector2f(25.0f, 25.0f) * 2.0f, DIAMOND),
 		new UIText("DiamondUpdateText", Vector2f(SCREEN_WIDTH - 55 * 1.2, SCREEN_HEIGHT - 55 * 11.3), WHITE_COLOR, "x " ,25, FONT, false, dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetRessources()->GetDiamonds()),
 
+		// Minimap
+		new UIImage("Minimap", Vector2f(SCREEN_WIDTH - 266, SCREEN_HEIGHT - 162), Vector2f(266.0f, 162.0f), MINIMAP),
 		});
 
 	_hud->Open();

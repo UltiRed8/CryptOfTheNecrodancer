@@ -459,10 +459,9 @@ public:
 			};
 	}
 
-	BombItem(const Vector2f& _position) : Item(ST_BOMB, STRING_ID("Bomb"), _position, false)
+	BombItem(const Vector2f& _position, const bool _inInventory) : Item(ST_BOMB, STRING_ID("Bomb"), _position, _inInventory)
 	{
 		inShop = false;
-		zIndex = 3;
 		isPickable = false;
 		UpdateTexture();
 		InitCallback();
@@ -488,7 +487,6 @@ public:
 		InitRegen();
 		InitCallback();
 		UpdateTexture();
-		zIndex = 3;
 		stats = UpdateStat();
 		UpdateText();
 	}

@@ -30,6 +30,7 @@ class MusicManager : public IManager<string, MusicData>, public Singleton<MusicM
 	bool isLoop;
 	int largestWait;
 	int shortestWait;
+	bool minimapColor;
 
 	int first;
 	int last;

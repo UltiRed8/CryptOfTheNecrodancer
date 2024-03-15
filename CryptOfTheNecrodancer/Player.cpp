@@ -258,7 +258,7 @@ void Player::InitLife()
 
 void Player::UpdateLife()
 {
-	vector<Heart*> _hearts; /*= life->GetAllValues();*/
+	vector<Heart*> _hearts;
 
 	for (UIElement* _element : life->GetAllValues())
 	{
@@ -319,7 +319,7 @@ void Player::UpdateDamageZone()
 			_shape->setOrigin(-_rect.getPosition() + TILE_SIZE / 2.0f);
 
 			Color _color = _data.isRed ? Color::Red : Color::Yellow;
-			_color.a = 100;
+			_color.a = 0;
 			_shape->setFillColor(_color);
 
 			damageZone.push_back(new AttackZone(_rect.getPosition(), _shape, _data.isRed));

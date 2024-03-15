@@ -225,12 +225,6 @@
     <ClCompile Include="Menu.cpp">
       <Filter>Source Files\Manager\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleSystem.cpp">
-      <Filter>Source Files\Manager\Particule</Filter>
-    </ClCompile>
-    <ClCompile Include="ParticleManager.cpp">
-      <Filter>Source Files\Manager\Particule</Filter>
-    </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Source Files\Manager\Timer</Filter>
     </ClCompile>
@@ -445,12 +439,6 @@
     </ClInclude>
     <ClInclude Include="Menu.h">
       <Filter>Source Files\Manager\Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="ParticleSystem.h">
-      <Filter>Source Files\Manager\Particule</Filter>
-    </ClInclude>
-    <ClInclude Include="ParticleManager.h">
-      <Filter>Source Files\Manager\Particule</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Source Files\Manager\Timer</Filter>
