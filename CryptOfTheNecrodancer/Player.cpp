@@ -139,6 +139,14 @@ Player::Player(const float _maxHp, const string _id, const Vector2f& _position) 
 	new LightSource("PlayerLight", this, 350);
 
 	InitInput();
+	ifstream _stream = ifstream("Assets/Saved/PlayerStats.txt");
+	if (_stream)
+	{
+		string _line;
+		getline(_stream, _line);
+		getline(_stream, _line);
+		GetComponent<LifeComponent>()->SetMaxHealth(stof(_line));
+	}
 	InitLife();
 
 	UpdateDamageZone();
