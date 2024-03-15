@@ -38,6 +38,7 @@ public :
 	void ToggleWarningSeizure();
 	void ToggleEpilepsyMenu();
 	void ToggleCredits();
+	void ToggleKeyboard();
 	void ToggleCalibration();
 
 private :
@@ -53,6 +54,7 @@ private :
 	void WarningSeizure();
 	void InitEpilepsyMenu();
 	void InitCredits();
+	void InitKeyboard();
 	void InitCalibration();
 	void Delete();
 	void GoToLobby();
