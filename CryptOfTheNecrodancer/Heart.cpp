@@ -19,12 +19,12 @@ Heart::Heart(const string& _id, const Vector2f& _size, const Vector2f& _position
 	UpdateLife();
 }
 
-void Heart::UpdateLife() // ça change la vie
+void Heart::UpdateLife()
 {
 	TextureManager::GetInstance().Load(shape, GetPathWithState());
 }
 
-void Heart::UIHeart() //Change taille imageAnimation
+void Heart::UIHeart()
 {
 	if (state == H_EMPTY)
 	{

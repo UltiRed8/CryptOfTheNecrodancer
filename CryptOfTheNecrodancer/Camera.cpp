@@ -38,7 +38,7 @@ void Camera::InitPosition()
 
 	if (type == CAMERA_MINIMAP)
 	{
-		zoom(0.5);
+		zoom(0.8);
 	}
 
 	setViewport(FloatRect(_cameraPosition, _cameraSize));

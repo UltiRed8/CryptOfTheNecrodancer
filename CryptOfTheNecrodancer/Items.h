@@ -10,10 +10,7 @@ enum PickableType
 	PIT_COIN, PIT_DIAMOND, PIT_HEART
 };
 
-
-
-
-enum WeaponType // + 0
+enum WeaponType
 {
 	WT_WEAPONAXE,
 	WT_WEAPONAXE_TITANIUM,
@@ -45,7 +42,7 @@ enum WeaponType // + 0
 	WT_SIZE,
 };
 
-enum PickaxeType // + 100
+enum PickaxeType
 {
 	PT_PICKAXE,
 	PT_SHOVEL,
@@ -55,7 +52,7 @@ enum PickaxeType // + 100
 	PT_SIZE,
 };
 
-enum ArmorType // + 200
+enum ArmorType
 {
 	AT_HEAD_HELMET, AT_HEAD_MINERSCAP,
 	AT_BODY_CHAINMAIL, AT_BODY_LEATHERARMOR, AT_BODY_HEAVYPLATE, AT_BODY_PLATEMAIL,
@@ -63,7 +60,7 @@ enum ArmorType // + 200
 	AT_SIZE,
 };
 
-enum ConsomableType // + 300
+enum ConsomableType
 {
 	CT_APPLE, CT_CARROT, CT_CHEESE, CT_COOKIE, CT_DRUMSTICK, CT_HAM, CT_SIZE,
 };

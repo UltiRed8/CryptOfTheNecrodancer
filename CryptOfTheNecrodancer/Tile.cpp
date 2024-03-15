@@ -1,10 +1,13 @@
 #include "Tile.h"
 #include "Macro.h"
+#include "Map.h"
 
-#define C_PURPLE Color(255, 62, 216, 255)
-#define C_GREEN Color(53, 233, 136, 255)
+#define PATH_A "Dungeons/" + Map::GetInstance().GetZoneFileName() + "/FloorA.png"
+#define PATH_B "Dungeons/" + Map::GetInstance().GetZoneFileName() + "/FloorB.png"
+#define PATH_C "Dungeons/" + Map::GetInstance().GetZoneFileName() + "/FloorC.png"
+#define PATH_D "Dungeons/" + Map::GetInstance().GetZoneFileName() + "/FloorD.png"
 
-Tile::Tile(const string& _tilePath, const Vector2f& _position, const EntityType& _type) : Placeable(STRING_ID("Tile"), _tilePath, _position)
+Tile::Tile(const Vector2f& _position, const EntityType& _type) : Placeable(STRING_ID("Tile"), PATH_A, _position)
 {
 	entities = vector<Entity*>();
 	type = _type;
@@ -12,36 +15,50 @@ Tile::Tile(const string& _tilePath, const Vector2f& _position, const EntityType&
 	{
 		shape->setFillColor(Color::Black);
 		shape->move(Vector2f(0.0f, -0.5f) * TILE_SIZE);
-		zIndex = 3;
+		zIndex = 4;
 	}
+
+	const Vector2i& _tilePosition = Vector2i(int(_position.x / TILE_SIZE.x), int(_position.y / TILE_SIZE.y));
+	status = (_tilePosition.x + _tilePosition.y) % 2 == 0;
 }
 
-void Tile::InvertAlpha(const bool _reset)
+Tile::Tile(const string& _path, const Vector2f& _position, const EntityType& _type) : Placeable(STRING_ID("Tile"), _path, _position)
 {
-	shape->setOutlineThickness(0.f);
-	if (_reset)
+	entities = vector<Entity*>();
+	type = _type;
+	if (_type == ET_SHADOW)
 	{
-		baseColor = defaultColor;
-		shape->setFillColor(baseColor);
-		return;
+		shape->setFillColor(Color::Black);
+		shape->move(Vector2f(0.0f, -0.5f) * TILE_SIZE);
+		zIndex = 4;
 	}
-	baseColor.a = baseColor.a == 255 ? 200 : 255;
-	shape->setFillColor(baseColor);
+
+	const Vector2i& _tilePosition = Vector2i(int(_position.x / TILE_SIZE.x), int(_position.y / TILE_SIZE.y));
+	status = (_tilePosition.x + _tilePosition.y) % 2 == 0;
 }
 
-void Tile::ToggleHighlight(const int _alphaValueToHighlight)
+void Tile::InvertAlpha(const bool _status, const bool _highlighted)
 {
-	if (defaultColor.a == _alphaValueToHighlight)
+	if (_highlighted)
 	{
-		shape->setFillColor(defaultColor.a == 255 ? C_PURPLE : C_GREEN);
-		Color _color = Color::Black;
-		_color.a = 100;
-		shape->setOutlineThickness(-5.f);
-		shape->setOutlineColor(_color);
+		if (status)
+		{
+			TextureManager::GetInstance().Load(shape, _status ? PATH_A : PATH_C);
+		}
+		else
+		{
+			TextureManager::GetInstance().Load(shape, _status ? PATH_D : PATH_B);
+		}
 	}
 	else
 	{
-		shape->setFillColor(defaultColor);
-		shape->setOutlineThickness(0.f);
+		if (status)
+		{
+			TextureManager::GetInstance().Load(shape, _status ? PATH_A : PATH_B);
+		}
+		else
+		{
+			TextureManager::GetInstance().Load(shape, _status ? PATH_B : PATH_A);
+		}
 	}
 }

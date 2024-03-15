@@ -2,8 +2,6 @@
 #include "Macro.h"
 #include "Map.h"
 
-#define PATH_FLOOR "Dungeons/" + Map::GetInstance().GetZoneFileName() + "/floor.png"
-
 Path::Path(const Vector2i& _start, const Vector2i& _end, vector<Vector2f>& _usedPosition)
 {
 	start = _start;
@@ -29,7 +27,7 @@ void Path::FixX(vector<Vector2f>& _usedPosition)
 		const Vector2f& _position = Vector2f(start.x * TILE_SIZE.x, start.y * TILE_SIZE.y);
 		if (!Contains(_position, _usedPosition))
 		{
-			tiles.push_back(new Tile(PATH_FLOOR, _position));
+			tiles.push_back(new Tile(_position));
 			_usedPosition.push_back(_position);
 		}
 		for (int _index = 1; _index < width; _index++)
@@ -37,7 +35,7 @@ void Path::FixX(vector<Vector2f>& _usedPosition)
 			const Vector2f& _widthPosition = Vector2f(start.x * TILE_SIZE.x, (start.y + (_index * Random(1, 0) == 1 ? 1 : -1)) * TILE_SIZE.y);
 			if (!Contains(_widthPosition, _usedPosition))
 			{
-				tiles.push_back(new Tile(PATH_FLOOR, _widthPosition));
+				tiles.push_back(new Tile(_widthPosition));
 				_usedPosition.push_back(_widthPosition);
 			}
 		}
@@ -53,7 +51,7 @@ void Path::FixY(vector<Vector2f>& _usedPosition)
 		const Vector2f& _position = Vector2f(start.x * TILE_SIZE.x, start.y * TILE_SIZE.y);
 		if (!Contains(_position, _usedPosition))
 		{
-			tiles.push_back(new Tile(PATH_FLOOR, _position));
+			tiles.push_back(new Tile(_position));
 			_usedPosition.push_back(_position);
 		}
 		for (int _index = 1; _index < width; _index++)
@@ -61,7 +59,7 @@ void Path::FixY(vector<Vector2f>& _usedPosition)
 			const Vector2f& _widthPosition = Vector2f((start.x + (_index * Random(1, 0) == 1 ? 1 : -1)) * TILE_SIZE.x, start.y * TILE_SIZE.y);
 			if (!Contains(_widthPosition, _usedPosition))
 			{
-				tiles.push_back(new Tile(PATH_FLOOR, _widthPosition));
+				tiles.push_back(new Tile(_widthPosition));
 				_usedPosition.push_back(_widthPosition);
 			}
 		}

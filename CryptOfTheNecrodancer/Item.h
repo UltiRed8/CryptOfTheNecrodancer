@@ -94,10 +94,12 @@ struct ItemStats
 	bool preventMovement;
 	int diamondPrice;
 	int goldPrice;
+	string swipePath;
+	int swipeAmount;
 
 public:
 	ItemStats() = default;
-	ItemStats(const float _damages, const float _defense, const int _digLevel, const vector<InteractionData>& _attackRange, const bool _preventMovement, const int _diamondPrice, const int _goldPrice)
+	ItemStats(const float _damages, const float _defense, const int _digLevel, const vector<InteractionData>& _attackRange, const bool _preventMovement, const int _diamondPrice, const int _goldPrice, const string& _swipePath, const int _swipeAmount)
 	{
 		diamondPrice = _diamondPrice;
 		goldPrice = _goldPrice;
@@ -106,6 +108,8 @@ public:
 		digLevel = _digLevel;
 		attackRange = _attackRange;
 		preventMovement = _preventMovement;
+		swipePath = _swipePath;
+		swipeAmount = _swipeAmount;
 	}
 };
 
@@ -270,45 +274,45 @@ public:
 	virtual ItemStats UpdateStat() override
 	{
 		const ItemStats _values[] = {
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, -1.0f, 1.0f, 3.0f), false) }, true, 2, 50),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, -1.0f, 1.0f, 3.0f), false) }, true, 3, 80),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, -1.0f, 1.0f, 3.0f), false) }, true, 2, 50, "swipe_axe.png", 3),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, -1.0f, 1.0f, 3.0f), false) }, true, 3, 80, "swipe_axe.png", 3),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -1.0f, 1.0f, 3.0f), true) }, true, 1, 40),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -1.0f, 1.0f, 3.0f), true) }, true, 2, 60),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -1.0f, 1.0f, 3.0f), true) }, true, 1, 40, "swipe_broadsword.png", 3),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -1.0f, 1.0f, 3.0f), true) }, true, 2, 60, "swipe_broadsword_titanium.png", 3),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, -1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(0.0f, 1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true) }, false, 3, 60),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, -1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(0.0f, 1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true) }, false, 5, 90),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, -1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(0.0f, 1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true) }, false, 3, 60, "swipe_cat.png", 4),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, -1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(0.0f, 1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true) }, false, 5, 90, "swipe_cat.png", 4),
 
-			ItemStats(1.0f, 0.5f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f), true) }, false, 3, 60),
-			ItemStats(2.0f, 1.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f), true) }, false, 5, 100),
+			ItemStats(1.0f, 0.5f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f), true) }, false, 3, 60, "swipe_dagger.png", 3),
+			ItemStats(2.0f, 1.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f), true) }, false, 5, 100, "swipe_dagger_titanium.png", 3),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 0, 10),
-			ItemStats(5.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 8, 200),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 2, 80),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 0, 10, "swipe_dagger.png", 3),
+			ItemStats(5.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 8, 200, "swipe_dagger_jeweled.png", 3),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 2, 80, "swipe_dagger_titanium.png", 3),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, -1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(0.0f, 1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true) }, true, 3, 50),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, -1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(0.0f, 1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true) }, true, 4, 80),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, -1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(0.0f, 1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true) }, true, 3, 50, "swipe_flail.png", 5),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, -1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(0.0f, 1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true) }, true, 4, 80, "swipe_flail.png", 5),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(-1.0f, -1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(-1.0f, 1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(-1.0f, 0.0f, 1.0f, 1.0f), false) }, true, 5, 80),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(-1.0f, -1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(-1.0f, 1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(-1.0f, 0.0f, 1.0f, 1.0f), false) }, true, 6, 100),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(-1.0f, -1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(-1.0f, 1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(-1.0f, 0.0f, 1.0f, 1.0f), false) }, true, 5, 80, "swipe_harp.png", 5),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(-1.0f, -1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(-1.0f, 1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(-1.0f, 0.0f, 1.0f, 1.0f), false) }, true, 6, 100, "swipe_harp.png", 5),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f ), true) }, true, 3, 60),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f ), true) }, true, 4, 80),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f ), true) }, true, 3, 60, "swipe_longsword.png", 4),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f ), true) }, true, 4, 80, "swipe_longsword_titanium.png", 4),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, 0.0f, 1.0f, 1.0f), false) }, false, 5, 80),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, 0.0f, 1.0f, 1.0f), false) }, false, 6, 120),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, 0.0f, 1.0f, 1.0f), false) }, false, 5, 80, "swipe_rapier.png", 4),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, 0.0f, 1.0f, 1.0f), false) }, false, 6, 120, "swipe_rapier_titanium.png", 4),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f ), true) }, true, 2, 50),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f ), true) }, true, 3, 75),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f ), true) }, true, 2, 50, "swipe_dagger.png", 3),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f ), true) }, true, 3, 75, "swipe_dagger.png", 3),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, 0.0f, 20.0f, 1.0f ), false) }, true, 4, 60),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, 0.0f, 20.0f, 1.0f ), false) }, true, 5, 90),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, 0.0f, 20.0f, 1.0f ), false) }, true, 4, 60, "swipe_staff.png", 4),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(2.0f, 0.0f, 20.0f, 1.0f ), false) }, true, 5, 90, "swipe_staff.png", 4),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -1.0f, 2.0f, 3.0f), true) }, true, 4, 60),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -1.0f, 2.0f, 3.0f), true) }, true, 5, 90),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -1.0f, 2.0f, 3.0f), true) }, true, 4, 60, "swipe_warhammer.png", 4),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -1.0f, 2.0f, 3.0f), true) }, true, 5, 90, "swipe_warhammer.png", 4),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -2.0f, 1.0f, 5.0f), true) }, true, 4, 60),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -2.0f, 1.0f, 5.0f), true) }, true, 5, 90),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -2.0f, 1.0f, 5.0f), true) }, true, 4, 60, "swipe_whip.png", 4),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, -2.0f, 1.0f, 5.0f), true) }, true, 5, 90, "swipe_whip.png", 4),
 		};
 		return _values[weaponType];
 	}
@@ -344,11 +348,11 @@ public:
 	virtual ItemStats UpdateStat() override
 	{
 		const ItemStats _values[] = {
-			ItemStats(0.0f, 0.0f, 2, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 2, 60),
-			ItemStats(0.0f, 0.0f, 1, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 0, 10),
-			ItemStats(0.0f, 0.0f, 1, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, false, 1, 40),
-			ItemStats(0.0f, 0.0f, 2, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 3, 45),
-			ItemStats(0.0f, 0.0f, 1, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, false, 2, 55),
+			ItemStats(0.0f, 0.0f, 2, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 2, 60, "Pickaxe.png", 1),
+			ItemStats(0.0f, 0.0f, 1, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 0, 10, "Shovel.png", 1),
+			ItemStats(0.0f, 0.0f, 1, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, false, 1, 40, "ShovelCourage.png", 1),
+			ItemStats(0.0f, 0.0f, 2, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 3, 45, "ShovelCrystal.png", 1),
+			ItemStats(0.0f, 0.0f, 1, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, false, 2, 55, "ShovelTitanium.png", 1),
 		};
 		return _values[pickaxeType];
 	}
@@ -392,14 +396,14 @@ public:
 	virtual ItemStats UpdateStat() override
 	{
 		const ItemStats _values[] = {
-			ItemStats(0.0f, 0.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 1, 50),
-			ItemStats(0.0f, 0.0f, 3, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 4, 120),
-			ItemStats(0.0f, 1.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 2, 75),
-			ItemStats(0.0f, 0.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 1, 40),
-			ItemStats(0.0f, 2.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 4, 110),
-			ItemStats(0.0f, 1.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 3, 90),
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 1, 60),
-			ItemStats(0.0f, 0.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 2, 80),
+			ItemStats(0.0f, 0.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 1, 50, "", 1),
+			ItemStats(0.0f, 0.0f, 3, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 4, 120, "", 1),
+			ItemStats(0.0f, 1.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 2, 75, "", 1),
+			ItemStats(0.0f, 0.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 1, 40, "", 1),
+			ItemStats(0.0f, 2.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 4, 110, "", 1),
+			ItemStats(0.0f, 1.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 3, 90, "", 1),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 1, 60, "", 1),
+			ItemStats(0.0f, 0.5f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f ), true) }, false, 2, 80, "", 1),
 		};
 		return _values[armorType];
 	}
@@ -441,9 +445,9 @@ public:
 	virtual ItemStats UpdateStat() override
 	{
 		const ItemStats _values[] = {
-			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 0, 0),
-			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 0, 0),
-			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 3, 0),
+			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 0, 0, "", 1),
+			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 0, 0, "", 1),
+			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 3, 0, "", 1),
 		};
 		return _values[pickableType];
 	}
@@ -524,12 +528,12 @@ public:
 	virtual ItemStats UpdateStat() override
 	{
 		const ItemStats _values[] = {
-			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 1, 30),
-			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 1, 30),
-			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 2, 60),
-			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 1, 15),
-			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 3, 90),
-			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 4, 120),
+			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 1, 30, "", 1),
+			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 1, 30, "", 1),
+			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 2, 60, "", 1),
+			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 1, 15, "", 1),
+			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 3, 90, "", 1),
+			ItemStats(0.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, 0.0f, 0.0f, 0.0f), true) }, false, 4, 120, "", 1),
 		};
 		return _values[consomableType];
 	}

@@ -73,7 +73,7 @@ bool Wall::DestroyWall(const int _digLevel, const bool _canShake, const bool _wi
 	SoundManager::GetInstance().Play(wallType == WT_DIRT ? SOUND_DIG_DIRT : SOUND_DIG_STONE);
 	if (wallType  == WT_SHOP)
 	{
-		new Pickable(PIT_COIN, STRING_ID("Coin"), GetPosition(), 25);
+		new Pickable(PIT_COIN, STRING_ID("Coin"), GetPosition(), 10);
 	}
 	if (hasDiamond)
 	{

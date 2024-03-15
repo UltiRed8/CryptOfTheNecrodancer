@@ -31,7 +31,7 @@ Item::Item(const SlotType& _type, const string& _id, const Vector2f& _position, 
 	stats = ItemStats();
 	stype = _type;
 	type = ET_ITEM;
-	zIndex = 2;
+	zIndex = 3;
 	isInInventory = _isInInventory;
 	animationValue = (float)Random((const int)(floor(2.0f * PI)), 0);
 	animationTimer = new Timer(STRING_ID("ItemAnimation"), [this]() {
@@ -117,6 +117,9 @@ bool Item::PickUp()
 			{
 				*_player->GetRessources()->GetMoney() -= stats.goldPrice;
 				SoundManager::GetInstance().Play(SOUND_SHOP_BUY);
+				delete text;
+				text = nullptr;
+				inShop = false;
 			}
 			else
 			{

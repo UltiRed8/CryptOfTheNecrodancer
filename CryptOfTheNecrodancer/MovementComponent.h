@@ -19,8 +19,13 @@ class MovementComponent :public Component
 	Vector2i oldDirection;
 	bool shouldResetDirection;
 	bool isStun;
+	bool isConfused;
 
 public:
+	void SetIsConfused(const bool _value)
+	{
+		isConfused = _value;
+	}
 	bool GetIsStun() const
 	{
 		return isStun;

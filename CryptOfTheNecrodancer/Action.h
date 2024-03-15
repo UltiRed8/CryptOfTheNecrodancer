@@ -50,7 +50,6 @@ public:
 		keys.push_back(_primaryKey);
 		keys.push_back(_secondaryKey);
 		callback = _callback;
-		//cout << (char)(_primaryKey.keyChar) << endl;
 	}
 
 	bool operator!() const

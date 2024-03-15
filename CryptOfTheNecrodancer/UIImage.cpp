@@ -33,5 +33,5 @@ vector<Drawable*> UIImage::GetDrawables()
 
 void UIImage::Update(const Vector2i& _mousePosition)
 {
-	// TODO enlever?
+
 }

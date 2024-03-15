@@ -71,10 +71,12 @@ public:
 	void SetIsConfuse(const bool _isConfuse)
 	{
 		isConfuse = _isConfuse;
+		GetComponent<MovementComponent>()->SetIsConfused(isConfuse);
 		if (isConfuse)
 		{
 			new Timer("ResetConfuse", [this]() {
 				isConfuse = false;
+				GetComponent<MovementComponent>()->SetIsConfused(false);
 				CameraManager::GetInstance().Get("PlayerCamera")->SetRotation(0.0f);
 			}, seconds(5.0f), 1, true);
 		}
@@ -119,6 +121,7 @@ public:
 	~Player();
 
 public :
+	void ResetInventory();
 	void SavePlayerStatsData();
 	void DeleteSavePlayerStatsData();
 	void DeleteSavePurchasedItems();

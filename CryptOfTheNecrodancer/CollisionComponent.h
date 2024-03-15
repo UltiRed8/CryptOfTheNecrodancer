@@ -25,9 +25,6 @@ public:
 	CollisionComponent(Entity* _owner);
 
 public:
-	// Hérité via Component
 	void Update() override;
 	void CheckCollision(const vector<CollisionReaction>& _reaction);
-
 };
-

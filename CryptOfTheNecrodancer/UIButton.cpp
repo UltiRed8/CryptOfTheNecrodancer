@@ -4,7 +4,6 @@
 #include "SoundManager.h"
 #include "Macro.h"
 
-// Text
 UIButton::UIButton(const string& _id, const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const string& _textValue, const int _textSize, const string& _fontPath, const string& _soundPath, const function<void()>& _callback, int* _additionalValue) : UIElement(_id, _position)
 {
 	unhoverColor = _unhoverColor;
@@ -16,7 +15,6 @@ UIButton::UIButton(const string& _id, const Vector2f& _position, const Color& _u
 	soundPath = _soundPath;
 }
 
-// Image
 UIButton::UIButton(const string& _id, const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const string& _path, const Vector2f& _imageSize, const string& _soundPath, const function<void()>& _callback) : UIElement(_id, _position)
 {
 	unhoverColor = _unhoverColor;
@@ -28,7 +26,6 @@ UIButton::UIButton(const string& _id, const Vector2f& _position, const Color& _u
 	soundPath = _soundPath;
 }
 
-// Custom
 UIButton::UIButton(const string& _id, const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const vector<UIElement*>& _elements, const string& _soundPath, const function<void()>& _callback, const FloatRect& _box) : UIElement(_id, _position)
 {
 	unhoverColor = _unhoverColor;

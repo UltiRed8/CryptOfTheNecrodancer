@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Placeable.h"
 
 class Tile : public Placeable
@@ -6,20 +7,13 @@ class Tile : public Placeable
 	vector<Entity*> entities;
 	Color defaultColor;
 	Color baseColor;
+	bool status;
 
 public:
-	void SetColors(const Color& _baseColor)
-	{
-		defaultColor = _baseColor;
-		baseColor = _baseColor;
-		shape->setFillColor(defaultColor);
-	}
+	Tile(const Vector2f& _position,const EntityType& _type = ET_FLOOR);
+	Tile(const string& _path, const Vector2f& _position,const EntityType& _type = ET_FLOOR);
 
 public:
-	Tile(const string& _tilePath,const Vector2f& _position,const EntityType& _type = ET_FLOOR);
-
-public:
-	void InvertAlpha(const bool _reset);
-	void ToggleHighlight(const int _alphaValueToHighlight);
+	void InvertAlpha(const bool _status, const bool _highlighted);
 };
 

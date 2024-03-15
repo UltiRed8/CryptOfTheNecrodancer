@@ -5,7 +5,6 @@
 #include "Item.h"
 #include "Map.h"
 
-//HUD FRAME
 #define I_SHOVEL "UI/hud_shovel.png"
 #define I_ATTACK "UI/hud_attack.png"
 #define I_BODY "UI/hud_body.png"
@@ -13,7 +12,8 @@
 #define I_FEET "UI/hud_feet.png"
 #define I_THROW "UI/hud_throw.png"
 #define I_BOMB "UI/hud_bomb.png"
-#define I_ITEM "UI/hud_item.png"
+#define I_ITEM_UP "UI/hud_item_up.png"
+#define I_ITEM_DOWN "UI/hud_item_down.png"
 #define SHOVEL "Items/Shovel/Shovel.png"
 #define PICKAXE "Items/Shovel/Pickaxe.png"
 
@@ -27,8 +27,8 @@ Inventory::Inventory() : Menu("Inventory", {}, 0, false)
 	others.push_back(new Slot(ST_FEET, I_FEET, _menu));
 	usables.push_back(new Slot(ST_BOMB, I_BOMB, _menu));
 
-	foods.push_back(new Slot(ST_FOOD_TOP, I_ITEM, _menu));
-	foods.push_back(new Slot(ST_FOOD_DOWN, I_ITEM, _menu));
+	foods.push_back(new Slot(ST_FOOD_TOP, I_ITEM_UP, _menu));
+	foods.push_back(new Slot(ST_FOOD_DOWN, I_ITEM_DOWN, _menu));
 }
 
 Inventory::~Inventory()
@@ -43,7 +43,7 @@ void Inventory::Reset()
 {
 	for (Slot* _slot : GetSlots())
 	{
-		_slot->Destroy();
+		delete _slot;			
 	}
 	others.clear();
 	usables.clear();
@@ -54,10 +54,11 @@ void Inventory::Reset()
 	others.push_back(new Slot(ST_BODY, I_BODY, _menu));
 	others.push_back(new Slot(ST_HEAD, I_HEAD, _menu));
 	others.push_back(new Slot(ST_FEET, I_FEET, _menu));
+
 	usables.push_back(new Slot(ST_BOMB, I_BOMB, _menu));
 
-	foods.push_back(new Slot(ST_FOOD_TOP, I_ITEM, _menu));
-	foods.push_back(new Slot(ST_FOOD_DOWN, I_ITEM, _menu));
+	foods.push_back(new Slot(ST_FOOD_TOP, I_ITEM_UP, _menu));
+	foods.push_back(new Slot(ST_FOOD_DOWN, I_ITEM_DOWN, _menu));
 }
 
 vector<Drawable*> Inventory::GetDrawables()
@@ -105,11 +106,10 @@ Slot::Slot(const SlotType& _type, const string& _path, Menu* _owner) : UIImage(S
 	type = _type;
 	const string& _rPath = _type == ST_SHOVEL ? PATH_SHOVEL : _type == ST_ATTACK ? PATH_DAGGER : "";
 	item = new UIImage(STRING_ID("item_" + to_string(type) + "_slot"), Vector2f(0.0f, 0.0f), Vector2f(30.0f, 33.0f) * 2.0f, "");
-	currentItem = _type == ST_SHOVEL ? (Item*) new Pickaxe(PT_SHOVEL, STRING_ID("Pickaxe"), {}, true)
-		: _type == ST_ATTACK ? (Item*) new Weapon(WT_DAGGER, STRING_ID("Dagger"), {}, true)
+	currentItem = _type == ST_SHOVEL ? (Item*) new Pickaxe(PT_SHOVEL, STRING_ID("Pickaxe"), {}, true, false)
+		: _type == ST_ATTACK ? (Item*) new Weapon(WT_DAGGER, STRING_ID("Dagger"), {}, true, false)
 		: _type == ST_BOMB ? (Item*) new BombItem(Vector2f(0.0f, 0.0f), true)
 		: nullptr;
-	
 	isVisible = _type == ST_SHOVEL ? true : _type == ST_ATTACK ? true : _type == ST_BOMB ? true : false;
 	item->SetOwner(_owner);
 	item->Register();
@@ -119,20 +119,21 @@ Slot::~Slot()
 {
 	if (currentItem)
 	{
-		delete currentItem;
+		currentItem->Destroy();
 	}
 }
 
 vector<Drawable*> Slot::GetDrawables()
 {
 	vector<Drawable*> _drawables;
+	if (IsToRemove()) return _drawables;
 
 	_drawables.push_back(shape);
 	if (currentItem)
 	{
 		item->GetShape()->setTexture(currentItem->GetVisuals()->getTexture());
 	}
-	_drawables.push_back(item->GetShape());
+	_drawables.insert(_drawables.begin(), item->GetShape());
 
 	return _drawables;
 }

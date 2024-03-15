@@ -38,6 +38,7 @@ void Map::Open(const Zone& _zoneToOpen)
 void Map::OpenPrepared()
 {
 	UpdateZoneFileName();
+	
 	if (preparedZone == currentZone)
 	{
 		if (currentZone != Z_LOBBY)
@@ -48,6 +49,10 @@ void Map::OpenPrepared()
 	}
 	else
 	{
+		if (preparedZone != Z_LOBBY)
+		{
+			((Player*)EntityManager::GetInstance().Get("Player"))->GetInventory()->Reset();
+		}
 		currentZone = preparedZone;
 		LoadMap();
 	}
@@ -55,6 +60,8 @@ void Map::OpenPrepared()
 
 void Map::ClearGenerator()
 {
+	((Player*)EntityManager::GetInstance().Get("Player"))->UpdateDamageZone();
+
 	delete generator;
 	generator = new Generator(discoModeEnabled);
 }
@@ -98,7 +105,6 @@ void Map::EndDungeonGeneration()
 {
 	CameraManager::GetInstance().Get("PlayerCamera")->SetCameraToPlayer();
 	UpdateLights(2);
-	//UpdateLights(100);
 	PrepareMusic();
 	MusicManager::GetInstance().Play();
 	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
@@ -107,12 +113,14 @@ void Map::EndDungeonGeneration()
 
 void Map::QuickRestart()
 {
+	((Player*)EntityManager::GetInstance().Get("Player"))->GetInventory()->Reset();
+
 	UpdateZoneFileName();
 	dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetRessources()->SetDiamonds(0);
 	currentLevel = 1;
 
 	vector<string> _zones = {
-		"zone1_", // Lobby has the same textures as Zone 1
+		"zone1_",
 		"zone1_",
 		"zone2_",
 	};
@@ -136,7 +144,7 @@ void Map::UpdateLights(const int _brightness)
 void Map::UpdateZoneFileName()
 {
 	vector<string> _zones = {
-		"zone1_", // Lobby has the same textures as Zone 1
+		"zone1_",
 		"zone1_",
 		"zone2_",
 	};

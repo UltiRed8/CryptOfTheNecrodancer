@@ -27,7 +27,7 @@ void MovementComponent::Move()
 	const Vector2f& _tileSize = TILE_SIZE;
 	const float _directionX = (direction->x * speed * _tileSize.x ) ;
 	const float _directionY = (direction->y * speed * _tileSize.y) ;
-	const Vector2f& _position = owner->GetPosition() + Vector2f(_directionX, _directionY);
+	const Vector2f& _position = owner->GetPosition() + Vector2f(_directionX, _directionY) * (isConfused ? -1.0f : 1.0f);
 	oldPosition = _shape->getPosition();
 	oldDirection = Vector2i((int)_directionX, (int)_directionY);
 	_shape->setPosition(_position);

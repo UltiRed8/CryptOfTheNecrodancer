@@ -48,12 +48,14 @@ void ShopStand::UpdateAllItems()
 		CT_SIZE,
 	};
 
+	int _index = 0;
 	for (int _size : _list)
 	{
 		for (int _i = 0; _i < _size; _i++)
 		{
-			allItems.push_back(_i);
+			allItems.push_back(_i + _index * 100);
 		}
+		_index++;
 	}
 
 	EraseElements(allItems, ownedItems);
@@ -88,10 +90,10 @@ void ShopStand::SpawnLobbyItems()
 		const int _itemID = allItems[Random((const int)allItems.size() - 1, 0)];
 
 		function<Item* (const int _id, const Vector2f& _position)> _actions[] = {
-			[this](const int _id, const Vector2f& _position) { return new Weapon((WeaponType)_id, STRING_ID("Weapon"), _position); }, // weapon
-			[this](const int _id, const Vector2f& _position) { return new Pickaxe((PickaxeType)(_id - 100), STRING_ID("Pickaxe"), _position); }, // pickaxe
-			[this](const int _id, const Vector2f& _position) { return new Armor((ArmorType)(_id - 200), STRING_ID("Armor"), _position); }, // armor
-			[this](const int _id, const Vector2f& _position) { return new Consomable((ConsomableType)(_id - 300), STRING_ID("Consomable"), _position); }, // consomable
+			[this](const int _id, const Vector2f& _position) { return new Weapon((WeaponType)_id, STRING_ID("Weapon"), _position); },
+			[this](const int _id, const Vector2f& _position) { return new Pickaxe((PickaxeType)(_id - 100), STRING_ID("Pickaxe"), _position); },
+			[this](const int _id, const Vector2f& _position) { return new Armor((ArmorType)(_id - 200), STRING_ID("Armor"), _position); },
+			[this](const int _id, const Vector2f& _position) { return new Consomable((ConsomableType)(_id - 300), STRING_ID("Consomable"), _position); },
 		};
 
 		const function<Item* (const int _id, const Vector2f& _position)>& _callback = _actions[(int)floor(_itemID / 100.0f)];

@@ -24,6 +24,7 @@ void WindowManager::CreateWindow()
 {
 	window = new RenderWindow(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer", Style::Close/* | Style::Fullscreen*/);
 	baseWindowPosition = window->getPosition();
+	currentPosition = Vector2f(baseWindowPosition);
 	Init();
 }
 

@@ -145,9 +145,9 @@
     <ClCompile Include="Chest.cpp" />
     <ClCompile Include="CollisionComponent.cpp" />
     <ClCompile Include="Component.cpp" />
-    <ClCompile Include="Consommable.cpp" />
     <ClCompile Include="DamageComponent.cpp" />
     <ClCompile Include="Door.cpp" />
+    <ClCompile Include="Dummy.cpp" />
     <ClCompile Include="Generator.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -182,16 +182,15 @@
     <ClCompile Include="ProgressBar.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="RythmIndicator.cpp" />
-    <ClCompile Include="Saveable.cpp" />
     <ClCompile Include="ShopStand.cpp" />
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="Slime.cpp" />
     <ClCompile Include="SoundData.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Stair.cpp" />
+    <ClCompile Include="Swipe.cpp" />
     <ClCompile Include="TextureData.cpp" />
     <ClCompile Include="TextureManager.cpp" />
-    <ClCompile Include="Throwable.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TimerManager.cpp" />
@@ -202,9 +201,7 @@
     <ClCompile Include="UIElement.cpp" />
     <ClCompile Include="UIImage.cpp" />
     <ClCompile Include="UIText.cpp" />
-    <ClCompile Include="Usable.cpp" />
     <ClCompile Include="Wall.cpp" />
-    <ClCompile Include="Wearable.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -220,10 +217,10 @@
     <ClInclude Include="Chest.h" />
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="Component.h" />
-    <ClInclude Include="Consommable.h" />
     <ClInclude Include="DamageComponent.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Door.h" />
+    <ClInclude Include="Dummy.h" />
     <ClInclude Include="Generator.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
@@ -260,7 +257,6 @@
     <ClInclude Include="ProgressBar.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="RythmIndicator.h" />
-    <ClInclude Include="Saveable.h" />
     <ClInclude Include="ShopStand.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Skeleton.h" />
@@ -268,9 +264,9 @@
     <ClInclude Include="SoundData.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Stair.h" />
+    <ClInclude Include="Swipe.h" />
     <ClInclude Include="TextureData.h" />
     <ClInclude Include="TextureManager.h" />
-    <ClInclude Include="Throwable.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TimerManager.h" />
@@ -281,9 +277,7 @@
     <ClInclude Include="UIElement.h" />
     <ClInclude Include="UIImage.h" />
     <ClInclude Include="UIText.h" />
-    <ClInclude Include="Usable.h" />
     <ClInclude Include="Wall.h" />
-    <ClInclude Include="Wearable.h" />
     <ClInclude Include="WindowManager.h" />
     <ClInclude Include="Zones.h" />
   </ItemGroup>

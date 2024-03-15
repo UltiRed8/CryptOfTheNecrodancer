@@ -81,30 +81,11 @@ public:
 	}
 	void SetFloorColor(Tile* _floor, const bool _creation)
 	{
-		const Vector2f& _position = _floor->GetPosition();
-		const Vector2i& _tilePosition = Vector2i(int(_position.x / TILE_SIZE.x), int(_position.y / TILE_SIZE.y));
-		const bool _posEven = (_tilePosition.x + _tilePosition.y) % 2 == 0;
-
-		Color _baseColor;
-
 		bool _hasChain;
 		if (_creation) _hasChain = false;
 		else _hasChain = *dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetChainMultiplier() > 1.0f;
 
-		_baseColor = _posEven ? C_LIGHT_BROWN : C_BROWN;
-
-		_floor->SetColors(_baseColor);
-		if (!_hasChain)
-		{
-			if (!isPurple)
-			{
-				_floor->InvertAlpha(false);
-			}
-		}
-		else
-		{
-			_floor->ToggleHighlight(isPurple ? 255 : 200);
-		}
+		_floor->InvertAlpha(isPurple, _hasChain);
 	}
 
 	vector<Vector2f> GetSpawnPositions()
@@ -176,7 +157,6 @@ public:
 
 private:
 	void GenerateRooms(const int _roomCount);
-	void GenerateWater();
 	void GenerateFire();
 	void GenerateIce();
 

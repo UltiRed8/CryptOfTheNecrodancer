@@ -17,6 +17,7 @@
 #include "Ice.h"
 #include "HotCoals.h"
 #include "Bomb.h"
+#include "Swipe.h"
 #include "Chest.h"
 #include <cstdio>
 #include <iostream>
@@ -34,8 +35,6 @@ using namespace std;
 
 #define SOUND_CHAIN_START "Assets/Sounds/sfx_chain_groove_ST.ogg"
 #define SOUND_CHAIN_FAIL "Assets/Sounds/sfx_chain_break_ST.ogg"
-
-#define PATH_FLOOR "Dungeons/" + Map::GetInstance().GetZoneFileName() + "/floor.png"
 
 int Player::GetDigLevel() const
 {
@@ -71,6 +70,7 @@ Player::Player(const float _maxHp, const string _id, const Vector2f& _position) 
 	_movement->InitCollisions(_collisions, {
 		CollisionReaction(ET_WALL, [this](Entity* _entity) {
 			Wall* _wall = dynamic_cast<Wall*>(_entity);
+			
 			if (_wall->DestroyWall(GetDigLevel()))
 			{
 				if (Item* _item = inventory->GetSlot(ST_SHOVEL)->GetItem())
@@ -79,10 +79,26 @@ Player::Player(const float _maxHp, const string _id, const Vector2f& _position) 
 					{
 						GetComponent<MovementComponent>()->UndoMove();
 					}
+					if (Item* _item = inventory->GetSlot(ST_SHOVEL)->GetItem())
+					{
+						const ItemStats& _stats = _item->GetStats();
+						if (!_stats.swipePath.empty())
+						{
+							new Swipe(_stats.swipePath, _stats.swipeAmount, 1.0f, false);
+						}
+					}
 					return true;
 				}
 			}
 			GetComponent<MovementComponent>()->UndoMove();
+			if (Item* _item = inventory->GetSlot(ST_SHOVEL)->GetItem())
+			{
+				const ItemStats& _stats = _item->GetStats();
+				if (!_stats.swipePath.empty())
+				{
+					new Swipe(_stats.swipePath, _stats.swipeAmount, 1.0f, false);
+				}
+			}
 			return true;
 		}),
 		CollisionReaction(ET_STAIR, [this](Entity* _entity) {
@@ -178,6 +194,14 @@ bool Player::ResetChainMultiplier()
 	return false;
 }
 
+void Player::ResetInventory()
+{
+	inventory->Close();
+	delete inventory;
+	inventory = new Inventory();
+	inventory->Open();
+}
+
 void Player::SavePlayerStatsData()
 {
 	ofstream _file(SAVE_DATA);
@@ -222,7 +246,7 @@ void Player::InitInput()
 		{ ActionData("Haut", [this]() {
 		if (!alreadyMoved && !MenuManager::GetInstance().BlockPlayer())
 			{
-				GetComponent<MovementComponent>()->SetDirection(Vector2i(0,-1) * GetConfusionEffect());
+				GetComponent<MovementComponent>()->SetDirection(Vector2i(0,-1));
 				alreadyMoved = true;
 			}}, {Event::KeyPressed, Keyboard::Up}),
 
@@ -230,7 +254,7 @@ void Player::InitInput()
 
 		  ActionData("Bas", [this]() { if (!alreadyMoved && !MenuManager::GetInstance().BlockPlayer())
 			{
-				 GetComponent<MovementComponent>()->SetDirection(Vector2i(0,1) * GetConfusionEffect());
+				 GetComponent<MovementComponent>()->SetDirection(Vector2i(0,1));
 				 alreadyMoved = true;
 			}; }, {Event::KeyPressed, Keyboard::Down}),
 
@@ -240,7 +264,7 @@ void Player::InitInput()
 
 		  ActionData("Droite", [this]() { if (!alreadyMoved && !MenuManager::GetInstance().BlockPlayer())
 			{
-				 GetComponent<MovementComponent>()->SetDirection(Vector2i(1,0) * GetConfusionEffect());
+				 GetComponent<MovementComponent>()->SetDirection(Vector2i(1,0));
 				 alreadyMoved = true;
 			}}, {Event::KeyPressed, Keyboard::Right}),
 
@@ -249,42 +273,11 @@ void Player::InitInput()
 
 		  ActionData("Gauche", [this]() { if (!alreadyMoved && !MenuManager::GetInstance().BlockPlayer())
 			{
-				 GetComponent<MovementComponent>()->SetDirection(Vector2i(-1,0) * GetConfusionEffect());
+				 GetComponent<MovementComponent>()->SetDirection(Vector2i(-1,0));
 				 alreadyMoved = true;
 			}; }, {Event::KeyPressed, Keyboard::Left}),
 
 		  ActionData("GaucheR", [this]() { alreadyMoved = false; GetComponent<MovementComponent>()->SetDirection(Vector2i(0,0)); }, {Event::KeyReleased, Keyboard::Left}),
-
-		});
-
-	// TODO remove
-	new ActionMap("TempDebug", {
-		ActionData("temp1", [this]() { Map::GetInstance().OpenPrepared(); }, {Event::KeyPressed, Keyboard::Num0}),
-		ActionData("slot2", [this]() { MusicManager::GetInstance().SpeedDown(); }, {Event::KeyPressed, Keyboard::Num2}),
-		ActionData("slot3", [this]() { MusicManager::GetInstance().SpeedUp(); }, {Event::KeyPressed, Keyboard::Num3}),
-		ActionData("DecreaseLife", [this]() { GetComponent<LifeComponent>()->ChangeHealth(-50); UpdateLife(); }, {Event::KeyPressed, Keyboard::Subtract}),
-		ActionData("Increase Life", [this]() { GetComponent<LifeComponent>()->ChangeHealth(50); UpdateLife(); }, {Event::KeyPressed, Keyboard::Add}),
-		ActionData("Set Bomb", [this]() { new Bomb(GetPosition());}, {Event::KeyPressed, Keyboard::P}),
-		ActionData("Add Heart", [this]() { AddHeart();}, {Event::KeyPressed, Keyboard::M}),
-		ActionData("UseBomb", [this]() {
-			if (Map::GetInstance().IsInLobby()) return;
-			if (Item* _item = inventory->GetSlot(ST_BOMB)->GetItem())
-			{
-				_item->ExecuteCallback();
-			}
-		}, {Event::KeyPressed, Keyboard::RShift}),
-		ActionData("UseFood1", [this]() {
-			if (Item* _item = inventory->GetSlot(ST_FOOD_TOP)->GetItem())
-			{
-				_item->ExecuteCallback();
-			}
-		}, {Event::KeyPressed, Keyboard::Numpad1}),
-		ActionData("UseFood2", [this]() {
-			if (Item* _item = inventory->GetSlot(ST_FOOD_DOWN)->GetItem())
-			{
-				_item->ExecuteCallback();
-			}
-		}, {Event::KeyPressed, Keyboard::Numpad0}),
 	});
 }
 
@@ -477,6 +470,19 @@ bool Player::TryToAttack()
 											WindowManager::GetInstance().Shake(Vector2f(*GetComponent<MovementComponent>()->GetDirection()));
 										}
 										_enemy->Hit();
+										Weapon* _weapon = (Weapon*)inventory->GetSlot(ST_ATTACK)->GetItem();
+										const ItemStats& _stats = _weapon->GetStats();
+										if (!_stats.swipePath.empty())
+										{
+											if (_weapon->weaponType == WT_STAFF || _weapon->weaponType == WT_STAFF_TITANIUM)
+											{
+												new Swipe(20, _stats.swipePath, _stats.swipeAmount);
+											}
+											else
+											{
+												new Swipe(_stats.swipePath, _stats.swipeAmount);
+											}
+										}
 										if (GetComponent<DamageComponent>()->Attack(_entity))
 										{
 											if (*chainMultiplier <= 3)
@@ -513,7 +519,6 @@ void Player::DieEvent()
 
 void Player::AddHeart(const int _amount)
 {
-	// Get Life Component
 	LifeComponent* _lifeComp = GetComponent<LifeComponent>();
 	const int _lifeBefore = (const int) _lifeComp->GetMaxHealth();
 	_lifeComp->SetMaxHealth(_lifeBefore + _amount * 100.0f);
@@ -523,7 +528,6 @@ void Player::AddHeart(const int _amount)
 	const int _maxHeartsCount = (int)(_life / 100.0f);
 	
 	vector<UIElement*> _element = life->GetAllValues();
-	// Move hearts
 	for (int _i = 0; _i < _heartsCount - 1; _i++)
 	{
 		if (Heart* _heart = dynamic_cast<Heart*>(_element[_i]))
@@ -531,7 +535,6 @@ void Player::AddHeart(const int _amount)
 			_heart->GetShape()->move(Vector2f(55 * (3.8f + _i * 1.2f, -55.0f * _heartsCount), 55 * 12.3));
 		}
 	}
-	// ajoute au début un coeur
 	for (int _index = 0; _index < _heartsCount; _index++)
 	{
 		Heart* _heart = new Heart(STRING_ID("Hearts"), Vector2f(25.0f, 25.0f) * 2.0f,

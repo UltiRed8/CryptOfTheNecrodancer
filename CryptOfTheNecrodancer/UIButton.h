@@ -26,11 +26,8 @@ public:
 	}
 
 public:
-	// Text
 	UIButton(const string& _id, const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const string& _textValue, const int _textSize, const string& _fontPath, const string& _soundPath, const function<void()>& _callback, int* _additionalValue = nullptr);
-	// Image
 	UIButton(const string& _id, const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const string& _path, const Vector2f& _imageSize, const string& _soundPath, const function<void()>& _callback);
-	// Custom
 	UIButton(const string& _id, const Vector2f& _position, const Color& _unhoverColor, const Color& _hoverColor, const vector<UIElement*>& _elements, const string& _soundPath, const function<void()>& _callback, const FloatRect& _box);
 	~UIButton();
 

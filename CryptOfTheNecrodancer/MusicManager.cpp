@@ -83,9 +83,7 @@ void MusicManager::Update()
 				beatIndex = 0; 
 				new Timer(STRING_ID("Reset"), [this]() {
 					Map::GetInstance().OpenPrepared();
-					}, seconds(0.5f), 1, true);
-				
-				//return;
+				}, seconds(0.5f), 1, true);
 			}
 		}
 		first = (int)(lastBeat - *acceptDelay / 2.0f);
@@ -158,7 +156,7 @@ void MusicManager::Prepare(const string& _path, const bool _isShopkeeper, const 
 	MusicData* _music = GetMusic(_musicPath, _position);
 	prepared.push_back(_music);
 	_music->setLoop(_shouldLoop);
-	isLoop = _shouldLoop; // TODO Crash du au retour au lobby après un changement de pack de musique
+	isLoop = _shouldLoop;
 
 	if (_isShopkeeper)
 	{

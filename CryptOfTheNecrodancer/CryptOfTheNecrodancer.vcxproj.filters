@@ -103,21 +103,6 @@
     <Filter Include="Source Files\Component\Life">
       <UniqueIdentifier>{c6460399-646b-4e8d-b1c4-c78769537bb6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Able\Saveable">
-      <UniqueIdentifier>{150ad12c-2cfa-45b6-ba4f-7a9eedcd85a1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Able\Consommable">
-      <UniqueIdentifier>{c9f8c9d5-1b5d-48d8-80ef-922d7f69609a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Able\Throwable">
-      <UniqueIdentifier>{5a283412-e000-4034-9430-b0f7ece5a67d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Able\Usable">
-      <UniqueIdentifier>{08cb9f72-85e5-40b0-9fd1-adb6bda56383}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Able\Wearable">
-      <UniqueIdentifier>{3c2a748a-f1b6-481e-b0a9-073971ab74b4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Object\UiElement\ProgressBar">
       <UniqueIdentifier>{010cad2e-90bd-4f51-a711-ae7b8677a29f}</UniqueIdentifier>
     </Filter>
@@ -183,9 +168,6 @@
     </Filter>
     <Filter Include="Source Files\Object\UiElement\UIAnimation">
       <UniqueIdentifier>{f7ae8b73-a64f-40f5-a905-d62f63a8c25c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Able\Pickable">
-      <UniqueIdentifier>{8ac0a34a-1cb6-405b-ac96-dd78ebce8e1e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Able\Placeable">
       <UniqueIdentifier>{d057bd98-d6a4-49cd-9fea-9360dd118a48}</UniqueIdentifier>
@@ -315,21 +297,6 @@
     <ClCompile Include="DamageComponent.cpp">
       <Filter>Source Files\Component\Damage</Filter>
     </ClCompile>
-    <ClCompile Include="Consommable.cpp">
-      <Filter>Source Files\Able\Consommable</Filter>
-    </ClCompile>
-    <ClCompile Include="Saveable.cpp">
-      <Filter>Source Files\Able\Saveable</Filter>
-    </ClCompile>
-    <ClCompile Include="Throwable.cpp">
-      <Filter>Source Files\Able\Throwable</Filter>
-    </ClCompile>
-    <ClCompile Include="Usable.cpp">
-      <Filter>Source Files\Able\Usable</Filter>
-    </ClCompile>
-    <ClCompile Include="Wearable.cpp">
-      <Filter>Source Files\Able\Wearable</Filter>
-    </ClCompile>
     <ClCompile Include="UIButton.cpp">
       <Filter>Source Files\Object\UiElement\UIButton</Filter>
     </ClCompile>
@@ -418,6 +385,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ShopStand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Swipe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dummy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -548,21 +521,6 @@
     <ClInclude Include="DamageComponent.h">
       <Filter>Source Files\Component\Damage</Filter>
     </ClInclude>
-    <ClInclude Include="Consommable.h">
-      <Filter>Source Files\Able\Consommable</Filter>
-    </ClInclude>
-    <ClInclude Include="Saveable.h">
-      <Filter>Source Files\Able\Saveable</Filter>
-    </ClInclude>
-    <ClInclude Include="Throwable.h">
-      <Filter>Source Files\Able\Throwable</Filter>
-    </ClInclude>
-    <ClInclude Include="Usable.h">
-      <Filter>Source Files\Able\Usable</Filter>
-    </ClInclude>
-    <ClInclude Include="Wearable.h">
-      <Filter>Source Files\Able\Wearable</Filter>
-    </ClInclude>
     <ClInclude Include="UIButton.h">
       <Filter>Source Files\Object\UiElement\UIButton</Filter>
     </ClInclude>
@@ -654,6 +612,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ShopStand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Swipe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dummy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,7 +4,6 @@ UIAnimation::UIAnimation(const string& _id, const Vector2f& _position, const Vec
 {
 	animation = new AnimationComponent(nullptr, vector<AnimationData> {
 		AnimationData("Animation", _sizeAnim, 0, _lenght, 0.1f, true),
-		//AnimationData("Animation", Vector2f(51, 35), 0, 5, 0.1f, true),
 	}, "Animation", shape);
 }
 

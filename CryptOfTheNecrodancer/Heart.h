@@ -34,8 +34,8 @@ public :
 public :
 	Heart(const string& _id, const Vector2f& _size, const Vector2f& _position, const State& _state, const float& _maxLife = 100);
 public :
-	void UpdateLife(); //Change la vie ?
-	void UIHeart(); //Change taille imageAnimation
+	void UpdateLife();
+	void UIHeart();
 	virtual void Update(const Vector2i& _mousePosition) override;
 };
 

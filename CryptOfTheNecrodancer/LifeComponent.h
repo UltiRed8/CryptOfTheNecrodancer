@@ -36,7 +36,7 @@ public :
 	{
 		return maxHealth;
 	}
-	void SetCurrentHealth(const float _newHealth) // ADD, NOT SET ALERT
+	void SetCurrentHealth(const float _newHealth)
 	{
 		*currentHealth += _newHealth;
 	}

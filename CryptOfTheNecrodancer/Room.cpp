@@ -2,8 +2,6 @@
 #include "Macro.h"
 #include "Map.h"
 
-#define PATH_FLOOR "Dungeons/" + Map::GetInstance().GetZoneFileName() + "/floor.png"
-
 Room::Room(const Vector2i& _size)
 {
 	if (_size == Vector2i(-1, -1))
@@ -46,7 +44,7 @@ void Room::PlaceFloor(vector<Vector2f>& _usedPositions)
 			const float x = startPosition.x + _columnIndex * TILE_SIZE.x;
 			const float y = startPosition.y + _rowIndex * TILE_SIZE.y;
 			const Vector2f _position = Vector2f(x, y);
-			floor.push_back(new Tile(PATH_FLOOR, _position));
+			floor.push_back(new Tile(_position));
 			_usedPositions.push_back(_position);
 		}
 	}

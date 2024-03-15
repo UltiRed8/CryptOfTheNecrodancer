@@ -9,10 +9,10 @@
 #include "Ice.h"
 #include "HotCoals.h"
 #include "ShopStand.h"
+#include "Dummy.h"
 
 #define PATH_SHOP_TILE "Dungeons/ShopTile.png"
 #define PATH_UPGRADE_TILE "Dungeons/UpgradeTile.png"
-#define PATH_FLOOR "Dungeons/" + Map::GetInstance().GetZoneFileName() + "/floor.png"
 #define PATH_WATER "Dungeons/Water.png"
 #define FONT "Assets/Font/Font.ttf"
 
@@ -108,37 +108,31 @@ void Generator::GenerateLobby()
 		{
 			{ ' ', nullptr },
 			{ '#', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP, zoneFileName, false)); }},
-			{ '.', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); }},
-			{ 'S', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); stairs.push_back(new Stair(_position)); }},
-			{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new Door(_position)); }},
-			{ 'E', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_HEPHAESTUS, _position)); }},
-			{ 'M', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_MERLIN, _position)); }},
-			{ 'D', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); others.push_back(new NPC(NPC_DUNGEONMASTER, _position)); }},
+			{ '.', [this](const Vector2f& _position) { floors.push_back(new Tile(_position)); }},
+			{ 'S', [this](const Vector2f& _position) { floors.push_back(new Tile(_position)); stairs.push_back(new Stair(_position)); }},
+			{ '3', [this](const Vector2f& _position) { floors.push_back(new Tile(_position)); others.push_back(new Door(_position)); }},
+			{ 'E', [this](const Vector2f& _position) { floors.push_back(new Tile(_position)); others.push_back(new NPC(NPC_HEPHAESTUS, _position)); }},
+			{ 'M', [this](const Vector2f& _position) { floors.push_back(new Tile(_position)); others.push_back(new NPC(NPC_MERLIN, _position)); }},
+			{ 'D', [this](const Vector2f& _position) { floors.push_back(new Tile(_position)); others.push_back(new NPC(NPC_DUNGEONMASTER, _position)); }},
 			{ '1', [this](const Vector2f& _position) { others.push_back(new Tile(PATH_UPGRADE_TILE, _position)); }},
-			{ 'P', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position); }},
+			{ 'P', [this](const Vector2f& _position) { floors.push_back(new Tile(_position)); EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position); }},
 			{ 'T', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP, zoneFileName)); others.push_back(new Torch(_position)); }},
-			{ 'H', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); ShopStand(_position, STT_HEARTS); }},
-			{ 'I', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); ShopStand({ _position, _position + Vector2f(12.0f, 0.0f) * TILE_SIZE }, STT_LOBBY);}},
+			{ 'H', [this](const Vector2f& _position) { floors.push_back(new Tile(_position)); ShopStand(_position, STT_HEARTS); }},
+			{ 'I', [this](const Vector2f& _position) { floors.push_back(new Tile(_position)); ShopStand({ _position, _position + Vector2f(12.0f, 0.0f) * TILE_SIZE }, STT_LOBBY);}},
+			{ 'N', [this](const Vector2f& _position) { floors.push_back(new Tile(_position)); others.push_back(new Dummy(_position));}},
 			{ '8', [this](const Vector2f& _position) {
-				items.push_back(new Pickable(PIT_COIN, STRING_ID("Item"), _position + Vector2f(0.0f, 0.0f) * TILE_SIZE));
-				items.push_back(new Pickable(PIT_DIAMOND, STRING_ID("Item"), _position + Vector2f(1.0f, 0.0f) * TILE_SIZE));
-				items.push_back(new Pickable(PIT_HEART, STRING_ID("Item"), _position + Vector2f(2.0f, 0.0f) * TILE_SIZE));
-				items.push_back(new BombItem(_position + Vector2f(3.0f, 0.0f) * TILE_SIZE, false));
-				for (int _i = 0; _i < 5; _i++)
-				{
-					items.push_back(new Pickaxe(static_cast<PickaxeType>(_i), STRING_ID("Item"), _position + Vector2f((float)_i, 1.0f) * TILE_SIZE));
-				}
-				for (int _i = 0; _i < 6; _i++)
-				{
-					items.push_back(new Consomable(static_cast<ConsomableType>(_i), STRING_ID("Item"), _position + Vector2f((float)_i, 2.0f) * TILE_SIZE));
-				}
-				for (int _i = 0; _i < 8; _i++)
-				{
-					items.push_back(new Armor(static_cast<ArmorType>(_i), STRING_ID("Item"), _position + Vector2f((float)_i, 3.0f) * TILE_SIZE));
-				}
+				floors.push_back(new Tile(_position));
+				int _posY = 0;
+				int _index = 0;
 				for (int _i = 0; _i < 27; _i++)
 				{
-					items.push_back(new Weapon(static_cast<WeaponType>(_i), STRING_ID("Item"), _position + Vector2f((float)_i, 4.0f) * TILE_SIZE));
+					items.push_back(new Weapon(static_cast<WeaponType>(_i), STRING_ID("Item"), _position + Vector2f((const float)(_index * 2), (const float)_posY) * TILE_SIZE, false, false));
+					_index++;
+					if (_index >= 7)
+					{
+						_index = 0;
+						_posY += 2;
+					}
 				}
 			}},
 		};
@@ -242,11 +236,8 @@ void Generator::GenerateFire()
 		for (int _i = 0; _i < _waterTileNumberPerRoom; _i++)
 		{
 			if (spawnablePositions.empty()) return;
-			// je prends un position spawnable aléatoire
 			Vector2f _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
-			// je supprime sa position de spawnablePositions
 			EraseElement(spawnablePositions, _position);
-			// je supprime cette tile
 			Entity* _entity = GetEntityAt(_position);
 			if (_entity)
 			{
@@ -274,11 +265,8 @@ void Generator::GenerateIce()
 		for (int _i = 0; _i < _waterTileNumberPerRoom; _i++)
 		{
 			if (spawnablePositions.empty()) return;
-			// je prends un position spawnable aléatoire
 			Vector2f _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
-			// je supprime sa position de spawnablePositions
 			EraseElement(spawnablePositions, _position);
-			// je supprime cette tile
 			Entity* _entity = GetEntityAt(_position);
 			if (_entity)
 			{
@@ -423,6 +411,7 @@ void Generator::GenerateShopRoom()
 {
 	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
 	_player->GetComponent<LifeComponent>()->SetIsInvulnerable(true);
+
 	loadingText->GetText()->setString("Generating shop room");
 
 	shop = new Room(Vector2i(5, 7));
@@ -612,7 +601,7 @@ void Generator::SpawnTraps(const int _amount)
 
 void Generator::AddFloorAt(const Vector2f& _position)
 {
-	Tile* _floor = new Tile(PATH_FLOOR, _position);
+	Tile* _floor = new Tile(_position);
 	floors.push_back(_floor);
 	SetFloorColor(_floor, true);
 }
@@ -626,20 +615,9 @@ void Generator::UpdateTilesColor()
 {
 	const bool _hasChain = *dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"))->GetChainMultiplier() > 1.0f;
 
-
-	if (!_hasChain)
+	for (Tile* _floor : floors)
 	{
-		for (Tile* _floor : floors)
-		{
-			_floor->InvertAlpha(isPurple);
-		}
-	}
-	else
-	{
-		for (Tile* _floor : floors)
-		{
-			_floor->ToggleHighlight(isPurple ? 255 : 200);
-		}
+		_floor->InvertAlpha(isPurple, _hasChain);
 	}
 }
 
@@ -662,33 +640,28 @@ void Generator::GenUpdate()
 			[&]() { GetSpawnablePositions(); },
 			// 7- generate diamonds
 			[&]() { GenerateDiamond(); },
-
+			// 8- generate chests
 			[&]() { GenerateChest(2); },
-			// 8- spawn player
+			// 9- spawn player
 			[&]() { SpawnPlayer(); },
-			// 9- spawn stairs
+			// 10- spawn stairs
 			[&]() { SpawnStairs(); },
-			// 10- spawn enemies
+			// 11- spawn enemies
 			[&]() { SpawnEnnemy(10); },
-			// 11- place shop door
+			// 12- place shop door
 			[&]() { PlaceShopDoor(); },
-			// 12- place traps
+			// 13- place traps
 			[&]() { SpawnTraps(8); },
-			// 13- place torches
+			// 14- place torches
 			[&]() { PlaceTorches(); },
-			// 14- update doors
+			// 15- update doors
 			[&]() { UpdateDoors(); },
-			 
-			//[&]() { GenerateIce(); },
-
-			//// 15- erase overlappings
+			// 16- erase overlappings
 			[&]() { EraseOverlappings(); },
-			//// TODO 3d effect
+			// 17- 3D effect
 			[&]() { Enable3DEffect(); }, 
-			// end dungeon generation
+			// 18- end dungeon generation
 			[&]() { Map::GetInstance().EndDungeonGeneration(); },
-			
-
 		};
 		_functionList[generationIndex]();
 		sleep(seconds(0.2f));
