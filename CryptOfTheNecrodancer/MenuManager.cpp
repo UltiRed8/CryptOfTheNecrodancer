@@ -60,6 +60,9 @@
 
 #define LOBBY "Assets/Saved/Lobby.map"
 
+#define SAVE_DATA "Assets/Saved/PlayerStats.txt"
+#define SAVE_PURCHASED "Assets/Saved/PurchasedItems.txt"
+
 #pragma endregion
 
 vector<Drawable*> MenuManager::GetDrawables()
@@ -361,6 +364,8 @@ void MenuManager::InitMenuClose()
 	float _x = static_cast<float>(window->getSize().x / 2);
 	unsigned int _windowY = window->getSize().y;
 
+	Player* _player = (Player*)(EntityManager::GetInstance().Get("Player"));
+
 	function<void()> _close = [&]() { window->close(); };
 	function<void()> _return = [this]() { CloseMenu(); MenuManager::GetInstance().Get("GamePause")->Toggle(); };
 
@@ -431,10 +436,12 @@ void MenuManager::InitDeleteSaveDataMenu()
 	function<void()> _return = [this]() { Get("GamePause")->Toggle(); DeleteSaveDataMenu();   };
 
 	new Menu("Delete", { new UIImage("1", Vector2f(0.f,0.f), Vector2f((float)window->getSize().x, (float)_windowY), AREYOUSURE),
-		new UIText("AreYouSureText1", Vector2f(_x, static_cast<float>(_windowY / 4)), WHITE_COLOR, "Are you sure you want to",35, FONT),
-		new UIText("AreYouSureText2", Vector2f(_x, static_cast<float>(_windowY / 3.3)), WHITE_COLOR, "delete your save data ?",35, FONT),
+		new UIText("AreYouSureText1", Vector2f(_x, static_cast<float>(_windowY / 3)), WHITE_COLOR, "Are you sure you want to",35, FONT),
+		new UIText("AreYouSureText2", Vector2f(_x, static_cast<float>(_windowY / 2.6)), WHITE_COLOR, "delete your save data ?",35, FONT),
 		new UIButton("StayText", Vector2f(_x, static_cast<float>(_windowY / 1.8)), WHITE_COLOR, CYAN_COLOR, "No, stay here", 35, FONT, SOUND_EXIT, _return),
-		new UIButton("DeleteShit", Vector2f(_x, static_cast<float>(_windowY / 1.6)), WHITE_COLOR, CYAN_COLOR, "Yes, delete this shit", 35, FONT, SOUND_START, _delete) }, 2);
+		new UIButton("DeleteShit", Vector2f(_x, static_cast<float>(_windowY / 1.6)), WHITE_COLOR, CYAN_COLOR, "Yes, delete this shit", 35, FONT, SOUND_START, _delete),
+		new UIText("BeCareful", Vector2f(_x, static_cast<float>(_windowY / 1.46)), Color(161, 6,6), "Be careful, deleting your save data will close the game.",15, FONT),
+		new UIText("RestartIt", Vector2f(_x, static_cast<float>(_windowY / 1.42)), Color(161, 6,6), "You will have to restart it.",15, FONT), }, 2);
 }
 
 void MenuManager::DeleteSaveDataMenu()
@@ -444,12 +451,12 @@ void MenuManager::DeleteSaveDataMenu()
 
 void MenuManager::Delete()
 {
-	//TODO
-	//Fonction pour delete la data Save
-
+	Player* _player = (Player*)(EntityManager::GetInstance().Get("Player"));
+	_player->DeleteSavePlayerStatsData();
+	_player->DeleteSavePurchasedItems();
 	DeleteSaveDataMenu();
-	MusicManager::GetInstance().Unpause();
-	GoToLobby();
+	_player->SetShouldSave(false);
+	window->close();
 }
 
 void MenuManager::InitLeaveLobby()

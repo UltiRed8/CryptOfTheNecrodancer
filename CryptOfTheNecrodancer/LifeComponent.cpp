@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "Player.h"
 #include "Item.h"
+#include <fstream>
 #define EMPTY "UI/HealthBarEmpty.png"
 #define FULL "UI/HealthBarFull.png"
 
