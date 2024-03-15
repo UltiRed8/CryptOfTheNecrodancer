@@ -240,6 +240,7 @@ void MenuManager::InitMenuPause()
 	function<void()> _credit = [this]() { MusicManager::GetInstance().Play(MUSIC_CREDIT, true, false); Get("GamePause")->Toggle(); ToggleCredits(); };
 	function<void()> _delete = [this]() { Get("GamePause")->Toggle(); DeleteSaveDataMenu(); };
 	function<void()> _callbackEchap = [this]() { Get("GamePause")->Toggle(); CloseMenu(); };
+	function<void()> _toggleFullscreen = [this]() { WindowManager::GetInstance().ToggleFullscreen(); };
 
 	float _x = static_cast<float>(window->getSize().x / 2);
 	unsigned int _windowY = window->getSize().y;
@@ -251,11 +252,17 @@ void MenuManager::InitMenuPause()
 		new UIButton("ReturnLobbyButton", Vector2f(_x, static_cast<float>(_windowY / 2.2)), WHITE_COLOR, CYAN_COLOR, "Quit to Lobby", 50, FONT, SOUND_EXIT, _callbackLobby),
 		new UIButton("Calibration", Vector2f(_x, static_cast<float>(_windowY / 1.9)), WHITE_COLOR, CYAN_COLOR, "Calibration Latency", 50, FONT, SOUND_START, _callbackCalibration),
 
-		new UIText("MusicPack", Vector2f(static_cast<float>(window->getSize().x / 2.3), static_cast<float>(_windowY / 1.65)), Color(172, 172,173), "Music Pack",50,FONT, true),
-		new UIText("MusicPackTextUpdate", Vector2f(static_cast<float>(window->getSize().x / 1.6), static_cast<float>(_windowY / 1.65)), Color(172, 172,173), "",50,FONT, true, MusicManager::GetInstance().GetMusicPackName()),
-		new UIButton("MusicPackMore", Vector2f(static_cast<float>(window->getSize().x / 1.47), static_cast<float>(_windowY / 1.66)), WHITE_COLOR, CYAN_COLOR, ">", 50, FONT, SOUND_UP, _more),
-		new UIButton("MusicPackLess", Vector2f(static_cast<float>(window->getSize().x / 1.75), static_cast<float>(_windowY / 1.66)), WHITE_COLOR, CYAN_COLOR, "<", 50, FONT, SOUND_DOWN, _less),
-		new UIText("MusicText", Vector2f(_x, static_cast<float>(_windowY / 1.48)), Color(161, 6,6), "For changing the Music Pack, you need to change zone",20,FONT, false),
+		new UIText("ToggleFullscreen", Vector2f(_x, static_cast<float>(_windowY / 1.65)), Color(172, 172,173), "Toggle Fullscreen",50,FONT, true),
+		new UIButton("CheckBoxFullscreen", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 1.65)), WHITE_COLOR, Color(0,139,139), {
+			new UIImage("CheckBoxImageM", Vector2f(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 1.65)), Vector2f(30.0f, 30.0f), EMPTYCHECKBOX),
+			new UIText("CheckBoxImageM", Vector2f(static_cast<float>(window->getSize().x / 1.425), static_cast<float>(_windowY / 1.65)), Color(0,139,139), "X", 40, FONT, false)
+		}, SOUND_TOGGLE, _toggleFullscreen, FloatRect(static_cast<float>(window->getSize().x / 1.45), static_cast<float>(_windowY / 1.65), 30.0f, 30.0f)),
+
+		new UIText("MusicPack", Vector2f(static_cast<float>(window->getSize().x / 2.3), static_cast<float>(_windowY / 1.45)), Color(172, 172,173), "Music Pack",50,FONT, true),
+		new UIText("MusicPackTextUpdate", Vector2f(static_cast<float>(window->getSize().x / 1.6), static_cast<float>(_windowY / 1.45)), Color(172, 172,173), "",50,FONT, true, MusicManager::GetInstance().GetMusicPackName()),
+		new UIButton("MusicPackMore", Vector2f(static_cast<float>(window->getSize().x / 1.47), static_cast<float>(_windowY / 1.45)), WHITE_COLOR, CYAN_COLOR, ">", 50, FONT, SOUND_UP, _more),
+		new UIButton("MusicPackLess", Vector2f(static_cast<float>(window->getSize().x / 1.75), static_cast<float>(_windowY / 1.45)), WHITE_COLOR, CYAN_COLOR, "<", 50, FONT, SOUND_DOWN, _less),
+		new UIText("MusicText", Vector2f(_x, static_cast<float>(_windowY / 1.325)), Color(161, 6,6), "For changing the Music Pack, you need to change zone",20,FONT, false),
 
 		new UIButton("credit", Vector2f(static_cast<float>(window->getSize().x / 1.3), static_cast<float>(_windowY / 1.2)), Color(119,136,153), WHITE_COLOR, {
 			new UIImage("credit", Vector2f(static_cast<float>(window->getSize().x / 1.3), static_cast<float>(_windowY / 1.2)), Vector2f(150.0f, 48.0f), CREDIT_BUTTON),

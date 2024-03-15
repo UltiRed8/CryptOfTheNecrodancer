@@ -19,8 +19,17 @@ class WindowManager : public Singleton<WindowManager>
 	int currentShader;
 	Vector2f currentPosition;
 	Vector2f direction;
+	bool fullscreen;
 
 public:
+	void ToggleFullscreen()
+	{
+		CreateWindow(!fullscreen);
+	}
+	bool IsInFullscreen() const
+	{
+		return fullscreen;
+	}
 	Shader* GetShader() const
 	{
 		return shader;
@@ -39,11 +48,11 @@ public:
 	~WindowManager();
 
 private:
-	void CreateWindow();
 	void Init();
 	void InitShaders();
 
 public:
+	void CreateWindow(const bool _fullscreen);
 	void LoadShader(const int _id);
 	void Rename(const string& _newWindowName);
 	void Shake(const Vector2f& _direction = Vector2f(0.0f, 0.0f));

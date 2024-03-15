@@ -2,12 +2,14 @@
 #include "Macro.h"
 #include "TimerManager.h"
 #include "InputManager.h"
+#include "CameraManager.h"
 
 WindowManager::WindowManager()
 {
+	window = nullptr;
 	shader = nullptr;
 	isShakable = new bool(true);
-	CreateWindow();
+	Init();
 	currentShader = 0;
 }
 
@@ -20,16 +22,25 @@ WindowManager::~WindowManager()
 	}
 }
 
-void WindowManager::CreateWindow()
+void WindowManager::CreateWindow(const bool _fullscreen)
 {
-	window = new RenderWindow(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer", Style::Close/* | Style::Fullscreen*/);
+	if (window)
+	{
+		window->close();
+		delete window;
+	}
+	int _style = Style::Close;
+	_style = _fullscreen ? _style | Style::Fullscreen : _style;
+	fullscreen = _fullscreen;
+	window = new RenderWindow(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer", _style);
 	baseWindowPosition = window->getPosition();
 	currentPosition = Vector2f(baseWindowPosition);
-	Init();
+	
 }
 
 void WindowManager::Init()
 {
+	CreateWindow(false);
 	InitShaders();
 }
 
@@ -105,6 +116,12 @@ void WindowManager::Rename(const string& _newWindowName)
 void WindowManager::Shake(const Vector2f& _direction)
 {
 	if (!*isShakable) return;
+
+	if (IsInFullscreen())
+	{
+		CameraManager::GetInstance().Shake(_direction);
+		return;
+	}
 
 	if (_direction == Vector2f(0.0f, 0.0f))
 	{
