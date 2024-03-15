@@ -121,7 +121,6 @@ public:
 public :
 	void SavePlayerStatsData();
 	void DeleteSavePlayerStatsData();
-	void SavePurchasedItems();
 	void DeleteSavePurchasedItems();
 	void Slide();
 	bool ResetChainMultiplier();

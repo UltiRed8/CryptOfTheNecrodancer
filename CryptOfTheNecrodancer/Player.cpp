@@ -25,6 +25,7 @@ using namespace std;
 
 #define SAVE_DATA "Assets/Saved/PlayerStats.txt"
 #define SAVE_PURCHASED "Assets/Saved/PurchasedItems.txt"
+#define SAVE_PURCHASED_DEFAULT "Assets/Saved/DefaultItems.txt"
 
 #define PATH_PLAYER "Entities/PlayerSprite.png"
 #define PATH_SHADOW "Entities/Shadow.png"
@@ -157,7 +158,6 @@ Player::~Player()
 	if (shouldSave)
 	{
 		SavePlayerStatsData();
-		SavePurchasedItems();
 	}
 	delete chainMultiplier;
 	delete ressources;
@@ -196,23 +196,16 @@ void Player::DeleteSavePlayerStatsData()
 	remove(SAVE_DATA);
 }
 
-void Player::SavePurchasedItems()
-{
-	ofstream _file(SAVE_PURCHASED);
-	if (_file)
-	{
-		//sauvegarder les achats
-		//_file << item;
-	}
-	else
-	{
-		cerr << "Impossible d'ouvrir le fichier pour sauvegarder." << endl;
-	}
-}
-
 void Player::DeleteSavePurchasedItems()
 {
-	remove(SAVE_PURCHASED);
+	ifstream _in = ifstream(SAVE_PURCHASED_DEFAULT);
+	ofstream _out = ofstream(SAVE_PURCHASED);
+
+	string _line;
+	while (getline(_in, _line))
+	{
+		_out << _line << endl;
+	}
 }	
 
 void Player::Slide()

@@ -443,6 +443,8 @@ void Generator::GenerateShopRoom()
 		shopTiles.push_back(_entity);
 	}
 
+	ShopStand(_shopFloors[12 + 8]->GetPosition(), STT_SHOPKEEPER);
+
 	floors.insert(floors.end(), _shopFloors.begin(), _shopFloors.end());
 
 	shopWalls = PlaceWallsAroundFloor(_shopFloors, 1, false, WT_SHOP);
