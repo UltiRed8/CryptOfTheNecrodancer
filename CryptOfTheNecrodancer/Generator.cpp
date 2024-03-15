@@ -180,8 +180,10 @@ void Generator::GenerateLobby()
 		stairs[0]->SetZoneToLoad(Z_ZONE1);
 		stairs[1]->SetText("Zone 2");
 		stairs[1]->SetZoneToLoad(Z_ZONE2);
-		stairs[2]->SetText("---Paid DLC---\nOnly for 9.99$\nDownload NOW!!");
+		stairs[2]->SetText("Zone 3\n(Soon)");
 		stairs[2]->SetLocked(LT_FORCE);
+		stairs[3]->SetText("---Paid DLC---\nOnly for 9.99$\nDownload NOW!!");
+		stairs[3]->SetLocked(LT_FORCE);
 
 		SetAllFloorOriginColor();
 		UpdateDoors();
