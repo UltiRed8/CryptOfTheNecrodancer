@@ -121,7 +121,6 @@ public:
 	~Player();
 
 public :
-	void ResetInventory();
 	void SavePlayerStatsData();
 	void DeleteSavePlayerStatsData();
 	void DeleteSavePurchasedItems();

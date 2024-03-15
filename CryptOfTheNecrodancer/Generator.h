@@ -54,10 +54,6 @@ class Generator
 	bool* discoModeEnabled;
 
 public:
-	vector<Item*>& GetItems()
-	{
-		return items;
-	}
 	vector<Vector2f> GetAllWallsAndFloorPositions() const
 	{
 		vector<Vector2f> _positions = GetAllPositions(floors);

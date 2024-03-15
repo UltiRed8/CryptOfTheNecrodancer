@@ -126,10 +126,9 @@ Slot::~Slot()
 vector<Drawable*> Slot::GetDrawables()
 {
 	vector<Drawable*> _drawables;
-	if (IsToRemove()) return _drawables;
 
 	_drawables.push_back(shape);
-	if (currentItem)
+	if (isVisible && currentItem)
 	{
 		item->GetShape()->setTexture(currentItem->GetVisuals()->getTexture());
 	}

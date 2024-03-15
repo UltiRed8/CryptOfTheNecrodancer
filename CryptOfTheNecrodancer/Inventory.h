@@ -1,5 +1,7 @@
 #pragma once
+
 #include <iostream>
+
 #include "Menu.h"
 #include "Macro.h"
 #include "Items.h"

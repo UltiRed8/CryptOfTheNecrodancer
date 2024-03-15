@@ -214,7 +214,9 @@ void MenuManager::InitMenuPause()
 			},
 			{Event::KeyPressed, Keyboard::Escape}),
 		ActionData("Select", [this]()
-			{ MenuManager::GetInstance().ClickAction(); },
+			{
+				MenuManager::GetInstance().ClickAction();
+			},
 			{Event::MouseButtonPressed, Mouse::Left})});
 
 	function<void()> _callbackContinue = [this]() {
@@ -483,8 +485,8 @@ void MenuManager::InitMenuLatency()
 	float _x = static_cast<float>(window->getSize().x / 2);
 	unsigned int _windowY = window->getSize().y;
 
-	function<void()> _calibrationUp = [this]() { MusicManager::GetInstance().SetAcceptDelay(10.0f); dynamic_cast<UIText*>(Get("LatencyMenu")->Get("CalibTextUpdate"))->GetText()->setString(to_string(*MusicManager::GetInstance().GetAcceptDelay()).substr(0, to_string(*MusicManager::GetInstance().GetAcceptDelay()).find_first_of('.'))); }; //TODO
-	function<void()> _calibrationDown = [this]() { MusicManager::GetInstance().SetAcceptDelay(-10.0f); dynamic_cast<UIText*>(Get("LatencyMenu")->Get("CalibTextUpdate"))->GetText()->setString(to_string(*MusicManager::GetInstance().GetAcceptDelay()).substr(0, to_string(*MusicManager::GetInstance().GetAcceptDelay()).find_first_of('.'))); }; //TODO
+	function<void()> _calibrationUp = [this]() { MusicManager::GetInstance().SetAcceptDelay(10.0f); dynamic_cast<UIText*>(Get("LatencyMenu")->Get("CalibTextUpdate"))->GetText()->setString(to_string(*MusicManager::GetInstance().GetAcceptDelay()).substr(0, to_string(*MusicManager::GetInstance().GetAcceptDelay()).find_first_of('.'))); };
+	function<void()> _calibrationDown = [this]() { MusicManager::GetInstance().SetAcceptDelay(-10.0f); dynamic_cast<UIText*>(Get("LatencyMenu")->Get("CalibTextUpdate"))->GetText()->setString(to_string(*MusicManager::GetInstance().GetAcceptDelay()).substr(0, to_string(*MusicManager::GetInstance().GetAcceptDelay()).find_first_of('.'))); };
 	function<void()> _close = [this]() { LatencyMenu(); Get("GamePause")->Toggle(); };
 	function<void()> _calibration = [this]() { Get("Calibration")->Open(); LatencyMenu(); ToggleCalibration(); };
 	
@@ -545,7 +547,10 @@ void MenuManager::WarningSeizure()
 {
 	unsigned int _windowY = window->getSize().y;
 
-	function<void()> _skip = [&]() { ToggleWarningSeizure(); };
+	function<void()> _skip = [&]() {
+		ToggleWarningSeizure();
+		ToggleKeyboard();
+	};
 	const Vector2f& _sizeWindow = Vector2f((float)(SCREEN_WIDTH), (float)(SCREEN_HEIGHT));
 
 	new Menu("WarningSeizure", { new UIButton("Warning", Vector2f(0.0f, 0.0f), Color::White, Color::White, WARNING_MENU, _sizeWindow, "", _skip), }, 4);
@@ -636,7 +641,6 @@ void MenuManager::InitCalibration()
 void MenuManager::ToggleWarningSeizure()
 {
 	Get("WarningSeizure")->Toggle();
-	ToggleKeyboard();
 }
 
 void MenuManager::ToggleEpilepsyMenu()

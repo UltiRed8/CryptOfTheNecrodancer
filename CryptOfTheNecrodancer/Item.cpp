@@ -175,12 +175,12 @@ bool Item::PickUp()
 	_slot->SetVisible();
 
 	SetInInventory(true);
-	EraseElement(Map::GetInstance().GetGenerator()->GetItems(), this);
 
 	if (_slot->GetType() == ST_ATTACK)
 	{
 		_player->UpdateDamageZone();
 	}
+
 	return true;
 }
 

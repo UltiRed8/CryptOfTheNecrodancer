@@ -41,6 +41,20 @@ Generator::Generator(bool* _discoModeEnabled)
 	zoneFileName = Map::GetInstance().GetZoneFileName();
 
 	generationIndex = -1;
+
+	if (Player* _player = (Player*)EntityManager::GetInstance().Get("Player"))
+	{
+		if (Inventory* _inventory = _player->GetInventory())
+		{
+			for (Slot* _slot : _inventory->GetSlots())
+			{
+				if (_slot->currentItem)
+				{
+					items.push_back(_slot->currentItem);
+				}
+			}
+		}
+	}
 }
 
 Generator::~Generator()
@@ -77,7 +91,10 @@ Generator::~Generator()
 
 	for (Item* _item : items)
 	{
-		_item->Destroy();
+		if (!_item->IsInInventory())
+		{
+			_item->Destroy();
+		}
 	}
 }
 
@@ -126,7 +143,7 @@ void Generator::GenerateLobby()
 				int _index = 0;
 				for (int _i = 0; _i < 27; _i++)
 				{
-					items.push_back(new Weapon(static_cast<WeaponType>(_i), STRING_ID("Item"), _position + Vector2f((const float)(_index * 2), (const float)_posY) * TILE_SIZE, false, false));
+					items.push_back(new Weapon(static_cast<WeaponType>(_i), STRING_ID("Weapon"), _position + Vector2f((const float)(_index * 2), (const float)_posY) * TILE_SIZE, false, false));
 					_index++;
 					if (_index >= 7)
 					{
@@ -195,6 +212,7 @@ void Generator::GenerateChest(const int _chestCount)
 	loadingText->GetText()->setString("Generating chests");
 	for (int _index = 0; _index < _chestCount; _index++)
 	{
+		if (spawnablePositions.empty()) return;
 		Vector2f _position = spawnablePositions[Random((int)spawnablePositions.size() - 1, 0)];
 		EraseElement(spawnablePositions, _position);
 		others.push_back(new Chest(_position));

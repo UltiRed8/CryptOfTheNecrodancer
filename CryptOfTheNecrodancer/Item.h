@@ -373,6 +373,7 @@ public:
 	SlotType GetSlotTypeWithArmorType(const ArmorType& _aType)
 	{
 		vector<SlotType> _tab;
+
 		for (int _i = 0; _i < 2; _i++) _tab.push_back(ST_HEAD);
 		for (int _i = 0; _i < 4; _i++) _tab.push_back(ST_BODY);
 		for (int _i = 0; _i < 2; _i++) _tab.push_back(ST_FEET);
@@ -469,8 +470,10 @@ public:
 	{
 		callback = [&]() {
 			Player* _player = (Player*)(EntityManager::GetInstance().Get("Player"));
-			new Bomb(_player->GetPosition()); _player->GetInventory()->GetSlot(ST_BOMB)->SetItem(nullptr); Destroy();
-			};
+			new Bomb(_player->GetPosition());
+			_player->GetInventory()->GetSlot(ST_BOMB)->SetItem(nullptr);
+			Destroy();
+		};
 	}
 
 	BombItem(const Vector2f& _position, const bool _inInventory) : Item(ST_BOMB, STRING_ID("Bomb"), _position, _inInventory)

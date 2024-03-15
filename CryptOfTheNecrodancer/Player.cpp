@@ -194,14 +194,6 @@ bool Player::ResetChainMultiplier()
 	return false;
 }
 
-void Player::ResetInventory()
-{
-	inventory->Close();
-	delete inventory;
-	inventory = new Inventory();
-	inventory->Open();
-}
-
 void Player::SavePlayerStatsData()
 {
 	ofstream _file(SAVE_DATA);
@@ -278,6 +270,30 @@ void Player::InitInput()
 			}; }, {Event::KeyPressed, Keyboard::Left}),
 
 		  ActionData("GaucheR", [this]() { alreadyMoved = false; GetComponent<MovementComponent>()->SetDirection(Vector2i(0,0)); }, {Event::KeyReleased, Keyboard::Left}),
+	});
+	new ActionMap("Inventory", {
+		ActionData("UseBomb", [this]() {
+			if (Map::GetInstance().IsInLobby()) return;
+			if (Item* _item = inventory->GetSlot(ST_BOMB)->GetItem())
+			{
+				_item->ExecuteCallback();
+			}
+		}, { Event::KeyPressed, Keyboard::RShift }),
+		ActionData("UseFood1", [this]() {
+			if (Item* _item = inventory->GetSlot(ST_FOOD_TOP)->GetItem())
+			{
+				_item->ExecuteCallback();
+			}
+		}, { Event::KeyPressed, Keyboard::Numpad1 }),
+		ActionData("UseFood2", [this]() {
+			if (Item* _item = inventory->GetSlot(ST_FOOD_DOWN)->GetItem())
+			{
+				_item->ExecuteCallback();
+			}
+		}, { Event::KeyPressed, Keyboard::Numpad0 }),
+		ActionData("debug", [this]() {
+			Map::GetInstance().OpenPrepared();
+		}, { Event::KeyPressed, Keyboard::Num0 }),
 	});
 }
 
