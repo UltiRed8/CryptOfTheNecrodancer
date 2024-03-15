@@ -6,7 +6,6 @@ class Chest : public Placeable
 {
 public:
 	Chest(const Vector2f& _pos);
-	~Chest();
 
 public:
 	Item* CreateRandomItem();

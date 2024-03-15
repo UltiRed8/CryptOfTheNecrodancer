@@ -47,7 +47,7 @@ public:
 	}
 
 	Timer(const string& _id, const function<void()>& _callback, const Time& _duration,
-		  const int _repeat = -1, const bool _autoDestroy = false);
+		  const int _repeat = -1, const bool _autoDestroy = false, const bool _register = true);
 
 private:
 	virtual void Register() override;

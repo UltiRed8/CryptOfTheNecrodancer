@@ -1,7 +1,7 @@
 #include "Timer.h"
 #include "TimerManager.h"
 
-Timer::Timer(const string& _id, const function<void()>& _callback, const Time& _duration, const int _repeat, const bool _autoDestroy) : IManagable(_id)
+Timer::Timer(const string& _id, const function<void()>& _callback, const Time& _duration, const int _repeat, const bool _autoDestroy, const bool _register) : IManagable(_id)
 {
 	callback = _callback;
 	currentDuration = 0.0f;
@@ -9,7 +9,10 @@ Timer::Timer(const string& _id, const function<void()>& _callback, const Time& _
 	repeat = _repeat;
 	autoDestroy = _autoDestroy;
 
-	Register();
+	if (_register)
+	{
+		Register();
+	}
 }
 
 void Timer::Register()

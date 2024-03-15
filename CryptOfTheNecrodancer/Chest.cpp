@@ -12,11 +12,6 @@ Chest::Chest(const Vector2f& _pos) : Placeable(STRING_ID("Chest"), PATH_CHEST, _
 	zIndex = 2;
 }
 
-Chest::~Chest()
-{
-	//EraseElement(Map::GetInstance().GetGenerator()->GetOthers(),_entity);
-}
-
 Item* Chest::CreateRandomItem()
 {
 	const int _type = Random(6, 0);
@@ -43,7 +38,7 @@ Item* Chest::CreateRandomItem()
 
 	const vector<int>& _path = _items[_type];
 	
-	const int _itemType = _path[Random(_path.size() - 1, 0)];
+	const int _itemType = _path[Random((const int)_path.size() - 1, 0)];
 
 	vector<function<Item* ()>> _actions = {
 		[&]() { return new Pickaxe((PickaxeType)_itemType,STRING_ID("Pickaxe"),GetPosition(), false, false); },

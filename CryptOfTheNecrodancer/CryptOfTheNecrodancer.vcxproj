@@ -183,6 +183,7 @@
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="RythmIndicator.cpp" />
     <ClCompile Include="Saveable.cpp" />
+    <ClCompile Include="ShopStand.cpp" />
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="Slime.cpp" />
     <ClCompile Include="SoundData.cpp" />
@@ -260,6 +261,7 @@
     <ClInclude Include="Room.h" />
     <ClInclude Include="RythmIndicator.h" />
     <ClInclude Include="Saveable.h" />
+    <ClInclude Include="ShopStand.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="Slime.h" />

@@ -18,8 +18,11 @@
 #define SOUND_SHOP_BUY "Assets/Sounds/sfx_pickup_purchase.ogg"
 #define SOUND_SHOP_ERROR "Assets/Sounds/sfx_error_ST.ogg"
 
+#define PATH_SAVE "Assets/Saved/PurchasedItems.txt"
+
 Item::Item(const SlotType& _type, const string& _id, const Vector2f& _position, const bool _isInInventory) : Entity(_id, "", _position)
 {
+	id = 0;
 	inShop = true;
 	isPickable = false;
 	visuals = new RectangleShape(TILE_SIZE);
@@ -41,7 +44,7 @@ Item::Item(const SlotType& _type, const string& _id, const Vector2f& _position, 
 		{
 			animationValue = 0.0f;
 		}
-	}, seconds(0.1f), -1, false);
+	}, seconds(0.1f), -1, false, false);
 	text = nullptr;
 }
 
@@ -63,8 +66,7 @@ void Item::UpdateText()
 
 Item::~Item()
 {
-	animationTimer->Pause();
-	animationTimer->Destroy();
+	delete animationTimer;
 	if (text)
 	{
 		delete text;
@@ -74,6 +76,12 @@ Item::~Item()
 void Item::UpdateTexture()
 {
 	TextureManager::GetInstance().Load(visuals, GetTexturePath());
+}
+
+void Item::SaveItem()
+{
+	ofstream _out = ofstream(PATH_SAVE, ios_base::app);
+	_out << id << endl;
 }
 
 bool Item::PickUp()
@@ -88,7 +96,7 @@ bool Item::PickUp()
 			{
 				*_player->GetRessources()->GetDiamonds() -= stats.diamondPrice;
 				SoundManager::GetInstance().Play(SOUND_SHOP_BUY);
-				// TODO save txt achat
+				SaveItem();
 				if (isPickable)
 				{
 					ExecuteCallback();
@@ -177,6 +185,7 @@ Armor::Armor(const ArmorType& _aType, const string& _id, const Vector2f& _positi
 {
 	inShop = _inShop;
 	armorType = _aType;
+	id = armorType + 200;
 	stats = UpdateStat();
 	UpdateTexture();
 	if (armorType == AT_HEAD_MINERSCAP)

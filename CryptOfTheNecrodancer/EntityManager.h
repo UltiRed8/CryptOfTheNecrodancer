@@ -10,6 +10,7 @@ class EntityManager : public Singleton<EntityManager>, public IManager<string, E
 {
 public:
 	void Update();
+	void ItemUpdate();
 	bool IsAvailable(const Vector2f& _position, const Vector2f& _size);
 	vector<Drawable*> GetDrawables() const;
 	template <typename Type>

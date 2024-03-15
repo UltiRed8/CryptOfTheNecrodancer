@@ -346,7 +346,7 @@ void Player::Update()
 	{
 		Shape* _shape = _zone->shape;
 		_shape->setPosition(GetPosition() + TILE_SIZE / 2.0f);
-		_shape->setRotation(_rotation);
+		_shape->setRotation((const float) _rotation);
 	}
 
 	pickupCooldown = false;
@@ -463,7 +463,7 @@ void Player::AddHeart(const int _amount)
 {
 	// Get Life Component
 	LifeComponent* _lifeComp = GetComponent<LifeComponent>();
-	const int _lifeBefore = _lifeComp->GetMaxHealth();
+	const int _lifeBefore = (const int) _lifeComp->GetMaxHealth();
 	_lifeComp->SetMaxHealth(_lifeBefore + _amount * 100.0f);
 	_lifeComp->SetCurrentHealth(_amount * 100.0f);
 	const float _life = _lifeComp->GetMaxHealth();

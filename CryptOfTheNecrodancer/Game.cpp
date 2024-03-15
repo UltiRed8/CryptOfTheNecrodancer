@@ -57,6 +57,7 @@ void Game::Update()
 	{
 		delta += TimerManager::GetInstance().GetDeltaTime();
 		WindowManager::GetInstance().Update();
+		EntityManager::GetInstance().ItemUpdate();
 		MusicManager::GetInstance().Update();
 		TimerManager::GetInstance().Update();
 		InputManager::GetInstance().Update();

@@ -118,11 +118,18 @@ class Item : public Entity
 	Text* text;
 
 protected:
+	int id;
 	bool inShop;
 	SlotType stype;
 	bool isPickable;
 	ItemStats stats;
 	function<void()> callback;
+
+public:
+	Timer* GetAnimation() const
+	{
+		return animationTimer;
+	}
 
 public:
 	Item(const SlotType& _type, const string& _id, const Vector2f& _position,const bool _isInInventory = false);
@@ -132,6 +139,7 @@ protected:
 	void UpdateTexture();
 
 public:
+	void SaveItem();
 	void UpdateText();
 	SlotType GetSlotType() const
 	{
@@ -207,6 +215,7 @@ public:
 	{
 		inShop = _inShop;
 		weaponType = _wType;
+		id = weaponType;
 		stats = UpdateStat();
 		UpdateTexture();
 		UpdateText();
@@ -314,6 +323,7 @@ public:
 	{
 		inShop = _inShop;
 		pickaxeType = _pType;
+		id = pickaxeType + 100;
 		stats = UpdateStat();
 		UpdateTexture();
 		UpdateText();
@@ -484,6 +494,7 @@ public:
 	{
 		inShop = _inShop;
 		consomableType = _consomableType;
+		id = consomableType + 300;
 		InitRegen();
 		InitCallback();
 		UpdateTexture();
@@ -504,7 +515,7 @@ public:
 	{
 		callback = [this]() {
 			Player* _player = (Player*)(EntityManager::GetInstance().Get("Player"));
-			_player->GetComponent<LifeComponent>()->ChangeHealth(regen);
+			_player->GetComponent<LifeComponent>()->ChangeHealth((const float)regen);
 			SoundManager::GetInstance().Play(SOUND_FOOD_USED);
 			_player->GetInventory()->GetSlot(stype)->SetItem(nullptr);
 			Destroy();

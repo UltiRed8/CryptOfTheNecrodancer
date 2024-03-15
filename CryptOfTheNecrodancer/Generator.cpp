@@ -8,6 +8,7 @@
 #include "Trap.h"
 #include "Ice.h"
 #include "HotCoals.h"
+#include "ShopStand.h"
 
 #define PATH_SHOP_TILE "Dungeons/ShopTile.png"
 #define PATH_UPGRADE_TILE "Dungeons/UpgradeTile.png"
@@ -116,13 +117,8 @@ void Generator::GenerateLobby()
 			{ '1', [this](const Vector2f& _position) { others.push_back(new Tile(PATH_UPGRADE_TILE, _position)); }},
 			{ 'P', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); EntityManager::GetInstance().Get("Player")->GetShape()->setPosition(_position); }},
 			{ 'T', [this](const Vector2f& _position) { walls.push_back(new Wall(_position, WT_SHOP, zoneFileName)); others.push_back(new Torch(_position)); }},
-			{ 'O', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Weapon(WT_SPEAR, STRING_ID("Shovel1"),_position)); }},
-			{ 'N', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Weapon(WT_STAFF, STRING_ID("Dagger1"), _position)); }},
-			{ 'L', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Armor(AT_HEAD_MINERSCAP,STRING_ID("Armor1"),_position)); }},
-			{ 'H', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Pickaxe(PT_PICKAXE, STRING_ID("Shovel"),_position)); }},
-			{ 'W', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Weapon(WT_BROADSWORD, STRING_ID("Dagger"), _position)); }},
-			{ 'A', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Armor(AT_BODY_HEAVYPLATE,STRING_ID("Armor"),_position)); }},
-			{ 'C', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); items.push_back(new Pickable(PIT_HEART,STRING_ID("Heart"),_position)); }},
+			{ 'H', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); ShopStand(_position, STT_HEARTS); }},
+			{ 'I', [this](const Vector2f& _position) { floors.push_back(new Tile(PATH_FLOOR, _position)); ShopStand({ _position, _position + Vector2f(12.0f, 0.0f) * TILE_SIZE }, STT_LOBBY);}},
 			{ '8', [this](const Vector2f& _position) {
 				items.push_back(new Pickable(PIT_COIN, STRING_ID("Item"), _position + Vector2f(0.0f, 0.0f) * TILE_SIZE));
 				items.push_back(new Pickable(PIT_DIAMOND, STRING_ID("Item"), _position + Vector2f(1.0f, 0.0f) * TILE_SIZE));

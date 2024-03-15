@@ -1,14 +1,29 @@
 #include "EntityManager.h"
 #include "AnimationComponent.h"
+#include "Item.h"
 
 void EntityManager::Update()
 {
-	vector<Entity*> _entities = GetAllValues();
 	for (Entity* _entity : GetAllValues())
 	{
 		_entity->Update();
 	}
 	GarbageCollector();
+}
+
+void EntityManager::ItemUpdate()
+{
+	float _delta = TimerManager::GetInstance().GetDeltaTime();
+	for (Entity* _entity : GetAllValues())
+	{
+		if (_entity->GetType() == ET_ITEM)
+		{
+			if (Item* _item = (Item*)_entity)
+			{
+				_item->GetAnimation()->Update(_delta);
+			}
+		}
+	}
 }
 
 bool EntityManager::IsAvailable(const Vector2f& _position, const Vector2f& _size)
