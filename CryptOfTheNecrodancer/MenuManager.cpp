@@ -281,8 +281,6 @@ void MenuManager::InitMenuPause()
 void MenuManager::GoToLobby()
 {
 	if (Map::GetInstance().GetCurrentZone() == Z_LOBBY)	return;
-	Player* _player = dynamic_cast<Player*>(EntityManager::GetInstance().Get("Player"));
-	_player->ResetLife();
 	Map::GetInstance().Open(Z_LOBBY);
 }
 
