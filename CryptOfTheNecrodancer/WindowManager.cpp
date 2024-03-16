@@ -24,18 +24,19 @@ WindowManager::~WindowManager()
 
 void WindowManager::CreateWindow(const bool _fullscreen)
 {
-	if (window)
-	{
-		window->close();
-		delete window;
-	}
 	int _style = Style::Close;
 	_style = _fullscreen ? _style | Style::Fullscreen : _style;
 	fullscreen = _fullscreen;
-	window = new RenderWindow(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer", _style);
+	if (window)
+	{
+		window->create(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer", _style);
+	}
+	else
+	{
+		window = new RenderWindow(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer", _style);
+	}
 	baseWindowPosition = window->getPosition();
 	currentPosition = Vector2f(baseWindowPosition);
-	
 }
 
 void WindowManager::Init()
