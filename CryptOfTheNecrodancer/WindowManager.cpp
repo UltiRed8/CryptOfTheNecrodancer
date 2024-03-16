@@ -128,8 +128,8 @@ void WindowManager::Shake(const Vector2f& _direction)
 	{
 		const int _rotation = Random(360, 0);
 
-		const float _dirX = cos(_rotation);
-		const float _dirY = sin(_rotation);
+		const float _dirX = (const float) cos(_rotation);
+		const float _dirY = (const float) sin(_rotation);
 
 		direction = Vector2f(_dirX, _dirY);
 	}
@@ -154,14 +154,14 @@ void WindowManager::Update()
 		{
 			if ((direction.x > 0.0f && currentPosition.x < baseWindowPosition.x) || (direction.x < 0.0f && currentPosition.x > baseWindowPosition.x))
 			{
-				currentPosition.x = baseWindowPosition.x;
+				currentPosition.x = (const float) baseWindowPosition.x;
 			}
 		}
 		if (currentPosition.y != baseWindowPosition.y)
 		{
 			if ((direction.y > 0.0f && currentPosition.y < baseWindowPosition.y) || (direction.y < 0.0f && currentPosition.y > baseWindowPosition.y))
 			{
-				currentPosition.y = baseWindowPosition.y;
+				currentPosition.y = (const float) baseWindowPosition.y;
 			}
 		}
 

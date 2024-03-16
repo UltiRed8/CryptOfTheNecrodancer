@@ -19,8 +19,8 @@ void CameraManager::Shake(const Vector2f& _direction)
 	{
 		const int _rotation = Random(360, 0);
 
-		const float _dirX = cos(_rotation);
-		const float _dirY = sin(_rotation);
+		const float _dirX = (const float) cos(_rotation);
+		const float _dirY = (const float) sin(_rotation);
 
 		direction = Vector2f(_dirX, _dirY);
 	}

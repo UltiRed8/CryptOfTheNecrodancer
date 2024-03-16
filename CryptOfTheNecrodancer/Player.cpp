@@ -311,9 +311,9 @@ void Player::InitInput()
 				_item->ExecuteCallback();
 			}
 		}, { Event::KeyPressed, Keyboard::Numpad0 }),
-		ActionData("debug", [this]() {
+		/*ActionData("debug", [this]() {
 			Map::GetInstance().OpenPrepared();
-		}, { Event::KeyPressed, Keyboard::Num0 }),
+		}, { Event::KeyPressed, Keyboard::Num0 }),*/
 	});
 }
 
@@ -512,11 +512,11 @@ bool Player::TryToAttack()
 										{
 											if (_weapon->weaponType == WT_STAFF || _weapon->weaponType == WT_STAFF_TITANIUM)
 											{
-												new Swipe(20, _stats.swipePath, _stats.swipeAmount, _stats.swipeRotation);
+												new Swipe(20, _stats.swipePath, _stats.swipeAmount);
 											}
 											else
 											{
-												new Swipe(_stats.swipePath, _stats.swipeAmount, _stats.swipeRotation);
+												new Swipe(_stats.swipePath, _stats.swipeAmount, 2, _stats.swipeRotation);
 											}
 										}
 										if (GetComponent<DamageComponent>()->Attack(_entity))

@@ -186,6 +186,10 @@ void Map::QuickRestart()
 		"zone3_",
 	};
 	zoneFileName = _zones[preparedZone] + to_string(currentLevel);
+	if (preparedZone == Z_ZONE3)
+	{
+		zoneFileName += "_" + zone3TextureFile;
+	}
 	GenerateDungeon();
 }
 

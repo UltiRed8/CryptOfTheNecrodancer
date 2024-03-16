@@ -350,11 +350,11 @@ public:
 	virtual ItemStats UpdateStat() override
 	{
 		const ItemStats _values[] = {
-			ItemStats(0.0f, 0.0f, 2, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 2, 60, "Pickaxe.png", 1),
-			ItemStats(0.0f, 0.0f, 1, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 0, 10, "Shovel.png", 1),
-			ItemStats(0.0f, 0.0f, 1, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, false, 1, 40, "ShovelCourage.png", 1),
-			ItemStats(0.0f, 0.0f, 2, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 3, 45, "ShovelCrystal.png", 1),
-			ItemStats(0.0f, 0.0f, 1, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, false, 2, 55, "ShovelTitanium.png", 1),
+			ItemStats(0.0f, 0.0f, 2, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 2, 60, "Pickaxe.png", 1, false),
+			ItemStats(0.0f, 0.0f, 1, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 0, 10, "Shovel.png", 1, false),
+			ItemStats(0.0f, 0.0f, 1, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, false, 1, 40, "ShovelCourage.png", 1, false),
+			ItemStats(0.0f, 0.0f, 2, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, true, 3, 45, "ShovelCrystal.png", 1, false),
+			ItemStats(0.0f, 0.0f, 1, { InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f ), true) }, false, 2, 55, "ShovelTitanium.png", 1, false),
 		};
 		return _values[pickaxeType];
 	}
