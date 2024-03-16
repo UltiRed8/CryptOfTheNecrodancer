@@ -213,7 +213,9 @@ void Player::SavePlayerStatsData()
 
 void Player::DeleteSavePlayerStatsData()
 {
-	remove(SAVE_DATA);
+	ofstream _out = ofstream(SAVE_DATA);
+
+	_out << 0 << endl << 300;
 }
 
 void Player::DeleteSavePurchasedItems()

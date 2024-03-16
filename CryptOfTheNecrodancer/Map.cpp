@@ -98,16 +98,65 @@ void Map::LoadMap()
 void Map::GenerateDungeon()
 {
 	ClearGenerator();
-	generator->Generate(GenerationSettings(
-		6, // RoomsAmount
-		3, // WallsWidth
-		1, // Diamonds
-		2, // DiamondsInWalls
-		2, // Chests
-		10, // Enemies
-		5, // Traps
-		true // PlaceTorches
-	));
+	generator->Generate(CreateGenerationSettingsByZoneName());
+}
+
+GenerationSettings Map::CreateGenerationSettingsByZoneName()
+{
+	vector<GenerationSettings> _generationSettings = { GenerationSettings({
+			[this](const Vector2f& _position) { return new NormalBat(_position); },
+			[this](const Vector2f& _position) { return new GreenSlime(_position); },
+			[this](const Vector2f& _position) { return new BlueSlime(_position); },
+			[this](const Vector2f& _position) { return new NormalSkeleton(_position); },
+			},
+			6, // RoomsAmount
+			3, // WallsWidth
+			1, // Diamonds
+			2, // DiamondsInWalls
+			2, // Chests
+			10, // Enemies
+			5, // Traps	
+			true), 
+
+			GenerationSettings({
+			[this](const Vector2f& _position) { return new NormalBat(_position); },
+			[this](const Vector2f& _position) { return new RedBat(_position); },
+			[this](const Vector2f& _position) { return new GreenSlime(_position); },
+			[this](const Vector2f& _position) { return new BlueSlime(_position); },
+			[this](const Vector2f& _position) { return new OrangeSlime(_position); },
+			[this](const Vector2f& _position) { return new NormalSkeleton(_position); },
+			[this](const Vector2f& _position) { return new YellowSkeleton(_position); },
+			[this](const Vector2f& _position) { return new Wraith(_position); },
+			},
+			8, // RoomsAmount
+			3, // WallsWidth
+			1, // Diamonds
+			2, // DiamondsInWalls
+			2, // Chests
+			15, // Enemies
+			10, // Traps
+			true), 
+			
+			GenerationSettings({
+			[this](const Vector2f& _position) { return new RedBat(_position); },
+			[this](const Vector2f& _position) { return new BlackBat(_position); },
+			[this](const Vector2f& _position) { return new BlueSlime(_position); },
+			[this](const Vector2f& _position) { return new OrangeSlime(_position); },
+			[this](const Vector2f& _position) { return new YellowSkeleton(_position); },
+			[this](const Vector2f& _position) { return new BlackSkeleton(_position); },
+			[this](const Vector2f& _position) { return new Wraith(_position); },
+			},
+			10, // RoomsAmount
+			3, // WallsWidth
+			3, // Diamonds
+			4, // DiamondsInWalls
+			4, // Chests
+			20, // Enemies
+			20, // Traps
+			true )
+	};
+
+	return _generationSettings[preparedZone -1];
 }
 
 void Map::EndDungeonGeneration()

@@ -106,6 +106,7 @@ private:
 	void LoadMap();
 	void OpenLobby();
 	void GenerateDungeon();
+	GenerationSettings CreateGenerationSettingsByZoneName();
 	void UpdateZoneFileName();
 	void PrepareMusic();
 

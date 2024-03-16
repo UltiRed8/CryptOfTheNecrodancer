@@ -2,8 +2,8 @@
 #include "Enemy.h"
 
 #define PATH_SKELETON "Entities/SkeletonSprite.png"
-#define PATH_YELLOW_SKELETON "Entities/empty"
-#define PATH_BLACK_SKELETON "Entities/empty"
+#define PATH_YELLOW_SKELETON "Entities/YellowSkeletonSprite.png"
+#define PATH_BLACK_SKELETON "Entities/BlackSkeletonSprite.png"
 
 enum SkeletonType
 {
