@@ -11,7 +11,7 @@
 #define SOUND_DEATH_SKELETON "Assets/Sounds/en_skel_death.ogg"
 
 Skeleton::Skeleton(const float _maxHp, const float _maxDammage, const Vector2f& _position, const string& _path, const int _droppedCoins) 
-	: Enemy(_maxHp,_maxDammage,STRING_ID("Skeleton"), PATH_SKELETON, _position, _droppedCoins)
+	: Enemy(_maxHp,_maxDammage,STRING_ID("Skeleton"), _path, _position, _droppedCoins)
 {
 	skeletonType = SK_NONE;
 	cooldown = 2;

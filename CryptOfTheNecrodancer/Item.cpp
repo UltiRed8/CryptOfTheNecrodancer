@@ -64,7 +64,7 @@ void Item::UpdateText()
 	}
 }
 
-Item::~Item()
+Item::~Item()	
 {
 	delete animationTimer;
 	if (text)

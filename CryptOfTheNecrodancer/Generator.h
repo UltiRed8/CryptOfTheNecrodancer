@@ -13,6 +13,7 @@
 #include "Item.h"
 #include "Skeleton.h"
 #include "Bat.h"
+#include "Wraith.h"
 #include "UIText.h"
 #include <string>
 #include <fstream>
@@ -49,6 +50,9 @@ public:
 			[this](const Vector2f& _position) { return new BlueSlime(_position); },
 			[this](const Vector2f& _position) { return new OrangeSlime(_position); },
 			[this](const Vector2f& _position) { return new NormalSkeleton(_position); },
+			[this](const Vector2f& _position) { return new YellowSkeleton(_position); },
+			[this](const Vector2f& _position) { return new BlackSkeleton(_position); },
+			[this](const Vector2f& _position) { return new Wraith(_position); },
 		};
 	}
 	GenerationSettings(const vector<function<Entity* (const Vector2f& _position)>>& _enemyList, const int _roomsAmount = 6, const int _wallsWidth = 3, const int _diamonds = 1, const int _diamondsInWalls = 2, const int _chestsAmount = 2, const int _enemiesAmount = 10, const int _trapsAmount = 5, const bool _hasTorches = true)
