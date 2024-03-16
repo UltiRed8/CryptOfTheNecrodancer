@@ -25,7 +25,7 @@
 
 MusicManager::MusicManager()
 {
-	musicPackName = new int(2);
+	musicPackName = new int(1);
 	isFreeMove = true;
 	latency = 0.0f;
 	volume = new float(10.f);

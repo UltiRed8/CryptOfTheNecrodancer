@@ -24,7 +24,7 @@ Wall::Wall(const Vector2f& _position, const WallType& _type, const string& _zone
 
 	wallType = _type;
 
-	if (wallType == WT_DIRT)
+	if (wallType == WT_DIRT && Map::GetInstance().GetCurrentZone() != Z_ZONE3)
 	{
 		if (!Random(8, 0))
 		{
@@ -73,12 +73,12 @@ bool Wall::DestroyWall(const int _digLevel, const bool _canShake, const bool _wi
 	SoundManager::GetInstance().Play(wallType == WT_DIRT ? SOUND_DIG_DIRT : SOUND_DIG_STONE);
 	if (wallType  == WT_SHOP)
 	{
-		new Pickable(PIT_COIN, STRING_ID("Coin"), GetPosition(), 10);
+		Map::GetInstance().AddItem(new Pickable(PIT_COIN, STRING_ID("Coin"), GetPosition(), 10));
 	}
 	if (hasDiamond)
 	{
 		SoundManager::GetInstance().Play(SOUND_DIG_DIAMOND);
-		Map::GetInstance().AddOther(new Pickable(PIT_DIAMOND, STRING_ID("Diamond"), GetPosition()));
+		Map::GetInstance().AddItem(new Pickable(PIT_DIAMOND, STRING_ID("Diamond"), GetPosition()));
 	}
 	if (torch)
 	{

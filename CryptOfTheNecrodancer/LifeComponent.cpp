@@ -69,13 +69,17 @@ bool LifeComponent::ChangeHealth(const float _byAmount)
 		}
 	}
 
-	float _value = abs(_byAmount / _defense);
-	_value = _value < 50.0f ? 50.0f : _value;
+	float _value = _byAmount;
 
-	_value = round(_value / 50.0f) * 50.0f;
+	if (_byAmount < 0.0f)
+	{
+		_value = abs(_byAmount / _defense);
+		_value = _value < 50.0f ? 50.0f : _value;
 
-	_value *= _byAmount < 0.0f ? -1.0f : 1.0f;
+		_value = round(_value / 50.0f) * 50.0f;
 
+		_value *= _byAmount < 0.0f ? -1.0f : 1.0f;
+	}
 
 	*currentHealth += _value;
 	if (owner->GetType() != ET_PLAYER)

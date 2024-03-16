@@ -96,11 +96,13 @@ struct ItemStats
 	int goldPrice;
 	string swipePath;
 	int swipeAmount;
+	bool swipeRotation;
 
 public:
 	ItemStats() = default;
-	ItemStats(const float _damages, const float _defense, const int _digLevel, const vector<InteractionData>& _attackRange, const bool _preventMovement, const int _diamondPrice, const int _goldPrice, const string& _swipePath, const int _swipeAmount)
+	ItemStats(const float _damages, const float _defense, const int _digLevel, const vector<InteractionData>& _attackRange, const bool _preventMovement, const int _diamondPrice, const int _goldPrice, const string& _swipePath, const int _swipeAmount, const bool _swipeRotation = true)
 	{
+		swipeRotation = _swipeRotation;
 		diamondPrice = _diamondPrice;
 		goldPrice = _goldPrice;
 		damages = _damages;
@@ -293,8 +295,8 @@ public:
 			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, -1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(0.0f, 1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true) }, true, 3, 50, "swipe_flail.png", 5),
 			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(0.0f, -1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(0.0f, 1.0f, 2.0f, 1.0f), true), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true) }, true, 4, 80, "swipe_flail.png", 5),
 
-			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(-1.0f, -1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(-1.0f, 1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(-1.0f, 0.0f, 1.0f, 1.0f), false) }, true, 5, 80, "swipe_harp.png", 5),
-			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(-1.0f, -1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(-1.0f, 1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(-1.0f, 0.0f, 1.0f, 1.0f), false) }, true, 6, 100, "swipe_harp.png", 5),
+			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(-1.0f, -1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(-1.0f, 1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(-1.0f, 0.0f, 1.0f, 1.0f), false) }, true, 5, 80, "swipe_harp.png", 5, false),
+			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(-1.0f, -1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(-1.0f, 1.0f, 3.0f, 1.0f), false), InteractionData(FloatRect(1.0f, 0.0f, 1.0f, 1.0f), true), InteractionData(FloatRect(-1.0f, 0.0f, 1.0f, 1.0f), false) }, true, 6, 100, "swipe_harp.png", 5, false),
 
 			ItemStats(1.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f ), true) }, true, 3, 60, "swipe_longsword.png", 4),
 			ItemStats(2.0f, 0.0f, 0, { InteractionData(FloatRect(1.0f, 0.0f, 2.0f, 1.0f ), true) }, true, 4, 80, "swipe_longsword_titanium.png", 4),
@@ -416,7 +418,7 @@ struct Pickable : Item
 	int amount;
 
 public:
-	Pickable(const PickableType& _pickableType, const string& _id, const Vector2f& _position, const int _amount = 1) : Item(ST_ATTACK, _id, _position, false)
+	Pickable(const PickableType& _pickableType, const string& _id, const Vector2f& _position, const int _amount = 1) : Item(ST_NONE, _id, _position, false)
 	{
 		pickableType = _pickableType;
 		amount = _amount;

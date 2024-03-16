@@ -55,6 +55,7 @@ float Player::LoadHP()
 		getline(_stream, _line);
 		return stof(_line);
 	}
+	return 300.0f;
 }
 
 Player::Player(const float _maxHp, const string _id, const Vector2f& _position) : Living(LoadHP(), 0.0f, PATH_SHADOW, _id, _position, false)
@@ -96,7 +97,7 @@ Player::Player(const float _maxHp, const string _id, const Vector2f& _position) 
 						const ItemStats& _stats = _item->GetStats();
 						if (!_stats.swipePath.empty())
 						{
-							new Swipe(_stats.swipePath, _stats.swipeAmount, 1.0f, false);
+							new Swipe(_stats.swipePath, _stats.swipeAmount, 1.0f, _stats.swipeRotation);
 						}
 					}
 					return true;
@@ -152,16 +153,29 @@ Player::Player(const float _maxHp, const string _id, const Vector2f& _position) 
 		}),
 		CollisionReaction(ET_ITEM, [this](Entity* _entity) {
 			Item* _item = dynamic_cast<Item*>(_entity);
-			if (!_item->IsInInventory() && !pickupCooldown)
+
+			if (_item->GetSlotType() == ST_NONE)
 			{
 				if (!_item->PickUp())
 				{
 					GetComponent<MovementComponent>()->UndoMove();
 					return false;
 				}
-				pickupCooldown = true;
+			}
+			else
+			{
+				if (!_item->IsInInventory() && !pickupCooldown)
+				{
+					if (!_item->PickUp())
+					{
+						GetComponent<MovementComponent>()->UndoMove();
+						return false;
+					}
+					pickupCooldown = true;
+				}
 			}
 			return false;
+
 		}),
 		});
 
@@ -496,11 +510,11 @@ bool Player::TryToAttack()
 										{
 											if (_weapon->weaponType == WT_STAFF || _weapon->weaponType == WT_STAFF_TITANIUM)
 											{
-												new Swipe(20, _stats.swipePath, _stats.swipeAmount);
+												new Swipe(20, _stats.swipePath, _stats.swipeAmount, _stats.swipeRotation);
 											}
 											else
 											{
-												new Swipe(_stats.swipePath, _stats.swipeAmount);
+												new Swipe(_stats.swipePath, _stats.swipeAmount, _stats.swipeRotation);
 											}
 										}
 										if (GetComponent<DamageComponent>()->Attack(_entity))

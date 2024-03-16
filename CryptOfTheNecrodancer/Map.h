@@ -31,6 +31,7 @@ class Map : public Singleton<Map>
 	string zoneFileName;
 	Generator* generator;
 	bool* discoModeEnabled;
+	string zone3TextureFile;
 
 public:
 	bool IsInLobby() const
@@ -51,9 +52,20 @@ public:
 		*discoModeEnabled = !*discoModeEnabled;
 	}
 
+	string GetRandomZone3File() const
+	{
+		if (Random(1, 0))
+		{
+			return "cold";
+		}
+		return "hot";
+	}
+
 	string GetZoneFileName() const
 	{
-		return zoneFileName.substr(0, zoneFileName.find_first_of('_'));
+		string _name = zoneFileName.substr(0, zoneFileName.find_first_of('_'));
+		if (currentZone == Z_ZONE3) _name += "/" + zone3TextureFile;
+		return _name;
 	}
 
 	NPC* GetShopkeeper() const
