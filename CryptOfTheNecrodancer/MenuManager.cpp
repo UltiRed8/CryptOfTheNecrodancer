@@ -596,7 +596,7 @@ void MenuManager::InitCredits()
 
 	new Menu("Credits", { new UIAnimation("1", Vector2f(0, 0), Vector2f(static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)), CREDITS, Vector2f(640.0f, 360.0f), 8),
 		new UIText("CTxt", Vector2f(_x, static_cast<float>(_windowY / 10)), WHITE_COLOR, "Credits",50,FONT, true),
-		new UIText("C", Vector2f(static_cast<float>(window->getSize().x / 1.16), static_cast<float>(_windowY / 1.03)), Color::Red, "Copy de Crypt of The Necrodancer",20,FONT),
+		new UIText("C", Vector2f(static_cast<float>(window->getSize().x / 1.22), static_cast<float>(_windowY / 1.03)), Color::Red, "Copy of the game 'Crypt of The Necrodancer'",20,FONT),
 
 		new UIText("CTxtI", Vector2f(_x, static_cast<float>(_windowY / 4.5)), WHITE_COLOR, "Chef Gru : Kylari",35,FONT),
 		new UIImage("Wtf", Vector2f(static_cast<float>(window->getSize().x / 6), static_cast<float>(_windowY / 4.1)), Vector2f(100.0f, 100.0f) * 2.0f, WTF),
