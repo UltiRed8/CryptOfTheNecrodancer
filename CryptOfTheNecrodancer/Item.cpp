@@ -96,11 +96,15 @@ bool Item::PickUp()
 			{
 				*_player->GetRessources()->GetDiamonds() -= stats.diamondPrice;
 				SoundManager::GetInstance().Play(SOUND_SHOP_BUY);
-				SaveItem();
 				if (isPickable)
 				{
 					ExecuteCallback();
 				}
+				else
+				{
+					SaveItem();
+				}
+				EraseElement(Map::GetInstance().GetGenerator()->GetItems(), this);
 				Destroy();
 				return true;
 			}
@@ -133,6 +137,7 @@ bool Item::PickUp()
 	if (isPickable)
 	{
 		ExecuteCallback();
+		EraseElement(Map::GetInstance().GetGenerator()->GetItems(), this);
 		Destroy();
 		return true;
 	}

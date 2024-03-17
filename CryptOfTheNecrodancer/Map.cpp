@@ -16,6 +16,7 @@ Map::Map()
 	isPurple = false;
 	discoModeEnabled = new bool(true);
 	generator = new Generator(discoModeEnabled);
+	zone3TextureFile = GetRandomZone3File();
 }
 
 Map::~Map()
@@ -76,6 +77,7 @@ void Map::NextFloor()
 	}
 	else
 	{
+		zone3TextureFile = GetRandomZone3File();
 		GenerateDungeon();
 	}
 }
@@ -181,8 +183,13 @@ void Map::QuickRestart()
 		"zone1_",
 		"zone1_",
 		"zone2_",
+		"zone3_",
 	};
 	zoneFileName = _zones[preparedZone] + to_string(currentLevel);
+	if (preparedZone == Z_ZONE3)
+	{
+		zoneFileName += "_" + zone3TextureFile;
+	}
 	GenerateDungeon();
 }
 
@@ -205,35 +212,19 @@ void Map::UpdateZoneFileName()
 		"zone1_",
 		"zone1_",
 		"zone2_",
+		"zone3_",
 	};
 
 	zoneFileName = _zones[preparedZone] + to_string(currentLevel + 1);
+
+	if (preparedZone == Z_ZONE3)
+	{
+		zoneFileName += "_" + zone3TextureFile;
+	}
 }
 
 void Map::PrepareMusic()
 {
-	map<string, int> _bpmList = {
-		{ "zone1_1", 115 },
-		{ "zone1_2", 130 },
-		{ "zone1_3", 140 },
-
-		{ "zone2_1", 130 },
-		{ "zone2_2", 140 },
-		{ "zone2_3", 150 },
-
-		{ "zone3_1", 135 },
-		{ "zone3_2", 145 },
-		{ "zone3_3", 155 },
-
-		{ "zone4_1", 130 },
-		{ "zone4_2", 145 },
-		{ "zone4_3", 160 },
-
-		{ "zone5_1", 130 },
-		{ "zone5_2", 140 },
-		{ "zone5_3", 155 },
-	};
-
 	MusicManager::GetInstance().PrepareMusic(zoneFileName, true);
 }
 

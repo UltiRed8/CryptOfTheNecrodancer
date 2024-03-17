@@ -24,18 +24,19 @@ WindowManager::~WindowManager()
 
 void WindowManager::CreateWindow(const bool _fullscreen)
 {
-	if (window)
-	{
-		window->close();
-		delete window;
-	}
 	int _style = Style::Close;
 	_style = _fullscreen ? _style | Style::Fullscreen : _style;
 	fullscreen = _fullscreen;
-	window = new RenderWindow(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer", _style);
+	if (window)
+	{
+		window->create(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer", _style);
+	}
+	else
+	{
+		window = new RenderWindow(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crypt of the Necrodancer", _style);
+	}
 	baseWindowPosition = window->getPosition();
 	currentPosition = Vector2f(baseWindowPosition);
-	
 }
 
 void WindowManager::Init()
@@ -127,8 +128,8 @@ void WindowManager::Shake(const Vector2f& _direction)
 	{
 		const int _rotation = Random(360, 0);
 
-		const float _dirX = cos(_rotation);
-		const float _dirY = sin(_rotation);
+		const float _dirX = (const float) cos(_rotation);
+		const float _dirY = (const float) sin(_rotation);
 
 		direction = Vector2f(_dirX, _dirY);
 	}
@@ -153,14 +154,14 @@ void WindowManager::Update()
 		{
 			if ((direction.x > 0.0f && currentPosition.x < baseWindowPosition.x) || (direction.x < 0.0f && currentPosition.x > baseWindowPosition.x))
 			{
-				currentPosition.x = baseWindowPosition.x;
+				currentPosition.x = (const float) baseWindowPosition.x;
 			}
 		}
 		if (currentPosition.y != baseWindowPosition.y)
 		{
 			if ((direction.y > 0.0f && currentPosition.y < baseWindowPosition.y) || (direction.y < 0.0f && currentPosition.y > baseWindowPosition.y))
 			{
-				currentPosition.y = baseWindowPosition.y;
+				currentPosition.y = (const float) baseWindowPosition.y;
 			}
 		}
 

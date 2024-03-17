@@ -56,6 +56,7 @@ Item* Chest::CreateRandomItem()
 		Map::GetInstance().AddItem(_item);
 		return _item;
 	}
+	return nullptr;
 }
 
 void Chest::Open()

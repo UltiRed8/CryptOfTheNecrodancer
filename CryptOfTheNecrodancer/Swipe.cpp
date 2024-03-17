@@ -39,6 +39,7 @@ void Swipe::CreateSwipe(const int _amount, const float _size, const bool _should
 
 	string _value = to_string((int)_direction.x) + to_string((int)_direction.y);
 
+	
 	if (_shouldRotate)
 	{
 		shape->setRotation((const float)_directions[_value]);
