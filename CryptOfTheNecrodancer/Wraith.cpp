@@ -12,7 +12,7 @@
 
 Wraith::Wraith(const Vector2f& _position) : Enemy(100.0f, 50.f, STRING_ID("Wraith"), PATH_WRAITH, _position, 2)
 {
-	cooldown = 2;
+	cooldown = 1;
 	components.push_back(new AnimationComponent(this, {
 		AnimationData("Idle", Vector2f(24, 24), 0, 2, 0.1f, true),
 		}, "Idle", visuals));
